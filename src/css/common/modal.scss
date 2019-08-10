@@ -1,0 +1,92 @@
+
+@import "../scss/unit","../scss/variables";
+$M_width:400px;
+$Tit_H:40px;
+.g-modal{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+   
+    overflow: hidden;
+	z-index: 10;
+	.m-Mask{
+		background-color: rgba(0,0,0,0.3);
+		 height: 100%;
+		width: 100%;
+		position: absolute;
+	}
+	.m-Mwrap{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+	}
+}
+
+$bg:#112546;
+.m-Modal{
+	z-index: 2;
+	min-width: $M_width;
+	$pading:24px;
+	color: white;
+	box-shadow: 0px 1px 10px 0px rgba(255,255,255,0.3);
+		
+	border-radius: 6px;
+	background-color: #1f4178;
+	border: solid 2px #71c3ec;
+	.m-Mtit{
+		height: $Tit_H + 10;
+	//	border-bottom: 2px solid $normal;
+		//border-radius: 4px 4px 0px 0px;
+		display: flex;
+		position: relative;
+		padding:$pading; 
+		
+		//justify-content: center;
+		align-items: center;
+		cursor: move;
+	}
+	.tit-name {
+		color:white;
+		padding:10px 10px ;
+		width: calc(100% - 56px);
+		border-bottom:  2px solid #4ca9d0;
+		font-size: 20px;
+	}
+	.m-Mclose{
+		color:#029efa;
+		position: absolute;
+		right: $pading;
+		top:14px;
+		cursor: pointer;
+		&:hover{
+			color: lighten(#029efa,20%);
+		}
+
+	}	
+	.m-Mbody{
+		padding: $pading;
+		overflow: auto;
+	}
+
+	.m-Mfooter{
+		display: flex;
+		justify-content: flex-end;
+		padding: 10px;
+		.s-btn{
+			margin-right:10px;
+		}
+
+		.m-warn{
+			left:24px;
+		}
+	}
+	 .item-inp{
+        margin:12px 0 ;
+        &>.item-inp{
+            margin: 0;
+        }
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "module":"esnext",
+        "noImplicitAny": true,
+        "sourceMap": true,
+        "isolatedModules": true,
+        "jsx":"react",
+        "allowJs":true,
+        "target":"es6",
+        "strictNullChecks": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "downlevelIteration":true,
+        "moduleResolution": "node",  
+         "rootDir": "src",
+        "baseUrl": ".", 
+         "declaration": false,
+         "paths": {
+              "@js/*": ["./src/js/*"],
+              "@api/*": ["./src/api/*"],
+              "@css/*": ["./src/css/*"]
+         },
+        "lib": ["es2015","dom","dom.iterable"],
+        "types":["node"],
+        "typeRoots" : ["./typings"]
+     },
+      "exclude": [
+        "node_modules"
+      ]
+}

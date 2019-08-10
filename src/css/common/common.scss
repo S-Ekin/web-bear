@@ -1,0 +1,393 @@
+@import "./input.scss" ,"./btn.scss" ,"./modal.scss","./alertInfo.scss","./table.scss","./Calendar.scss","./combobox.scss","./menu.scss";
+@import "../scss/unit","../scss/variables";
+$themeColor:#535be9;
+$bg_slide:#535be9;
+$Head:66px;
+$pagePadding:24px;
+
+body,html{
+	width: 100%;
+	height: 100%;
+	 color: rgba(0,0,0,.65);
+}
+//svg图标
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+	overflow: hidden;
+	&.size1{
+		font-size:22px;
+	}
+	&.size2{
+		font-size:30px;
+	}
+}
+
+
+/* 基本的页面结构 */
+$HeadColor: #000e24 ;
+.page{
+	height: 100%;
+	box-sizing: border-box;
+	display: flex;
+	.g-slideMenu{
+		position: relative;
+		z-index: 10;
+		background-color: $HeadColor;
+		box-shadow: 0px 1px 10px 0px 
+		rgba(49, 69, 93, 0.6);
+		color:white;
+		@at-root{
+			.g-logo{
+				background: $HeadColor;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: $Head;	
+			//	padding-right:16px;
+				
+				.m-logo{
+						width: 100%;
+						height: 100%;	
+						background-size:contain; 
+					}
+					.j-slideBar{
+						cursor: pointer;
+					}
+				}
+		}
+	}
+	.g-content{
+		flex:1;/*很重要，为auto的话，即使兄弟元素固定宽度，只要它缩放会影响兄弟元素*/
+		overflow: hidden;
+		color:white;
+		min-width: 1000px;
+		min-height: 600px;
+		@at-root{
+			.g-head{
+				position: relative;
+				z-index: 5;
+				display: flex;
+				align-items: center; 
+				height:$Head;
+				background:$HeadColor;
+				color: white;
+				box-shadow: 0px 3px 6px 0px 
+					rgba(51, 51, 51, 0.3);
+				.m-theme{
+					padding-left: 30px;
+					font-size: 32px;
+					letter-spacing: .5em;
+					font-weight: bolder;
+				}
+				.j-slideBar{
+					margin-left: 30px;
+					cursor: pointer;
+				}
+			}
+			.g-main{
+			//	overflow: auto;
+				z-index: 4;
+				overflow: hidden;
+				height: calc(100% - #{$Head});
+				position: relative;
+				background: #0B1934;
+			}
+			.g-sys_set{
+				font-size: 16px;
+				display: flex;
+				flex: auto;
+				justify-content: flex-end;
+				align-items: center;
+				padding-right: 10px;	
+				.g-user-opt,.g-role-sys{
+					position:relative;
+					cursor: pointer;	
+					&:hover{
+						.m-sysOpt{
+							display: block;
+						}
+					}
+					li.active{
+						
+						color:$themeColor;
+					}
+				}
+				.m-sysOpt{
+					display: none;
+					font-size: 14px;
+					padding: 10px;
+					width: 100px;
+					text-align: center;
+					color: black;
+					position: absolute;
+					background-color: #ffffff;
+					border-radius: 4px;
+					box-shadow: 0px 0px 12px 0px rgba(51, 51, 51, 0.3);
+					&>li:hover{
+						color: $themeColor;
+					}
+				}
+			}
+		}
+	}
+}
+.scroll-area{
+	height:calc(100% - #{$Head})
+}
+
+
+
+.g-slideMenu.expand{
+	.g-logo{
+			padding-right: 0 ;
+			justify-content: center;
+	}
+	.m-logo{
+		display: none;
+	}
+	.scroll-content{
+		overflow: initial;
+	}
+	.scroll-area{
+		overflow: initial;
+	}
+}
+
+/* 常用的布局 */
+.g-padding{
+	padding: $pagePadding
+}
+
+// 阴影
+.shadow{
+	box-shadow: 0px 1px 10px 0px 
+		rgba(255, 255, 255, 0.1);
+}
+
+/* 搜索框 */
+.m-search{
+	position: relative;
+	display: flex;
+	.m-search-close	{
+		position: absolute;
+		margin-left: -20px;
+		color:$themeColor;
+		top:50%;
+		transform: translate(0,-50%);
+		cursor: pointer;
+	}
+	.m-inp-val{
+		border: 1px solid $normal;
+		flex:auto;
+		.s-inp{
+			width: 100%;
+		}
+	}
+
+	.s-btn{
+		margin: 0;
+		padding: 0 14px;
+	  border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    
+	}
+}
+/*子菜单容器样式  */
+.g-layout{
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	box-sizing: border-box;
+	
+	.g-layout-article{
+		
+		flex: 1;
+		padding: $pagePadding;
+		overflow: hidden;
+		padding-bottom: 0;
+		margin-bottom: $pagePadding;
+		
+	}
+	.g-layout-head{	
+		display: flex;
+		justify-content: space-between;
+	 	background-color: #112546;
+		align-items: center;
+		padding:10px 20px;
+		color:white;
+		height: 55px;
+		line-height: 55px;
+		font-size: 20px;
+		padding-left: 50px;
+		.tab-txt{
+border-bottom: 4px solid;
+    color: #04a9f5;
+		}
+	
+	}
+	.g-head-tab{
+	 	 display: flex;
+		background-color: #112546;
+		height: 55px;
+		line-height: 55px;
+		font-size: 20px;
+		padding-left: 50px;
+	  .tab-item{
+	  	color: white;
+		  margin-right: 60px; 
+		  cursor: pointer;
+		  &:hover{
+			  color:#04a9f5; 
+		  }
+	  }
+	  .tab-item.active{
+		 
+		
+		  border-bottom: 4px solid ;
+		  
+		 color:#04a9f5; 
+		 
+
+	  }
+	 
+	}
+
+	.g-table-container{
+        margin-top: 16px;
+        height: calc(100% - 80px);
+    }
+}
+
+/* loading */
+.g-loading{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top:0;
+	left: 0;
+	//background: rgba(#000, .3);
+	background: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 10;
+	.m-loading{
+		width:100px;
+		height:100px;
+		line-height: 180px;
+		text-align: center;
+	}
+	.loading-text{
+		color: white;
+		letter-spacing: .1em;
+	}
+}
+
+// 下拉框布局
+.item-inp{
+	display: flex;
+	align-items: center;
+	.m-inp-tit{
+		padding-right:16px;
+		text-align: right;
+		width: 110px;
+		min-width: 110px;
+		box-sizing: border-box;
+		&::after{
+			content: ":";
+			padding: 0 6px;
+		}
+	}
+	&.m-txt-start{
+		align-items: flex-start;
+	}
+}
+
+// 动画提醒
+.m-warn{
+		color: $error;
+		position: absolute;
+		padding: 6px;
+		animation:  alertAnimate .4s cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+		transform: translateX(300px) ;
+	}
+@keyframes alertAnimate{
+
+	to{
+		transform: translateX(0)
+	}
+}
+//下拉按钮
+.g-patch{
+	.m-patch-drop{
+		display: none;
+		position: absolute;
+		z-index: 10;
+		background: white;
+		color: black;
+		@extend %shadow;
+		cursor: pointer;
+		&>li{
+			padding: 6px 10px ;
+			&:hover{
+				color:$themeColor;
+			}
+		}
+	}
+	&:hover{
+		.m-patch-drop{
+			display: block
+		}
+	}
+}
+
+
+//颜色标记
+.green-mark{
+	font-weight: bolder;
+	color: $green;
+}
+.error-mark{
+	font-weight: bold;
+	color: $error;
+}
+.warn-mark{
+	font-weight: bold;
+	color: $warn;
+}
+
+.border{
+	border-radius: 4px;
+	border:1px solid #029efa;
+	flex:1;
+	word-break: break-all;
+	padding: 6px;
+	min-height: 30px;
+}
+.disabled{
+	color:black;
+}
+//空数据
+.m-empty{
+	position: absolute;
+	top:50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	text-align: center;
+	.txt{
+		font-size: 18px;
+		letter-spacing: .2em;
+		padding: 8px;
+	}
+	.icon{
+		font-size: 100px;
+	}
+
+}
+
+.score{
+	color: #f4c22b
+}

@@ -1,0 +1,179 @@
+
+@import "../scss/unit","../scss/variables";
+/**
+* normal-btn:有背景的按钮 ，line-btn:线框按钮，dashed-btn：虚线按钮
+* danger:颜色为红,primary：主题颜色，green：绿颜色
+*/
+
+.s-btn{
+    display: inline-block;
+	outline: none;
+	padding: 5px 12px;
+	cursor: pointer;
+	position: relative;
+	transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+	border-radius: 4px; 
+	&:disabled{
+		background:darken($normal, 20%) ;
+		opacity: .6;
+	}
+}
+.btn-clicked{
+	&:after{
+		content:"";
+		position: absolute;
+		top: -1px;
+		left: -1px;
+		right: -1px;
+		bottom: -1px;
+		opacity:0.4;
+		border-radius:inherit;
+		border: 0 solid white;
+		animation: buttonEffect .4s;
+	}
+}
+
+//有背景的按钮
+.normal-btn{
+	border:none;
+	color: #fff;
+	&:hover{
+		color:black;
+	}
+	&.primary{
+		background: $green;
+		&:hover{
+			background: lighten($green,15%)
+		}
+	}
+	&.danger{
+		background:$danger;
+		&:hover{
+			background: lighten($danger,15%)
+		}
+	}
+	&.green{
+		background:#00cc9f;
+		&:hover{
+			background: lighten(#00cc9f,15%)
+		}
+	}
+}
+
+//线框按钮
+
+.line-btn{
+	border:2px solid;
+	background:none;
+	&.primary{
+		color: $themeColor;
+		border-color: $themeColor;
+		&:hover{
+			border-color: lighten($themeColor,15%)
+		}
+	}
+	&.danger{
+		color:$danger;
+		border-color: $danger;
+		&:hover{
+			border-color: lighten($danger,15%)
+		}
+	}
+	&.green{
+		color:$green;
+		border-color: $green;
+		&:hover{
+			border-color: lighten($green,15%)
+		}
+	}
+	&.yellow{
+		color:#f4c22b;
+		border-color: #f4c22b;
+		&:hover{
+			border-color: lighten(#f4c22b,15%)
+		}
+	}
+}
+
+
+@keyframes buttonEffect{
+	$width:8px;
+	to {
+    opacity: 0;
+    top: -$width;
+    left: -$width;
+    bottom: -$width;
+    right: -$width;
+    border-width: $width;
+  }
+}
+
+
+
+
+/*描边效果 */
+
+%position_1{
+	content:"";
+	position: absolute;
+	width: 0;
+    height: 0;
+    border: solid 2px transparent;
+    z-index: 3;
+    box-sizing: border-box;
+	border-radius:inherit;
+}
+.s-dashBtn{
+	background: none;
+	color: $themeColor;
+	position: relative;
+	&:before{
+		
+		@extend %position_1 ;
+		top:0;
+		left:0;
+		transition: border-color 0s ease-in .8s,width .2s ease-in .6s,height .2s ease-in .4s;
+	}
+	&:after{
+		@extend %position_1 ;
+		right: 0;
+		bottom: 0;
+	    transition: border-color 0s ease-in .4s,width .2s ease-in .2s,height .2s ease-in;
+	}
+	&:hover{
+		&:before{
+			border-top-color: $themeColor;
+		    border-right-color: $themeColor;
+		    width: 100%;
+		    height: 100%;
+		    transition: border-color 0s ease-out 0s,width .2s ease-out 0s,height .2s ease-out .2s;
+
+		}
+		&:after{
+			border-bottom-color:$themeColor;
+		    border-left-color: $themeColor;
+		    width: 100%;
+		    height: 100%;
+		    transition: border-color 0s ease-out .4s,width .2s ease-out .4s,height .2s ease-out .6s;
+				}
+	}
+}
+
+/* 按钮组 */
+.m-optBtn{
+	height:$inpHeight; 
+	display: flex;
+	align-items: center;
+	&>*{
+		margin-right:$btnSpace*2;
+	}
+	
+	.s-btn:last-child{
+		margin-right:0;
+	}
+}
+.g-btn-layout{
+&>*{
+	margin-right:6px;
+}
+}

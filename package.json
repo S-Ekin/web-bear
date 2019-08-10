@@ -1,0 +1,52 @@
+{
+  "name": "@s-ekin/web",
+  "version": "2.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "webpack-dev-server  --disableHostCheck=true --open=chrome --env=development -w",
+    "build": "webpack --env=production --profile",
+    "dev": "webpack-dev-server  --disableHostCheck=true --open=chrome --env=development -w"
+  },
+  "keywords": [],
+  "author": "SEkin",
+  "repository": "S-Ekin/web-bear",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^12.0.10",
+    "@types/qs": "^6.5.3",
+    "@types/react": "^16.8.22",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-loadable": "^5.5.1",
+    "@types/react-router": "^5.0.2",
+    "@types/react-router-dom": "^4.3.4",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.0.3",
+    "css-loader": "^3.0.0",
+    "file-loader": "^4.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.7.0",
+    "node-sass": "^4.12.0",
+    "sass": "^1.22.1",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "ts-loader": "^6.0.4",
+    "ts-node": "^8.3.0",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typescript": "^3.5.2",
+    "url-loader": "^2.0.1",
+    "webpack": "^4.35.0",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "dependencies": {
+    "immutable": "^4.0.0-rc.12",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-loadable": "^5.5.0",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1",
+    "react-scrollbar": "^0.5.6",
+    "velocity-react": "^1.4.3"
+  }
+}

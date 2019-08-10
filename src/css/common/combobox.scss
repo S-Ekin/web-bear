@@ -1,0 +1,166 @@
+
+@import "../scss/unit","../scss/variables";
+$bg:none;
+// %shadow{
+// 	box-shadow: 0px 1px 8px 0px 
+// 		rgba(0, 160, 233, 0.3);
+
+// 	border-color: $active;
+// }
+
+%combox-inp{
+	position: relative;
+
+	&.disabled{
+		.m-combo-inp{
+			background: $normal;
+			color: black;
+		}
+	}
+
+	.m-combo-inp{
+		color: white;
+		display: flex;
+		height: $inpHeight;
+		cursor: pointer;
+		border:1px solid;	
+		border-radius: 4px;
+		border-color: $normal;
+		align-items: center;
+		background-color:$bg;
+		
+		&.autoHInp{
+			height: auto;
+			min-height:$inpHeight;
+			.m-inp-wrap{
+				flex: 1;
+				word-break: break-all;	
+				padding: 0 0 0 .5em;
+				//padding: .5rem;
+				overflow: auto;
+				height: 100%;
+				max-height: 6em
+			}
+		}
+		.m-inp-wrap{
+			flex: 1;
+			word-break: break-all;	
+			padding: .4em 0 0 .5em;
+			//padding: .5rem;
+			overflow: auto;
+			height: 100%;
+			max-height: 6em
+		}
+	  .m-inp{
+	  	width: 100%;
+	  	box-sizing: border-box;
+	  	border:none;
+	  	outline: none;
+	  	cursor: pointer;
+	  	text-indent: .5em;
+	  	height: $inpHeight - 4 ;
+	  }	
+	  textarea.m-inp{
+  	  resize: none;
+    	line-height: 1.5em;
+    	padding-top: 6px;
+
+	  }	
+
+	  .j-slide{
+	  	padding: 0 8px;
+	  	cursor: pointer;
+	  }
+	}
+	
+	.m-drop{
+			@extend %shadow ;
+			background:#274a82;
+			color:white;
+			 position: absolute;
+		 	 box-sizing: border-box;
+	  		width:100%;
+			box-shadow: 0px 1px 10px 0px rgba(255,255,255,0.2);
+			border-radius: 4px;
+		//	border: solid 1px #ececec;
+			padding: 8px;
+			z-index: 10;
+			.m-combo-item{
+				padding: 8px;
+				cursor: pointer;
+				&:hover{
+					color:$green;
+				}
+			}
+			.m-inp-val{
+				box-sizing: border-box
+			}
+			.s-inp{
+				background: none;
+				color: white;
+
+			}
+	 }
+	 .m-drop.direction-up{
+		bottom: 44px;
+	 }
+	.m-drop.direction-down{
+		margin-top: 10px;
+	 }
+	 .m-combo-item.active{
+				background-color:#5d8cd2;
+				border-radius: 2px;
+				&:hover{
+					color: white;
+				}
+		}
+		.m-combo-item.activeClick{
+				color:$green;
+		}
+
+}
+
+.combobox{
+		@extend %combox-inp;
+		.m-drop{
+			overflow: auto;
+		}
+}
+
+
+
+.active{
+
+	&.combobox,&.comTreeBox{
+		.m-combo-inp{
+				@extend %shadow;
+			}
+	}
+	
+}
+.no-fill{
+	&.combobox,&.comTreeBox{
+		.m-combo-inp{
+			border-color: $error;
+		}
+	}
+	
+}
+
+.comTreeBox{
+	@extend %combox-inp;
+	.m-combo-item{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.m-tree{
+		overflow: auto;
+	}
+}
+
+
+
+
+
+
