@@ -2,7 +2,7 @@
   "name": "@s-ekin/web",
   "version": "2.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "index.tsx",
   "scripts": {
     "test": "webpack-dev-server  --disableHostCheck=true --open=chrome --env=development -w",
     "build": "webpack --env=production --profile",
@@ -12,6 +12,7 @@
   "author": "SEkin",
   "repository": "S-Ekin/web-bear",
   "license": "ISC",
+  
   "devDependencies": {
     "@types/node": "^12.0.10",
     "@types/qs": "^6.5.3",
