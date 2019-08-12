@@ -8,10 +8,6 @@ type appProps = {
 
 }
 
-window.sys_defaultTime = {
-	time:"",
-	rotate:4
-}; //所有的日历默认的时间;
 
 type appState = {
 }

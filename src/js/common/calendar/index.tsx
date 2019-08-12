@@ -89,13 +89,11 @@ type calendarState = {
 class Calendar extends React.PureComponent<calendarProps, calendarState> implements CalendarApi {
 
 	static defaultProps = {
-		//rotate: calendarType.day,
-		rotate: window.sys_defaultTime.rotate,
+		rotate: calendarType.day,
 		style: 1,
 		time: false,
 		hasInp: true,
-		//selTimeValArr:"",
-		selTimeValArr:window.sys_defaultTime.time,
+		selTimeValArr:"",
 		width: 240,
 		placeholder: "",
 		ableClear:false,
