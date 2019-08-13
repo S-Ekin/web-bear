@@ -89,10 +89,10 @@ class Head extends React.PureComponent<RouteComponentProps & HeadProp  , HeadSta
 		}))
 	}
 
-	changePassword = (file: "password", pwd: string) => {
+	changePassword = (file: string, pwd: string) => {
 
 		this.setState({
-			[file]: pwd,
+			[file as "password"]: pwd,
 		})
 
 	}

@@ -10,7 +10,7 @@ type props = {
 	idField?: string;
 	textField?: string;
 	icon?: string;
-	clickCallback?: (slecte: Readonly<ComboboxSpace.comboboxAPI["slectedItem"][]>, field: string, node?: Readonly<any>, ) => void;
+	clickCallback?: (slecte: ComboboxSpace.comboboxAPI["slectedItem"][], field: string, node?: Readonly<any>, ) => void;
 	field: string;
 	multiply?: boolean;
 	defaultVal?: string;
@@ -18,7 +18,7 @@ type props = {
 	maxHeight?: number;
 	data: any[];
 	hasSlideIcon?: boolean;
-	formatter?: (node: Readonly<any>) => JSX.Element;
+	formatter?: (node:any) => JSX.Element;
 	pannelWidth?: number;
 	inpShowField?: string;
 	require?: boolean;
@@ -270,7 +270,7 @@ export default class Combobox extends React.PureComponent<props, state>{
 
 		
 
-		return (<div ref={this.wrapDomRef} className={"combobox "+(disabled ? "disabled" : "") + (!disabled && drop ? "active " : "") + ((!value && !disabled && require) ? "no-fill" : "")} style={{ width }} >
+		return (<div ref={this.wrapDomRef} className={"combobox "+(disabled ? "disabled" : "") + (!disabled && drop ? "active " : "") + ((!value && !disabled && require) ? "no-fill" : "")} style={{ width:width }} >
 
 			<ComboInp 
 				placeholder={placeholder} 
@@ -284,7 +284,7 @@ export default class Combobox extends React.PureComponent<props, state>{
 			<VelocityComponent duration={300} animation={!disabled && drop ? "slideDown" : "slideUp"}
 					interruptBehavior="queue"
 			>
-				<ul style={{ maxHeight, width: (pannelWidth ? pannelWidth : "100%") }} className={"m-drop " + (dirctionUp && "direction-up" || "direction-down")} >
+				<ul style={{ maxHeight:maxHeight, width: (pannelWidth ? pannelWidth : "100%") }} className={"m-drop " + (dirctionUp && "direction-up" || "direction-down")} >
 
 					<DropCom data={data} getPropFieldVal={this.getPropFieldVal} clickHande={this.clickFn} />
 
