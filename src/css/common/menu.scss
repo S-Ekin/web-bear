@@ -1,125 +1,120 @@
+@import "../scss/variate";
+$active:lighten($theme-color, 10%);
+$item-h:50px;
 
-$color:white;
-$active:#112546;
-$H:60px;
-.g-menu{
-	.menu-item{
-		position: relative;
-		padding-left: 36px;
-	}
-	
-	.menu-par{
-		font-size: 16px;
-		height: $H;
-		line-height: $H;
-		display: flex;
-		justify-content: space-between;
-		padding-right:16px;
-		color:$color;
-		a{
-			color:$color;
-		}
-		.par-icon{
-			position: absolute;
-	    margin-left: -22px;
-		}
-	}
-	.menu-child{
-		height: $H;
-		line-height: $H;
-		background: #112546;
-		
-		.j-nav{
-			display: inline-block;
-			width: 100%;
-			cursor: pointer;
-		}
-		a{
-			color:$color;
-			display: inline-block;
-			width: 100%
-		}
+.g-menu {
+  .menu-item {
+    position: relative;
+    padding-left: 36px;
+  }
 
-		a:hover{
-			color:$color;
-		}
-		
-	}
-	.child-ul{	
-		overflow: hidden;
-	    transition: max-height .3s ease-out;
- 		
-	}
-	.j-slide_menu{
-		cursor: pointer;
-	}
+  .menu-par {
+    font-size: 16px;
+    height: $item-h;
+    line-height: $item-h;
+    display: flex;
+    justify-content: space-between;
+    padding-right: 16px;
+    color: $text-color;
 
+    a {
+      color: $text-color;
+    }
+
+    .par-icon {
+      position: absolute;
+      margin-left: -22px;
+    }
+  }
+
+  .menu-child {
+    height: $item-h;
+    line-height: $item-h;
+
+    .j-nav {
+      display: inline-block;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    a {
+      color: $text-color;
+      display: inline-block;
+      width: 100%;
+    }
+
+    a:hover {
+      color: $active;
+    }
+  }
+
+  .j-slide_menu {
+    cursor: pointer;
+  }
 }
 
-.menu-par.active{
-	//background: $active;
-	
+.menu-child.active {
+  font-weight: bolder;
+
+  a {
+    color: $active;
+  }
 }
 
-.menu-child.active{
-	background-image: linear-gradient(313deg, 
-		#1dc4e9 0%, 
-		#006395 100%);
-	a{
-			color:$color;
-	}
+.menu-par.active {
+  background: $active;
 }
 
 /* 菜单收缩时 */
-.g-slideMenu.expand{
-	.g-logo{
-		background-image: linear-gradient(313deg, 
-		#04a9f5 0%, 
-		#1dc4e9 100%);
-	}
-		.g-menu{
-			li{
-				position: relative;
-			}
-			.menu-child{
-				    padding:0 12px;
-			}
-		}
-		.menu-par.active{
-			background: #112546;
-			
-		}
-		.menu-par{
-		    justify-content: center;
-		    padding-left:0;
-	  	  padding-right: 0;
-		    .j-nav{
-						display: none
-				}
-				.j-slide_menu{
-						display: none;
-				}
-		}	
-		.par-icon{
-	    margin-left:0;
-		}
-		.li-par:hover .child-ul{
-			
-			display: block;
-			position:absolute;
-			top:0;
-			left: 70px;
-			width: 180px;
-			background-color: #ffffff;
-			box-shadow: 0px 3px 6px 0px 
-			rgba(0, 0, 0, 0.16);
-		
-		}
-		.menu-par + .child-ul{
-			display: none;
-		}
-		
+.g-slideMenu.expand {
+  .g-logo {
+    background-image:
+      linear-gradient(
+        313deg,
+        #04a9f5 0%,
+        #1dc4e9 100%
+      );
+  }
 
+  .g-menu {
+    li {
+      position: relative;
+    }
+
+    .menu-child {
+      padding: 0 12px;
+    }
+  }
+
+  .menu-par {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+
+    .nav-text {
+      display: none;
+    }
+
+    .m-slide-icon {
+      display: none;
+    }
+  }
+
+  .par-icon {
+    margin-left: 0;
+  }
+
+  .li-par:hover .child-ul {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 70px;
+    width: 180px;
+    background-color: #fff;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  }
+
+  .menu-par + .child-ul {
+    display: none;
+  }
 }
-
-

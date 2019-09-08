@@ -1,0 +1,114 @@
+
+@import "../scss/variate";
+$combo-bg:$page-bg;
+$combo-text-color:$text-color;
+$combo-h:2em;
+$combo-drop-padding:8px;
+
+.m-combo-inp {
+  .combo-value {
+    flex: 1;
+    word-break: break-all;
+    overflow: auto;
+    height: 100%;
+    padding-top: 0.25em;
+  }
+
+  .combo-inp-tit {
+    color: rgba($combo-text-color, 0.2);
+    font-size: 15px;
+  }
+
+  &.autoHInp {
+    height: auto;
+    min-height: $combo-h;
+  }
+
+  .j-slide {
+    padding: 0 8px;
+    cursor: pointer;
+  }
+
+  &.no-fill {
+    border-color: $error;
+  }
+}
+
+.m-drop {
+  .drop-ul {
+    overflow: auto;
+  }
+
+  .m-combo-item {
+    padding: $combo-drop-padding;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+
+    &:hover {
+      color: lighten($combo-text-color, 20%);
+      background: #e6f7ff;
+    }
+  }
+
+  &.direction-up {
+    bottom: 44px;
+  }
+
+  &.direction-down {
+    margin-top: 10px;
+  }
+
+  .m-combo-item.active {
+    background-color: #bfe6f9;
+    border-radius: 2px;
+    color: #04a9f5;
+
+    &:hover {
+      color: #04a9f5;
+    }
+  }
+}
+
+.g-combo {
+  position: relative;
+
+  .m-combo-inp {
+    position: relative;
+    color: $combo-text-color;
+    display: flex;
+    height: $combo-h;
+    cursor: pointer;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    align-items: center;
+    background-color: $combo-bg;
+    padding: 0 4px;
+  }
+
+  .m-drop {
+    background: $combo-bg;
+    color: $combo-text-color;
+    position: absolute;
+    box-sizing: border-box;
+    width: 100%;
+    box-shadow: $shadow;
+    border-radius: 4px;
+    padding: $combo-drop-padding;
+    z-index: 10;
+  }
+
+  .no-fill {
+    &.m-combo-inp {
+      border-color: $error;
+    }
+  }
+
+  .m-label {
+    margin-right: 0;
+  }
+
+  .fa {
+    color: $theme-color;
+  }
+}

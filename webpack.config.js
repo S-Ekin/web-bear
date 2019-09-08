@@ -12,7 +12,7 @@ module.exports = env => {
 	return {
 		devtool: id_dev ? "eval-source-map" : "source-map",
 		entry: {
-			main: path.join(__dirname, "src/main.tsx"),
+			main: path.join(__dirname, "src/App.tsx"),
 		},
 		output: {
 			path: path.join(__dirname, "static"),
@@ -94,7 +94,7 @@ module.exports = env => {
 			plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.json" })],
 			alias: { //配置绝对路径的文件名
 				css: path.join(__dirname, 'src/css'),
-				js: path.join(__dirname, 'src/js'),
+				component: path.join(__dirname, 'src/component'),
 			},
 		},
 		optimization: {

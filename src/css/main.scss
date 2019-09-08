@@ -1,154 +1,280 @@
-@import "./common/normalize.css" ,"./common/common.scss" ,"./common/easyuiTable.scss";
+@import "./common/normalize.css" ,"./common/common.scss" ;
+@import "./scss/variate";
 
-.m-sysOpt{
-	&>li{
-		padding: 4px 0;
-	}
+$Head-h:60px;//头部的高度
+$HeadColor: $theme-color;
+
+.m-sysOpt {
+  & > li {
+    padding: 4px 0;
+  }
 }
 
-.pwd-M{
-	.item-inp{
-		padding:10px;
-	}
-	.s-inp{
-		flex: 1;
-	}
-	.m-inp-tit{
-		width: 100px;
-	}
+.pwd-M {
+  .item-inp {
+    padding: 10px;
+  }
+
+  .s-inp {
+    flex: 1;
+  }
+
+  .m-inp-tit {
+    width: 100px;
+  }
 }
 
+/* 基本的页面结构 */
+.g-logo {
+  .m-logo {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+  }
 
-.ghView-page{
-	.datagrid-header-row {
-        height: 46px;
-	}
-	
-	.red{
-		background:$error;
-	}
-	.finished{
-		background: green;
-	}
-	.blue{
-		background: blue;
-	}
-	.disabled{
-		background: #b0b0b0;
-	}
-	.s-btn.filter{
-		background: #b0b0b0;
-	}
-	#viewTab{
-		.s-btn{
-			&:hover{
-				font-weight: bolder;
-				color:black;
-			}
-		}
-
-	}
-	.s-btn.hover-btn{
-		font-weight: bolder;
-				color:black;
-	}
-}
-.user-modal{
-	
-	.m-Mbody{
-		overflow: initial;
-		width:450px;
-	}
-	.item-inp{
-		&>.s-inp{
-			width: 300px;
-		}
-	}
-}
-.user-page{
-	.user-tab:nth-child(2){
-		margin: 20px 0;
-		
-	}
-.user-tit{
-	display: flex;
-	justify-content: space-between
-}
+  .j-slideBar {
+    cursor: pointer;
+    color: $text-bg-color;
+  }
 }
 
-.default-page{
-	$wid:15%;
-	$h:5%;
-	position: absolute;
-	top:$h;
-	left: $wid;
-	right: $wid;
-	bottom: $h;
-	display: flex;
-	flex-wrap: wrap;
-	.detault-item{
-		width: 33.3%;
-		height: 33.3%;
-		padding: 20px;
-	}
-	.item-kpi-par{
-		margin: auto;
-		height:100%;
-		width: 100%;
-		cursor: pointer;
-		background-color: #152e57;
-		box-shadow: 0px 3px 6px 0px 
-			rgba(0, 0, 0, 0.16);
-		border-radius: 4px;
-		border: solid 3px #00a0e9;
-		&:hover{
-			background-color: #00a0e9;
-			a{
-				color: white;
-			}
-			.item-txt{
-				border-color: white;
-			}
-		}
-		a{
-			widows: 100%;
-			height: 100%;
-		
-			display: flex;
-			color: #00a0e9;
-			flex-direction: column;
-			
-		}
-		.item-txt{
-			font-size: 18px;
-			font-weight: bold;
-			width: 100%;
-			color:white;
-			height: 30%;
-			border-top: 2px solid #00a0e9;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			
-		}
-		.item-icon{
-			font-size: 72px;
-			font-weight: bold;
-			height: 70%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-	}
-}
-.import-page{
+.g-content {
+  .g-head {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    height: $Head-h;
+    box-shadow: $shadow;
+    background: $HeadColor;
+    color: $text-bg-color;
 
-    .item-inp{
-        margin: 16px 0;
+    .m-theme {
+      padding-left: 30px;
+      font-size: 32px;
+      letter-spacing: 0.5em;
+      font-weight: bolder;
     }
 
-    .g-padding{
-        margin: 10px 0;
+    .j-slideBar {
+      margin-left: 30px;
+      cursor: pointer;
     }
- 
+  }
+
+  .g-main {
+    z-index: 4;
+    overflow: hidden;
+    height: calc(100% - #{$Head-h});
+    position: relative;
+    background: $page-bg;
+  }
+
+  .g-sys_set {
+    font-size: 16px;
+    display: flex;
+    flex: auto;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10px;
+
+    .m-sysOpt {
+      display: none;
+      font-size: 14px;
+      padding: 10px;
+      width: 100px;
+      text-align: center;
+      color: black;
+      position: absolute;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 0 12px 0 rgba(51, 51, 51, 0.3);
+
+      & > li:hover {
+        color: $theme-color;
+      }
+    }
+
+    .g-role-sys {
+      .m-sysOpt {
+        width: 150px;
+      }
+    }
+
+    .g-user-opt,
+    .g-role-sys {
+      position: relative;
+      cursor: pointer;
+
+      &:hover {
+        .m-sysOpt {
+          display: block;
+        }
+      }
+
+      li.active {
+        color: $theme-color;
+      }
+    }
+  }
+}
+
+.page {
+  .g-slideMenu {
+    position: relative;
+    z-index: 10;
+    background-color: $page-bg;
+    box-shadow: $shadow;
+
+    .scroll-area {
+      height: calc(100% - #{$Head-h});
+    }
+
+    .g-logo {
+      background: $HeadColor;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: $Head-h;
+    }
+  }
+
+  .g-content {
+    flex: 1;/* 很重要，为auto的话，即使兄弟元素固定宽度，只要它缩放会影响兄弟元素 */
+    overflow: hidden;
+    //  min-width: 1000px;
+    min-height: 600px;
+  }
+}
+
+.g-slideMenu.expand {
+  .g-logo {
+    padding-right: 0;
+    justify-content: center;
+  }
+
+  .m-logo {
+    display: none;
+  }
+
+  .scroll-content {
+    overflow: initial;
+  }
+
+  .scroll-area {
+    overflow: initial;
+  }
+}
+
+.report-list-page {
+  .g-layout-article {
+    overflow: auto;
+  }
+
+  .org-name {
+    margin: 0 8px;
+  }
+
+  .org-success {
+    color: $success;
+  }
+
+  .org-finish {
+    color: green;
+    font-weight: bold;
+  }
+
+  .org-error {
+    color: $error;
+    cursor: pointer;
+  }
+
+  .org-danger {
+    color: darken($error, 20%);
+    cursor: pointer;
+  }
+
+  .org-warn {
+    color: $warn;
+  }
+
+  .g-table {
+    min-width: 1200px;
+
+    .s-btn {
+      padding: 0.5em 0.8em;
+    }
+
+    .m-optBtn {
+      justify-content: flex-start;
+    }
+  }
+}
+
+.hover-rejectMessage {
+  position: absolute;
+  box-shadow: $shadow;
+  border-radius: 4px;
+  background: $page-bg;
+  padding: 12px;
+  z-index: 10;
+  top: 20px;
+  left: 20px;
+  width: 400px;
+  text-align: left;
+
+  .reject-theme-tit {
+    color: $theme-color;
+  }
+
+  .reject-txt {
+    margin-top: 6px;
+    text-indent: 2em;
+    border: 1px solid $normal;
+    border-radius: 4px;
+    min-height: 80px;
+    padding: 6px;
+  }
+}
+
+.g-modal-allot {
+  .wrap-org {
+    display: flex;
+  }
+
+  .org-list {
+    box-shadow: $shadow;
+    width: 180px;
+    margin-left: 16px;
+    height: 314px;
+    overflow: auto;
+  }
+
+  .org-tit {
+    border-bottom: 2px solid;
+    padding: 8px;
+  }
+
+  .org-item {
+    padding: 6px;
+    font-weight: bolder;
+    color: $theme-color;
+  }
+}
+
+.psd-modal {
+  .inp-item {
+    margin: 16px 0;
+    display: flex;
+    align-items: center;
+
+    .m-tit {
+      width: 100px;
+      text-align: right;
+    }
+
+    input {
+      width: 280px;
+    }
+  }
 }

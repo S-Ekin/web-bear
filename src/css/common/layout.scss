@@ -1,0 +1,49 @@
+@import "../scss/variate";
+
+.page {
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.g-padding {
+  padding: $page-padding;
+}
+
+/* 子菜单容器样式  */
+.g-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+
+  .g-layout-article {
+    flex: 1;
+    margin: $page-padding 0;
+    padding: 0 $page-padding;
+    overflow: hidden;
+  }
+
+  .g-layout-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: $page-padding;
+    padding: 0 $page-padding;
+
+    .layout-head-item {
+      display: flex;
+
+      &:first-child {
+        & > * {
+          margin-right: 16px;
+        }
+      }
+    }
+  }
+
+  .g-table-container {
+    margin-top: 16px;
+    height: calc(100% - 80px);
+  }
+}

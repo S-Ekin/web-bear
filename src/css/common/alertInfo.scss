@@ -1,49 +1,58 @@
-@import "../scss/unit","../scss/variables";
-.g-notification{
-    position: absolute; 
-    right: 20px;
-    top:10px;
-    z-index: 20;
-    text-align: right;
-    width: 50%;
-    overflow: hidden;
-    padding: 0 6px;
-    .g-alertInfo{
-        
-        @extend %shadow;
-        background: white;
-        color: black;
-        display: inline-flex;
-        padding: 10px ;
-        margin: 8px 0;
-        align-items: center;
-        min-width: 280px;
-        justify-content: space-between;
-        text-align: left;
-    }
+@import "../scss/unit","../scss/variate";
 
+.g-notification {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  z-index: 20;
+  text-align: right;
+  width: 50%;
+  overflow: hidden;
+  padding: 0 6px;
+
+  .g-alertInfo {
+    @extend %shadow;
+
+    background: white;
+    color: black;
+    display: inline-flex;
+    padding: 10px;
+    margin: 8px 0;
+    align-items: center;
+    min-width: 280px;
+    justify-content: space-between;
+    text-align: left;
+  }
 }
 
-.g-alertInfo{
-    .txt{
-        text-align: left;
-    }
-    
-    .warn{
-        color:$warn;
-    }
-    .error{
-        color:$error;
-    }    
-    .success{
-        color:$success;
-    }
-    .m-alert-close{
-        padding-left: 10px;
-        cursor: pointer;
-        &:hover{
-            color:$themeColor;
-        }
-    }
+.g-alertInfo {
+  .txt {
+    text-align: left;
+  }
 
+  .warn {
+    color: $warn;
+  }
+
+  .notice-item {
+    padding-right: 8px;
+    font-size: 24px;
+  }
+
+  .error {
+    color: $error;
+  }
+
+  .success {
+    color: $success;
+  }
+
+  .m-alert-close {
+    padding-left: 10px;
+    cursor: pointer;
+
+    &:hover {
+      color: $theme-color;
+    }
+  }
 }
