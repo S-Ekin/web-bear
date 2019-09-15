@@ -1,7 +1,7 @@
 import * as React from "react";
 import {BrowserRouter,Switch} from "react-router-dom";
-import SlideMenu from "./containers/SlideMenu";
-import Head from "./containers/Head";
+import SlideMenu from "./SlideMenu";
+import Head from "./Head";
 import MainRouter from "./Router";
 type appProps = {
 

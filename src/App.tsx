@@ -1,12 +1,9 @@
 import "@css/main.scss";
-import App from "./index";
+import App from "./containers/index";
 import * as React from "react";
 import * as ReactDom from "react-dom" ;
 import "velocity-animate";
 import 'velocity-animate/velocity.ui';
-
-
-
 const domApp = document.getElementById("app");
 
 ReactDom.render((
@@ -16,8 +13,9 @@ ReactDom.render((
 
 if(module.hot){
 		// 热替换react
-		module.hot.accept("./index",()=>{
-					import("./index").then((module:any)=>{
+		module.hot.accept("./containers/index",()=>{
+					import("./containers/index").then((module:any)=>{
+						// tslint:disable-next-line:variable-name
 						const AppCom = module.default;
 							ReactDom.render((
 										<AppCom />
