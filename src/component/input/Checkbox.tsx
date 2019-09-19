@@ -3,6 +3,7 @@
  * @description 自定义的复选框和单选框
  */
 import * as React from "react";
+import { SvgIcon } from "@component/icon";
 
 type props = {
 	changeHandle: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -26,11 +27,14 @@ class CheckBox extends React.PureComponent<props, states> {
 	render() {
 		const { type,name,value,hasChecked,checked,changeHandle,children,disabled} = this.props;
 		
+		const className = checked ? "checkbox-marked" : hasChecked ? "checkbox-has-selected" :"checkbox-blank";
 		return (
 			<label className={`m-label m-lab-${type}`}>
-				<input
+				<span className="wrap-icon">
+					<SvgIcon className={className} size="middle"/>
+					<input
 					type={type}
-					className={hasChecked ? "has-check" : undefined}
+					className="checkBox-inp"
 					name={name}
 					checked={checked}
 					value={value}
@@ -38,6 +42,7 @@ class CheckBox extends React.PureComponent<props, states> {
 					onChange={changeHandle}
 					disabled={disabled}
 				/>
+				</span>
 				{children}
 			</label>
 		);

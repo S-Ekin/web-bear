@@ -6,6 +6,10 @@ const routerConfig={
 	button:{
 		loader: () => import( /*webpackChunkName: "button" */"../component/button/demo/demo"),
 		loading: () => <span>loading......</span>
+	},
+	table:{
+		loader: () => import( /*webpackChunkName: "table" */"../component/table/demo/demo"),
+		loading: () => <span>loading......</span>
 	}
 };
 
@@ -14,6 +18,7 @@ class MainRouter extends React.PureComponent{
 		return (
 			<>
 				<Route path="/button" component={loadable(routerConfig.button)} />
+				<Route path="/table" component={loadable(routerConfig.table)} />
 				<div id="s-modal"/>
 			</>
 			);

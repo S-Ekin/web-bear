@@ -4,7 +4,7 @@
  * @time 2019-08-14
  */
 import * as React from "react";
-import { Icon, SvgIcon } from "@component/icon/index";
+import {SvgIcon } from "@component/icon/index";
 import * as Immutable from "immutable";
 import {NavLink} from "react-router-dom";
 import * as Velocity from "velocity-react";
@@ -164,9 +164,7 @@ class ParMenu extends React.PureComponent<props, states> implements IParMenu{
 					</span> 
 					<span className="nav-text">{text}</span>
 					<span className="m-slide-icon">
-						<Icon 
-							className={`fa fa-chevron-${drop ? "down" : "up"}`} 
-						/>
+						<SvgIcon className={`arrow-${drop ? "down" : "up"}`} />
 					</span>
 				</div>
 				{sub}

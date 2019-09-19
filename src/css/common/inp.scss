@@ -101,71 +101,24 @@ $inp-border-color:$border-color;
   margin-right: 10px;
   cursor: pointer;
 
-  input {
+  .wrap-icon {
     position: relative;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: 1em;
-    margin: 0;
-    outline: none;
-    font: normal normal normal 18px/1 FontAwesome;
+  }
+
+  .icon {
     color: $text-color;
-    transition: 300ms ease-out;
     cursor: pointer;
-
-    &::after {
-      display: inline-block;
-      text-align: center;
-      width: 1em;
-    }
-
-    &:active {
-      transform: scale(0.6);
-    }
   }
 
-  input:checked {
-    color: #5adc9c;
-  }
-
-  input:disabled {
-    cursor: not-allowed;
+  .checkBox-inp {
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
   }
 }
 
 .lab-tit {
   padding: 0 6px;
-}
-
-.m-lab-radio {
-  input {
-    &::after {
-      content: '\f10c'; // circle
-    }
-
-    &:checked::after {
-      content: '\f28e'; // circle
-    }
-  }
-}
-
-.m-lab-checkbox {
-  input {
-    &::after {
-      content: '\f096'; // circle
-    }
-
-    &:checked::after {
-      content: '\f14a'; // circle
-    }
-  }
-
-  input.has-check {
-    &::after {
-      content: '\f192'; // circle- dot
-    }
-  }
 }
 
 /* radio */

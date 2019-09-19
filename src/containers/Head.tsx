@@ -1,6 +1,6 @@
 import * as React from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom"
-
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import {SvgIcon} from "@component/icon/index";
 
 type HeadProp = {
 };
@@ -76,10 +76,11 @@ class Head extends React.PureComponent<RouteComponentProps & HeadProp  , HeadSta
 			<div className="g-sys_set">
 				
 				<div className="g-role-sys">
-					<div style={{ padding: "20px 10px"}}>
+					<div style={{ padding: "20px 10px",}}>
+						<SvgIcon className="role"/>
 						<span >&nbsp;角色</span>
 					</div>
-					<ul className="m-sysOpt" style={{left:16}}>
+					<ul className="m-sysOpt" style={{left: 16,}}>
 						<li onClick={undefined}>
 							<span>管理员</span>
 						</li>
@@ -90,10 +91,11 @@ class Head extends React.PureComponent<RouteComponentProps & HeadProp  , HeadSta
 				</div>
 				
 				<div className="g-user-opt" >
-					<div style={{ padding: "20px 10px" }}>
+					<div style={{ padding: "20px 10px", }}>
+						<SvgIcon className="user"/>
 						<span >&nbsp;SEkin</span>
 					</div>
-					<ul className="m-sysOpt" style={{width:106}}>
+					<ul className="m-sysOpt" style={{width: 106,}}>
 						<li onClick={undefined}>
 							<span className="fa fa-power-off ">&nbsp;&nbsp;</span>
 							<span>退出系统</span>

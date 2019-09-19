@@ -19,6 +19,7 @@ type states={
     keyword:string;
 };
 interface ISearch {
+	closeSearch():void;
 }
 class Search extends React.PureComponent<props,states> implements ISearch{
     
@@ -84,32 +85,28 @@ class Search extends React.PureComponent<props,states> implements ISearch{
 		const { searching , keyword } = this.state;
 		const { tip ,width} = this.props;
 		const styleObj = width ? {width}:undefined;
+
 		return (
-		<div className="m-search" style={styleObj}>
-			<span className="m-inp-val" >
-				<input 
-					type="text" 
-                    className="s-inp normal" 
-                    value={keyword}
-                    placeholder={tip}
-                    onChange={this.changeFn}
+			<div className="m-search" style={styleObj}>
+				<input
+					type="text"
+					className="s-inp"
+					value={keyword}
+					placeholder={tip}
+					onChange={this.changeFn}
 					onKeyDown={this.keyPress}
 				/>
 				<VelocityComponent animation={searching ? "fadeIn" : "fadeOut"}>
-                    <span 
-                    className="m-search-close" 
-                    onClick={this.closeSearch}>
-                        <Icon className="fa-times fa-lga"/>
-                    </span>
+					<span
+						className="m-search-close"
+						onClick={this.closeSearch}>
+						<Icon className="fa-times " />
+					</span>
 				</VelocityComponent>
-			</span>
-            <button 
-            className="s-btn normal-btn primary" 
-            onClick={this.toggleSearch}
-            >
-                <Icon className="fa-search"/>
-			</button>
-		</div>
+				<span className="j-search-icon" onClick={this.toggleSearch}>
+					<Icon className="fa-search" />
+				</span>
+			</div>
 		);
 	}
 }

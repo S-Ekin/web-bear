@@ -19,12 +19,27 @@ const menuList =  [
 			id:"1",
 			name:"按钮类型",
 			url:"/button",
-			icon:"",
+			icon:"menu-button",
 			children:[
 				{
 					id:"1",
 					name:"普通按钮",
 					url:"/button",
+					icon:"",
+					children:[]
+				}
+			]
+		},
+		{
+			id:"2",
+			name:"列表类型",
+			url:"/table",
+			icon:"table",
+			children:[
+				{
+					id:"1",
+					name:"表格",
+					url:"/table",
 					icon:"",
 					children:[]
 				}
