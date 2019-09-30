@@ -4,11 +4,11 @@ import * as loadable from "react-loadable";
 
 const routerConfig={
 	button:{
-		loader: () => import( /*webpackChunkName: "button" */"../component/button/demo/demo"),
+		loader: () => import( /*webpackChunkName: "button" */"../component/button/demo/Demo"),
 		loading: () => <span>loading......</span>
 	},
 	table:{
-		loader: () => import( /*webpackChunkName: "table" */"../component/table/demo/demo"),
+		loader: () => import( /*webpackChunkName: "table" */"../component/table/demo/Demo"),
 		loading: () => <span>loading......</span>
 	}
 };

@@ -39,9 +39,7 @@ type report ={
     type_id: string;
 };
 class Demo extends React.PureComponent<Props,States> implements IDemo{
-    tableGetCheckedFn:IDemo["tableGetCheckedFn"] =function () {
-		return Immutable.List([]) 
-	};
+    
     column:IDemo["column"] = [
 			{
 				text: "事件编号",
@@ -106,6 +104,9 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
     state:States={
 		tableData:data,
 		selectTableVal:{id:""}
+	};
+	tableGetCheckedFn:IDemo["tableGetCheckedFn"] =function () {
+		return Immutable.List([]) 
 	};
 	bindgetTableSelecte=(fn:IDemo["tableGetCheckedFn"])=>{
 		this.tableGetCheckedFn = fn;

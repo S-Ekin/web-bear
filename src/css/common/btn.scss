@@ -9,6 +9,7 @@
 //$primary:green;
 $primary:#04a9f5;
 $green:green;
+$yellow:#e4d619;
 
 .s-btn {
   display: inline-block;
@@ -54,27 +55,20 @@ $green:green;
     color: $text-bg-color;
   }
 
-  &.primary {
-    background: $green;
+  $colorMap:(
+    primary:$primary,
+    danger:$error ,
+    green:$green ,
+    yellow:$yellow
+  );
 
-    &:hover {
-      background: lighten($green, 15%);
-    }
-  }
+  @each $key,$val in $colorMap {
+    &.#{$key} {
+      background: $val;
 
-  &.danger {
-    background: $error;
-
-    &:hover {
-      background: lighten($error, 15%);
-    }
-  }
-
-  &.green {
-    background: #00cc9f;
-
-    &:hover {
-      background: lighten(#00cc9f, 15%);
+      &:hover {
+        background: lighten($val, 15%);
+      }
     }
   }
 }
@@ -84,30 +78,45 @@ $green:green;
   border: 2px solid;
   background: none;
 
-  &.primary {
-    color: $primary;
-    border-color: $primary;
+  $colorMap:(
+    primary:$primary,
+    danger:$error ,
+    green:$green ,
+    yellow:$yellow
+  );
 
-    &:hover {
-      border-color: lighten($primary, 15%);
+  @each $key,$val in $colorMap {
+    &.#{$key} {
+      color: $val;
+      border-color: $val;
+
+      &:hover {
+        border-color: lighten($val, 15%);
+      }
     }
   }
+}
 
-  &.danger {
-    color: $error;
-    border-color: $error;
+//虚线按钮
+.dashed-btn {
+  border: 2px dashed;
+  background: none;
 
-    &:hover {
-      border-color: lighten($error, 15%);
-    }
-  }
+  $colorMap:(
+    primary:$primary,
+    danger:$error ,
+    green:$green ,
+    yellow:$yellow
+  );
 
-  &.green {
-    color: $green;
-    border-color: $green;
+  @each $key,$val in $colorMap {
+    &.#{$key} {
+      color: $val;
+      border-color: $val;
 
-    &:hover {
-      border-color: lighten($green, 15%);
+      &:hover {
+        border-color: lighten($val, 15%);
+      }
     }
   }
 }
@@ -137,46 +146,6 @@ $green:green;
   border-radius: inherit;
 }
 
-.s-dashBtn {
-  background: none;
-  color: $text-theme-color;
-  position: relative;
-
-  &::before {
-    @extend %position_1 ;
-
-    top: 0;
-    left: 0;
-    transition: border-color 0s ease-in 0.8s, width 0.2s ease-in 0.6s, height 0.2s ease-in 0.4s;
-  }
-
-  &::after {
-    @extend %position_1 ;
-
-    right: 0;
-    bottom: 0;
-    transition: border-color 0s ease-in 0.4s, width 0.2s ease-in 0.2s, height 0.2s ease-in;
-  }
-
-  &:hover {
-    &::before {
-      border-top-color: $text-theme-color;
-      border-right-color: $text-theme-color;
-      width: 100%;
-      height: 100%;
-      transition: border-color 0s ease-out 0s, width 0.2s ease-out 0s, height 0.2s ease-out 0.2s;
-    }
-
-    &::after {
-      border-bottom-color: $text-theme-color;
-      border-left-color: $text-theme-color;
-      width: 100%;
-      height: 100%;
-      transition: border-color 0s ease-out 0.4s, width 0.2s ease-out 0.4s, height 0.2s ease-out 0.6s;
-    }
-  }
-}
-
 /* 按钮组 */
 .m-optBtn {
   display: flex;
@@ -187,6 +156,47 @@ $green:green;
 
     &:last-child {
       margin-right: 0;
+    }
+  }
+}
+//下拉按钮组
+.g-group-btns {
+  position: relative;
+  z-index: 3;
+
+  .wrap-drop {
+    display: none;
+    position: absolute;
+    width: 100%;
+    padding-top: 10px;
+  }
+
+  .drop-group {
+    border-radius: 4px;
+    background: $page-bg;
+    box-shadow: $shadow;
+    padding: 8px;
+  }
+
+  .drop-item {
+    padding: 5px;
+    border-bottom: 2px solid $normal;
+    text-align: center;
+
+    &:last-child {
+      border: none;
+    }
+
+    cursor: pointer;
+
+    &:hover {
+      color: $theme-color;
+    }
+  }
+
+  &:hover {
+    .wrap-drop {
+      display: block;
     }
   }
 }

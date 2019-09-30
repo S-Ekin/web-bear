@@ -42,8 +42,13 @@
     }
   }
 
-  .g-table-container {
-    margin-top: 16px;
-    height: calc(100% - 80px);
+  .g-item-show {
+    box-shadow: $shadow;
+    margin: 20px 0;
+    padding: 20px;
+  }
+
+  .theme-txt {
+    margin: 10px;
   }
 }
