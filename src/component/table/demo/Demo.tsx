@@ -7,14 +7,18 @@ import * as React from "react";
 import data from "./data";
 import Table from "../index";
 import {Button} from "@component/button/index";
+import {Search} from "@component/input/index";
+import * as Immutable from "immutable";
 type Props={
 
 };
 type States={
-
+	tableData:any[];
+	selectTableVal:{id:string}
 };
 interface IDemo {
- column:MyTabSpace.columnItem[];
+  tableGetCheckedFn:()=>IImmutalbeList<IImmutalbeMap<any>>
+  column:MyTabSpace.columnItem[];
 }
 type report ={
     a_FASHENGSHIJIAN: string
@@ -35,7 +39,9 @@ type report ={
     type_id: string;
 };
 class Demo extends React.PureComponent<Props,States> implements IDemo{
-    
+    tableGetCheckedFn:IDemo["tableGetCheckedFn"] =function () {
+		return Immutable.List([]) 
+	};
     column:IDemo["column"] = [
 			{
 				text: "事件编号",
@@ -98,17 +104,69 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
 			},
 		];
     state:States={
+		tableData:data,
+		selectTableVal:{id:""}
+	};
+	bindgetTableSelecte=(fn:IDemo["tableGetCheckedFn"])=>{
+		this.tableGetCheckedFn = fn;
+	}	
+	getRandomData=()=>{
+		const leg = data.length;
+		const max = leg + 1 ;
+		const random =Math.floor(Math.random()*max);
 
-    };
+		this.setState({
+			tableData:data.slice(random)
+		});
+
+	}
+	selectVal=(keyWord:string,_field:string)=>{
+
+		this.setState({
+			selectTableVal:{
+				id:keyWord
+			}
+		});
+
+	}
+	clearData=()=>{
+		this.setState({
+			tableData:[]
+		})
+	}
+	getChecked=()=>{
+		const arr = this.tableGetCheckedFn();
+		console.log(arr);
+		
+	}
     render(){
+		const {tableData,selectTableVal} = this.state;
         return (
-            <Table
-                data={data} 
-                idField="event_id"
-                checkbox={true}
-                column={this.column}
-            />
-        )
+			<div className="g-layout">
+				<div className="g-layout-head">
+					<Button handle={this.getRandomData}>重新获取数据</Button>
+					<Button handle={this.clearData}>clear</Button>
+					<Button handle={this.getChecked}>获取选中的</Button>
+					<Search
+						searchHandle={this.selectVal}
+						field="eventId"
+						tip="搜索事件编号的后4位为id"
+						width={300}
+					/>
+				</div>
+				<div className="g-layout-article">
+					<Table
+						data={tableData}
+						idField="event_id"
+						checkbox={true}
+						column={this.column}
+						defaultSel="169"
+						initSelectVal={selectTableVal}
+						bindGetSelectedFn={this.bindgetTableSelecte}
+					/>
+				</div>
+			</div>
+		);
     }
 }
 

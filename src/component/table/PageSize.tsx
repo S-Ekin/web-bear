@@ -6,8 +6,10 @@
 
 import * as React from "react";
 import { Combobox } from "../combo/index";
+import { SvgIcon } from "../icon/index";
 
 type Props = {
+	perNums: number; //每页条数
 	curPage: number; //当前的页码
 	totalPages: number; //总页数
 	totalNums: Number; //总条数
@@ -176,9 +178,10 @@ class PageSize extends React.PureComponent<Props, States> implements IPageSize {
 	}
 	perNumComboClick = (selectedArr: any[]) => {
 		this.props.changeHandle<"perNums">("perNums", +selectedArr[0].text);
+		this.props.changeHandle<"curPage">("curPage", 1);
 	}
 	render() {
-		const { totalPages, curPage, totalNums } = this.props;
+		const { totalPages, curPage, totalNums ,perNums} = this.props;
 		let navigatepageCom;
 
 		if (totalPages < 11) {
@@ -190,7 +193,7 @@ class PageSize extends React.PureComponent<Props, States> implements IPageSize {
 		} else {
 			navigatepageCom = this.centerPage();
 		}
-
+		const perNumId = pageNumsArr.find(val=>~~val.text === perNums)!.id;
 		return (
 			<div className="g-pageCode">
 				<div className="g-pageLeft">
@@ -207,7 +210,7 @@ class PageSize extends React.PureComponent<Props, States> implements IPageSize {
 							width={100}
 							directionUp={true}
 							clickCallback={this.perNumComboClick}
-							defaultVal="2"
+							defaultVal={perNumId}
 						/>
 						<span>&nbsp;条</span>
 					</div>
@@ -230,14 +233,15 @@ class PageSize extends React.PureComponent<Props, States> implements IPageSize {
 							className="m-page-num"
 							data-type="pre"
 							onClick={this.controlBtnHandle}>
-							<i className="fa fa-chevron-left "/>
+							<SvgIcon className="arrow-left-square" size="middle" />
 						</span>
 						<span>{navigatepageCom}</span>
 						<span
 							className="m-page-num"
 							onClick={this.controlBtnHandle}
 							data-type="next">
-							<i className="fa fa-chevron-right "/>
+							<SvgIcon className="arrow-right-square" size="middle"/>
+
 						</span>
 					</div>
 				</div>

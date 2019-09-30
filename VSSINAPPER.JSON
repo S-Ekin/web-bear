@@ -1,0 +1,73 @@
+
+{
+	"页面初始化的组件": {
+		"prefix": "rc",
+		"body": [
+				"/**",
+				" * @name name",
+				" * @description description",
+				" * @time ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+				" */",
+				"import * as React from \"react\";",
+				"\n",
+				"type Props={",
+				"$6",
+				"};",
+				"type States={",
+				"$2",
+				"};",
+				"interface I${TM_FILENAME_BASE} {",
+				"$9",
+				"}",
+				"class ${TM_FILENAME_BASE} extends React.PureComponent<Props,States> implements I${TM_FILENAME_BASE}{",
+				"\n",
+				"\tstate:States={",
+				"$3",
+				"\t};",
+				"\trender(){",
+				"\t\tconst {$5} = this.props;",
+				"$8",
+				"\t\treturn \"${TM_FILENAME_BASE}\";",
+				"\t}",
+				"}",
+				"\n",
+				"export default ${TM_FILENAME_BASE};"
+			],
+			"description": "组件的初始化生成"
+		},
+		"方法注释": {
+			"prefix": "zs",
+			"body": [
+				"/**",
+				" * @name name...",
+				" * @description description...",
+				" */",
+				"$0"
+			],
+			"description": "组件描述"
+		},
+		"属性": {
+			"prefix": "pro",
+			"body": [
+				"const {$1} = this.props;"
+			],
+			"description": "组件描述"
+		},
+		"immutable": {
+			"prefix": "imm",
+			"body": [
+				"import * as Immutable from \"immutable\";"
+			],
+			"description": ""
+		},
+		"点击事件": {
+			"prefix": "ec",
+			"body": [
+				"clickFn=(e:React.MouseEvent<HTMLDivElement>)=>{",
+				"\tconst dom = e.currentTarget!;",
+				"\tconst $1 = dom.dataset.$1!;",
+				"}",
+			],
+			"description": ""
+		},
+	}

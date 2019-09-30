@@ -5,10 +5,10 @@
  */
 import * as React from "react";
 import { VelocityComponent } from "velocity-react";
-import {Icon} from "../icon/index";
+import {SvgIcon} from "../icon/index";
 
 type props={
-    searchHandle: (keyword: string,field?:string) => void;
+    searchHandle: (keyword: string,field:string) => void;
 	closeHandle?: (field?:string) => void;
 	tip?: string;
 	width?:number;
@@ -100,11 +100,11 @@ class Search extends React.PureComponent<props,states> implements ISearch{
 					<span
 						className="m-search-close"
 						onClick={this.closeSearch}>
-						<Icon className="fa-times " />
+						<SvgIcon className="fa-times " />
 					</span>
 				</VelocityComponent>
 				<span className="j-search-icon" onClick={this.toggleSearch}>
-					<Icon className="fa-search" />
+					<SvgIcon className="search" size="middle" />
 				</span>
 			</div>
 		);

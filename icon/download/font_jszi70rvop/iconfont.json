@@ -228,6 +228,20 @@
       "font_class": "role",
       "unicode": "e63a",
       "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "43798464",
+      "name": "arrow-left-square",
+      "font_class": "arrow-left-square",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "43798465",
+      "name": "arrow-right-square",
+      "font_class": "arrow-right-square",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
     }
   ]
 }

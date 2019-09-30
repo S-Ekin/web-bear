@@ -29,7 +29,8 @@ declare namespace MyTabSpace {
 		perNums: number; //每页条数
 		curPage: number; //当前页数
 		tableData: IImmutalbeList<IImmutalbeMap<any>>;
-		curPageCheckAll: "hasCheck" | "noChecked" | "checked";
+		preData:any[];
+		preInitSelectVal?:{id:string};
 	}
 	export interface tableFn {
 		changeState<P extends keyof tableStates>(
