@@ -73,7 +73,6 @@ $inp-h:2em;
     background: white;
     box-shadow: $shadow;
     z-index: 6;
-    margin-top: 6px;
     left: -6px;
     cursor: pointer;
 
@@ -107,6 +106,7 @@ $inp-h:2em;
       border: 1px solid;
       padding: 4px 6px;
       cursor: pointer;
+      display: block;
     }
 
     .m-timeSel {

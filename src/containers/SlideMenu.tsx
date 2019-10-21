@@ -14,38 +14,53 @@ type SlideMenuState = {
 
 };
 
-const menuList =  [
-		{
-			id:"1",
-			name:"按钮类型",
-			url:"/button",
-			icon:"menu-button",
-			children:[
-				{
-					id:"1",
-					name:"普通按钮",
-					url:"/button",
-					icon:"",
-					children:[]
-				}
-			]
-		},
-		{
-			id:"2",
-			name:"列表类型",
-			url:"/table",
-			icon:"table",
-			children:[
-				{
-					id:"1",
-					name:"表格",
-					url:"/table",
-					icon:"",
-					children:[]
-				}
-			]
-		}
-	] as any;
+const menuList = [
+	{
+		id: "10",
+		name: "按钮类型",
+		url: "/button",
+		icon: "menu-button",
+		children: [
+			{
+				id: "11",
+				name: "普通按钮",
+				url: "/button",
+				icon: "",
+				children: [],
+			},
+		],
+	},
+	{
+		id: "20",
+		name: "列表类型",
+		url: "/table",
+		icon: "table",
+		children: [
+			{
+				id: "21",
+				name: "表格",
+				url: "/table",
+				icon: "",
+				children: [],
+			},
+		],
+	},
+	{
+		id: "30",
+		name: "日历",
+		url: "/calenar",
+		icon: "calendar",
+		children: [
+			{
+				id: "31",
+				name: "日历",
+				url: "/calendar",
+				icon: "",
+				children: [],
+			},
+		],
+	},
+] as any;
 
 class SlideMenu extends React.PureComponent<SlideMenuProp , SlideMenuState>{
 
