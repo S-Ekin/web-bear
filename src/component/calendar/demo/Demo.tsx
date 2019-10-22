@@ -12,7 +12,7 @@ type States={
 
 };
 interface IDemo {
-
+    click():void;
 }
 class Demo extends React.PureComponent<Props,States> implements IDemo{
 
@@ -28,11 +28,27 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
         const {} = this.props;
 
         return (
-        <Calendar
-                    field="time"
-                    clickBack={this.click}
-                />
-                );
+			<div className="g-layout">
+				<div className="g-layout-head">
+                    日历样式
+                </div>
+				<div className="g-layout-article">
+                    <div className="item">
+                        <Calendar
+                            field="time-single"
+                            clickBack={this.click}
+                        />
+                    </div>
+                     <div className="item">
+                        <Calendar
+                            field="time-single"
+                            clickBack={this.click}
+                            style={2}
+                        />
+                    </div>
+                </div>
+			</div>
+		);
     }
 }
 

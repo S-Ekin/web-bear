@@ -4,6 +4,8 @@
 		expand: boolean;
 		selTimeArr: IImmutalbeList<commonInterface["showTimeObj"]>;
 		calendarVal: string;
+		rotate:commonInterface["rotate"];
+		showViewArr: ("fadeIn" | "fadeOut")[];
 	}
 
 	export interface commonInterface {
@@ -23,7 +25,6 @@
     export interface fixProps{
 		style:1|2;
 		time:boolean;
-		rotate:commonInterface["rotate"];
 		noChangeRotate:boolean;
 	}
 

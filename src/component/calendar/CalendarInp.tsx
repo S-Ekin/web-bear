@@ -6,6 +6,7 @@
 import * as React from "react";
 import {VelocityComponent} from "velocity-react";
 import * as Immutable from "immutable";
+import {SvgIcon} from "../icon/index";
 type Props={
     inpVal: string;
 	placeholder: string;
@@ -67,7 +68,7 @@ class CalendarInp extends React.PureComponent<
 		return (
 			<div className="m-clalendar-inpBox" onClick={this.toggleDrop}>
 				<span className="calendar-inp-icon">
-					<i className="fa fa-calendar">&nbsp;</i>
+					<SvgIcon className="calendar"/>
 				</span>
 				<input
 					className="s-inp calendar-inpTxt"

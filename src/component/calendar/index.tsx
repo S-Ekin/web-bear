@@ -43,6 +43,7 @@ interface ICalendar {
 	fixProps:fixProps;
 	changeBasicState:commonInterface["changeBasicState"];
 	createFixProps():fixProps;
+	getShowViewArr(rotate:commonInterface["rotate"]):States["showViewArr"];
 }
 
 class Calendar extends React.PureComponent<Props, States>
@@ -50,13 +51,9 @@ class Calendar extends React.PureComponent<Props, States>
 	static defaultProps = {
 		rotate: calendarType.day,
 		style: 1,
-		time: false,
-		hasInp: true,
-		selTimeValArr: "",
-		width: 240,
+		defaultTime: "",
+		width: 280,
 		placeholder: "",
-		ableClear: false,
-		initCallback: true,
 	};
 
 	curTime = this.getCurTime();
@@ -81,6 +78,8 @@ class Calendar extends React.PureComponent<Props, States>
 			expand: false,
 			selTimeArr,
 			calendarVal: timeVal.join(" 至 "),
+			rotate:rotate!,
+			showViewArr:this.getShowViewArr(rotate!)
 		};
 
 		const val = this.timeToNumber(timeVal.toJS());
@@ -88,24 +87,40 @@ class Calendar extends React.PureComponent<Props, States>
 			clickBack(val, field, rotate!);
 		}
 	}
+	getShowViewArr(rotate:commonInterface["rotate"]){
+
+		let animationArr = new Array(5).fill("fadeOut");
+		animationArr[rotate] = "fadeIn";
+		return animationArr;
+	}
 	//改变基本类型的state
 	changeBasicState=<K extends keyof States>(key:K,callback:(states:States)=>States[K])=>{
 
 		this.setState(pre=>{
 
 			const val = callback(pre) as any;
+			let calendarVal = pre.calendarVal ;
+			let showViewArr = pre.showViewArr ;
+			const {time} = this.props;
+			if(key === "selTimeArr"){
+				calendarVal = this.getInpTimeStrArr(val,pre.rotate,time!).join(" 至 ");
+			}else if(key === "rotate"){
+				calendarVal = this.getInpTimeStrArr(pre.selTimeArr,val,time!).join(" 至 ");
+				showViewArr = this.getShowViewArr(val);
+			}
 			return {
-				[key as "expand"]:val 
+				[key as "expand"]:val,
+				calendarVal,
+				showViewArr,
 			};
 		});
 	}
 	
 	createFixProps(){
-		const {style,time,noChangeRotate,rotate} = this.props;
+		const {style,time,noChangeRotate} = this.props;
 		const obj = {
 			style:style!,
 			time:time!,
-			rotate:rotate!,
 			noChangeRotate:noChangeRotate!
 		};
 		return obj;
@@ -294,7 +309,7 @@ class Calendar extends React.PureComponent<Props, States>
 					}
 					return `${year}-${month}-${day}${timeStr}`;
 				case calendarType.searson:
-					const searson= `${val.get("searson")}`.padStart(2, "0");
+					const searson= `${val.get("searson")}`;
 					return `${year}-S${searson}`;
 				case calendarType.year:
 					return `${year}`;
@@ -340,7 +355,7 @@ class Calendar extends React.PureComponent<Props, States>
 			ableClear,
 			style,
 		} = this.props;
-		const { expand, selTimeArr, calendarVal } = this.state;
+		const { expand, selTimeArr, calendarVal ,rotate,showViewArr} = this.state;
 
 		const inpCom = noInp ? undefined : (
 					<CalendarInp
@@ -359,6 +374,8 @@ class Calendar extends React.PureComponent<Props, States>
 					selTimeObj={selTimeArr.get(1)!}
 					curTime={this.curTime}
 					viewIndex={1}
+					showViewArr={showViewArr}
+					rotate={rotate}
 					changeBasicState={this.changeBasicState}
 				/>
 			) : (
@@ -379,7 +396,9 @@ class Calendar extends React.PureComponent<Props, States>
 							<CalendarView
 								fixProps={this.fixProps}
 								selTimeObj={selTimeArr.get(0)!}
+								showViewArr={showViewArr}
 								curTime={this.curTime}
+								rotate={rotate}
 								viewIndex={0}
 								changeBasicState={this.changeBasicState}
 							/>
