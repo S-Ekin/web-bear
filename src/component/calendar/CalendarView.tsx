@@ -168,8 +168,17 @@ export default class CalendarView
 				showTimeObj: pre.showTimeObj.set(type, num),
 			};
 		},()=>{
-			
+			const {rotate,showViewArr,changeBasicState} = this.props;
 			this.changeSelTimeItme(viewIndex);
+			//判断当前选的频率是不是和面板显示的频率一样
+			const panelRotate = showViewArr.findIndex(val=>val==="fadeIn");
+			if(rotate !== panelRotate){
+				changeBasicState<"showViewArr">("showViewArr",function(){
+					let animationArr: CalendarSpace.CalendarStates["showViewArr"] = new Array(5).fill("fadeOut");
+					 animationArr[rotate] = "fadeIn";
+					return animationArr; 
+				});
+			}
 		});
 	}
 
@@ -205,10 +214,13 @@ export default class CalendarView
 
 	changeView = (e: React.MouseEvent<HTMLSpanElement>) => {
 		const type = e.currentTarget.dataset.sign as ("year" | "month");
-		let animationArr:any = new Array(5).fill("fadeOut");
+		let animationArr:CalendarSpace.CalendarStates["showViewArr"] = new Array(5).fill("fadeOut");
 			animationArr[calendarType[type]] = "fadeIn";
 
-		this.props.changeBasicState<"showViewArr">("showViewArr",animationArr);
+		this.props.changeBasicState<"showViewArr">("showViewArr",function(){
+
+			return animationArr;
+		});
 
 		
 	}

@@ -1,77 +1,89 @@
+/**
+ * @name name
+ * @description description
+ * @time 2019-10-22
+ */
 import * as React from "react";
 
+
+interface ICalendarYearView {
+getYearArr():JSX.Element[];
+}
 
 type commonInterface = CalendarSpace.commonInterface;
 
 
-type CalendarYearViewProp = {
+type Props = {
 	curTime: commonInterface["curTime"];
 	showTimeObj: commonInterface["showTimeObj"];
 	selTimeObj: commonInterface["showTimeObj"];
 	clickSelHandle: (e: React.MouseEvent<HTMLElement>) => void;
 	rotate: commonInterface["rotate"];
 	lastYear: number;
-}
+};
 
-type CalendarYearViewState = {
+type States = {
 
+};
 
+export default class CalendarYearView extends React.PureComponent<Props, States> implements ICalendarYearView  {
 
-}
-
-
-interface CalendarYearViewApi {
-
-}
-
-
-
-export default class CalendarYearView extends React.PureComponent<CalendarYearViewProp, CalendarYearViewState> implements CalendarYearViewApi {
-
-
-
-	render() {
-
-
-
+	getYearArr(){
 		const { curTime: { year }, selTimeObj, clickSelHandle, lastYear } = this.props;
 		const selYear = selTimeObj.get("year");
 
 		let startTime = lastYear - 10;
 
-		const yearToday = year === lastYear && "calendar-today" || "";
-		const yearsel = selYear === lastYear && "calendar-sel" || "";
+		return  Array.from({ length: 3 }, (...args) => (args[1] + 1)).map(row => {
 
-		return (<div className="m-yearView item-calendar-view">
-			{
-				Array.from({ length: 3 }, (...args) => (args[1] + 1)).map(row => {
-
-
-					return (
-
-						<ul className="year-group" key={row} >
-							{
-								Array.from({ length: 3 }, (...args) => (args[1] + 1)).map(() => {
+					const item = Array.from({ length: 3 }, (...args) => (args[1] + 1)).map(() => {
 
 									const num = ++startTime;
 
 									const yearToday = year === num && "calendar-today" || "";
 									const yearsel = selYear === num && "calendar-sel" || "";
+									const className = "view-item " + yearToday + " " + yearsel;
+									return (
+										<li
+											data-num={num}
+											key={num}
+											data-sign="year"
+											className={className}
+											onClick={(!yearsel && clickSelHandle) || undefined}>
+											<span className="year-span">
+												{num}
+											</span>
+										</li>
+									);
+								});
+					return (
 
-									return (<li data-num={num} key={num} data-sign="year" className={"view-item " + yearToday + " " + yearsel} onClick={!yearsel && clickSelHandle || undefined}>
-										<span className="year-span">{num}</span>
-									</li>)
-								})
-							}
-
+						<ul className="year-group" key={row} >
+							{item}
 						</ul>
-					)
-				})
-			}
-			<div data-num={lastYear} data-sign="year" onClick={clickSelHandle} className={"last-year view-item " + yearToday + yearsel}>
-				<span className="year-span">{lastYear}</span>
+					);
+				});
+	}
+	render() {
+
+		const { curTime: { year }, selTimeObj, clickSelHandle, lastYear } = this.props;
+		const selYear = selTimeObj.get("year");
+
+		const yearToday = year === lastYear && "calendar-today" || "";
+		const yearsel = selYear === lastYear && "calendar-sel" || "";
+
+		return (
+			<div className="m-yearView item-calendar-view">
+				{this.getYearArr()}
+				<div
+					data-num={lastYear}
+					data-sign="year"
+					onClick={clickSelHandle}
+					className={"last-year view-item " + yearToday + yearsel}>
+					<span className="year-span">{lastYear}</span>
+				</div>
 			</div>
-		</div>)
+		);
 
 	}
 }

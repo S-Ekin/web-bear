@@ -89,30 +89,51 @@ class Calendar extends React.PureComponent<Props, States>
 	}
 	getShowViewArr(rotate:commonInterface["rotate"]){
 
-		let animationArr = new Array(5).fill("fadeOut");
+		let animationArr:States["showViewArr"] = new Array(5).fill("fadeOut");
 		animationArr[rotate] = "fadeIn";
 		return animationArr;
 	}
 	//改变基本类型的state
-	changeBasicState=<K extends keyof States>(key:K,callback:(states:States)=>States[K])=>{
+	changeBasicState=<K extends keyof States>(
+		key:K,
+		callback:(states:States)=>States[K]
+		)=>{
 
 		this.setState(pre=>{
 
-			const val = callback(pre) as any;
-			let calendarVal = pre.calendarVal ;
-			let showViewArr = pre.showViewArr ;
+			const val = callback(pre) as any ;
+			let obj:any = {};
 			const {time} = this.props;
 			if(key === "selTimeArr"){
-				calendarVal = this.getInpTimeStrArr(val,pre.rotate,time!).join(" 至 ");
+				const rotate = pre.rotate;
+				const calendarVal = this.getInpTimeStrArr(val,rotate,time!).join(" 至 ");
+				
+				obj = {
+					selTimeArr:val,
+					calendarVal ,
+				};
 			}else if(key === "rotate"){
-				calendarVal = this.getInpTimeStrArr(pre.selTimeArr,val,time!).join(" 至 ");
-				showViewArr = this.getShowViewArr(val);
+				const selTimeArr = pre.selTimeArr;
+				const calendarVal = this.getInpTimeStrArr(selTimeArr,val,time!).join(" 至 ");
+				const showViewArr = this.getShowViewArr(val);
+				obj= {
+					calendarVal ,
+					showViewArr,
+					rotate:val,
+				};
+			}else if(key==="showViewArr"){
+				obj ={
+					showViewArr:val,
+				};
+
+			}else{
+				obj= {
+					[key as "expand"]:val,
+				};
 			}
-			return {
-				[key as "expand"]:val,
-				calendarVal,
-				showViewArr,
-			};
+
+			return obj;
+			
 		});
 	}
 	
