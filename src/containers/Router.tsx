@@ -24,6 +24,13 @@ const routerConfig = {
 			),
 		loading: () => <span>loading......</span>,
 	},
+	bintree: {
+		loader: () =>
+			import(
+				/*webpackChunkName: "bintree" */ "../blog/bintree/Demo"
+			),
+		loading: () => <span>loading......</span>,
+	},
 };
 
 class MainRouter extends React.PureComponent{
@@ -33,6 +40,7 @@ class MainRouter extends React.PureComponent{
 				<Route path="/button" component={loadable(routerConfig.button)} />
 				<Route path="/table" component={loadable(routerConfig.table)} />
 				<Route path="/calendar" component={loadable(routerConfig.calendar)} />
+				<Route path="/bintree" component={loadable(routerConfig.bintree)} />
 				<div id="s-modal"/>
 			</>
 			);

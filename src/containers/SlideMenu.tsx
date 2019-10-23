@@ -60,6 +60,21 @@ const menuList = [
 			},
 		],
 	},
+	{
+		id: "40",
+		name: "数据结构",
+		url: "/dataType",
+		icon: "dataType",
+		children: [
+			{
+				id: "41",
+				name: "二叉树",
+				url: "/bintree",
+				icon: "",
+				children: [],
+			},
+		],
+	},
 ] as any;
 
 class SlideMenu extends React.PureComponent<SlideMenuProp , SlideMenuState>{

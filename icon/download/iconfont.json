@@ -242,6 +242,41 @@
       "font_class": "arrow-right-square",
       "unicode": "e63c",
       "unicode_decimal": 58940
+    },
+    {
+      "icon_id": "44715330",
+      "name": "dataType",
+      "font_class": "dataType",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    },
+    {
+      "icon_id": "44715486",
+      "name": "arrow-next",
+      "font_class": "arrow-next",
+      "unicode": "e63f",
+      "unicode_decimal": 58943
+    },
+    {
+      "icon_id": "44715590",
+      "name": "arrow-pre",
+      "font_class": "arrow-pre",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "44715643",
+      "name": "calendar2",
+      "font_class": "calendar1",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "44715691",
+      "name": "bin-tree",
+      "font_class": "bin-tree",
+      "unicode": "e641",
+      "unicode_decimal": 58945
     }
   ]
 }
