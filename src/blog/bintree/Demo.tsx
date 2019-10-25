@@ -21,9 +21,14 @@ const data = [
     {val:11,jk:3},
     {val:12,jk:3},
 ];
+type treeVal = {val:number;jk:number}
+const tree = new BinTree<treeVal>(data);
 
-const tree = new BinTree<{val:number;jk:number}>(data);
 console.log(tree);
+let arrContainer:treeVal[] = [];
+let arrContainer1:treeVal[] = [];
+console.log(tree.preOrderTraversal(tree.root,arrContainer));
+console.log(tree.inOrderTraversal(tree.root,arrContainer1));
 
 type Props={
 

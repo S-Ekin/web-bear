@@ -64,6 +64,28 @@ class BinTree<T>  implements IBinTree<T>{
             right:undefined,
         };
     }
+    //中序遍历 左 - 节点 - 右
+    inOrderTraversal(node:ITreeNode|undefined,arrContainer:T[]){
+
+        if(node){
+            this.inOrderTraversal(node.left,arrContainer);
+            arrContainer.push(node.val);
+            this.inOrderTraversal(node.right,arrContainer);
+        }
+
+        return arrContainer;
+    }
+    //先序遍历 节点 - 左 - 右
+    preOrderTraversal(node:ITreeNode|undefined,arrContainer:T[]){
+
+        if(node){
+            arrContainer.push(node.val);
+            this.preOrderTraversal(node.left,arrContainer);
+            this.preOrderTraversal(node.right,arrContainer);
+        }
+
+        return arrContainer;
+    }
 }
 
 
