@@ -23,11 +23,11 @@ type Props = {
 	width?: number;
 	placeholder?: string;
 	ableClear?: boolean;
-	initTime?: boolean;//初始化时间
+	initTime?:{time:string};//初始化时间
 	renderCallBack?: boolean;//初始化时，调用点击的回调函数
 	noChangeRotate?: boolean;//不能改变频率
 	clickBack: (
-		timeObj: any[],
+		timeObj: string[],
 		field: string,
 		rotate: commonInterface["rotate"]
 	) => void;

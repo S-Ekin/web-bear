@@ -349,7 +349,7 @@ export default class CalendarView
 							onClick={this.controlBtnHandle}
 							data-sign="back"
 							data-curviewindex={curViewInde}>
-								<SvgIcon className="arrow-left-square"/>
+								<SvgIcon className="arrow-pre"/>
 							<i className="fa fa-backward" />
 						</button>
 						<button
@@ -357,7 +357,7 @@ export default class CalendarView
 							onClick={this.controlBtnHandle}
 							data-sign="next"
 							data-curviewindex={curViewInde}>
-								<SvgIcon className="arrow-right-square"/>
+								<SvgIcon className="arrow-next"/>
 						</button>
 					</div>
 				</div>

@@ -27,7 +27,8 @@ module.exports = env => {
 					test: /\.tsx?$/,
 					use: [
 						{
-							loader: "ts-loader"
+				//			loader: "ts-loader"
+							loader: "babel-loader"
 						}
 					]
 				},

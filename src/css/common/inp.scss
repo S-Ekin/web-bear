@@ -120,6 +120,10 @@ $inp-border-color:$border-color;
   padding: 0 6px;
 }
 
+.inp-item {
+  margin: 16px 0;
+}
+
 /* radio */
 .m-radio {
   @extend %inpbox;

@@ -27,7 +27,7 @@
     "no-empty-interface": true,
     "no-parameter-reassignment": true,
     "prefer-for-of": true,
-
+    "no-namespace": true,
     "await-promise": true,
     "curly": true,
     "forin": true,
