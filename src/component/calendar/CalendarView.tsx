@@ -326,8 +326,9 @@ export default class CalendarView
 		duration[curViewInde] = 300;
 
 		const arr = ["年", "季", "月","日"];
+		const secondViewName = viewIndex === 1 ? "calendar-view2" :"";
 		return (
-			<div className="g-calendar-view">
+			<div className={`${secondViewName } g-calendar-view`}>
 				<div className="m-viewOpt">
 					<div
 						style={{ position: "relative",}}

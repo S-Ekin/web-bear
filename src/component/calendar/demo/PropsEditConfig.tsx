@@ -5,7 +5,6 @@
  */
 import * as React from "react";
 import {Input,CheckBox} from "../../input/index";
-import {Button} from "../../button/index";
 
 type Props={
     obj:{
@@ -22,34 +21,39 @@ type Props={
         renderCallBack: boolean;//初始化时，调用点击的回调函数
         noChangeRotate: boolean;//不能改变频率
         clickBack: (
-            timeObj: any[],
+            timeStr: string,
             field: string,
-            rotate: CalendarSpace.commonInterface["rotate"]
+			rotate: CalendarSpace.commonInterface["rotate"],
+			selTimeList:CalendarSpace.CalendarStates["selTimeArr"]
+			
         ) => void;
     }
-   
+changeState<K extends keyof Props["obj"]>(key:K,val: Props["obj"][K]):void;
 };
 type States={
 
 };
 interface IPropsEditConfig {
-
+ inpChangeFn(e:React.ChangeEvent<HTMLInputElement>):void;
 }
 
-const styleObj ={padding: 20, border: "1px solid", display: "flex",};
 
 class PropsEditConfig extends React.PureComponent<Props,States> implements IPropsEditConfig{
-
 
     state:States={
 
     };
     inpChangeFn=(e:React.ChangeEvent<HTMLInputElement>)=>{
         const dom = e.currentTarget;
-        const field = dom.name;
-        console.log(field);
-        
+		const field = dom.name as keyof Props["obj"];
+		let value:any = dom.value;
+		if(field === "rotate"){
+			value = ~~value;	
+		}else if(["time","noInp","ableClear","noChangeRotate","renderCallBack"].includes(field)){
 
+			value = value === "1" ? true :false ;
+		}
+		this.props.changeState(field,value);
     }
     render(){
         const {obj:{
@@ -62,36 +66,32 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
             width,
             placeholder,
             ableClear,
-            initTime,
             renderCallBack,
             noChangeRotate,
-            clickBack,
         }} = this.props;
         
         return (
-			<div style={styleObj}>
+			<div className="g-propsEdit">
 				<div>
 					<div className="inp-item">
-						<p>标识字段</p>
 						<Input
 							name="field"
 							changeFn={this.inpChangeFn}
 							value={field}>
-							field：
+							标识字段 field：
 						</Input>
 					</div>
 					<div className="inp-item">
-						<p>宽度</p>
 						<Input
 							name="width"
 							changeFn={this.inpChangeFn}
 							type="number"
 							value={`${width}`}>
-							width：
+							宽度 width：
 						</Input>
 					</div>
 					<div className="inp-item">
-						<span>频率：</span>
+						<span>频率 rotate：</span>
 						<CheckBox
 							name="rotate"
 							value="1"
@@ -126,7 +126,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 						</CheckBox>
 					</div>
 					<div className="inp-item">
-						<span>样式：</span>
+						<span>样式 style：</span>
 						<CheckBox
 							name="style"
 							value="1"
@@ -145,7 +145,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 						</CheckBox>
 					</div>
 					<div className="inp-item">
-						<span>显示时间：</span>
+						<span>显示时间 time：</span>
 						<CheckBox
 							name="time"
 							value="1"
@@ -164,16 +164,15 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 						</CheckBox>
 					</div>
 					<div className="inp-item">
-						<p>默认时间：</p>
 						<Input
 							name="defaultTime"
 							changeFn={this.inpChangeFn}
 							value={defaultTime}>
-							defaultTime：
+							默认时间 defaultTime：
 						</Input>
 					</div>
 					<div className="inp-item">
-						<span>隐藏日期框：</span>
+						<span>隐藏日期框 noInp：</span>
 						<CheckBox
 							name="noInp"
 							value="1"
@@ -192,26 +191,16 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 				</div>
 				<div>
 					<div className="inp-item">
-						<p>提示语</p>
 						<Input
 							name="placeholder"
 							changeFn={this.inpChangeFn}
 							value={placeholder}>
-							placeholder：
+							提示语 placeholder：
 						</Input>
 					</div>
+					
 					<div className="inp-item">
-						<p>外部初始化日历时间</p>
-						<Input
-							name="initTime"
-							changeFn={this.inpChangeFn}
-							value={initTime.time}>
-							initTime：
-						</Input>
-					</div>
-					<div className="inp-item">
-						<p>能清空：</p>
-						<span>ableClear：</span>
+						<span>能清空 ableClear：</span>
 						<CheckBox
 							name="ableClear"
 							value="1"
@@ -230,8 +219,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 						</CheckBox>
 					</div>
 					<div className="inp-item">
-						<p>不能改变频率：</p>
-						<span>noChangeRotate：</span>
+						<span>不能改变频率 noChangeRotate：</span>
 						<CheckBox
 							name="noChangeRotate"
 							value="1"
@@ -250,8 +238,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 						</CheckBox>
 					</div>
 					<div className="inp-item">
-						<p>初始组件是调用点击函数：</p>
-						<span>renderCallBack：</span>
+						<span>初始组件是调用点击函数 renderCallBack：</span>
 						<CheckBox
 							name="renderCallBack"
 							value="1"
@@ -261,7 +248,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 							是
 						</CheckBox>
 						<CheckBox
-							name="ableClear"
+							name="renderCallBack"
 							value="0"
 							type="radio"
 							checked={!renderCallBack}
@@ -270,8 +257,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 						</CheckBox>
 					</div>
                     <div className="inp-item" style={{width: 300,}}>
-						<p>点击函数：</p>
-						<span>clickBack</span>
+						<span>点击函数：clickBack</span>
                         <code >
                             function clickBack( 
                                 timeArr,
@@ -280,9 +266,6 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
                         </code>
 					</div>
 				</div>
-                <div>
-                    <Button>提交</Button>
-                </div>
 			</div>
 		);
     }

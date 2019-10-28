@@ -35,14 +35,15 @@ class Input extends React.PureComponent<props,states> implements IInput{
         return lab ;
     }
     render(){
-        const {value,name,dataSet,styleName,changeFn} = this.props;
+        const {value,name,dataSet,styleName,changeFn,type} = this.props;
         return (
 			<label className="g-inp-lab">
 				{this.getInpTit()}
 				<input
 					value={value}
 					className={`s-inp ${styleName}`}
-					name={name}
+                    name={name}
+                    type={type}
 					data-set={dataSet}
 					onChange={changeFn}
 				/>

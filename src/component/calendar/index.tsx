@@ -27,9 +27,10 @@ type Props = {
 	renderCallBack?: boolean;//初始化时，调用点击的回调函数
 	noChangeRotate?: boolean;//不能改变频率
 	clickBack: (
-		timeObj: string[],
+		timeStr: string,
 		field: string,
-		rotate: commonInterface["rotate"]
+		rotate: commonInterface["rotate"],
+		selTimeList:CalendarSpace.CalendarStates["selTimeArr"]
 	) => void;
 };
 
@@ -82,9 +83,8 @@ class Calendar extends React.PureComponent<Props, States>
 			showViewArr:this.getShowViewArr(rotate!)
 		};
 
-		const val = this.timeToNumber(timeVal.toJS());
 		if(renderCallBack){
-			clickBack(val, field, rotate!);
+			clickBack(this.state.calendarVal, field, rotate!,selTimeArr);
 		}
 	}
 	getShowViewArr(rotate:commonInterface["rotate"]){
@@ -134,6 +134,13 @@ class Calendar extends React.PureComponent<Props, States>
 
 			return obj;
 			
+		},()=>{
+			if(["rotate","selTimeArr"].includes(key)){
+				const {field,clickBack} = this.props;	
+				const {rotate,calendarVal,selTimeArr} = this.state;	
+				clickBack(calendarVal,field,rotate,selTimeArr);
+			}
+			
 		});
 	}
 	
@@ -160,8 +167,10 @@ class Calendar extends React.PureComponent<Props, States>
 				ableClear,
 				renderCallBack,
 			} = nextProps;
+
+			const objProps =nextProps.initTime? Object.assign({},nextProps,{defaultTime:nextProps.initTime.time}) :nextProps;
 			const selTimeArr = Immutable.fromJS(
-				this.timeStrValToTimeObjArr(ableClear!, nextProps)
+				this.timeStrValToTimeObjArr(ableClear!,objProps)
 			);
 			
 			//重置状态
@@ -170,12 +179,11 @@ class Calendar extends React.PureComponent<Props, States>
 				expand: false,
 				selTimeArr,
 				calendarVal: timeVal.join(" 至 "),
+			},()=>{
+				if(renderCallBack){
+					clickBack(selTimeArr,field,rotate!,selTimeArr);
+				}	
 			});
-
-			if(renderCallBack){
-				clickBack(selTimeArr,field,rotate!);
-			}	
-		
 		}
 	}
 	documentClickFn = (e: MouseEvent) => {
@@ -305,7 +313,7 @@ class Calendar extends React.PureComponent<Props, States>
 		selTimeArr: States["selTimeArr"],
 		rotate:commonInterface["rotate"],
 		time: boolean
-	) {
+	):string[] {
 		const getStr = (
 			val: commonInterface["showTimeObj"],
 			rotate: number,
@@ -339,11 +347,14 @@ class Calendar extends React.PureComponent<Props, States>
 			}
 		};
 
-		return selTimeArr.map(val => {
+		const listArr = selTimeArr.map(val => {
 			return getStr(val, rotate, time)!;
 		});
+
+		return listArr.toJS();
+
 	}
-	timeToNumber(strArr:string[]){
+	timeStrToNumber(strArr:string[]){
 
 		return strArr.map(val=>{
 
@@ -352,17 +363,14 @@ class Calendar extends React.PureComponent<Props, States>
 
 	}
 	getSelTimeVal() {
-		const { selTimeArr } = this.state;
+		const { selTimeArr ,calendarVal} = this.state;
 		const { time, clickBack, field ,rotate} = this.props;
 		const strArr = this.getInpTimeStrArr(selTimeArr, rotate!, time!);
-
-		const val = this.timeToNumber(strArr.toJS());
-		clickBack(val, field!, rotate!);
-
 		const str = strArr.join(" 至 ");
-
 		this.setState({
 			calendarVal: str,
+		},()=>{
+			clickBack(calendarVal, field!, rotate!,selTimeArr);
 		});
 
 		return str;
@@ -406,7 +414,7 @@ class Calendar extends React.PureComponent<Props, States>
 		return (
 			<div
 				className="g-calendar"
-				style={{ width: width, }}
+				style={{ width: ~~width !, }}
 				ref={this.wrapDomRef}>
 				{inpCom}
 				<VelocityComponent

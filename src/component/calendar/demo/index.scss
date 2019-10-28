@@ -1,0 +1,17 @@
+.g-propsEdit {
+  padding: 20px;
+  border: 1px solid,;
+  display: flex;
+
+  & > div {
+    &:first-child {
+      margin-right: 20px;
+    }
+  }
+}
+
+.g-outControl {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid,;
+}
