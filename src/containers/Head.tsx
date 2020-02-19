@@ -3,6 +3,8 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import {SvgIcon} from "@component/icon/index";
 
 type HeadProp = {
+	expand:boolean;
+ 	toggleMenuFn:(expand?:boolean)=>void;
 };
 
 type HeadState = {
@@ -59,16 +61,25 @@ class Head extends React.PureComponent<RouteComponentProps & HeadProp  , HeadSta
 		}));
 	}
 
+	slideIconHandle=()=>{
+		this.props.toggleMenuFn();
+	}
+
+	slideIcon(){
+		const { expand } = this.props;
+		const expandIcon = expand ? (
+			<span className="j-slideBar" onClick={this.slideIconHandle} >
+				<SvgIcon className="menu-expand" size="big" />
+			</span>
+				) : undefined;
+		return expandIcon ;
+	}
 	render() {
 
-		const expand = true ;
-		const expandIcon = expand ? (
-			<span className="j-slideBar" onClick={undefined} />
-				) : undefined;
 		return (
 		<div className="g-head shadow">
 			<div >
-				{expandIcon}
+				{this.slideIcon()}
 				<span className="m-theme">
 					web组件
 				</span>

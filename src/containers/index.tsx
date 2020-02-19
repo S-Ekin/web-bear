@@ -8,16 +8,29 @@ type appProps = {
 };
 
 type appState = {
+	menuExpand:boolean;
+	
 };
 class App extends React.PureComponent<appProps, appState>{
 
-	
+	state :appState = {
+		menuExpand:true
+	};
+
+	toggleMenuSlide=(expand?:boolean)=>{
+
+		this.setState({
+			menuExpand:!!expand,
+		});
+
+	}
 	render() {
+		const {menuExpand} = this.state;
 		return (
 			<BrowserRouter>
-				<SlideMenu  />
+				<SlideMenu  expand={menuExpand} toggleMenuFn={this.toggleMenuSlide}/>
 				<div className="g-content">
-					<Head  />
+					<Head  expand={menuExpand} toggleMenuFn={this.toggleMenuSlide}/>
 					<div className="g-main">
 						<Switch>
 
@@ -32,4 +45,4 @@ class App extends React.PureComponent<appProps, appState>{
 
 }
 
-export default App; 
+export default App;  

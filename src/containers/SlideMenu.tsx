@@ -8,6 +8,8 @@ type slideMenu = {
 };
 
 type SlideMenuProp = {
+	expand:boolean;
+ 	toggleMenuFn:(expand?:boolean)=>void;
 };
 type SlideMenuState = {
 
@@ -83,21 +85,31 @@ class SlideMenu extends React.PureComponent<SlideMenuProp , SlideMenuState>{
 		data:menuList,
 	};
 
+	menuIconHandle=()=>{
+		const {toggleMenuFn} = this.props;
+		toggleMenuFn(true);
+	}
+	slideMenu(){
+	 
+		const {expand} = this.props;
+		const expandIcon = !expand ? (
+						<span className="j-slideBar" onClick={this.menuIconHandle}>
+							<SvgIcon className="menu-slide" size="big" />
+						</span>
+						):undefined;
+			return expandIcon ;
+	}
+
 	render() {
 
 		const { data } = this.state;
-		const expand = true;
-		const expandIcon = !expand ? (
-						<span className="j-slideBar" onClick={undefined}>
-							<SvgIcon className="menu-shrink" size="big" />
-						</span>
-						):undefined;
+		const {expand} = this.props;
 		return (
 			<Velocity.VelocityComponent duration={300} animation={{ width: expand ? 250 : 70 }}>
 				<div className={"g-slideMenu " + (!expand ? "expand" : "")}>
 					<div className="g-logo shadow">
 						<span className="m-logo" />
-					{expandIcon}
+					{this.slideMenu()}
 					</div>
 					 <NavMenu data={data} expand={expand}   />
 				</div>
