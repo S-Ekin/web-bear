@@ -72,6 +72,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
         
         return (
 			<div className="g-propsEdit">
+                <h3>日历初始化</h3>
 				<div>
 					<div className="inp-item">
 						<Input

@@ -1,26 +1,28 @@
 import { Route } from "react-router-dom";
 import * as React from "react";
 import * as loadable from "react-loadable";
+import noticeFn from '@component/toast/index';
 
 const routerConfig = {
-	button: {
+	buttonRouter: {
 		loader: () =>
 			import(
-				/*webpackChunkName: "button" */ "../component/button/demo/Demo"
+				/*webpackChunkName: "buttonRouter" */ "./Router/ButtonRoute"
 			),
 		loading: () => <span>loading......</span>,
 	},
-	table: {
+	tableRouter: {
 		loader: () =>
 			import(
-				/*webpackChunkName: "table" */ "../component/table/demo/Demo"
+				/*webpackChunkName: "table" */ "./Router/TableRouter"
 			),
 		loading: () => <span>loading......</span>,
 	},
-	calendar: {
+	
+	loadingRouter: {
 		loader: () =>
 			import(
-				/*webpackChunkName: "calendar" */ "../component/calendar/demo/Demo"
+				/*webpackChunkName: "loading" */ "./Router/LoadingRouter"
 			),
 		loading: () => <span>loading......</span>,
 	},
@@ -34,12 +36,17 @@ const routerConfig = {
 };
 
 class MainRouter extends React.PureComponent{
+	
+	componentWillUpdate(){
+		noticeFn.clear();
+		console.log('--------------更新----------');
+	}
 	render(){
 		return (
 			<>
-				<Route path="/button" component={loadable(routerConfig.button)} />
-				<Route path="/table" component={loadable(routerConfig.table)} />
-				<Route path="/calendar" component={loadable(routerConfig.calendar)} />
+				<Route path="/button" component={loadable(routerConfig.buttonRouter)} />
+				<Route path="/table" component={loadable(routerConfig.tableRouter)} />
+				<Route path="/loading" component={loadable(routerConfig.loadingRouter)} />
 				<Route path="/bintree" component={loadable(routerConfig.bintree)} />
 				<div id="s-modal"/>
 			</>

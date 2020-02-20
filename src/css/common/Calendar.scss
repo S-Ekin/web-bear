@@ -1,7 +1,6 @@
-
 @import "../scss/variate";
 
-$sel:#f66;
+$sel: $theme-color;
 $slectColor:#aee6ff;
 $inp-h:2em;
 
@@ -32,36 +31,16 @@ $inp-h:2em;
 }
 
 .m-calendar-view {
+  $day-width:2em;
+  $day-h:2em;
+  $mon-width:4em;
+  $mon-h:2.5em;
+  $sea-width:5em;
+  $sea-h:3em;
+
   .item-calendar-view {
     width: 100%;
     display: none;
-  }
-
-  .calendar-today {
-    span {
-      color: $sel;
-      font-weight: bolder;
-    }
-  }
-
-  .calendar-sel {
-    span {
-      background: $sel;
-      color: white;
-    }
-  }
-
-  .day-disabled {
-    color: grey;
-    cursor: not-allowed;
-    text-align: center;
-
-    span {
-      display: inline-block;
-      width: 35px;
-      height: 35px;
-      line-height: 35px;
-    }
   }
 
   .view-item {
@@ -70,7 +49,6 @@ $inp-h:2em;
 
     span {
       display: inline-block;
-      border-radius: 50%;
     }
 
     &:hover {
@@ -81,22 +59,36 @@ $inp-h:2em;
     }
 
     .day-span {
-      width: 35px;
-      height: 35px;
-      line-height: 35px;
+      width: $day-width;
+      height: $day-h;
+      line-height: $day-h;
     }
 
     .mon-span,
     .year-span {
-      width: 60px;
-      height: 60px;
-      line-height: 60px;
+      width: $mon-width;
+      height: $mon-h;
+      line-height: $mon-h;
     }
 
     .searson-span {
-      width: 80px;
-      height: 80px;
-      line-height: 80px;
+      width: $sea-width;
+      height: $sea-h;
+      line-height: $sea-h;
+    }
+  }
+
+  .day-disabled {
+    color: #aaaeb3;
+    opacity: 0.5;
+    cursor: not-allowed;
+    text-align: center;
+
+    span {
+      display: inline-block;
+      width: $day-width;
+      height: $day-h;
+      line-height: $day-h;
     }
   }
 
@@ -114,6 +106,7 @@ $inp-h:2em;
 
   .data-group {
     display: flex;
+    margin: 5px 0;
 
     & > li {
       width: 14.28%;
@@ -123,9 +116,17 @@ $inp-h:2em;
   .year-group,
   .mon-group {
     display: flex;
+    margin: 5px 0;
 
     .view-item {
       width: 33.3%;
+    }
+  }
+
+  li.calendar-sel {
+    span {
+      background: $sel;
+      color: white;
     }
   }
 
@@ -137,6 +138,7 @@ $inp-h:2em;
 
   .searson-group {
     display: flex;
+    margin: 5px 0;
 
     .view-item {
       width: 50%;
@@ -156,7 +158,12 @@ $inp-h:2em;
     }
   }
 
-
+  .calendar-today {
+    span {
+      color: $green;
+      font-weight: bold;
+    }
+  }
 
   .m-time {
     color: #000;
@@ -175,19 +182,24 @@ $inp-h:2em;
   }
 }
 
-.g-calendar-view.calendar-view2 {
-  border-left: 1px solid $theme-color;
-}
-
 .g-calendar-box {
   box-shadow: $shadow;
+  display: none;
+
+  & > div {
+    display: flex;
+  }
 
   .g-calendar-view {
     //	width:100%;
     min-width: 240px;
     position: relative;
     color: $theme-color;
-    font-weight: bold;
+    font-size: 14px;
+
+    &:nth-child(2) {
+      border-left: 1px solid;
+    }
   }
 
   .m-rotate-drop {
@@ -243,6 +255,12 @@ $inp-h:2em;
 
     .m-timeSel {
       cursor: pointer;
+
+      span {
+        &:hover {
+          color: $green;
+        }
+      }
     }
 
     .m-moveBtns {

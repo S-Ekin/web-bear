@@ -7,6 +7,7 @@ html {
   color: $text-color;
 }
 //svg图标
+
 .icon {
   width: 1em;
   height: 1em;
@@ -122,5 +123,32 @@ html {
 
   .icon {
     font-size: 100px;
+  }
+}
+
+.g-crash-page {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+
+  .crash-main {
+    display: flex;
+    margin-top: 20%;
+  }
+
+  .crash-logo {
+    width: 60px;
+    height: 60px;
+    background: url("./img/crash.svg") center no-repeat;
+    background-size: cover;
+  }
+
+  .crash-txt {
+    line-height: 2em;
+    padding: 16px 0;
+  }
+
+  .crash-descript {
+    padding-left: 40px;
   }
 }

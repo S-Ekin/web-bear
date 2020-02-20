@@ -7,7 +7,7 @@ import * as React from "react";
 import * as Immutable from "immutable";
 import * as ReactDom from "react-dom";
 import { VelocityComponent } from "velocity-react";
-import { Icon } from "../icon/index";
+import { SvgIcon} from "../icon/index";
 type props = {};
 type messageItem = {
 	id: string;
@@ -66,14 +66,6 @@ class Notice extends React.PureComponent<props, states> implements INotice {
 
 		const list = messages.map(val => {
 			const { id, text, type } = val;
-			const typeName =
-				type === "success"
-					? "fa-check-circle"
-					: type === "warn"
-					? "fa-exclamation-triangle"
-					: "fa-times-circle-o ";
-
-
 			return (
 				<VelocityComponent
 					key={id}
@@ -83,7 +75,7 @@ class Notice extends React.PureComponent<props, states> implements INotice {
 						<span className="g-alertInfo">
 							<span>
 								<span className={`notice-item ${type}`}>
-									<Icon className={typeName} />
+									<SvgIcon className={type} size="middle"/>
 								</span>
 								<span className="txt">{text}</span>
 							</span>
@@ -92,7 +84,7 @@ class Notice extends React.PureComponent<props, states> implements INotice {
 								className="m-alert-close"
 								data-id={id}
 								onClick={this.clickFn}>
-                                    <Icon className="fa-times fa-lg" />
+                                    <SvgIcon className="close" />
 							</span>
 						</span>
 					</div>

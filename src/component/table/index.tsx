@@ -96,7 +96,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
             preInitSelectVal:initSelectVal
         };
         if(bindGetSelectedFn){
-            bindGetSelectedFn(this.getSelected)
+            bindGetSelectedFn(this.getSelected);
         }
     }
     getSelected=()=>{

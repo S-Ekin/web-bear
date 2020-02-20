@@ -1,5 +1,6 @@
 import * as React from "react";
-
+import CrashPage from './CrashPage';
+import notice from '../toast/index';
 export default class ErrorBoundary extends React.Component{
 
 	static getDerivedStateFromError(error:any){
@@ -10,21 +11,20 @@ export default class ErrorBoundary extends React.Component{
 	}
 
 	state = {hasError:false};
-	componentDidCatch(error:any,info:any){
-
-		console.log(error,info);
-
+	reload=()=>{
+		this.setState({
+			hasError:false
+		});
 	}
-
+	componentDidCatch(_error:any,_info:any){
+		notice.add("数据操作出错，点击按钮重新加载页面！","warn",true);
+	}
 	render(){
 
 		if(this.state.hasError){
-			return <div>组件出错！</div>;
+			return <CrashPage reloadFn={this.reload}/>;
 		}else{
 			return this.props.children ;
 		}
-	
 	}
-
-
 }

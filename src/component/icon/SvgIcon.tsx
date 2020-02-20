@@ -25,7 +25,7 @@ class SvgIcon extends React.PureComponent<props,states>{
 
         return (
             <>
-            <svg className={`icon ${size}`} aria-hidden="true">
+            <svg className={`icon  ${size}`} aria-hidden="true">
                 <use  xlinkHref={`#icon${className}`} />
             </svg>
             </>

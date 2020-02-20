@@ -14,13 +14,16 @@ type LoadingState = {
 class Loading extends React.PureComponent<LoadingProp,LoadingState>{
 
 	
+	// tslint:disable-next-line: variable-name
 	static LoadingCom:React.SFC=()=>{
 
-		return (<div className="g-loading">
-								<div className="m-loading">
-											<b className="loading-text">loading...</b>
-								</div>
-						</div>);
+		return (
+				<div className="g-loading">
+						<div className="m-loading">
+							<b className="loading-text">loading...</b>
+						</div>
+				</div>
+		);
 	}
 	render(){
 

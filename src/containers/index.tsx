@@ -3,6 +3,7 @@ import {BrowserRouter,Switch} from "react-router-dom";
 import SlideMenu from "./SlideMenu";
 import Head from "./Head";
 import MainRouter from "./Router";
+import ErrorBoundary from '@component/crashPage/ErrorBoundary';
 type appProps = {
 
 };
@@ -27,20 +28,24 @@ class App extends React.PureComponent<appProps, appState>{
 	render() {
 		const {menuExpand} = this.state;
 		return (
-			<BrowserRouter>
-				<SlideMenu  expand={menuExpand} toggleMenuFn={this.toggleMenuSlide}/>
-				<div className="g-content">
-					<Head  expand={menuExpand} toggleMenuFn={this.toggleMenuSlide}/>
-					<div className="g-main">
-						<Switch>
+      <BrowserRouter>
+        <SlideMenu expand={menuExpand} toggleMenuFn={this.toggleMenuSlide} />
+        <div className="g-content">
+          <Head expand={menuExpand} toggleMenuFn={this.toggleMenuSlide} />
 
-							<MainRouter />
-						</Switch>
-							
-					</div>
-				</div>
-			</BrowserRouter>
-		);
+          <div className="g-main">
+            <ErrorBoundary>
+              <Switch>
+                <MainRouter />
+              </Switch>
+            </ErrorBoundary>
+            <div id="wrap-modal" />
+            <div id="wrap-loading" />
+            <div id="wrap-notice" />
+          </div>
+        </div>
+      </BrowserRouter>
+    );
 	}
 
 }

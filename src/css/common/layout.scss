@@ -19,9 +19,9 @@
 
   .g-layout-article {
     flex: 1;
-    margin: $page-padding 0;
-    padding: 0 $page-padding;
-    overflow: hidden;
+    margin: $page-padding - 4px 0;
+    padding: 4px $page-padding;
+    overflow: auto;
   }
 
   .g-layout-head {
@@ -46,8 +46,15 @@
     box-shadow: $shadow;
     margin: 20px 0;
     overflow: auto;
-    height: 100%;
-    padding: 20px;
+    padding: $page-padding / 2;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   .theme-txt {

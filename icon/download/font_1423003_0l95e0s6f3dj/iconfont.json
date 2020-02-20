@@ -6,6 +6,34 @@
   "description": "web组件图标",
   "glyphs": [
     {
+      "icon_id": "98045",
+      "name": "loading",
+      "font_class": "loading",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "6874061",
+      "name": "提示",
+      "font_class": "alert",
+      "unicode": "e645",
+      "unicode_decimal": 58949
+    },
+    {
+      "icon_id": "2518398",
+      "name": "close",
+      "font_class": "close",
+      "unicode": "e644",
+      "unicode_decimal": 58948
+    },
+    {
+      "icon_id": "6932374",
+      "name": "warn",
+      "font_class": "warn",
+      "unicode": "e6d1",
+      "unicode_decimal": 59089
+    },
+    {
       "icon_id": "13086321",
       "name": "menu-expand",
       "font_class": "menu-expand",
@@ -174,13 +202,6 @@
       "unicode_decimal": 58923
     },
     {
-      "icon_id": "10955063",
-      "name": "wran",
-      "font_class": "wran1",
-      "unicode": "e62c",
-      "unicode_decimal": 58924
-    },
-    {
       "icon_id": "10955064",
       "name": "empty",
       "font_class": "empty",
@@ -235,13 +256,6 @@
       "font_class": "search",
       "unicode": "e627",
       "unicode_decimal": 58919
-    },
-    {
-      "icon_id": "10954943",
-      "name": "wran",
-      "font_class": "wran",
-      "unicode": "e628",
-      "unicode_decimal": 58920
     },
     {
       "icon_id": "10954946",
