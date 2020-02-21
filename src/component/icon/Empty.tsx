@@ -4,7 +4,6 @@
  * @time 2019-08-21
  */
 import * as React from "react";
-import SvgIcon from "./SvgIcon";
 
 type props={
     txt?:string;
@@ -26,7 +25,7 @@ class Empty extends React.PureComponent<props,states> {
 
        return (
             <div className="m-empty"> 
-                <SvgIcon className="empty" size="big"/>
+               <div className="empty-icon"/>
                  <p className="txt">
                      {txt}
                  </p>

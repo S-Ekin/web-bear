@@ -112,7 +112,7 @@ const menuList = [
       },
       {
         id: "53",
-        name: "空数据",
+        name: "空数据与图标",
         url: "/loading/empty",
         icon: "",
         children: []

@@ -107,25 +107,6 @@ html {
   min-height: 30px;
 }
 
-//空数据
-.m-empty {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-
-  .txt {
-    font-size: 18px;
-    letter-spacing: 0.2em;
-    padding: 8px;
-  }
-
-  .icon {
-    font-size: 100px;
-  }
-}
-
 .g-crash-page {
   height: 100%;
   display: flex;
@@ -150,5 +131,32 @@ html {
 
   .crash-descript {
     padding-left: 40px;
+  }
+}
+
+//空数据
+.m-empty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+
+  .empty-icon {
+    background: url("./img/empty.svg") center no-repeat;
+    background-size: contain;
+    width: 120px;
+    height: 120px;
+    margin: auto;
+  }
+
+  .txt {
+    font-size: 18px;
+    letter-spacing: 0.2em;
+    padding: 8px;
+  }
+
+  .icon {
+    font-size: 100px;
   }
 }
