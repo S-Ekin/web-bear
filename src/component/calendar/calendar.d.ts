@@ -19,7 +19,12 @@
 					minute:number;
 			};	
 			showTimeObj:IImmutalbeMap<commonInterface["curTime"]>;
-			changeBasicState<K extends keyof CalendarStates >(key:K,callback:(states:CalendarStates )=>CalendarStates[K]):void;
+			changeBasicState<K extends keyof CalendarStates >(key:K,callback:(states:CalendarStates )=>CalendarStates[K],
+			obj?:{
+				showTimeObj:commonInterface['curTime'],
+				viewIndex:number;
+			}
+			):void | boolean;
 	}
 
     export interface fixProps{

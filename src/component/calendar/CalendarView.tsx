@@ -90,11 +90,10 @@ export default class CalendarView
 		});
 	}
 	changeSelTimeItme = (
-		viewIndex: number
+		viewIndex: number,
 	) => {
 		const { year, month, day, searson } = this.state.showTimeObj.toJS();
 		const { changeBasicState ,rotate} = this.props;
-
 		changeBasicState<"selTimeArr">("selTimeArr",function(states:CalendarSpace.CalendarStates) {
 
 				let selTimeArr = states.selTimeArr;
@@ -156,12 +155,32 @@ export default class CalendarView
 				return selTimeArr;
 
 		});
+
 	}
+	
 	clickSelHandle = (e: React.MouseEvent<HTMLElement>) => {
 		const dataset = e.currentTarget.dataset;
 		const type = dataset.sign as "day" | "year" | "month" | "searson";
 		const num = ~~dataset.num!;
-		const { viewIndex} = this.props;
+		const { viewIndex,changeBasicState} = this.props;
+
+		const flag = { [type]: num };
+		const _showTimeobj = Object.assign(
+			{},
+			this.state.showTimeObj.toJS(),
+			flag
+		);
+		
+		//比较开始和结束的大小
+		const startGtEnd = changeBasicState<"selTimeArr">("selTimeArr",(state)=>state.selTimeArr,{
+			viewIndex,
+			showTimeObj:_showTimeobj
+		});
+
+		if(startGtEnd){
+			alert('开始时间要小于结束时间！');
+			return ;	
+		}
 
 		this.setState(pre => {
 			return {
@@ -211,18 +230,25 @@ export default class CalendarView
 			),
 		});
 	}
-
+	// 改变选择的面板
 	changeView = (e: React.MouseEvent<HTMLSpanElement>) => {
-		const type = e.currentTarget.dataset.sign as ("year" | "month");
-		let animationArr:CalendarSpace.CalendarStates["showViewArr"] = new Array(5).fill("fadeOut");
-			animationArr[calendarType[type]] = "fadeIn";
+		const type = e.currentTarget.dataset.sign as ("year" | "month" | "day");
+		const {rotate} = this.props;
 
-		this.props.changeBasicState<"showViewArr">("showViewArr",function(){
+		this.props.changeBasicState<"showViewArr">("showViewArr",function(states){
+			// 找出当前显示的面板频率
+			const preIndex = states.showViewArr.findIndex(val => val === "fadeIn");
 
-			return animationArr;
+				let showViewArr = [...states.showViewArr];
+				showViewArr[preIndex]= "fadeOut";
+
+				if(preIndex === rotate){
+					 showViewArr[calendarType[type]] ="fadeIn";
+				}else{
+					showViewArr[rotate]="fadeIn";
+				}
+			return showViewArr;
 		});
-
-		
 	}
 
 	changeRotate = (e: React.MouseEvent<HTMLElement>) => {

@@ -25,13 +25,18 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
 
        // throw new Error();
 
-       this.setState({
-           error:true
+       this.setState(pre=>{
+          
+            return null;
+        
+       },()=>{
+
+            alert(1);
        })
     }
     render(){
-        const {error} = this.state;
-        if(error){
+     //   const {error} = this.state;
+        if(false){
             throw new Error('故意错误！'); // 显性抛出错误
             // return 隐形抛出错误
         }else{

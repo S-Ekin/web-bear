@@ -69,8 +69,8 @@ export default class CalendarYearView extends React.PureComponent<Props, States>
 		const { curTime: { year }, selTimeObj, clickSelHandle, lastYear } = this.props;
 		const selYear = selTimeObj.get("year");
 
-		const yearToday = year === lastYear && "calendar-today" || "";
-		const yearsel = selYear === lastYear && "calendar-sel" || "";
+		const yearToday = year === lastYear && " calendar-today" || "";
+		const yearsel = selYear === lastYear && " calendar-sel" || "";
 
 		return (
 			<div className="m-yearView item-calendar-view">

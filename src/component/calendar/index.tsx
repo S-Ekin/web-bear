@@ -31,7 +31,7 @@ type Props = {
 		field: string,
 		rotate: commonInterface["rotate"],
 		selTimeList:CalendarSpace.CalendarStates["selTimeArr"]
-	) => void;
+	) => void | boolean;
 };
 
 type States = CalendarSpace.CalendarStates;
@@ -93,17 +93,99 @@ class Calendar extends React.PureComponent<Props, States>
 		animationArr[rotate] = "fadeIn";
 		return animationArr;
 	}
+
+	//比较时间的大小
+	compareTimeRang(
+		selTimeArr:CalendarSpace.CalendarStates["selTimeArr"],
+		viewIndex:number,
+		showTimeObj:commonInterface["curTime"],
+		rotate:commonInterface["rotate"],
+		time:boolean, //是否有时间点
+		){
+
+		const selTimeArrDate = selTimeArr.toJS();
+
+		if(selTimeArrDate.length===1){
+			return false ;
+		}
+
+		selTimeArrDate[viewIndex] = showTimeObj ;
+		let startgtEnd = false;
+		const startNode = selTimeArrDate[0];
+		const endNode= selTimeArrDate[1];
+		switch(rotate){
+			case calendarType.day :{
+				const mon1 = `${startNode.month}`.padStart(2,'0');
+				const day1= `${startNode.day}`.padStart(2,'0');
+				const mon2 = `${endNode.month}`.padStart(2,'0');
+				const day2= `${endNode.day}`.padStart(2,'0');
+
+				const startTime = `${startNode.year}${mon1}${day1}`;
+				const endTime = `${endNode.year}${mon2}${day2}`;
+				if(time){
+
+					const hour1= `${startNode.month}`.padStart(2,'0');
+					const minute1= `${startNode.day}`.padStart(2,'0');
+					const hour2 = `${endNode.month}`.padStart(2,'0');
+					const minute2= `${endNode.day}`.padStart(2,'0');
+
+					startgtEnd = startTime + `${hour1}${minute1}`  > endTime + `${hour2}${minute2}`;
+
+				}else{
+					startgtEnd = startTime  > endTime;
+				}
+			}
+			break;
+			case calendarType.month :{
+				const mon1 = `${startNode.month}`.padStart(2,'0');
+				const mon2 = `${endNode.month}`.padStart(2,'0');
+				startgtEnd = `${startNode.year}${mon1}` > `${endNode.year}${mon2}`;
+			}
+			break;
+			case calendarType.searson :{
+				const season1 = startNode.searson;
+				const season2  = endNode.searson;
+				startgtEnd = `${startNode.year}${season1}` > `${endNode.year}${season2}`;
+			}
+			break;
+			case calendarType.year :{
+				startgtEnd = `${startNode.year}` > `${endNode.year}`;
+			}
+			break;
+			default:
+				break;
+		}
+		return startgtEnd ;
+	}
 	//改变基本类型的state
 	changeBasicState=<K extends keyof States>(
 		key:K,
-		callback:(states:States)=>States[K]
+		callback:(states:States)=>States[K],
+		obj?:{
+			showTimeObj:commonInterface['curTime'],
+			viewIndex:number;
+		}
 		)=>{
 
-		this.setState(pre=>{
 
+		if(obj && key==="selTimeArr"){ 
+			//只比较开始时间和结束时间的大小
+			const {selTimeArr,rotate} = this.state;
+			const {time} = this.props;
+			return this.compareTimeRang(
+				selTimeArr,
+				obj.viewIndex,
+				obj.showTimeObj,
+				rotate!,
+				time!
+				);
+		}
+		
+		this.setState(pre=>{
 			const val = callback(pre) as any ;
 			let obj:any = {};
 			const {time} = this.props;
+
 			if(key === "selTimeArr"){
 				const rotate = pre.rotate;
 				const calendarVal = this.getInpTimeStrArr(val,rotate,time!).join(" 至 ");

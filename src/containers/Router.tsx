@@ -26,6 +26,13 @@ const routerConfig = {
 			),
 		loading: () => <span>loading......</span>,
 	},
+	comboRouter: {
+		loader: () =>
+			import(
+				/*webpackChunkName: "loading" */ "./Router/ComboRouter"
+			),
+		loading: () => <span>loading......</span>,
+	},
 	bintree: {
 		loader: () =>
 			import(
@@ -47,6 +54,7 @@ class MainRouter extends React.PureComponent{
 				<Route path="/button" component={loadable(routerConfig.buttonRouter)} />
 				<Route path="/table" component={loadable(routerConfig.tableRouter)} />
 				<Route path="/loading" component={loadable(routerConfig.loadingRouter)} />
+				<Route path="/combo" component={loadable(routerConfig.comboRouter)} />
 				<Route path="/bintree" component={loadable(routerConfig.bintree)} />
 				<div id="s-modal"/>
 			</>
