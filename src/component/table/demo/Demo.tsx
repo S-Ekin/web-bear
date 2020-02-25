@@ -18,7 +18,6 @@ type States={
 };
 interface IDemo {
   tableGetCheckedFn:()=>IImmutalbeList<IImmutalbeMap<any>>
-  column:MyTabSpace.columnItem[];
 }
 type report ={
     a_FASHENGSHIJIAN: string
@@ -40,55 +39,21 @@ type report ={
 };
 class Demo extends React.PureComponent<Props,States> implements IDemo{
     
-    column:IDemo["column"] = [
-			{
-				text: "事件编号",
-				field: "eventNo",
-				width: 150,
-			},
-			{
-				text: "事件类型",
-				field: "category_name",
-				formatter:function(node:IImmutalbeMap<report>){
+    formatterObj ={
+		eventType:function(node:IImmutalbeMap<report>){
 					return node.get("category_name") || "--";
-				}
-			},
-			{
-				text: "上报日期",
-				field: "a_SHANGBAOSHIJIAN",
-				width: 140,
-				formatter: function(node: IImmutalbeMap<report>) {
+				},
+		date:function(node: IImmutalbeMap<report>) {
 					let time = node.get("a_SHANGBAOSHIJIAN") || "";
 					return `${time.substr(0, 4)}-${time.substr(
 						4,
 						2
 					)}-${time.substr(6, 2)}`;
 				},
-			},
-			{
-				text: "上报人",
-				field: "a_SHANGBAOREN",
-				width: 100,
-				formatter: (node: IImmutalbeMap<report>) => {
+		reporter:(node: IImmutalbeMap<report>) => {
 					return <span>{node.get("a_SHANGBAOREN") || "匿名"}</span>;
 				},
-			},
-			{
-				text: "处理状态",
-				field: "status_name",
-				width: 120,
-			},
-
-			{
-				text: "上报科室",
-				field: "org_name",
-				width: 100,
-			},
-			{
-				text: "操作",
-				field: "opt",
-				width: "200",
-				formatter: (node: IImmutalbeMap<report>) => {
+		opt:(node: IImmutalbeMap<report>) => {
 					return (
 						<span
 							className="m-optBtn"
@@ -98,9 +63,9 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                                 <Button>操作</Button>
 						</span>
 					);
-				},
-			},
-		];
+				}
+	}; 
+	
     state:States={
 		tableData:data,
 		selectTableVal:{id:""}
@@ -141,6 +106,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
 		
 	}
     render(){
+			
 		const {tableData,selectTableVal} = this.state;
         return (
 			<div className="g-layout">
@@ -164,7 +130,15 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
 						defaultSel="169"
 						initSelectVal={selectTableVal}
 						bindGetSelectedFn={this.bindgetTableSelecte}
-					/>
+					>
+						<Table.colItem width={150} field="eventNo">事件编号</Table.colItem>
+						<Table.colItem width={150} field="category_name" formatter={this.formatterObj.eventType}>事件类型</Table.colItem>
+						<Table.colItem width={140} field="a_SHANGBAOSHIJIAN" formatter={this.formatterObj.date}>上报日期</Table.colItem>
+						<Table.colItem width={100} field="a_SHANGBAOREN" formatter={this.formatterObj.reporter}>上报人</Table.colItem>
+						<Table.colItem width={120} field="status_name" >处理状态</Table.colItem>
+						<Table.colItem width={100} field="org_name" >上报科室</Table.colItem>
+						<Table.colItem width={200} field="opt" formatter={this.formatterObj.opt} >操作</Table.colItem>
+					</Table>
 				</div>
 			</div>
 		);

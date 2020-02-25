@@ -13,8 +13,8 @@ import TabBody from "./TBody";
 
 type Props={
 	data: any[];
-    children:React.ReactElement<MyTabSpace.columnItem>[]
 	noPageNums?: boolean;//页码
+	column: MyTabSpace.columnItem[];//列头定义
 	idField: string;//表格的节点标识
 	checkbox?: boolean;//多选
 	defaultSel?: string;//默认选中的
@@ -34,7 +34,6 @@ enum checkAllStataus {
     noChecked="noChecked",
 }
 
-
 const tableInitData =(data:Props["data"],defaulSel:string,idField:string)=>{
         const defaulSelArr = `${defaulSel}`.split(",");
         return  Immutable.fromJS(data,(_key,val,_path)=>{
@@ -51,20 +50,11 @@ const tableInitData =(data:Props["data"],defaulSel:string,idField:string)=>{
                 }
         });
     };
-
 class Table extends React.PureComponent<Props,States> implements ITable{
-     
     static defaultProps={
             defaultSel:"",
             emptyTxt:"当前没有数据！",
     };
-
-    static colItem:React.SFC<MyTabSpace.columnItem> = ({width,children})=>{
-        return (
-            <th  style={{width: width,}}>{children}</th>
-        );
-    }
-   
     
     static getDerivedStateFromProps(nextProps:Props,preState:States):null | Partial<States>{
 
@@ -105,7 +95,6 @@ class Table extends React.PureComponent<Props,States> implements ITable{
             preData:data,
             preInitSelectVal:initSelectVal
         };
-
         if(bindGetSelectedFn){
             bindGetSelectedFn(this.getSelected);
         }
@@ -142,13 +131,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
         
     }
     initFixObj(){
-        const {idField,checkbox,children,tabField,noPageNums} = this.props;
-
-        const column = children.map(val => {
-            const {children ,...obj} = val.props  as any;
-            return obj ;
-        });
-
+        const {idField,checkbox,column,tabField,noPageNums} = this.props;
         return {
             idField,
             checkbox,
@@ -173,8 +156,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
         },10);
     }
     getColGroupCom() {
-        const { checkbox ,} = this.props;
-        const {column} = this.fieldObj;
+		const { checkbox ,column} = this.props;
 
         const cheboxCom = checkbox ? (
 					<col key="checkbox" style={{ width: "40px", }} />
@@ -261,7 +243,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 
     getFixHead( ){
 
-        const {checkbox,children} = this.props;
+        const {checkbox,column,tabField} = this.props;
         const curPageCheckAll = this.countCurPageTotalStatus();
         const colgroupCom = this.getColGroupCom();
         const checkCom = checkbox ? (
@@ -275,7 +257,16 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 									</th>
                                 ) : undefined;
                                 
-       
+        const colTixList = column.map(({ text, field, renderTit }) => {
+                    const textCom = renderTit
+												? renderTit(text,field,tabField)
+												: text;
+									return (
+										<th key={field}>
+											{textCom}
+										</th>
+									);
+								});
         return (
             	<table>
 						{colgroupCom}
@@ -283,7 +274,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 							<tr>
 								{checkCom}
 							    <th key="order"> 序号 </th> 
-								{children}
+								{colTixList}
 							</tr>
 						</thead>
 					</table>

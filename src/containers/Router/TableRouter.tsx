@@ -6,6 +6,7 @@
 import * as React from "react";
 import {Switch,Route} from 'react-router-dom';
 import TableList from '@component/table/demo/Demo';
+import TableTree from '@component/table/demo2/Demo';
 
 type Props={
 
@@ -26,6 +27,7 @@ class TableRouter extends React.PureComponent<Props,States> {
         return (
             <Switch>
                 <Route component={TableList} path="/table/list"/>
+                <Route component={TableTree} path="/table/tree"/>
             </Switch>
         );
     }

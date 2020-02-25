@@ -1,19 +1,14 @@
 declare namespace MyTabSpace {
+
 	export interface columnItem {
-		text: string; //列头名称
-		width?: number | string; //宽度
-		field: string;
-		formatter?: (
-			node: IImmutalbeMap<any>, //节点
-			index: string, //节点索引
-			tabField?: string //表格标识
-		) => React.ReactChild;
-		renderTit?: (
-			text: string,
-			field: string,
-			tabField?: string
-        ) => React.ReactChild; //列头自定义
-        isRowSpanField?:boolean;//是否为合并字段
+		field:string;
+		width?:number;
+		isRowSpanField?:boolean;//是否为合并字段
+		formatter?:(
+				node: IImmutalbeMap<any>, //节点
+				index: string, //节点索引
+				tabField?: string //表格标识
+			) => React.ReactChild;
 	}
 
 	export interface fieldObj {
