@@ -4,7 +4,7 @@
  * @time 2019-08-16
  */
 import * as React from "react";
-import { Icon } from "../icon/index";
+import { SvgIcon } from "../icon/index";
 enum activeStatus {
 	select = "selected",
 	hasSelect = "hasSelect",
@@ -70,7 +70,7 @@ class DropItem<P extends comboType>
 			? formatterDropItem(node)
 			: node.get(fieldObj.get("textField"));
 		const multiply = fieldObj.get("multiply")!;
-		const iconCom = icon ? <Icon className={icon} /> : undefined;
+		const iconCom = icon ? <SvgIcon className={icon} /> : undefined;
 		// 因为list 不会传lev,通过levSpaceStyle 判断是tree还是list
 		const fn = levSpaceStyle && multiply ? undefined: this.clickFn;
 			

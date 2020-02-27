@@ -4,7 +4,7 @@
  * @time 2019-08-17
  */
 import * as React from "react";
-import { Icon } from "../icon/index";
+import { SvgIcon} from "../icon/index";
 import * as Immutable from "immutable";
 import {activeStatus,DropItem} from "./DropItem";
 import { VelocityComponent } from "velocity-react";
@@ -122,10 +122,10 @@ class ParTreeItem extends React.PureComponent<props,states> implements IParTreeI
                 >
                     <span className="g-item-text" style={levSpaceStyle}>
                        {this.getCheckbox()}
-                       <Icon className="fa-folder"/>
+                       <SvgIcon className="folder"/>
                         <span>{text}</span>
                     </span>
-                    <Icon className={`fa-chevron-${expand ?"up" : "down"}`}/>
+                    <SvgIcon className={`arrow-${expand ?"up" : "down"}`}/>
                 </div>
                	<VelocityComponent
 						duration={300}

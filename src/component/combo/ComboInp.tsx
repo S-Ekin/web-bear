@@ -4,7 +4,7 @@
  * @time 2019-08-14
  */
 import * as React from "react";
-import {Icon} from "../icon/index";
+import {SvgIcon} from "../icon/index";
 import * as Immtable from "immutable";
 type props={
     tit:string;
@@ -34,7 +34,7 @@ class ComboInp extends React.PureComponent<props,states> {
     getSlideIcon(noicon:boolean|undefined,drop:boolean){
 
         return !noicon ? (
-            <Icon className={`fa-chevron-${drop?"down":"up"}`}/>
+            <SvgIcon  className={`arrow-${drop?"down":"up"}`}/>
         ) : undefined;
     }
     //没有值的时候做提示，模仿input的placeholder
@@ -47,7 +47,7 @@ class ComboInp extends React.PureComponent<props,states> {
     getClearCom(show:boolean){
         return  show ? (
            <span onClick={this.clickFn}>
-               <Icon className={`fa-times`}/>
+               <SvgIcon className={`close`}/>
            </span> 
         ) : undefined;
     }
