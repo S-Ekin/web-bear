@@ -5,6 +5,7 @@
  */
 import * as React from "react";
 import {Combobox} from '../index';
+import CodeBlock from '../../../containers/codeBlock/CodeBlock';
 import './demo.scss';
 type Props={
 
@@ -59,6 +60,13 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                     <div className="g-item-show">
                         <span> 下拉框：</span>
                         <Combobox data={data} field="first" clickCallback={this.clickBack}/>
+                    </div>
+                    <div className="g-item-show">
+                        <CodeBlock >
+                            {
+                                ` function add(){}`
+                            }
+                        </CodeBlock>
                     </div>
                 </div>
             </div>
