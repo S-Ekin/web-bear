@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./jq.js"></script>
+    
+</head>
+<body>
+    <div class="item">
+        <div>
+            <button id="login">登录扫码</button>
+        </div>
+    </div>
+    <script>
+       
+
+
+     
+
+            var config={
+                login:function(){
+                    
+
+                  var settings = {
+                        "url": "http://localhost:55668/CaApi2/SZWJ_LoginByComponents",
+                        "method": "POST",
+                        "timeout": 0,
+                        "headers": {
+                            "Content-Type": "application/json"
+                        },
+                        "data": JSON.stringify({"businessOrgCode":"455767873","businessSystemCode":"9998","businessSystemAppID":"o7d7q8ehm4tkrc6o"}),
+                        };
+
+                        $.ajax(settings).done(function (response) {
+                        console.log(response);
+                        });
+
+
+                }
+            }
+
+           
+            $("#login").on("click",function(){
+               config.login();
+            });
+       
+
+
+    </script>
+</body>
+</html>

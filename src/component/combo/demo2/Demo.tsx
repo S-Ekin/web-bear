@@ -7,11 +7,10 @@ import * as React from "react";
 import "./demo.scss";
 import { ComboTree } from "@component/combo/index";
 import { Input, CheckBox } from "../../input/index";
-
-type Props = {};
-type States = {
-  obj: {
-    idField: string;
+import {createImmutableMap }  from '@component/createImmutaleMap';
+import {Button} from '@component/button/index';
+type item = {
+   idField: string;
     textField: string;
     noIcon: boolean; //wu下拉图标
     multiply: boolean; //多选
@@ -19,9 +18,9 @@ type States = {
     field: string; //下拉框的标识
     itemIcon: string; //下拉框每行的图标，目录默认用文件夹
     defaultVal: string; //默认选中的
-    width: string; //显示框宽度
-    maxHeight: string; //下拉框最大高度
-    dropWidth: string; //下拉框宽度，默认是显示框宽度
+    width: number; //显示框宽度
+    maxHeight?: number; //下拉框最大高度
+    dropWidth?: number; //下拉框宽度，默认是显示框宽度
     directionUp: boolean; //下拉框在显示框上还是下
     noRequire: boolean; //必选
     renderCallback: boolean; //组件第一次加载调用点击事件的回调函数
@@ -33,7 +32,12 @@ type States = {
     // formatterDropItem?: (node:IImmutalbeMap<any>) => React.ReactChild;
     // //点击每行的回调函数
     // clickCallback(selected: ComboSpace.Iselected[], field: string,node?:IImmutalbeMap<any>): void;
-  };
+}
+type Props = {};
+type States = {
+  obj:IImmutalbeMap<item>;
+  comboProps:item;
+  refreshId:number;
 };
 interface IDemo {}
 
@@ -73,23 +77,25 @@ const data = [
     ]
   }
 ];
-class Demo extends React.PureComponent<Props, States> implements IDemo {
+
+
+ class Demo extends React.PureComponent<Props, States> implements IDemo {
   state: States = {
-    obj: {
-      idField: "",
-      textField: "",
-      noIcon: false,
-      multiply: false,
+    obj: createImmutableMap<item>({
+      idField: "id",
+      textField: "text",
+      noIcon:false,
+      multiply:false,
       tit: "",
-      field: "",
+      field: "tree",
       itemIcon: "",
       defaultVal: "",
-      width: "",
-      maxHeight: "",
-      dropWidth: "",
-      directionUp: false,
-      noRequire: false,
-      renderCallback: false, //组件第一次加载调用点击事件的回调函数
+      width: 240,
+      maxHeight: undefined,
+      dropWidth: undefined,
+      directionUp:false,
+      noRequire:false,
+      renderCallback:false, //组件第一次加载调用点击事件的回调函数
       ableClear: false
       // clickMethod?:(clickFn:(path?:string)=>void)=>void;//暴露实例方法
       // //自定义显示框的文字内容，selected所选择的内容
@@ -98,15 +104,65 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       // formatterDropItem?: (node:IImmutalbeMap<any>) => React.ReactChild;
       // //点击每行的回调函数
       // clickCallback(selected: ComboSpace.Iselected[], field: string,node?:IImmutalbeMap<any>): void;
-    }
+    }),
+    comboProps:{
+      idField: "id",
+      textField: "text",
+      noIcon:false,
+      multiply:false,
+      tit: "",
+      field: "tree",
+      itemIcon: "",
+      defaultVal: "",
+      width: 240,
+      maxHeight: undefined,
+      dropWidth: undefined,
+      directionUp:false,
+      noRequire:false,
+      renderCallback:false, //组件第一次加载调用点击事件的回调函数
+      ableClear: false
+      // clickMethod?:(clickFn:(path?:string)=>void)=>void;//暴露实例方法
+      // //自定义显示框的文字内容，selected所选择的内容
+      // formatterVal?: (selected: states["selected"]) => React.ReactChild;
+      // //自定义下拉框的文字内容
+      // formatterDropItem?: (node:IImmutalbeMap<any>) => React.ReactChild;
+      // //点击每行的回调函数
+      // clickCallback(selected: ComboSpace.Iselected[], field: string,node?:IImmutalbeMap<any>): void;
+    },
+    refreshId:1,
   };
   clickFn = (selecte: ComboSpace.Iselected[]) => {
     console.log(selecte);
   };
-  inpChangeFn = () => {};
+  inpChangeFn = (e:React.ChangeEvent<HTMLInputElement>) => {
+     const dom = e.currentTarget;
+		const field = dom.name as keyof item;
+		let value:any = dom.value;
+		if(field === "width"){
+			value = ~~value;	
+		}else if(["directionUp","noRequire","ableClear","renderCallback","multiply","noIcon"].includes(field)){
+
+			value = value === "1" ? true :false ;
+		}
+    this.setState(pre=>{
+       
+        return {
+          obj:pre.obj.set(field,value)
+        }
+    })
+  };
+  refershConfig=()=>{
+
+    this.setState(pre=>{
+      return {
+        comboProps:pre.obj.toJS(),
+        refreshId:pre.refreshId+1
+      }
+    })
+
+  }
   render() {
     const {
-      obj: {
         idField,
         textField,
         noIcon,
@@ -122,15 +178,15 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
         noRequire,
         renderCallback, //组件第一次加载调用点击事件的回调函数
         ableClear
-      }
-    } = this.state;
-
+    } = this.state.obj.toJS();
+    const { comboProps,refreshId} = this.state;
     return (
       <div className="g-layout comboTree-page">
         <div className="g-layout-head">树形下拉框</div>
         <div className="g-layout-article">
           <div className="g-item-show">
-            <ComboTree data={data} field="tree" clickCallback={this.clickFn} />
+            <ComboTree data={data} key={refreshId}  {...comboProps} clickCallback={this.clickFn} />
+            <Button  handle={this.refershConfig}>刷新配置</Button>
           </div>
           <div className="g-item-show">
             <div>
@@ -224,7 +280,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 </Input>
               </div>
               <div className="inp-item">
-                <Input name="width" changeFn={this.inpChangeFn} value={width}>
+                <Input name="width" changeFn={this.inpChangeFn} value={width+''}>
                   显示框宽度 width：
                 </Input>
               </div>
@@ -232,7 +288,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 <Input
                   name="maxHeight"
                   changeFn={this.inpChangeFn}
-                  value={maxHeight}
+                  value={maxHeight+''}
                 >
                   下拉框最大高度 maxHeight:
                 </Input>
@@ -241,7 +297,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 <Input
                   name="dropWidth"
                   changeFn={this.inpChangeFn}
-                  value={dropWidth}
+                  value={dropWidth+''}
                 >
                   下拉框宽度，默认是显示框宽度 dropWidth:
                 </Input>
@@ -279,7 +335,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   是
                 </CheckBox>
                 <CheckBox
-                  name=" noRequire"
+                  name="noRequire"
                   value="2"
                   type="radio"
                   checked={!noRequire}
@@ -341,6 +397,18 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                                 //点击每行的回调函数
                                 clickCallback(selected: ComboSpace.Iselected[], field: string,node?:IImmutalbeMap<any>): void;`}
             </div>
+          </div>
+          <div className="g-item-show">
+            <pre>
+              <code  lang="js">
+                  {
+                  `function name(params:type) {
+                      console.log(3)
+                      
+                  }`
+                  }
+              </code>
+            </pre>
           </div>
         </div>
       </div>

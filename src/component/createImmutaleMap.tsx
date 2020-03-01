@@ -14,11 +14,11 @@ type AllowedValue =
 interface IAllowedMap extends Immutable.Map<string, AllowedValue> {}
 interface IAllowedList extends Immutable.List<AllowedValue> {}
 
-type MapTypeAllowedData<DataType> = { [K in keyof DataType]: AllowedValue };
+type MapTypeAllowedData<DataType> = { [K in keyof DataType]: DataType[K] };
 
 declare global {
 	interface IImmutalbeMap<DataType extends MapTypeAllowedData<DataType>>
-		extends Immutable.Map<keyof DataType, AllowedValue> {
+		extends Immutable.Map< keyof DataType, AllowedValue> {
 		toJS(): DataType;
 		get<K extends keyof DataType>(
 			key: K,
