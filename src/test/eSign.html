@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./jq.js"></script>
+    <style>
+  #encryptedToken {
+    border: 1px solid red;
+    padding: 6px;
+  }
+
+  .item {
+    margin: 10px;
+    padding: 10px;
+    background: sandybrown;
+  }
+
+  .clear {
+    word-break: break-all;
+    display: inline-block;
+  }
+    </style>
+</head>
+<body>
+    <div >
+        <div class="item">
+            <button id="refresh">重新刷新</button>
+        </div>
+        <div class="item">
+            <button id="login">登录扫码</button>
+            <div>encryptedToken：  <span id="encryptedToken" class="clear"></span></div>
+            <div>
+                 <span>signCert</span>
+                <span id="signCert" class="clear"></span>
+            </div>
+           
+        </div>
+        <div class="item">
+            <button id="snBtn">获取sn</button>
+            <span>sn</span>
+            <span class="clear" id="sn"></span>
+        </div>
+        <div class="item">
+            <p>
+                获取base64签名原文：<input type="text" id="signalOrigin">
+            </p>
+            <p>
+                <button id="signalBtn">获取</button>
+                <span id="signal" class="clear"></span>
+            </p>
+        </div>
+        <div class="item">
+             <p>
+                <button id="SZWJ_SignData">开始数据签名</button>
+                <p>
+                       <span>签名原文：</span>
+                        <span id="SZWJ_SignDataVal" class="clear"></span>
+                </p>
+                <p>
+                    <span>时间戳：</span>
+                    <span id="time" class="clear"></span>
+                </p>
+                
+               
+            </p>
+        </div>
+        <div class="item">
+             <p>
+                <button id="SZWJ_SignDataVerify">开始数据签名验证</button>
+                <span class="clear" id="verifyRes"></span>
+            </p>
+        </div>
+        <div class="item">
+            <p>
+                <button id="base64CertBtn">base64编码证书</button>
+                <span class="clear" id="base64Cert"></span>
+            </p>
+        </div>
+        <div class="item">
+                <p>
+                <button id="SZWJ_GetPicBySNBtn">手写签名图片ba64格式</button>
+                <span class="clear" id="SZWJ_GetPicBySN"></span>
+                <span class="clear" id="SZWJ_GetPicBySNPic"></span>
+            </p>
+        </div>
+        <div class="item">
+                <p>
+                <button id="SZWJ_ConvertPicFormatBtn">签名图片ba64格式转换</button>
+                <span class="clear" id="SZWJ_ConvertPicFormat"></span>
+            </p>
+        </div>
+    </div>
+    <script>
+            var config={
+                login:function(){
+
+                    const basic = {
+                        "businessOrgCode":"455767873",
+                        "businessSystemCode":"9998","businessSystemAppID":"o7d7q8ehm4tkrc6o"
+                    };
+                     var settings = {
+                        "url": "http://localhost:55668/CaApi2/SZWJ_LoginByComponents",
+                        "method": "POST",
+                        "timeout": 0,
+                        "headers": {
+                            "Content-Type": "application/json"
+                        },
+                        "data": JSON.stringify(basic),
+                    };
+
+                        $.ajax(settings).done(function (eventValue) {
+                          
+                            var   response = eventValue.eventValue;
+                            $('#signCert').html(response.signCert);
+
+                            $.ajax({
+                                "url": "http://testca.top:8077/v1.0/login/verifyboundvalue",
+                                "method": "POST",
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "data": JSON.stringify({
+                                    "businessOrgCode":"455767873",
+                                    "businessSystemCode":"9998",
+                                    "businessSystemAppID":"o7d7q8ehm4tkrc6o",
+                                    "businessTypeCode":998, 
+                                    "authority":response.authority, 
+                                    "boundValue": response.boundValue,
+                                    "signCert":response.signCert
+                                }),
+                            }).done(function (res){
+                                var  eventValue = res.eventValue;
+                                $("#encryptedToken").html(eventValue.encryptedToken);
+                            })
+
+                          
+                        
+                        });
+                },
+                signalbase64:function(){
+
+                        const text = $("#signalOrigin").val().trim();
+                        if(!text){
+                            alert('不能为空！');
+                            return;
+                        }
+                        $.ajax({
+                                "url": "http://localhost:55668/CaApi2/Tools/SZWJ_Base64Encode",
+                                "method": "POST",
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "data": JSON.stringify({
+                                   text:text,
+                                }),
+                            }).done(function (res){
+                                var  eventValue = res.eventValue;
+                                $("#signal").html(eventValue.base64Value);
+                            })
+
+                },
+                SZWJ_SignData:function(){
+                     $.ajax({
+                                "url": "http://localhost:55668/CaApi2/SZWJ_SignData",
+                                "method": "POST",
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "data": JSON.stringify({
+                                    "businessOrgCode":455767873,
+                                    "businessSystemCode":9998, 
+                                    "businessTypeCode":998, 
+                                    "businessSystemAppID": "o7d7q8ehm4tkrc6o",
+                                    "encryptedToken":$("#encryptedToken").html(),
+                                    "data": $("#signal").html(),
+                                    "withTsa":true
+                                }),
+                            }).done(function (res){
+
+                                $('#SZWJ_SignDataVal').html(res.eventValue.signedData);
+                                $('#time').html(res.eventValue.timestamp);
+                            })
+                },
+                SZWJ_SignDataVerify:function(){
+                     $.ajax({
+                                "url": "http://localhost:55668/CaApi2/SZWJ_VerSignData",
+                                "method": "POST",
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "data": JSON.stringify({
+                                    "businessOrgCode":455767873,
+                                    "businessSystemCode":9998, 
+                                    "businessTypeCode":998, 
+                                    "businessSystemAppID": "o7d7q8ehm4tkrc6o",
+                                    "encryptedToken":$("#encryptedToken").html(),
+                                    "data": $("#signal").html(),
+                                    "signCert":$('#signCert').html(),
+                                     "signValue":$("#SZWJ_SignDataVal").html(),
+                                }),
+                            }).done(function (res){
+                                $("#verifyRes").html(res.eventMsg);
+                                alert(res.eventMsg);
+                            })
+                },
+                sn:function(){
+                         $.ajax({
+                                "url": "http://localhost:55668/CaApi2/Tools/SZWJ_VerifyEncryptedToken",
+                                "method": "POST",
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "data": JSON.stringify({
+                                    "businessOrgCode":455767873,
+                                    "businessSystemCode":9998, 
+                                    "businessSystemAppID": "o7d7q8ehm4tkrc6o",
+                                    "encryptedToken":$("#encryptedToken").html(),
+                                }),
+                            }).done(function (res){
+                                $("#sn").html(res.eventValue.sn);
+                               
+                            })
+                },
+                base64Cert:function(){
+                        $.ajax({
+                                "url": "http://localhost:55668/CaApi2/SZWJ_GetUserCert",
+                                "method": "POST",
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "data": JSON.stringify({
+                                    "encryptedToken":$("#encryptedToken").html(),
+                                }),
+                            }).done(function (res){
+                                if(res.statusCode==0){
+                                    $("#base64Cert").html(res.eventValue.base64Cert);
+                                }else{
+                                    $("#base64Cert").html('失败');
+                                    alert(res.eventMsg);
+
+                                }
+                                
+                               
+                            })
+                },
+                SZWJ_GetPicBySN:function(){
+                      $.ajax({
+                                "url": "http://localhost:55668/CaApi2/SZWJ_GetPicBySN/",
+                                "method": "POST",
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "data": JSON.stringify({
+                                    "sn":$("#sn").html(),
+                                }),
+                            }).done(function (res){
+                                if(res.statusCode==0){
+                                    $("#SZWJ_GetPicBySN").html(res.eventValue.dictionary[0].signName);
+                                    $("#SZWJ_GetPicBySNPic").html(res.eventValue.dictionary[0].signFlow);
+                                }else{
+                                    $("#SZWJ_GetPicBySN").html('失败');
+                                    alert(res.eventMsg);
+
+                                }
+                                
+                               
+                            })
+                }, 
+                SZWJ_ConvertPicFormat:function(){
+                      $.ajax({
+                                "url": "http://localhost:55668/CaApi2/Tools/SZWJ_ConvertPicFormat",
+                                "method": "POST",
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "data": JSON.stringify({
+                                   "inData":$("#SZWJ_GetPicBySNPic").html(),
+                                    "type":1
+                                }),
+                            }).done(function (res){
+                                if(res.statusCode==0){
+                                    $("#SZWJ_ConvertPicFormat").html(res.eventValue.outData);
+                                }else{
+                                    $("#SZWJ_ConvertPicFormat").html('失败');
+                                    alert(res.eventMsg);
+
+                                }
+                                
+                               
+                            })
+                },
+            }
+            $("#login").on("click",function(){
+               config.login();
+            });
+
+            $("#refresh").click(function(){
+                $('.clear').html('');
+            });
+
+            $("#signalBtn").click(function(){
+                config.signalbase64();
+            });
+
+             $("#SZWJ_SignDataVerify").click(function(){
+                 if( !$("#signal").html() || !$("#encryptedToken").html() ){
+                     alert('请获取encryptedToken和base64签名原文')
+                    return ;
+                 }
+                config.SZWJ_SignDataVerify();
+            });
+             $("#SZWJ_SignData").click(function(){
+                 if( !$("#signal").html() || !$("#encryptedToken").html() ){
+                     alert('请获取encryptedToken和base64签名原文')
+                    return ;
+                 }
+                config.SZWJ_SignData();
+            });
+             $("#snBtn").click(function(){
+                 if(  !$("#encryptedToken").html() ){
+                     alert('请获取encryptedToken')
+                    return ;
+                 }
+                config.sn();
+            });
+
+            $("#base64CertBtn").click(function(){
+                if(  !$("#encryptedToken").html() ){
+                     alert('请获取encryptedToken')
+                    return ;
+                 }
+
+                 config.base64Cert();
+            }) ;
+            
+            $("#SZWJ_GetPicBySNBtn").click(function(){
+                if(  !$("#sn").html() ){
+                     alert('请获取sn')
+                    return ;
+                 }
+
+                 config.SZWJ_GetPicBySN();
+            }); 
+            
+            $("#SZWJ_ConvertPicFormatBtn").click(function(){
+                if(  !$("#SZWJ_GetPicBySNPic").html() ){
+                     alert('请获取签名图片')
+                    return ;
+                 }
+
+                 config.SZWJ_ConvertPicFormatBtn();
+            });
+            
+        
+    </script>
+</body>
+</html>
