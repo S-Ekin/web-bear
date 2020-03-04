@@ -25,7 +25,7 @@ type props<P extends comboType> = {
 };
 type states = {};
 interface IDropItem {
-	getCheckbox(): void;
+	getCheckbox(text:string,icon:JSX.Element|undefined): JSX.Element;
 }
 
 class DropItem<P extends comboType>
@@ -38,20 +38,26 @@ class DropItem<P extends comboType>
 		this.props.checkMethod!(value);
 	}
 	
-	getCheckbox() {
+	getCheckbox(text:string,icon:JSX.Element|undefined) {
 		const { node, index, CheckBox } = this.props;
 		const active = node.get("active");
 		const hasChecked = activeStatus.hasSelect === active;
 		const checked = activeStatus.select === active;
 		return CheckBox ? (
-			<CheckBox
-				hasChecked={hasChecked}
-				checked={checked}
-				value={index}
-				changeHandle={this.checkFn}
-			/>
+			 <CheckBox 
+                hasChecked={hasChecked}
+                checked={checked}
+                value={index}
+                changeHandle={this.checkFn}
+            > 
+				{icon}
+              <span className="combo-text">{text}</span>
+            </CheckBox>
 		) : (
-			undefined
+			<>
+				{icon}
+				<span className="combo-text">{text}</span>
+		    </>
 		);
 	}
 	clickFn=(e:React.MouseEvent<HTMLDivElement>)=>{
@@ -87,9 +93,7 @@ class DropItem<P extends comboType>
 					data-index={index}
 					onClick={fn}>
 					<span className="g-item-text" style={levSpaceStyle}>
-						{this.getCheckbox()}
-						{iconCom}
-						<span>{text}</span>
+						{this.getCheckbox(text,iconCom )}
 					</span>
 				</div>
 			</li>

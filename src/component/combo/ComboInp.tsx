@@ -15,8 +15,8 @@ type props={
     noRequire?:boolean;
     ableClear?:boolean;
     //下拉事件
-    clearFn?:()=>void;
     slideFn():void;
+    clearFn():void;
 };
 type states={
 };
@@ -34,7 +34,7 @@ class ComboInp extends React.PureComponent<props,states> {
     getSlideIcon(noicon:boolean|undefined,drop:boolean){
 
         return !noicon ? (
-            <SvgIcon  className={`arrow-${drop?"down":"up"}`}/>
+            <SvgIcon className={`arrow-${drop?"down":"up"}`}/>
         ) : undefined;
     }
     //没有值的时候做提示，模仿input的placeholder
@@ -53,10 +53,7 @@ class ComboInp extends React.PureComponent<props,states> {
     }
     clickFn=(e:React.MouseEvent<HTMLSpanElement>)=>{
         e.stopPropagation();
-        const {clearFn} = this.props;
-        if(clearFn){
-            clearFn();
-        }
+        this.props.clearFn();
     }
     render(){
         const {selected,slideFn,tit,formatterVal,noicon,drop,noRequire,ableClear} = this.props;

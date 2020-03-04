@@ -24,17 +24,19 @@ declare namespace ComboSpace {
         multiply?: boolean;
         itemIcon?: string;
         defaultVal?: string;
+        field:string;
+        clickOrCheckForbid:(node:IImmutalbeMap<any>,field:string)=>boolean;
     } & IDrop[P] ;
 
     export type drop<P extends keyof IDrop> = {
         filedObj: IImmutalbeMap<ComboSpace.filedObj<P>>;
+	    initComboVal?:{id:string};
 	    changeSelect(Iselected:IImmutalbeList<Iselected>,node?:IImmutalbeMap<any>):void;
 	    initSelect(Iselected:IImmutalbeList<Iselected>):void;
         data:any[];
         selected:IImmutalbeList<Iselected>;
         dropStyle:{maxHeight:number};
         formatterDropItem?:(node:IImmutalbeMap<any>)=>React.ReactNode;
-	    clickMethod?:(clickFn:(path?:string)=>void)=>void;//暴露实例方法
 
     };
 
@@ -46,7 +48,6 @@ declare namespace ComboSpace {
         hasChecked?: boolean;
         type?: "checkbox" | "radio";
         isControl?: boolean;
-        children?:string; // 标题
     }
       
 }

@@ -6,6 +6,7 @@
 import * as React from "react";
 import {Combobox} from '../index';
 import CodeBlock from '../../../containers/codeBlock/CodeBlock';
+import EditCode from '../../../containers/codeBlock/EditCode';
 import './demo.scss';
 type Props={
 
@@ -68,6 +69,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                             }
                         </CodeBlock>
                     </div>
+                   
                 </div>
             </div>
         );

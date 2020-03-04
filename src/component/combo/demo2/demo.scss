@@ -2,4 +2,9 @@
   .g-item-show {
     overflow: visible;
   }
+
+  .config-box {
+    display: flex;
+    justify-content: space-between;
+  }
 }

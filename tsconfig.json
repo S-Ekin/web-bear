@@ -5,6 +5,7 @@
 		"sourceMap": true,
 		"isolatedModules": true,
 		"jsx": "react",
+		"allowSyntheticDefaultImports":true,
 		"allowJs": false,
 		"target": "es6",
 		"strictNullChecks": true,
@@ -18,7 +19,8 @@
 		"declaration": false,
 		"paths": {
 			"@component/*": ["./src/component/*"],
-			"@css/*": ["./src/css/*"]
+			"@css/*": ["./src/css/*"],
+			"@container/*": ["./src/containers/*"]
 		},
 		"lib": ["es2015", "dom", "dom.iterable"],
 		"types": ["node"],

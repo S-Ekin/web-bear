@@ -4,7 +4,7 @@
  * @time 2019-08-17
  */
 import * as React from "react";
-import { SvgIcon} from "../icon/index";
+import { SvgIcon } from "../icon/index";
 import * as Immutable from "immutable";
 import {activeStatus,DropItem} from "./DropItem";
 import { VelocityComponent } from "velocity-react";
@@ -21,6 +21,7 @@ type props = {
     fieldObj: ComboSpace.drop<"tree">["filedObj"];
     index: string;//节点索引
     lev: number//树形节点的层级
+	formatterDropItem?: (node: IImmutalbeMap<any>) => React.ReactNode;
     checkMethod(value:string):void;
     checkForPar(value:string):void;
     clickFn(index:string):void;
@@ -44,29 +45,37 @@ class ParTreeItem extends React.PureComponent<props,states> implements IParTreeI
    
     
     checkFn = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.stopPropagation();
 		const dom = e.currentTarget!;
 		const value = dom.value!;
         this.props.checkForPar(value);
 	}
-    getCheckbox() {
+    getCheckbox(text:string,expand:boolean) {
         const {fieldObj,node,index} = this.props;
         const multiply = fieldObj.get("multiply");
         const active = node.get("active");
         const hasChecked = activeStatus.hasSelect === active;
         const checked = activeStatus.select === active;
+        const icon = <SvgIcon className={expand ? "folder-open":"folder"}/>;
         return multiply ? (
             <CheckBox 
                 hasChecked={hasChecked}
                 checked={checked}
                 value={index}
                 changeHandle={this.checkFn}
-            />
-        ) : undefined;
+            > 
+            {icon}
+                <span className="combo-text">{text}</span>
+            </CheckBox>
+        ) :(
+        <>
+            {icon}
+           <span className="combo-text">{text}</span>
+        </>
+        );
     }
     
     getSubCom(child:immutableData,lev:number,oindex:string){
-        const {fieldObj,clickFn ,checkForPar,checkMethod,toggleExpand} = this.props;
+        const {fieldObj,clickFn ,checkForPar,checkMethod,toggleExpand,formatterDropItem} = this.props;
         const idField = fieldObj.get("idField");
         const multiply = fieldObj.get("multiply");
         return child.map((val:IImmutalbeMap<node>,index:number)=>{
@@ -81,6 +90,7 @@ class ParTreeItem extends React.PureComponent<props,states> implements IParTreeI
                         index={`${oindex},${index}`}
                         lev={lev+1}
                         clickFn={clickFn}
+                        formatterDropItem={formatterDropItem}
                         checkMethod={checkMethod} 
                         CheckBox={multiply ? CheckBox :undefined}
                     />
@@ -93,6 +103,7 @@ class ParTreeItem extends React.PureComponent<props,states> implements IParTreeI
                     index={`${oindex},${index}`}
                     lev={lev+1}
                     checkForPar={checkForPar}
+                    formatterDropItem={formatterDropItem}
                     checkMethod={checkMethod}
                     toggleExpand={toggleExpand}
 				/>
@@ -105,39 +116,43 @@ class ParTreeItem extends React.PureComponent<props,states> implements IParTreeI
         this.props.toggleExpand(index);
     }
     
+    textClickFn=(e:React.MouseEvent<HTMLDivElement>)=>{
+      e.stopPropagation();
+    }
     
     render(){
-        const {lev,node,index,fieldObj} = this.props;
+        const {lev,node,index,fieldObj,formatterDropItem} = this.props;
         //层级间的距离左侧的距离
         const levSpaceStyle =  { paddingLeft: `${lev}em`,};
-        const text = node.get(fieldObj.get("textField"));
+       // const text = node.get(fieldObj.get("textField"));
+        const  text = formatterDropItem
+			? formatterDropItem(node)
+			: node.get(fieldObj.get("textField"));
         const expand = node.get("expand");
         const child = node.get(fieldObj.get("childField")!) as immutableData;
+        const multiply = fieldObj.get("multiply");
         return (
-            <li className="combo-par-item" >
-                <div 
-                className={`m-combo-item`} 
-                data-index={index} 
-                onClick={this.toggleExpandFn} 
-                >
-                    <span className="g-item-text" style={levSpaceStyle}>
-                       {this.getCheckbox()}
-                       <SvgIcon className="folder"/>
-                        <span>{text}</span>
-                    </span>
-                    <SvgIcon className={`arrow-${expand ?"up" : "down"}`}/>
-                </div>
-               	<VelocityComponent
-						duration={300}
-						animation={expand ? "slideDown" : "slideUp"}
-						interruptBehavior="queue">
-							<ul>
-								{this.getSubCom(child,lev,index)}
-							</ul>
+			<li className="combo-par-item">
+				<div
+					className={`m-combo-item`}
+					data-index={index}
+					onClick={this.toggleExpandFn}>
+					<span
+						className="g-item-text"
+						style={levSpaceStyle}
+						onClick={multiply ? this.textClickFn : undefined}>
+						{this.getCheckbox(text,expand)}
+					</span>
+					<SvgIcon className={`arrow-${expand ? "up" : "down"}`} />
+				</div>
+				<VelocityComponent
+					duration={300}
+					animation={expand ? "slideDown" : "slideUp"}
+					interruptBehavior="queue">
+					<ul>{this.getSubCom(child, lev, index)}</ul>
 				</VelocityComponent>
-            </li>
-
-        );
+			</li>
+		);
     }
 }
 

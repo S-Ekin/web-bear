@@ -17,18 +17,20 @@ interface ICodeBlock {
     codeRef:React.RefObject<HTMLDivElement>;
 }
 class CodeBlock extends React.PureComponent<Props,States> implements ICodeBlock{
-    
+     static  getDerivedStateFromProps(nextProps:Props,preState:States){
+        // console.log('getDerivedStateFromProps');
+        // console.log(nextProps);
+        // console.log(preState);
+        
+    }
     codeRef:ICodeBlock['codeRef']=React.createRef();
     state:States={
 
     };
-
+   
     componentDidMount(){
-       
         const dom = this.codeRef.current!;
-
         highlightBlock(dom);
-        
     }
     render(){
         const {children} = this.props;

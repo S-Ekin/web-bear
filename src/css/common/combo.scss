@@ -11,7 +11,7 @@ $combo-drop-padding:8px;
     word-break: break-all;
     overflow: auto;
     height: 100%;
-    padding-top: 0.5em;
+    padding-top: 0.25em;
   }
 
   .combo-inp-tit {
@@ -37,6 +37,10 @@ $combo-drop-padding:8px;
 .m-drop {
   .drop-ul {
     overflow: auto;
+  }
+
+  .combo-text {
+    padding-left: 4px;
   }
 
   .m-combo-item {
@@ -87,6 +91,7 @@ $combo-drop-padding:8px;
   }
 
   .m-drop {
+    display: none;
     background: $combo-bg;
     color: $combo-text-color;
     position: absolute;

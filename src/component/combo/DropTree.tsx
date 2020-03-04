@@ -21,37 +21,31 @@ type node = {
 
 interface IDropTree {
 	oldSelectedIndex: string;
-	searchPreData: undefined | states["immutableData"];
 	initState(props: props): states;
 	//格式化数据，添加选中的字段 active ;
-	formatterData(props: props): Immutable.List<IImmutalbeMap<node>>;
+	formatterData(props: props,defaultVal:string,data:any[]): Immutable.List<IImmutalbeMap<node>>;
 	//点击的时候改变数据
 
 	componentWillReceiveProps(props: props): void;
 }
 class DropTree extends React.PureComponent<props, states> implements IDropTree {
 	oldSelectedIndex = "";
-	searchPreData: IDropTree["searchPreData"] = undefined;
-		constructor(props:props){
+	constructor(props:props){
 		super(props);
-
 		this.state= this.initState(props);
-		//暴露点击方法
-		const {clickMethod} = props;
-		if(clickMethod){
-			clickMethod(this.clickItem);
-		}
+		
 	}
 	initState(props: props) {
+		const defaultVal = props.filedObj.get("defaultVal") || "";
 		return {
-			immutableData: this.formatterData(props),
+			immutableData: this.formatterData(props,defaultVal,props.data),
 		};
 	}
 	
 	clear(){
 		
 		this.setState({
-			immutableData:this.initState(this.props).immutableData
+			immutableData:this.formatterData(this.props,"",this.props.data),
 		});
 
 	}
@@ -59,16 +53,19 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 		if(!id){
 			this.clear();
 		}else{
-			console.log(1);
+			// 重新把数据格式化一篇得原因是，清楚已经选的，只选择传入得id，
+			this.setState({
+				immutableData:this.formatterData(this.props,id,this.props.data),
+			});
 		}
 
 	}
-	formatterData(props: props) {
-		const { filedObj, data, initSelect } = props;
+	//当由外部控制选什么的时候，defaultVal,是又外部输入的,data:可以传入
+	formatterData(props: props,defaultVal:string,data:any[],noInitState?:boolean) {
+		const { filedObj, initSelect } = props;
 		const id = filedObj.get("idField");
 		const text = filedObj.get("textField");
 		const childField = filedObj.get("childField");
-		const defaultVal = `${filedObj.get("defaultVal")}`;
 		let defaultValArr = defaultVal.split(",");
 
 		const multiply = filedObj.get("multiply");
@@ -76,7 +73,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 			defaultValArr.length = 1;
 		}
 		let oldSelectedIndex = "";
-		const listSelected: ComboSpace.Iselected[] = [];
+		let listSelected: ComboSpace.Iselected[] = [];
 
 		const immutableData: states["immutableData"] = Immutable.fromJS(
 			data as node[],
@@ -91,7 +88,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 						children = Immutable.List([]);
 						node = node.set(childField!, children);
 					}
-					//执行目录和文件两种情况 添加是否:expand展开和是否选中：active的状态
+					//执行目录和文件两种情况 ,添加,是否展开:expand和是否选中：active的状态
 					let active: activeStatus;
 					if (children.size) {
 						if (multiply) {
@@ -104,9 +101,10 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 								}
 							);
 
-							if (hasSelected) {
+							if (hasSelected) {//子文件里面有点节点是有选的状态
 								active = activeStatus.hasSelect;
 							} else {
+								//根据子文件的选择情况来做对应的选中状态
 								let selectCount = children.reduce(
 									(cur, val: IImmutalbeMap<any>) => {
 										let total = cur;
@@ -131,9 +129,11 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 								}
 							}
 						} else {
+							//单选
 							active = activeStatus.noSelect;
 						}
 					} else {
+						//文件
 						const isDefault = defaultValArr.includes(
 							`${node.get(id)}`
 						);
@@ -164,14 +164,30 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 
 		//重置之前选择的
 		this.oldSelectedIndex = oldSelectedIndex;
+		//显示默认选中的,并且按照默认的顺序显示
+		if(defaultVal){
+			const initDefaultSelectArr = defaultValArr.map(select=>{
+				// tslint:disable-next-line: triple-equals
+				return listSelected.find(val=>val.id == select)!;
+			}).filter(val=>val);
+
+			listSelected = initDefaultSelectArr ;
+		}
 		//显示默认选中的
-		initSelect(Immutable.List(listSelected));
+		if(!noInitState){
+			initSelect(Immutable.List(listSelected));
+		}
+		
 		return immutableData;
 	}
 	componentWillReceiveProps(nextProps: props) {
-		if (nextProps.data !== this.props.data) {
+		
+		if (nextProps.data !== this.props.data || nextProps.initComboVal!==this.props.initComboVal) {
+			let initComboVal:any = nextProps.initComboVal ;
+				initComboVal = initComboVal ? initComboVal.id :"";
+
 			this.setState({
-				immutableData: this.initState(nextProps).immutableData,
+				immutableData: this.formatterData(nextProps,`${initComboVal}`,nextProps.data),
 			});
 		}
 	}
@@ -238,59 +254,44 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 	}
 
 	searchMap(
-		data: states["immutableData"],
+		data: any[],
 		childField: string,
 		key: string,
 		textField: string
-	) {
-		let arr: states["immutableData"] = data;
+	):any[] {
+		return data.filter(val=>{
 
-		data.forEach((_val, _key, iter) => {
-			arr = iter.updateIn([_key], node => {
-				const child = node.get(childField) as states["immutableData"];
-				const isKey = (node.get(textField) as string).includes(key);
-				let _node = node;
-				if (child.size) {
-					if (isKey) {
-						return _node;
-					} else {
-						const _child = this.searchMap(
-							child,
-							childField,
-							key,
-							textField
-						) as states["immutableData"];
-						_node = _node.set(childField, _child);
+			const itemText = val[textField] as string;
+			const isContainer = itemText.includes(key);
+			const child  = val[childField] as any[];
+			
+			if(child.length){
 
-						return _child.size ? _node : undefined;
-					}
-				} else {
-					return isKey ? _node : undefined;
+				if(isContainer){
+					return true ;
+				}else{
+					const arr = this.searchMap(child,childField,key,textField);
+					val[childField] = arr ;
+					return arr.length ;
 				}
-			});
-		});
+			}else{
 
-		return arr;
+				return isContainer;
+			}
+		});
 	}
 	searchFn = (key: string) => {
-		console.log(key);
 
-		const { immutableData } = this.state;
-		const { filedObj } = this.props;
+		const { filedObj,data,selected } = this.props;
 		const childField = filedObj.get("childField")!;
 		const textField = filedObj.get("textField");
-		//记录搜索前的数据,用于切换回来
-		this.searchPreData = immutableData;
-
-		let searchReswult = immutableData.withMutations(list => {
-			return this.searchMap(list, childField, key, textField);
-		});
-
-		console.log(searchReswult.toJS());
-
-		// this.setState({
-		// 	immutableData:searchResult
-		// });
+		const copyData = JSON.parse(JSON.stringify(data));
+		let searchReswult = this.searchMap(copyData,childField,key,textField);
+		
+		const defaultVal = selected.map(val=>val.id).join(",");
+		 this.setState({
+			immutableData:this.formatterData(this.props,defaultVal,searchReswult,true)
+		 });
 	}
 
 	clickFnForTreeMethod=(path:string)=>{
@@ -303,7 +304,8 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 		const idField = filedObj.get("idField");
 		const textField = filedObj.get("textField");
 		const childField = filedObj.get("childField");
-
+		const clickForbid = filedObj.get("clickOrCheckForbid")!;
+		const comField = filedObj.get("field");
 		const indexArr = index
 			.split(",")
 			.join(`,${childField},`)
@@ -317,6 +319,13 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 				let _data = data;
 				let _select = selected;
 				let newNode: IImmutalbeMap<node> = _data.getIn(indexArr);
+				if(!newNode){
+					return ;
+				}
+				//判断是否禁止点击
+				if (clickForbid(newNode,comField)) {
+					return;
+				}
 				//单选清除以前选中的
 				if (oldSelectedIndex === indexArrString) {
 					//点击的是同一个
@@ -358,12 +367,10 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 				});
 
 				this.props.changeSelect(_select, newNode);
+				this.oldSelectedIndex = indexArrString;
 				return {
 					immutableData: _data,
 				};
-			},
-			() => {
-				this.oldSelectedIndex = indexArrString;
 			}
 		);
 	}
@@ -376,6 +383,8 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 		const childField = filedObj.get("childField")!;
 		const idField = filedObj.get("idField");
 		const textField = filedObj.get("textField");
+		const clickForbid = filedObj.get("clickOrCheckForbid")!;
+		const comField = filedObj.get("field");
 		const indexArr = value
 			.split(",")
 			.join(`,${childField},`)
@@ -387,6 +396,13 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 			let _data = data;
 			let _select = selected;
 			let newNode = _data.getIn(indexArr);
+			if(!newNode){
+				return ;
+			}
+			//判断是否禁止点击
+			if(clickForbid(newNode,comField)){
+				return;
+			}
 
 			_data = _data.updateIn(indexArr, (val: IImmutalbeMap<node>) => {
 				//判断这个node有没有被选中
@@ -486,6 +502,10 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 			let _select = selected;
 			let newNode = _data.getIn(indexArr);
 
+			if(!newNode){
+				return ;
+			}
+
 			_data = _data.updateIn(indexArr, (val: IImmutalbeMap<node>) => {
 				//判断这个node有没有被选中
 				let node = val;
@@ -527,12 +547,11 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 		});
 	}
 	closeFn = () => {
-		const data = this.searchPreData;
-		if (data) {
-			this.setState({
-				immutableData: data,
-			});
-		}
+		const {data,selected} = this.props;
+		const defaultVal = selected.map(val=>val.id).join(",");
+		this.setState({
+			immutableData: this.formatterData(this.props,defaultVal,data,true),
+		});
 	}
 	toggleExpand = (index: string) => {
 		const { filedObj } = this.props;
@@ -545,6 +564,10 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 			const _data = data.updateIn(
 				indexArr,
 				(node: IImmutalbeMap<node>) => {
+
+					if(!node){
+						return ;
+					}
 					const expand = !node.get("expand");
 					const _node = node.set("expand", expand);
 
@@ -559,7 +582,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 	}
 	render() {
 		const { immutableData } = this.state;
-		const { filedObj, dropStyle } = this.props;
+		const { filedObj, dropStyle ,formatterDropItem} = this.props;
 		const idField = filedObj.get("idField");
 		const childField = filedObj.get("childField");
 		const multiply = filedObj.get("multiply");
@@ -575,6 +598,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 					clickFn={this.clickFnForTreeMethod}
 					index={`${index}`}
 					lev={0}
+					formatterDropItem={formatterDropItem}
 					checkForPar={this.checkForPar}
 					checkMethod={this.checkMethod}
 					toggleExpand={this.toggleExpand}
@@ -586,16 +610,16 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 					fieldObj={filedObj}
 					index={`${index}`}
 					checkMethod={this.checkMethod}
+					formatterDropItem={formatterDropItem}
 					lev={0}
 					clickFn={this.clickFnForTreeMethod}
 					CheckBox={multiply ? CheckBox : undefined}
 				/>
 			);
 		});
-		//#done:搜索方法写好后把搜索框显示，同时修改css文件
 		return (
 			<>
-				<div style={{ paddingBottom: "0.5em", display: "none",}}>
+				<div style={{ paddingBottom: "0.5em",}}>
 					<Search
 						field="search"
 						searchHandle={this.searchFn}

@@ -23,13 +23,17 @@ type props = {
 	noRequire?: boolean;//必选
 	renderCallback?: boolean; //组件第一次加载调用点击事件的回调函数
 	ableClear?:boolean;//能够清空所选
-	clickMethod?:(clickFn:(path?:string)=>void)=>void;//暴露实例方法
+	//外部通过这个值来控制下拉框的选中,id可以是字符串分隔
+	initComboVal?:{id:string};
+	//点击或是选中之前做的操作，返回true不执行选中操作，默认返回false
+	clickOrCheckForbid?:(node:IImmutalbeMap<any>,field:string)=>boolean;
 	//自定义显示框的文字内容，selected所选择的内容
 	formatterVal?: (selected: states["selected"]) => React.ReactChild;
 	//自定义下拉框的文字内容
 	formatterDropItem?: (node:IImmutalbeMap<any>) => React.ReactChild;
 	//点击每行的回调函数
 	clickCallback(selected: ComboSpace.Iselected[], field: string,node?:IImmutalbeMap<any>): void;
+	
 };
 
 type states = {
@@ -40,7 +44,7 @@ type states = {
 interface ICombo {
 	wrapDomRef: React.RefObject<HTMLDivElement>;
 	dropStyle:{maxHeight:number};
-	selectFn?:(path?:string)=>void;
+	selectFn(path?:string):void;
 	dropToggle(): void;
 	//点击其他地方收缩下拉框
 	documentClickFn(e: MouseEvent): void;
@@ -64,24 +68,23 @@ const wrapComboHC = <P extends comboType>(
 			width:240,
 			maxHeight:240,
 			defaultVal:"",
+			clickOrCheckForbid:function(){
+				return false ;
+			}
 		};
-		filedObj: IImmutalbeMap<ComboSpace.filedObj<P>>;
+		filedObj!: IImmutalbeMap<ComboSpace.filedObj<P>>;
 		dropStyle:ICombo["dropStyle"];
 		wrapDomRef: React.RefObject<HTMLDivElement> = React.createRef();
-		selectFn?: ICombo["selectFn"] ;
+		selectFn!:ICombo["selectFn"];
 		constructor(props: props & ComboSpace.IDrop[P]) {
 			super(props);
 			this.state = this.initState();
-			this.filedObj = this.initFieldObj(props);
+			this.initFieldObj(props);
 			const {maxHeight} = props;
 			this.dropStyle = { maxHeight: maxHeight !,};
 		}
 		bindSelectFn=(fn:any)=>{
 			this.selectFn = fn;
-			const {clickMethod} = this.props;
-			if(clickMethod){
-				clickMethod(fn);
-			}
 		}
 		//把一些固定的字段整合在immutable对象里，传参的时候只用传一个
 		initFieldObj(props: props & ComboSpace.IDrop[P]) {
@@ -91,23 +94,27 @@ const wrapComboHC = <P extends comboType>(
 				multiply,
 				itemIcon,
 				defaultVal,
+				field,
+				clickOrCheckForbid,
 			} = props as props;
 			const common = {
 				idField: idField!,
 				textField: textField!,
 				multiply,
 				itemIcon,
-				defaultVal,
+				defaultVal:`${defaultVal}`,
+				clickOrCheckForbid,
+				field
 			};
 			if (comboType === "list") {
-				 return  Immutable.fromJS(common);
+				this.filedObj = Immutable.fromJS(common);
 			} else {
 				const {
 					childField,
 					noSearch,
 				} = props as ComboSpace.IDrop["tree"];
 				let treeField = Object.assign(common, { childField, noSearch });
-				return  Immutable.fromJS(treeField);
+				this.filedObj = Immutable.fromJS(treeField);
 			}
 		}
 		
@@ -153,7 +160,7 @@ const wrapComboHC = <P extends comboType>(
 		documentClickFn = (e: MouseEvent) => {
 			const target = e.target! as HTMLElement;
 			const wrap = this.wrapDomRef.current!;
-			if (target !== wrap && !wrap.contains(target)) {
+			if (target !== wrap && wrap && !wrap.contains(target)) {
 				this.setState({
 					drop: false,
 				});
@@ -177,9 +184,9 @@ const wrapComboHC = <P extends comboType>(
 				dropWidth,
 				noRequire,
 				formatterDropItem,
-			//	clickMethod,
 				directionUp,
-				ableClear
+				ableClear,
+				initComboVal
 			} = this.props;
 			const { selected, drop } = this.state;
 			const palceholder = tit ? tit! : multiply ? "多选" : "单选";
@@ -212,8 +219,8 @@ const wrapComboHC = <P extends comboType>(
 									selected={selected}
 									dropStyle={this.dropStyle}
 									initSelect={this.initSelect}
+									initComboVal={initComboVal}	
 									formatterDropItem={formatterDropItem}
-									clickMethod={this.bindSelectFn}
 								/>
 						</div>
 					</VelocityComponent>
