@@ -130,7 +130,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     const dom = e.currentTarget;
     const field = dom.name as keyof item;
     let value: any = dom.value;
-    if (field === "width") {
+    if (["width",'maxHeight','dropWidth'].includes(field)) {
       value = ~~value;
     } else if (
       [
@@ -335,6 +335,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <div className="inp-item">
                 <Input
                   name="width"
+                  type="number"
                   changeFn={this.inpChangeFn}
                   value={width + ""}
                 >
@@ -344,8 +345,9 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <div className="inp-item">
                 <Input
                   name="maxHeight"
+                  type="number"
                   changeFn={this.inpChangeFn}
-                  value={maxHeight + ""}
+                  value={maxHeight ?  maxHeight + "" : '0'}
                 >
                   下拉框最大高度 maxHeight:
                 </Input>
@@ -353,8 +355,9 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <div className="inp-item">
                 <Input
                   name="dropWidth"
+                  type="number"
                   changeFn={this.inpChangeFn}
-                  value={dropWidth + ""}
+                  value={dropWidth ? dropWidth + "" : '0'}
                 >
                   下拉框宽度 dropWidth:
                 </Input>
@@ -549,8 +552,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
           </div>
           <div className="g-item-show">
             <div>
-              <span>函数属性；外部控制下拉的选择id:1-1的节点</span>
               <Button handle={this.btnControlSelect}>选择</Button>
+              <small style={{marginLeft: 16,}}><b>外部控制下拉的选择id:1-1的节点</b></small>
             </div>
             <CodeBlock>
               {`

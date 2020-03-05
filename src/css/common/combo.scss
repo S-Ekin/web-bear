@@ -11,7 +11,8 @@ $combo-drop-padding:8px;
     word-break: break-all;
     overflow: auto;
     height: 100%;
-    padding-top: 0.25em;
+    padding-top: 0.3em;
+    box-sizing: border-box;
   }
 
   .combo-inp-tit {

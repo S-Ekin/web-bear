@@ -100,7 +100,7 @@ class Search extends React.PureComponent<props,states> implements ISearch{
 					<span
 						className="m-search-close"
 						onClick={this.closeSearch}>
-						<SvgIcon className="fa-times " />
+						<SvgIcon className="close" />
 					</span>
 				</VelocityComponent>
 				<span className="j-search-icon" onClick={this.toggleSearch}>

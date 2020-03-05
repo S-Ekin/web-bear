@@ -33,7 +33,8 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 	constructor(props:props){
 		super(props);
 		this.state= this.initState(props);
-		
+		const { clickMethod } = props;
+		clickMethod(this.clickItem);
 	}
 	initState(props: props) {
 		const defaultVal = props.filedObj.get("defaultVal") || "";
@@ -265,7 +266,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 			const isContainer = itemText.includes(key);
 			const child  = val[childField] as any[];
 			
-			if(child.length){
+			if(child && child.length){
 
 				if(isContainer){
 					return true ;

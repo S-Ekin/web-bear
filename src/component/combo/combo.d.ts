@@ -37,7 +37,7 @@ declare namespace ComboSpace {
         selected:IImmutalbeList<Iselected>;
         dropStyle:{maxHeight:number};
         formatterDropItem?:(node:IImmutalbeMap<any>)=>React.ReactNode;
-
+	    clickMethod:(clickFn:(path?:string)=>void)=>void;//暴露点击方法，用于清除所选
     };
 
     export interface ICheckboxCom {

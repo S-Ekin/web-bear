@@ -221,6 +221,7 @@ const wrapComboHC = <P extends comboType>(
 									initSelect={this.initSelect}
 									initComboVal={initComboVal}	
 									formatterDropItem={formatterDropItem}
+									clickMethod={this.bindSelectFn}
 								/>
 						</div>
 					</VelocityComponent>

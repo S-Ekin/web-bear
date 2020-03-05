@@ -11,7 +11,6 @@ import { DropItem, activeStatus } from "./DropItem";
 type props = ComboSpace.drop<"list">;
 type states = {
 	immutableData: Immutable.List<IImmutalbeMap<node>>;
-	singleClickPre:string; //单选时，记录上一次选择的
 	preData:any[];
 	preInitComboVal?:{id:string};
 };
@@ -21,11 +20,79 @@ type node = {
 };
 
 interface IDropList {
+	singleClickPre: string; //单选时，baocun之前选择的
 	initState(props: props): states;
+	//格式化数据，添加选中的字段 active ;
+	formatterData(props: props,defaultVal:string): Immutable.List<IImmutalbeMap<node>>;
+	//点击的时候改变数据
+	componentWillReceiveProps(props: props): void;
 }
 
-//格式化数据，添加选中的字段 active ;
-const formatterData = function(props: props,defaultVal:string) {
+class DropList extends React.PureComponent<props, states> implements IDropList {
+	
+	singleClickPre = "";
+	state: states = this.initState(this.props);
+	constructor(props: props) {
+		super(props);
+		this.state = this.initState(props);
+		//暴露点击方法
+		const { clickMethod } = props;
+		clickMethod(this.clikItem);
+	}
+	initState(props: props) {
+		const {filedObj,data,initComboVal} = props;
+		const defaultVal = filedObj.get("defaultVal")!;
+		return {
+			immutableData: this.formatterData(props,defaultVal),
+			preData:data,
+			preInitComboVal:initComboVal
+		};
+	}
+	clear() {
+		const { changeSelect, selected, filedObj } = this.props;
+		let _selected = selected;
+		const idField = filedObj.get("idField");
+
+		this.setState(pre => {
+			let _data = pre.immutableData;
+
+			_data = _data.withMutations(list => {
+				return list.map(val => {
+					const has = _selected.find(
+						select => `${select.id}` === `${val.get(idField)}`
+					);
+
+					if (has) {
+						return val.set("active", activeStatus.noSelect);
+					} else {
+						return val;
+					}
+				});
+			});
+
+			this.singleClickPre = ""; //清空之前选中的存储值
+			return {
+				immutableData: _data,
+			};
+		});
+		changeSelect(Immutable.List([]));
+	}
+	clikItem = (id?: string) => {
+		if (!id) {
+			this.clear();
+			return;
+		}
+		const { immutableData } = this.state;
+		const { filedObj } = this.props;
+		const idField = filedObj.get("idField");
+		const index = immutableData.findIndex(
+			val => `${val.get(idField)}` === `${id}`
+		);
+		if (index !== -1) {
+			this.clickFn(`${index}`);
+		}
+	}
+	formatterData(props: props,defaultVal:string) {
 		const { filedObj, data, initSelect } = props;
 		const id = filedObj.get("idField");
 		const text = filedObj.get("textField");
@@ -56,34 +123,45 @@ const formatterData = function(props: props,defaultVal:string) {
 		});
 		initSelect(Immutable.List(listSelect));
 		//重置上一次选择的索引
-		//this.singleClickPre = oldSelected;
-		return {
-			data:Immutable.fromJS(_data),
-			singleClickPre:oldSelected
-		};
-	};
+		this.singleClickPre = oldSelected;
+		return Immutable.fromJS(_data);
+	}
 
-const clickFn = function(index: string,props:props,state :states) {
+	componentWillReceiveProps(nextProps: props) {
+		if (nextProps.data !== this.props.data) {
+			let initComboVal:any = nextProps.initComboVal ;
+				initComboVal = initComboVal ? initComboVal.id :"";
 
-		const { filedObj, selected, changeSelect } = props;
+			this.setState({
+				immutableData: this.formatterData(nextProps,`${initComboVal}`),
+			});
+		}else if(nextProps.initComboVal!==this.props.initComboVal){
+			let id = nextProps.initComboVal ? nextProps.initComboVal.id :"";
+			this.clikItem(`${id}`);
+		}
+	}
+
+	clickFn(index: string) {
+		const { filedObj, selected } = this.props;
 		const multipy = filedObj.get("multiply");
 		const idField = filedObj.get("idField");
 		const textField = filedObj.get("textField");
 		const clickForbid = filedObj.get("clickOrCheckForbid");
 		const comField = filedObj.get("field");
-		let oldSelectedIndex = state.singleClickPre;
-				
-		const data = state.immutableData;
+		let oldSelectedIndex = this.singleClickPre;
+		this.setState(
+			pre => {
+				const data = pre.immutableData;
 
 				let _data = data;
 				let _select = selected;
 				let newNode: IImmutalbeMap<node> = _data.getIn([index]);
 				if(!newNode){
-					return undefined;
+					return null ;
 				}
 				//判断是否禁止编辑
 				if (clickForbid(newNode,comField)) {
-						return undefined;
+						return null;
 				}
 
 				//单选清除以前选中的
@@ -128,134 +206,20 @@ const clickFn = function(index: string,props:props,state :states) {
 					newNode = node;
 					return node;
 				});
-				// 改变父类的props
-				changeSelect(_select, newNode);
-				if (!multipy) {
-					oldSelectedIndex = index;
+
+				this.props.changeSelect(_select, newNode);
+				if (!filedObj.get("multiply")) {
+					this.singleClickPre = index;
 				}
 				return {
-					data: _data,
-					singleClickPre:oldSelectedIndex
+					immutableData: _data,
 				};
-			
-	};
-
-class DropList extends React.PureComponent<props, states> implements IDropList {
-	static getDerivedStateFromProps(nextProps:props,preState:states):null | Partial<states>{
-		const {preData,preInitComboVal} = preState;
-		if(nextProps.data !== preData){
-
-			let initComboVal:any = nextProps.initComboVal ;
-			initComboVal = initComboVal ? initComboVal.id :"";
-
-			const resObj = formatterData(nextProps,initComboVal);
-			return {
-				preData:nextProps.data,
-				immutableData:resObj.data!,
-				singleClickPre:resObj.singleClickPre!,
-			};
-		}else if(nextProps.initComboVal !== preInitComboVal){
-			const resObj = clickFn(nextProps.initComboVal!.id,nextProps,preState);
-
-			if(resObj){
-				return {
-					preInitComboVal:nextProps.initComboVal,
-					immutableData:resObj.data!,
-					singleClickPre:resObj.singleClickPre
-				};
-			}else{
-				return {
-					preInitComboVal:nextProps.initComboVal,
-				}
 			}
-			
-		}
-
-		// tslint:disable-next-line: no-null-keyword
-		return null ;
-
-	}
-	state: states = this.initState(this.props);
-	constructor(props: props) {
-		super(props);
-		this.state = this.initState(props);
-		//暴露点击方法
-		const { clickMethod } = props;
-		clickMethod(this.clikItem);
-	}
-	initState(props: props) {
-		const {filedObj,data,initComboVal} = props;
-		const defaultVal = filedObj.get("defaultVal")!;
-		const obj = formatterData(props,defaultVal);
-		return {
-			immutableData: obj.data! ,
-			preData:data,
-			preInitComboVal:initComboVal,
-			singleClickPre:'',
-		};
-	}
-	clear() {
-		const { changeSelect, selected, filedObj } = this.props;
-		let _selected = selected;
-		const idField = filedObj.get("idField");
-
-		this.setState(pre => {
-			let _data = pre.immutableData;
-
-			_data = _data.withMutations(list => {
-				return list.map(val => {
-					const has = _selected.find(
-						select => `${select.id}` === `${val.get(idField)}`
-					);
-
-					if (has) {
-						return val.set("active", activeStatus.noSelect);
-					} else {
-						return val;
-					}
-				});
-			});
-
-			return {
-				immutableData: _data,
-				singleClickPre:'',
-			};
-		});
-		changeSelect(Immutable.List([]));
-	}
-	clikItem = (id?: string) => {
-		if (!id) {
-			this.clear();
-			return;
-		}
-		const { immutableData } = this.state;
-		const { filedObj } = this.props;
-		const idField = filedObj.get("idField");
-		const index = immutableData.findIndex(
-			val => `${val.get(idField)}` === `${id}`
 		);
-		if (index !== -1) {
-			this.clickFnForListMethod(`${index}`);
-		}
 	}
 
 	clickFnForListMethod = (index: string) => {
-		this.setState(pre => {
-
-			const obj = clickFn(index,this.props,pre);
-			
-			if(obj){
-				return {
-					immutableData:obj.data!,
-					singleClickPre:obj.singleClickPre!,
-				};
-			}else{
-				// tslint:disable-next-line: no-null-keyword
-				return null ;
-			}
-			
-		});
-		
+		this.clickFn(index);
 	}
 	render() {
 		const { immutableData } = this.state;
