@@ -203,7 +203,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     
     return (
       <div className="g-layout comboTree-page">
-        <div className="g-layout-head">列表下拉框</div>
+        <div className="g-layout-head"><h3>列表下拉框</h3></div>
         <div className="g-layout-article">
           <div className="g-item-show config-box">
             <Combobox

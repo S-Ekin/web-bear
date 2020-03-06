@@ -128,6 +128,8 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
           };
         });
     }
+
+	//#todo:要改
     componentWillReceiveProps(props:props){
         if(props.data!==this.props.data){
 

@@ -38,6 +38,8 @@ const TdCheckBox:React.SFC<{
 type TbodyState = {};
 class TBody extends React.PureComponent<Props, TbodyState> implements ITBody {
 	isSameTr = "";
+
+	//#todo:要改
 	componentWillReceiveProps(nexrProps: Props) {
 		if (nexrProps.tableData !== this.props.tableData) {
 			this.isSameTr = "";

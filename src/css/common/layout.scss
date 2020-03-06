@@ -28,8 +28,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: $page-padding;
-    padding: 0 $page-padding;
+    padding: $page-padding /2  $page-padding;
+    box-shadow: $shadow;
 
     .layout-head-item {
       display: flex;

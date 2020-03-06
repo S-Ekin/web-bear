@@ -4,5 +4,9 @@
     "terminal.integrated.fontSize": 18,
     "markdown.preview.fontSize": 18,
     "debug.console.fontSize": 18,
-    
+    "todo-tree.tree.scanMode": "workspace",
+    "stylelint.config": {
+         "extends": "stylelint-config-standard",
+    },
+   
 }

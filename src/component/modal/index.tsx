@@ -66,6 +66,8 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState> im
         // tslint:disable-next-line: no-null-keyword
         (this.modalDom.current)!.onmousemove = null;
 	}
+
+	//#todo:要改
 	componentWillReceiveProps(props:ModalProps){
 		if(props.show!==this.props.show){
 			this.init = true ;

@@ -4,8 +4,14 @@
  * @time 2020-03-01
  */
 import * as React from "react";
-import 'highlight.js/styles/rainbow.css';
-import {highlightBlock} from 'highlight.js';
+import 'highlight.js/styles/atom-one-dark.css';
+import hljs from 'highlight.js';
+import hljsNumber from 'highlightjs-line-numbers2.js';
+
+//hljs.initHighlightingOnLoad();
+hljsNumber.init(hljs);
+//hljs.initLineNumbersOnLoad({singleLine: true});
+
 
 type Props={
     children:string;
@@ -17,12 +23,12 @@ interface ICodeBlock {
     codeRef:React.RefObject<HTMLDivElement>;
 }
 class CodeBlock extends React.PureComponent<Props,States> implements ICodeBlock{
-     static  getDerivedStateFromProps(nextProps:Props,preState:States){
-        // console.log('getDerivedStateFromProps');
-        // console.log(nextProps);
-        // console.log(preState);
+    //  static  getDerivedStateFromProps(nextProps:Props,preState:States){
+    //     // console.log('getDerivedStateFromProps');
+    //     // console.log(nextProps);
+    //     // console.log(preState);
         
-    }
+    // }
     codeRef:ICodeBlock['codeRef']=React.createRef();
     state:States={
 
@@ -30,7 +36,8 @@ class CodeBlock extends React.PureComponent<Props,States> implements ICodeBlock{
    
     componentDidMount(){
         const dom = this.codeRef.current!;
-        highlightBlock(dom);
+        hljs.highlightBlock(dom);
+        hljs.lineNumbersBlock(dom);
     }
     render(){
         const {children} = this.props;

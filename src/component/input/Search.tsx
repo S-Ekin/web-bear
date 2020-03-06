@@ -16,20 +16,38 @@ type props={
 };
 type states={
 	searching: boolean;
-    keyword:string;
+	keyword:string;
+	preField:string;
 };
 interface ISearch {
 	closeSearch():void;
 }
-class Search extends React.PureComponent<props,states> implements ISearch{
-    
-    static defaultProps = {
+class Search extends React.PureComponent<props,states> implements ISearch{ 
+	static defaultProps = {
 		tip: "查询搜索结果...",
 	};
+	static  getDerivedStateFromProps(nextProps:props,preState:states):Partial<states> | null {
+		if(nextProps.field!==preState.preField) {
+			// 兼容一个搜索框用在两种类型的搜索
 
+			const {closeHandle,field} = nextProps;
+			if(closeHandle){
+				closeHandle(field);
+			}
+			return {
+            	searching: false,
+				keyword:"",
+				preField:nextProps.field
+			};
+		
+		}else{
+			return null ;
+		}
+	}
     state:states={
         searching:false,
-        keyword:"",
+		keyword:"",
+		preField:this.props.field
     };
     toggleSearch = () => {
 
@@ -44,12 +62,6 @@ class Search extends React.PureComponent<props,states> implements ISearch{
 
 		searchHandle(keyword,field);
 
-	}
-
-	componentWillReceiveProps(nextProps:props){
-		if(nextProps.field!==this.props.field){
-			this.closeSearch();
-		}
 	}
 
 	closeSearch = () => {

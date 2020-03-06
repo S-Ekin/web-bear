@@ -107,7 +107,9 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
 
     return (
       <div className="g-layout calendar-demo" >
-        <div className="g-layout-head">日历样式</div>
+        <div className="g-layout-head">
+          <h3>日历样式</h3>
+         </div>
         <div className="g-layout-article">
           <div className="g-item-show">
             <div>
