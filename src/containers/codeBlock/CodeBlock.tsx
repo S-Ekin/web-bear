@@ -15,6 +15,7 @@ hljsNumber.init(hljs);
 
 type Props={
     children:string;
+    language?:string;
 };
 type States={
 
@@ -23,6 +24,9 @@ interface ICodeBlock {
     codeRef:React.RefObject<HTMLDivElement>;
 }
 class CodeBlock extends React.PureComponent<Props,States> implements ICodeBlock{
+    static defaultProps={
+        language:'javascript'
+    };
     //  static  getDerivedStateFromProps(nextProps:Props,preState:States){
     //     // console.log('getDerivedStateFromProps');
     //     // console.log(nextProps);
@@ -40,11 +44,11 @@ class CodeBlock extends React.PureComponent<Props,States> implements ICodeBlock{
         hljs.lineNumbersBlock(dom);
     }
     render(){
-        const {children} = this.props;
+        const {children,language} = this.props;
 
         return (
             <pre>
-                <code ref={this.codeRef} className={`language-javascript`}>
+                <code ref={this.codeRef} className={`language-${language}`}>
                     {children}
                 </code>
             </pre>

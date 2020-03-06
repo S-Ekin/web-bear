@@ -255,7 +255,7 @@
                                     "Content-Type": "application/json"
                                 },
                                 "data": JSON.stringify({
-                                    "sn":$("#sn").html(),
+                                   RelBizNo : 1217 
                                 }),
                             }).done(function (res){
                                 if(res.statusCode==0){
@@ -338,10 +338,10 @@
             }) ;
             
             $("#SZWJ_GetPicBySNBtn").click(function(){
-                if(  !$("#sn").html() ){
-                     alert('请获取sn')
-                    return ;
-                 }
+                // if(  !$("#sn").html() ){
+                //      alert('请获取sn')
+                //     return ;
+                //  }
 
                  config.SZWJ_GetPicBySN();
             }); 

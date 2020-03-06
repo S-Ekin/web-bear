@@ -43,6 +43,7 @@ interface ICalendar {
 	getShowViewArr(rotate:commonInterface["rotate"]):States["showViewArr"];
 }
 
+
 class Calendar extends React.PureComponent<Props, States>
 	implements ICalendar  {
 		static defaultProps = {
@@ -78,12 +79,17 @@ class Calendar extends React.PureComponent<Props, States>
 			if(renderCallBack){
 					clickBack(selTimeArr,field,rotate!,selTimeArr);
 			}	
+			let animationArr:States["showViewArr"] = new Array(5).fill("fadeOut");
+			animationArr[nextProps.rotate!] = "fadeIn";
+			
 			return {
 				expand: false,
 				selTimeArr,
 				calendarVal: timeVal.join(" 至 "),
 				preInitTime:nextProps.initTime,
-				rotate:nextProps.rotate
+				rotate:nextProps.rotate,
+				showViewArr:animationArr
+
 			};
 		}else {
 			return null ;

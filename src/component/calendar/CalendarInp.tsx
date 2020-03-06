@@ -61,7 +61,7 @@ class CalendarInp extends React.PureComponent<
 						<span
 							className="m-search-close"
 							onClick={this.clearValue}>
-							<i className="fa fa-times fa-lg" />
+							<SvgIcon className="close"/>
 						</span>
 					</VelocityComponent>
 				) : undefined ;

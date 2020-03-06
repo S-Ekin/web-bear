@@ -45,7 +45,7 @@
   .g-item-show {
     box-shadow: $shadow;
     margin: 20px 0;
-    overflow: auto;
+    overflow: visible;
     padding: $page-padding / 2;
 
     &:first-child {

@@ -2,21 +2,6 @@
   .g-propsEdit {
     padding: 20px;
     border: 1px solid,;
-
-    & > div {
-      &:first-child {
-        margin-right: 20px;
-      }
-    }
-  }
-
-  .g-outControl {
-    padding: 20px;
-    border: 1px solid,;
-  }
-
-  .box-set {
-    margin-top: 20px;
     display: flex;
     justify-content: space-between;
   }

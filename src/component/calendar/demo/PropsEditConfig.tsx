@@ -6,29 +6,23 @@
 import * as React from "react";
 import {Input,CheckBox} from "../../input/index";
 
-type Props={
-    obj:{
+type obj = {
         field: string;
-        rotate: CalendarSpace.commonInterface["rotate"]; // 日历类型
-        style: 1 | 2;
+        rotate: number; // 日历类型
+        style:number;
         time: boolean; //可选择时间
         noInp: boolean;
         defaultTime: string; //最终显示的时间字符串
         width: number;
         placeholder: string;
         ableClear: boolean;
-        initTime: {time:""};//初始化时间
         renderCallBack: boolean;//初始化时，调用点击的回调函数
         noChangeRotate: boolean;//不能改变频率
-        clickBack: (
-            timeStr: string,
-            field: string,
-			rotate: CalendarSpace.commonInterface["rotate"],
-			selTimeList:CalendarSpace.CalendarStates["selTimeArr"]
-			
-        ) => void;
-    }
-changeState<K extends keyof Props["obj"]>(key:K,val: Props["obj"][K]):void;
+    };
+
+type Props={
+    obj:IImmutalbeMap<obj>;
+	changeState(key:keyof obj,val: any):void;
 };
 type States={
 
@@ -45,9 +39,9 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
     };
     inpChangeFn=(e:React.ChangeEvent<HTMLInputElement>)=>{
         const dom = e.currentTarget;
-		const field = dom.name as keyof Props["obj"];
+		const field = dom.name as keyof obj;
 		let value:any = dom.value;
-		if(field === "rotate"){
+		if(['width',"rotate",'style'].includes(field)){
 			value = ~~value;	
 		}else if(["time","noInp","ableClear","noChangeRotate","renderCallBack"].includes(field)){
 
@@ -56,7 +50,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 		this.props.changeState(field,value);
     }
     render(){
-        const {obj:{
+        const {
             field,
             rotate,
             style,
@@ -68,11 +62,10 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
             ableClear,
             renderCallBack,
             noChangeRotate,
-        }} = this.props;
+        } = this.props.obj.toJS();
         
         return (
 			<div className="g-propsEdit">
-                <h3>日历初始化</h3>
 				<div>
 					<div className="inp-item">
 						<Input
@@ -165,14 +158,6 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 						</CheckBox>
 					</div>
 					<div className="inp-item">
-						<Input
-							name="defaultTime"
-							changeFn={this.inpChangeFn}
-							value={defaultTime}>
-							默认时间 defaultTime：
-						</Input>
-					</div>
-					<div className="inp-item">
 						<span>隐藏日期框 noInp：</span>
 						<CheckBox
 							name="noInp"
@@ -199,7 +184,14 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 							提示语 placeholder：
 						</Input>
 					</div>
-					
+					<div className="inp-item">
+						<Input
+							name="defaultTime"
+							changeFn={this.inpChangeFn}
+							value={defaultTime}>
+							默认时间 defaultTime：
+						</Input>
+					</div>
 					<div className="inp-item">
 						<span>能清空 ableClear：</span>
 						<CheckBox
@@ -257,15 +249,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 							否
 						</CheckBox>
 					</div>
-                    <div className="inp-item" style={{width: 300,}}>
-						<span>点击函数：clickBack</span>
-                        <code >
-                            function clickBack( 
-                                timeArr,
-                                field,
-                                 rotate,){`{console.log(timeObj,field,rotate)}`}
-                        </code>
-					</div>
+                   
 				</div>
 			</div>
 		);
