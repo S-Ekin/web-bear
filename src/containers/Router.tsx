@@ -44,10 +44,10 @@ const routerConfig = {
 
 class MainRouter extends React.PureComponent{
 	
-	componentWillUpdate(){
-		noticeFn.clear();
-		console.log('--------------更新----------');
-	}
+	// componentWillUpdate(){
+	// 	noticeFn.clear();
+	// 	console.log('--------------更新----------');
+	// }
 	render(){
 		return (
 			<>

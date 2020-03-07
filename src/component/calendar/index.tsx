@@ -58,7 +58,7 @@ class Calendar extends React.PureComponent<Props, States>
 	
 		if (
 			nextProps.initTime !== preState.preInitTime ||
-			nextProps.rotate !== preState.rotate
+			nextProps.rotate !== preState.preRotate
 		) {
 			const {
 				time,
@@ -88,7 +88,8 @@ class Calendar extends React.PureComponent<Props, States>
 				calendarVal: timeVal.join(" 至 "),
 				preInitTime:nextProps.initTime,
 				rotate:nextProps.rotate,
-				showViewArr:animationArr
+				showViewArr:animationArr,
+				preRotate:nextProps.rotate,
 
 			};
 		}else {
@@ -224,6 +225,7 @@ class Calendar extends React.PureComponent<Props, States>
 		}
 		
 		this.setState(pre=>{
+
 			const val = callback(pre) as any ;
 			let obj:any = {};
 			const {time} = this.props;
@@ -240,9 +242,9 @@ class Calendar extends React.PureComponent<Props, States>
 				const selTimeArr = pre.selTimeArr;
 				const calendarVal = getInpTimeStrArr(selTimeArr,val,time!).join(" 至 ");
 				const showViewArr = this.getShowViewArr(val);
-				obj= {
-					calendarVal ,
-					showViewArr,
+				return {
+					calendarVal:calendarVal,
+					showViewArr:showViewArr,
 					rotate:val,
 				};
 			}else if(key==="showViewArr"){
@@ -256,6 +258,9 @@ class Calendar extends React.PureComponent<Props, States>
 				};
 			}
 
+			console.log(obj);
+			
+
 			return obj;
 			
 		},()=>{
@@ -264,6 +269,8 @@ class Calendar extends React.PureComponent<Props, States>
 				const {rotate,calendarVal,selTimeArr} = this.state;	
 				clickBack(calendarVal,field,rotate,selTimeArr);
 			}
+			console.log(this.state,"update");
+			
 			
 		});
 	}
@@ -335,7 +342,8 @@ class Calendar extends React.PureComponent<Props, States>
 						style={style!}
 					/>
 				);
-		
+		console.log(showViewArr,'par');
+			
 		const secondViews =
 			selTimeArr.size === 2 ? (
 				<CalendarView

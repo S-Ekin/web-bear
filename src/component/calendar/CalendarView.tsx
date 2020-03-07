@@ -47,9 +47,6 @@ export default class CalendarView
 	extends React.PureComponent<Props, States>
 	implements ICalendarView {
 
-	// static getDerivedStateFromProps(){
-		
-	// }
 	constructor(props:Props){
 		super(props);
 		const {selTimeObj,curTime} = this.props;
@@ -326,11 +323,35 @@ export default class CalendarView
 			return undefined ;
 		}
 	}
-	changeTime=()=>{
-		console.log(1);
+
+	changeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+		const name = e.currentTarget.name as 'hour' | 'minute' ;
+		const viewIndex = +e.currentTarget.dataset.viewindex!;
+		const {changeBasicState} = this.props;
+		let value =  ~~e.currentTarget.value;
+			value = name === "hour" ? (value>23 ? 23 : value) : (value > 59 ?59 :value);
+
+		changeBasicState<"selTimeArr">("selTimeArr",function(states:CalendarSpace.CalendarStates) {
+
+				let selTimeArr = states.selTimeArr;
+
+				if (!selTimeArr.size) {
+					selTimeArr = Immutable.fromJS([{ year: "" }]);
+				}
+
+				selTimeArr = selTimeArr.update(viewIndex, map => {
+					return map.withMutations(node =>{
+						
+						return node.set(name,value);
+					});
+				});
+
+				return selTimeArr;
+
+		});
 		
 	}
-	
 	render() {
 		const {
 			curTime,
@@ -341,6 +362,8 @@ export default class CalendarView
 			showViewArr
 		} = this.props;
 		const { showTimeObj, lastYear} = this.state;
+		console.log(showViewArr,"chld");
+		
 
 		const curViewInde = showViewArr.findIndex(val => val === "fadeIn");
 		const showMoveBtn =
