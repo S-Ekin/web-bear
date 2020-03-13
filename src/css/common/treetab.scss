@@ -1,0 +1,20 @@
+.treeTab {
+  position: relative;
+  display: flex;
+
+  .tab-viewBody {
+    * > div {
+      width: 100%;
+    }
+  }
+
+  table {
+    width: 100%;
+  }
+
+  td,
+  th {
+    border: 1px solid;
+    padding: 6px;
+  }
+}

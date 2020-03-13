@@ -1,6 +1,13 @@
 import * as Immutable from "immutable";
-import { activeStatus} from "./DropItem";
-type props = ComboSpace.drop<"tree">;
+enum activeStatus {
+	select = "selected",
+	hasSelect = "hasSelect",
+	noSelect = "noSelect",
+}
+type props = {
+	filedObj:ComboSpace.drop<"tree">['filedObj'];
+	initSelect:ComboSpace.drop<'tree'>['initSelect'];
+} ;
 type node = {
 	[key: string]: any;
 	active: activeStatus;

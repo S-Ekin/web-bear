@@ -6,7 +6,7 @@
 import * as React from "react";
 import {Switch,Route} from 'react-router-dom';
 import TableList from '@component/table/demo/Demo';
-import TableTree from '@component/table/demo2/Demo';
+import TableTree from '@component/treeTable/demo2/Demo';
 
 type Props={
 
