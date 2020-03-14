@@ -1,20 +1,40 @@
+$border: 1px solid;
+
 .treeTab {
   position: relative;
   display: flex;
 
   .tab-viewBody {
+    border-top: $border;
+
+    &:last-child {
+      border-right: $border;
+    }
+
     * > div {
       width: 100%;
     }
   }
 
-  table {
-    width: 100%;
+  .tree-par {
+    &:hover {
+      cursor: pointer;
+    }
   }
 
-  td,
-  th {
-    border: 1px solid;
-    padding: 6px;
+  .tree-check {
+    cursor: pointer;
+  }
+
+  .td-border {
+    border-left: $border;
+    border-bottom: $border;
+    padding: 4px;
+    box-sizing: border-box;
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed;
   }
 }

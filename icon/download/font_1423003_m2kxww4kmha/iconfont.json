@@ -6,6 +6,20 @@
   "description": "web组件图标",
   "glyphs": [
     {
+      "icon_id": "6095690",
+      "name": "减",
+      "font_class": "minus",
+      "unicode": "e6d4",
+      "unicode_decimal": 59092
+    },
+    {
+      "icon_id": "6095691",
+      "name": "加",
+      "font_class": "plus",
+      "unicode": "e6d5",
+      "unicode_decimal": 59093
+    },
+    {
       "icon_id": "98045",
       "name": "loading",
       "font_class": "loading",

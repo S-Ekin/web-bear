@@ -1,7 +1,6 @@
 import { Route } from "react-router-dom";
 import * as React from "react";
 import * as loadable from "react-loadable";
-import noticeFn from '@component/toast/index';
 
 const routerConfig = {
 	buttonRouter: {

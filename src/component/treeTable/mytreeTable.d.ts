@@ -1,5 +1,4 @@
 declare namespace MyTreeTabSpace {
-
 	export interface columnItem {
 		field:string;
 		children:string;
@@ -20,9 +19,15 @@ declare namespace MyTreeTabSpace {
 		}
 		fixObj: {
 			childField:string;
-			idField:string;
-			tabField?:string;
+			multiply?: boolean;
+			itemIcon?: string;
+			idField: string;//表格的节点标识
+			defaultSel?: string;//默认选中的
+			tabField?: string;//表格标识
+			emptyTxt?: string;//空数据时显示文字
+
 		};
+		changeState(path:string,key:'expand'|'active'|'checkPar'):void;
 		node:{
 			[key: string]: any;
 			active: 'selected' | 'hasSelect' | 'noSelect';
@@ -38,6 +43,5 @@ declare namespace MyTreeTabSpace {
 		checkbox?: boolean; //多选
 		tabField?: string; //表格标识
 	}
-
 
 }

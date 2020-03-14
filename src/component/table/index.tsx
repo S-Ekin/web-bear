@@ -167,7 +167,6 @@ class Table extends React.PureComponent<Props,States> implements ITable{
         }
         const par = this.tableContainer.current!;
         const top = item.offsetTop  - par.clientHeight + item.clientHeight + 100 ; 
-        console.log(item.offsetTop,par.clientHeight,top);
         window.setTimeout(()=>{
             (this.scrollRef.current! as any).scrollYTo(Math.max(0,top));
         },10);
@@ -274,8 +273,6 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 										/>
 									</th>
                                 ) : undefined;
-                                
-       
         return (
             	<table>
 						{colgroupCom}
@@ -292,7 +289,6 @@ class Table extends React.PureComponent<Props,States> implements ITable{
     }
 
     changeState=<P extends keyof States>(field:P,data:States[P])=>{
-         
         this.setState({
             [field as "curPage"]:data as any
         });
@@ -370,6 +366,5 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 		);
     }
 }
-
 
 export default Table;

@@ -1,6 +1,6 @@
 const data = [
   {
-    id: 1,
+    id: "1",
     name: "All Tasks",
     begin: "3/4/2010",
     end: "3/20/2010",
@@ -52,7 +52,7 @@ const data = [
     state: "open"
   },
   {
-    id: 3,
+    id: "3",
     name: "Coding",
     persons: 2,
     begin: "3/11/2010",

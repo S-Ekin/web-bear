@@ -5,17 +5,20 @@
  */
 import * as React from "react";
 import ParTree from './ParTree';
+import TrItem from './TrItem';
 type common = MyTreeTabSpace.common;
 type Props={
     data:common['data'];
     cols:common['col'][];
     fixObj:common['fixObj'];
+    viewIndex:number;
+    changeState:common['changeState'];
 };
 type States={
 
 };
 interface ITabView {
-    getBody():IImmutalbeList<JSX.Element>;
+    getBody():JSX.Element;
 }
 class TabView extends React.PureComponent<Props,States> implements ITabView{
 
@@ -23,40 +26,85 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
     state:States={
 
     }; 
-
     gethead(){
         const {cols} = this.props;
         const tds = cols.map(val=>{
             const {text,width,field} = val ;
             return (
-                <th style={{width: width,}} key={field}>{text}</th>
+                <th style={{width: width,}} className="td-border" key={field}>{text}</th>
             );
         });
         return (
             <div className="tab-head">
                  <table>
-                    <tr>{tds}</tr>
+                     <thead>
+                         <tr>{tds}</tr>
+                     </thead>
                 </table>
             </div>
         );
     }
-
-    getBody(){
-        const {data,fixObj,fixObj:{idField},cols} = this.props;
-       
-
-        return data.map(val=>{
-
+    createColgroup(){
+        const {cols} = this.props;
+        const arr = cols.map(val=>{
+            const {width,field} = val ;
+            const style = width ? {width} : undefined;
             return (
-                <ParTree
-                    key={val.get(idField)}
-                    node={val}
-                    cols={cols}
-                    fixObj={fixObj}
-                />
+                <col style={style} key={field}/>
             );
-
         });
+        return (
+            <colgroup>
+                {arr}
+            </colgroup>
+        );
+
+    }
+    getBody(){
+        const {data,fixObj,fixObj:{idField,childField},cols,viewIndex,changeState} = this.props;
+        const trs = data.map((val,index)=>{
+            const arr = val.get(childField);
+            const id = val.get(idField);
+            const isMainView= viewIndex === 0 ;
+            if(arr && arr.size){
+                return (
+                    <ParTree
+                        key={id}
+                        changeState={changeState}
+                        lev={0}
+                        index={`${index}`}
+                        node={val}
+                        cols={cols}
+                        isMainView={isMainView}
+                        fixObj={fixObj}
+                    />
+                );
+            }else{
+                return (
+                    <TrItem
+                        key={id}
+                        node={val}
+                        index={`${index}`}
+                        changeState={changeState}
+                        cols={cols}
+                        isMainView={isMainView}
+                        lev={0}
+                        fixObj={fixObj}
+                    />
+                );
+            }
+        });
+        const colgroup = this.createColgroup();
+        return (
+            <div className="tab-body">
+                <table>
+                    {colgroup}
+                    <tbody>
+                        {trs} 
+                    </tbody>
+                </table>
+            </div>
+        );
     }
 
     render(){

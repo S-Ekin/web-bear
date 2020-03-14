@@ -35,7 +35,7 @@ class App extends React.PureComponent<appProps, appState>{
 
           <div className="g-main">
             <ErrorBoundary>
-              <Switch>
+               <Switch>
                 <MainRouter />
               </Switch>
             </ErrorBoundary>
