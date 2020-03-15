@@ -13,6 +13,7 @@ type Props={
     fixObj:common['fixObj'];
     viewIndex:number;
     changeState:common['changeState'];
+    changeScrollTop(top:number):void;
 };
 type States={
 
@@ -22,10 +23,20 @@ interface ITabView {
 }
 class TabView extends React.PureComponent<Props,States> implements ITabView{
 
-
+    colHeadRef:React.RefObject<HTMLDivElement> = React.createRef();
+    tabBodyRef:React.RefObject<HTMLDivElement> = React.createRef();
     state:States={
 
     }; 
+   
+    scrollFn=(e:React.UIEvent<HTMLDivElement>)=>{
+        const {changeScrollTop} = this.props;
+        const dom = e.currentTarget;
+        const left = dom.scrollLeft;
+        const colHead = this.colHeadRef.current!;
+        colHead.scrollLeft = left;
+        changeScrollTop(dom.scrollTop);
+    }
     gethead(){
         const {cols} = this.props;
         const tds = cols.map(val=>{
@@ -35,7 +46,7 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
             );
         });
         return (
-            <div className="tab-head">
+            <div className="tab-head" >
                  <table>
                      <thead>
                          <tr>{tds}</tr>
@@ -95,15 +106,18 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
             }
         });
         const colgroup = this.createColgroup();
+        const fn = viewIndex !== 0 ? this.scrollFn : undefined;
+        const refObj = viewIndex === 0 ? this.tabBodyRef : undefined;
         return (
-            <div className="tab-body">
-                <table>
-                    {colgroup}
-                    <tbody>
-                        {trs} 
-                    </tbody>
-                </table>
-            </div>
+           
+                <div className="tab-body-main" onScroll={fn} ref={refObj} >
+                    <table>
+                        {colgroup}
+                        <tbody>
+                            {trs} 
+                        </tbody>
+                    </table>
+                </div>
         );
     }
 
@@ -111,7 +125,7 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
 
         return (
             <div className="tab-viewBody" >
-                <div className="tab-head-wrap">
+                <div className="tab-head-wrap" ref={this.colHeadRef}>
                     {this.gethead()}
                 </div>
                 <div className="tab-body-wrap">

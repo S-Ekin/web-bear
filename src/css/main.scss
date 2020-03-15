@@ -142,7 +142,7 @@ $HeadColor: $theme-color;
 
   .g-content {
     flex: 1;/* 很重要，为auto的话，即使兄弟元素固定宽度，只要它缩放会影响兄弟元素 */
-    // overflow: hidden;
+    overflow: hidden; // 防止子元素过宽，不能隐藏
     //  min-width: 1000px;
     min-height: 600px;
     height: 100%;

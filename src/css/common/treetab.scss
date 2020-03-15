@@ -3,17 +3,41 @@ $border: 1px solid;
 .treeTab {
   position: relative;
   display: flex;
+  overflow: hidden;
 
   .tab-viewBody {
     border-top: $border;
+    overflow: hidden;
+
+    &:first-child {
+      border-left: $border;
+    }
 
     &:last-child {
       border-right: $border;
     }
 
-    * > div {
+    & > div {
       width: 100%;
     }
+  }
+
+  .tab-head-wrap {
+    position: relative;
+    overflow: hidden;
+
+    .tab-head {
+      float: left;
+    }
+  }
+
+  .tab-body-wrap {
+    //
+  }
+
+  .tab-body-main {
+    height: 140px;
+    overflow: auto;
   }
 
   .tree-par {
@@ -27,7 +51,7 @@ $border: 1px solid;
   }
 
   .td-border {
-    border-left: $border;
+    border-right: $border;
     border-bottom: $border;
     padding: 4px;
     box-sizing: border-box;
@@ -36,5 +60,6 @@ $border: 1px solid;
   table {
     width: 100%;
     table-layout: fixed;
+    border-collapse: separate;
   }
 }

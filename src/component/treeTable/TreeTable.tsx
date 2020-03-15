@@ -64,7 +64,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
     }
     
     fixObj:ITreeTable['fixObj'];
-    
+    tabViewRef:React.RefObject<TabView> = React.createRef();
     fieldArr:ITreeTable['fieldArr'];
     constructor(props:Props){
         super(props);
@@ -264,14 +264,22 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
             idField,multiply,defaultSel,childField:childField!,
         };
     }
+    changeScrollTop=(top:number)=>{
+
+        this.tabViewRef.current!.tabBodyRef.current!.scrollTop = top;
+        
+    }
     viewMap(){
         const {} = this.props;
         const {immutabData} = this.state;
         return this.fieldArr.map((group,index)=>{
             const {child} = group ;
+            const refObj = index === 0 ? this.tabViewRef : undefined;
             return (
                 <TabView
+                    ref={refObj}
                     key={index}
+                    changeScrollTop={this.changeScrollTop}
                     data={immutabData}
                     cols={child}
                     viewIndex={index}

@@ -35,10 +35,10 @@ class Demo extends React.PureComponent<Props,States> {
                         </GroupCols> 
                         <GroupCols align="right">
                             <GroupCols.colItem width={240} field="name">列1</GroupCols.colItem>
-                            <GroupCols.colItem field='persons' >列2</GroupCols.colItem>
-                            <GroupCols.colItem field='begin'>列3</GroupCols.colItem>
-                            <GroupCols.colItem field='end'>列3</GroupCols.colItem>
-                            <GroupCols.colItem field='progress'>列3</GroupCols.colItem>
+                            <GroupCols.colItem field='persons' width={240} >列2</GroupCols.colItem>
+                            <GroupCols.colItem width={240} field='begin'>列3</GroupCols.colItem>
+                            <GroupCols.colItem width={240} field='end'>列3</GroupCols.colItem>
+                            <GroupCols.colItem width={240} field='progress'>列3</GroupCols.colItem>
                         </GroupCols>
                     </TreeTable>
                    
