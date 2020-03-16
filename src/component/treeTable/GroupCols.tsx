@@ -5,7 +5,7 @@
  */
 import * as React from "react";
 
-type Props= MyTreeTabSpace.groupCol;
+type Props= MyTreeTabSpace.common['groupCol'];
 type States={
 		
 };

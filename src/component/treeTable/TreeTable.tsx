@@ -31,11 +31,7 @@ type States={
     preData:any[];
 };
 
-type col = (Omit<MyTreeTabSpace.columnItem,'children'> & {text:string});
-type config = Omit<common['groupCol'],'children'> & {
-    child:col[]
-};
-
+type config = common['config'];
 interface ITreeTable {
     fieldArr:config[];
     fixObj:common['fixObj'];
@@ -64,7 +60,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
     }
     
     fixObj:ITreeTable['fixObj'];
-    tabViewRef:React.RefObject<TabView> = React.createRef();
+    tabMainTabBodyDomArr:HTMLDivElement[] = [];
     fieldArr:ITreeTable['fieldArr'];
     constructor(props:Props){
         super(props);
@@ -84,7 +80,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
 
        return React.Children.map(arr,function(val){
 
-            const {children,align,forzen} = val.props ;
+            const {children,width,forzen} = val.props ;
 
             const child = React.Children.map(children,function(node){
                 const {children,width,field,formatter} = node.props ;
@@ -95,7 +91,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
 
             return {
                 child,
-                align,
+                width,
                 forzen
             };
 
@@ -264,30 +260,36 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
             idField,multiply,defaultSel,childField:childField!,
         };
     }
-    changeScrollTop=(top:number)=>{
+    changeScrollTop=(top:number,index:number)=>{
 
-        this.tabViewRef.current!.tabBodyRef.current!.scrollTop = top;
-        
+        this.tabMainTabBodyDomArr.map((val,oindex)=>{
+            if(oindex !== index){
+                val.scrollTop = top;
+            }
+        });
     }
     viewMap(){
         const {} = this.props;
         const {immutabData} = this.state;
         return this.fieldArr.map((group,index)=>{
-            const {child} = group ;
-            const refObj = index === 0 ? this.tabViewRef : undefined;
             return (
                 <TabView
-                    ref={refObj}
+                    config={group} 
+                    setTabBodyDom={this.setTabBodyDom}
                     key={index}
                     changeScrollTop={this.changeScrollTop}
                     data={immutabData}
-                    cols={child}
                     viewIndex={index}
                     changeState={this.changeState}
                     fixObj={this.fixObj}
                 />
             );
        });
+    }
+    setTabBodyDom=(dom:HTMLDivElement,index:number)=>{
+
+        this.tabMainTabBodyDomArr[index] = dom ;
+        
     }
     render(){
         return (

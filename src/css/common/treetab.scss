@@ -1,24 +1,52 @@
 $border: 1px solid;
 
+.treeTap-wrap {
+  height: 100%;
+}
+
 .treeTab {
+  height: 100%;
   position: relative;
   display: flex;
   overflow: hidden;
+  border: $border;
+
+  .td-border {
+    border-right: $border;
+    border-bottom: $border;
+    padding: 4px;
+    box-sizing: border-box;
+    word-break: break-all;
+  }
+
+  .tab-view-scroll {
+    flex: 1;
+    border-right: $border;
+
+    tr > .td-border:last-child {
+      border-right: none;
+    }
+
+    .tab-body-main {
+      height: 100%;
+      overflow: auto;
+    }
+  }
 
   .tab-viewBody {
-    border-top: $border;
     overflow: hidden;
-
-    &:first-child {
-      border-left: $border;
-    }
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 
     &:last-child {
-      border-right: $border;
-    }
+      tr > .td-border:last-child {
+        border-right: none;
+      }
 
-    & > div {
-      width: 100%;
+      &.tab-view-scroll {
+        border-right: none;
+      }
     }
   }
 
@@ -32,12 +60,18 @@ $border: 1px solid;
   }
 
   .tab-body-wrap {
-    //
+    height: 140px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
-  .tab-body-main {
-    height: 140px;
-    overflow: auto;
+  .tab-view-fix {
+    .tab-body-main {
+      overflow: hidden;
+      height: 100%;
+      flex: 1;
+    }
   }
 
   .tree-par {
@@ -50,16 +84,14 @@ $border: 1px solid;
     cursor: pointer;
   }
 
-  .td-border {
-    border-right: $border;
-    border-bottom: $border;
-    padding: 4px;
-    box-sizing: border-box;
-  }
-
   table {
     width: 100%;
     table-layout: fixed;
     border-collapse: separate;
+  }
+
+  .fix-bottom {
+    height: 17px;
+    border-top: $border;
   }
 }

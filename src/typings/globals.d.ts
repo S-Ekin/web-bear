@@ -1,4 +1,5 @@
-
+interface Window {
+}
 
 interface NodeModule {
         hot : {

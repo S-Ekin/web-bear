@@ -9,11 +9,12 @@ import TrItem from './TrItem';
 type common = MyTreeTabSpace.common;
 type Props={
     data:common['data'];
-    cols:common['col'][];
+    config:common['config'];
     fixObj:common['fixObj'];
     viewIndex:number;
     changeState:common['changeState'];
-    changeScrollTop(top:number):void;
+    setTabBodyDom(dom:HTMLDivElement,index:number):void;
+    changeScrollTop(top:number,viewIndex:number):void;
 };
 type States={
 
@@ -30,15 +31,19 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
     }; 
    
     scrollFn=(e:React.UIEvent<HTMLDivElement>)=>{
-        const {changeScrollTop} = this.props;
+        if(!e.currentTarget.classList.contains('action-body')){
+            return ;
+        }
+        const {changeScrollTop,viewIndex} = this.props; 
         const dom = e.currentTarget;
         const left = dom.scrollLeft;
         const colHead = this.colHeadRef.current!;
         colHead.scrollLeft = left;
-        changeScrollTop(dom.scrollTop);
+        changeScrollTop(dom.scrollTop,viewIndex);
+        
     }
     gethead(){
-        const {cols} = this.props;
+        const {config:{child:cols}} = this.props;
         const tds = cols.map(val=>{
             const {text,width,field} = val ;
             return (
@@ -56,7 +61,7 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         );
     }
     createColgroup(){
-        const {cols} = this.props;
+        const {config:{child:cols}} = this.props;
         const arr = cols.map(val=>{
             const {width,field} = val ;
             const style = width ? {width} : undefined;
@@ -71,8 +76,54 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         );
 
     }
+    componentDidMount(){
+        const {setTabBodyDom,viewIndex,config} = this.props;
+        if(!config.forzen){
+            this.overBox();
+        }
+        
+        const {current} = this.tabBodyRef;
+        setTabBodyDom(current!,viewIndex);
+    }
+    //有滚动条的时候
+    overBox(){
+
+        const tbodyDom = this.tabBodyRef.current!;
+        if(tbodyDom.scrollWidth > tbodyDom.clientWidth){
+            //给自己的头部隐藏的滚动条占位
+            const child = this.colHeadRef.current!.firstElementChild as HTMLDivElement;
+            child!.style.paddingRight = "18px";
+        }
+
+    }
+    createFixViewBottom(){
+        const {config:{forzen}} = this.props;
+        return forzen ? (
+            <div className="fix-bottom"/>
+        ):undefined;
+    }
+    wheelFn=(e:React.WheelEvent<HTMLDivElement>)=>{
+        // 避免带动页面本来的滚动条
+
+        const {changeScrollTop,viewIndex} = this.props;
+        const deltay  = e.deltaY; // 每滚动一下，滚动的距离
+        const top = this.tabBodyRef.current!.scrollTop;
+        changeScrollTop(top+deltay,viewIndex);
+    }
+    makeSign=(e:React.MouseEvent<HTMLDivElement>)=>{
+        const type = e.type;
+        const dom = e.currentTarget;
+        if(type === "mouseenter"){
+            dom.classList.add('action-body');
+        }else if(type === "mouseleave"){
+            dom.classList.remove('action-body');
+        }
+        
+        
+    }
     getBody(){
-        const {data,fixObj,fixObj:{idField,childField},cols,viewIndex,changeState} = this.props;
+        const {data,fixObj,fixObj:{idField,childField},config,viewIndex,changeState} = this.props;
+        const {child:cols} = config;
         const trs = data.map((val,index)=>{
             const arr = val.get(childField);
             const id = val.get(idField);
@@ -106,11 +157,18 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
             }
         });
         const colgroup = this.createColgroup();
-        const fn = viewIndex !== 0 ? this.scrollFn : undefined;
-        const refObj = viewIndex === 0 ? this.tabBodyRef : undefined;
+        const fn = !config.forzen ? this.scrollFn : undefined;
+        const wheel = config.forzen ? this.wheelFn :undefined;
+        const makeSignFn = !config.forzen ? this.makeSign :undefined;
+
         return (
-           
-                <div className="tab-body-main" onScroll={fn} ref={refObj} >
+                <div className="tab-body-main" 
+                    onScroll={fn} 
+                    onWheel={wheel}
+                    onMouseEnter={makeSignFn}
+                    onMouseLeave={makeSignFn}
+                    ref={this.tabBodyRef} 
+                >
                     <table>
                         {colgroup}
                         <tbody>
@@ -122,14 +180,18 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
     }
 
     render(){
+        const {config:{width,forzen},config} = this.props;
+        const styleObj = width && forzen ? {width} : undefined;
 
+        const className = config.forzen ? "tab-view-fix" : "tab-view-scroll";
         return (
-            <div className="tab-viewBody" >
+            <div className={`${className} tab-viewBody`} style={styleObj}>
                 <div className="tab-head-wrap" ref={this.colHeadRef}>
                     {this.gethead()}
                 </div>
                 <div className="tab-body-wrap">
                     {this.getBody()}
+                    {this.createFixViewBottom()}
                 </div>
             </div>
         );

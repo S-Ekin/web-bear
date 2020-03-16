@@ -10,13 +10,17 @@ declare namespace MyTreeTabSpace {
 			) => React.ReactChild;
 	}
 
+	type group = React.ComponentElement<MyTreeTabSpace.columnItem,any>;
 	export interface common {
 		col :(Omit<columnItem,'children'> & {text:string});
 		groupCol :{
-			children:React.ComponentElement<MyTreeTabSpace.columnItem,any>[];
-			align:'left' | 'center' | 'right';
+			children:group[] | group;
+			width?:number;
 			forzen?:boolean;
 		}
+		config:Omit<common['groupCol'],'children'> & {
+			child:common['col'][]
+		};
 		fixObj: {
 			childField:string;
 			multiply?: boolean;
