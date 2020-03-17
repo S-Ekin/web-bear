@@ -29,8 +29,8 @@ class Demo extends React.PureComponent<Props,States> {
                 <div className="g-layout-article">
                     <div className="g-item-show">
                         <TreeTable data={data} idField="id" tabField="tree" multiply={true}>
-                        <GroupCols forzen={true} width={300}>
-                            <GroupCols.colItem width={240} field="name">列1</GroupCols.colItem>
+                        <GroupCols forzen={true} width={200}>
+                            <GroupCols.colItem width={140} field="name">列1</GroupCols.colItem>
                             <GroupCols.colItem field='persons' >列2</GroupCols.colItem>
                         </GroupCols> 
                         <GroupCols >
@@ -94,7 +94,7 @@ class Demo extends React.PureComponent<Props,States> {
                             <GroupCols.colItem  field='progress'>列3</GroupCols.colItem>
                         </GroupCols>
                          <GroupCols >
-                            <GroupCols.colItem width={240} field="name">列1</GroupCols.colItem>
+                            <GroupCols.colItem width={140} field="name">列1</GroupCols.colItem>
                             <GroupCols.colItem field='persons' width={240} >列2</GroupCols.colItem>
                             <GroupCols.colItem width={240} field='begin'>列3</GroupCols.colItem>
                         </GroupCols>

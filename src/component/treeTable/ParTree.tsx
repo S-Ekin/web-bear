@@ -98,7 +98,7 @@ class ParTree extends React.PureComponent<Props,States> implements IParTree{
                     isMainView={isMainView}
                     isPar={true}
                 />
-                <tr>
+                <tr className="tree-td">
                     <td colSpan={cols.length}>
                          <VelocityComponent
 					duration={300}

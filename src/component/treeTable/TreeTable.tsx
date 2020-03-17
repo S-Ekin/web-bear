@@ -291,6 +291,61 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
         this.tabMainTabBodyDomArr[index] = dom ;
         
     }
+    componentDidMount(){
+        this.setSameH();
+    }
+    //比对所有区域的高度，设置为一样高
+    setSameH(){
+        let domArr = this.tabMainTabBodyDomArr;
+        
+        if(domArr.length < 2){
+            return ;
+        }   
+      
+        this.mapDom(domArr);
+
+    }
+
+    mapDom(domArr:HTMLDivElement[]){
+        
+        const tableArr = domArr.map(val=>val.firstElementChild!);
+        const tabHArr = tableArr.map(val=>val.clientHeight).sort();
+        
+        if(tabHArr[0] !== tabHArr[tabHArr.length-1]){ // 高度不同
+
+            let viewTrArr = tableArr.map(val=>{
+                return val.lastElementChild!.children;
+            });
+
+            [...viewTrArr[0]].map((val,index)=>{
+
+                const trHdom = viewTrArr.map(trArr=>{
+                    return trArr[index];
+                });
+                const trH = trHdom.map(val=>val.clientHeight).sort();
+                const trHMax = trH[trH.length-1];
+
+                if(trH[0]!== trHMax){ // 高度不同
+                    if(val.classList.contains('tree-td')){
+                        const domArr = trHdom.map(val=>{
+                            return val.firstChild!.firstChild! as HTMLDivElement;
+                        });
+                        this.mapDom(domArr);
+                            
+                    }else{
+                            //设置高度
+                            trHdom.forEach(tr=>{
+                                [...tr.children].forEach(td=>{
+
+                                    (td as HTMLTableCellElement).style.height = `${trHMax}`+"px";
+                                });
+                            });
+                        }
+                    }
+            });
+        }
+    }
+    
     render(){
         return (
             <div className="treeTap-wrap">
