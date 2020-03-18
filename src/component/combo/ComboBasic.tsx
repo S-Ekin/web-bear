@@ -26,7 +26,7 @@ type props = {
 	//外部通过这个值来控制下拉框的选中,id可以是字符串分隔
 	initComboVal?:{id:string};
 	//点击或是选中之前做的操作，返回true不执行选中操作，默认返回false
-	clickOrCheckForbid?:(node:IImmutalbeMap<any>,field:string)=>boolean;
+	clickOrCheckForbid?:(node:IImmutalbeMap<any>,field:string,selectedArr:states['selected'])=>boolean;
 	//自定义显示框的文字内容，selected所选择的内容
 	formatterVal?: (selected: states["selected"]) => React.ReactChild;
 	//自定义下拉框的文字内容

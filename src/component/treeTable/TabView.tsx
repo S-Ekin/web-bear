@@ -103,14 +103,17 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         ):undefined;
     }
     wheelFn=(e:React.WheelEvent<HTMLDivElement>)=>{
-        // 避免带动页面本来的滚动条
-
+        
         const {changeScrollTop,viewIndex} = this.props;
         const deltay  = e.deltaY; // 每滚动一下，滚动的距离
         const top = this.tabBodyRef.current!.scrollTop;
-        changeScrollTop(top+deltay,viewIndex);
+        const distance = top + deltay;
+        this.tabBodyRef.current!.scrollTop = distance;
+       
+        changeScrollTop(distance,viewIndex);
     }
     makeSign=(e:React.MouseEvent<HTMLDivElement>)=>{
+        e.preventDefault();
         const type = e.type;
         const dom = e.currentTarget;
         if(type === "mouseenter"){

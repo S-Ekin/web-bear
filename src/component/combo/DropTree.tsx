@@ -321,6 +321,8 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 		const childField = filedObj.get("childField")!;
 		const idField = filedObj.get("idField");
 		const textField = filedObj.get("textField");
+		const clickForbid = filedObj.get("clickOrCheckForbid")!;
+		const comField = filedObj.get("field");
 		const indexArr = value
 			.split(",")
 			.join(`,${childField},`)
@@ -336,7 +338,10 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 			if(!newNode){
 				return null;
 			}
-
+			//判断是否禁止点击
+			if(clickForbid(newNode,comField,selected)){
+				return null;
+			}
 			_data = _data.updateIn(indexArr, (val: IImmutalbeMap<node>) => {
 				//判断这个node有没有被选中
 				let node = val;

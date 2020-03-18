@@ -25,7 +25,7 @@ declare namespace ComboSpace {
         itemIcon?: string;
         defaultVal?: string;
         field:string;
-        clickOrCheckForbid:(node:IImmutalbeMap<any>,field:string)=>boolean;
+        clickOrCheckForbid:(node:IImmutalbeMap<any>,field:string,selectedArr?:IImmutalbeList<Iselected>)=>boolean;
     } & IDrop[P] ;
 
     export type drop<P extends keyof IDrop> = {

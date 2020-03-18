@@ -13,6 +13,7 @@ type childType =React.ComponentElement<common['groupCol'],any> ;
 type Props={
     data: any[];
     children: childType[] | childType;
+    height?:number;
     multiply?: boolean;
     itemIcon?: string;
     childField?:string;
@@ -29,6 +30,7 @@ type States={
     immutabData:IImmutalbeList<IImmutalbeMap<common['node']>>;
     selectArr:IImmutalbeList<string>;
     preData:any[];
+    preInitSelect?:{id:string}
 };
 
 type config = common['config'];
@@ -43,15 +45,18 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
         defaultSel:'',
     };
     static  getDerivedStateFromProps(nextProps:Props,preState:States):Partial<States> | null {
-        if(nextProps.data!==preState.preData){
+        if(nextProps.data!==preState.preData || nextProps.initSelectVal!==preState.preInitSelect){
             const newData = nextProps.data;
             const {idField,childField,multiply} = nextProps;
+            const defaultSel = nextProps.initSelectVal ? nextProps.initSelectVal.id : nextProps.defaultSel!;
             const obj = formatterTreeData({
                 idField,childField:childField!,multiply
-            },nextProps.defaultSel!,newData);
+            },defaultSel,newData);
             return {
                 preData:newData,
                 immutabData:obj.data,
+                preInitSelect:nextProps.initSelectVal,
+                selectArr:obj.selectArr
             };
 
         }else{
@@ -64,7 +69,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
     fieldArr:ITreeTable['fieldArr'];
     constructor(props:Props){
         super(props);
-        const {children,data,childField,idField,multiply,defaultSel} = this.props;
+        const {children,data,childField,idField,multiply,defaultSel,initSelectVal} = this.props;
         this.fieldArr = this.getFieldArr(children);
 
         const obj = formatterTreeData({childField:childField!,idField,multiply},defaultSel!,data);
@@ -72,7 +77,8 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
         this.state = {
             immutabData:obj.data,
             preData:data,
-            selectArr:obj.selectArr
+            selectArr:obj.selectArr,
+            preInitSelect:initSelectVal
         };
         
     }
@@ -347,8 +353,9 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
     }
     
     render(){
+        const {height} = this.props;
         return (
-            <div className="treeTap-wrap">
+            <div className="treeTap-wrap" style={{height: height,}}>
                  <div className="treeTab">
                     {this.viewMap()}
                 </div>
