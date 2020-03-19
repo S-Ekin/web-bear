@@ -432,7 +432,10 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             </div>
           </div>
           <div className="g-item-show">
-            <div className="inp-item">
+           
+            <CodeBlock tit={(
+              <>
+               <div className="inp-item">
               <span>启用自定义显示框的文字内容 formatterVal</span>
               <CheckBox
                 name="formatterVal"
@@ -453,7 +456,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 否
               </CheckBox>
             </div>
-            <CodeBlock>
+              </>
+            )}>
               {` //自定义显示框的文字内容，selected所选择的内容
   // formatterVal?: (selected: states["selected"]) => React.ReactChild;
               function formatterVal (selecteArr:IImmutalbeList<ComboSpace.Iselected>){
@@ -468,6 +472,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             </CodeBlock>
           </div>
           <div className="g-item-show">
+            
+            <CodeBlock tit={(<>
             <div className="inp-item">
               <span>启用自定义下拉框的文字内容 formatterDropItem</span>
               <CheckBox
@@ -489,7 +495,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 否
               </CheckBox>
             </div>
-            <CodeBlock>
+            </>)}>
               {`//自定义下拉框的文字内容
   // formatterDropItem?: (node:IImmutalbeMap<any>) => React.ReactChild;
   function formatterDropItem (node:IImmutalbeMap<any>){
@@ -499,7 +505,10 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             </CodeBlock>
           </div>
           <div className="g-item-show ">
-            <div className="inp-item">
+          
+            <CodeBlock tit={(
+              <>
+                <div className="inp-item">
               <span>
                 启用 点击或是选中之前做的操作，可以阻止下面的操作
                 clickOrCheckForbid
@@ -523,7 +532,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 否
               </CheckBox>
             </div>
-            <CodeBlock>{`//点击或是选中之前做的操作，返回true不执行选中操作，默认返回false
+              </>
+            )}>{`//点击或是选中之前做的操作，返回true不执行选中操作，默认返回false
   // clickOrCheckForbid?:(node:IImmutalbeMap<any>,field:string)=>boolean;
   clickOrCheckForbid(node: IImmutalbeMap<any>, field: string) {
     console.log("----clickOrCheckForbid-----");
@@ -534,11 +544,15 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   `}</CodeBlock>
           </div>
           <div className="g-item-show">
-            <div>
+           
+            <CodeBlock tit={(
+              <>
+               <div>
               <Button handle={this.btnControlSelect}>选择</Button>
               <small style={{marginLeft: 16,}}><b>外部控制下拉的选择id:1的节点</b></small>
             </div>
-            <CodeBlock>
+              </>
+            )}>
               {`
   /* data: any[];
   //外部通过这个值来控制下拉框的选中,多个id用字符串分隔

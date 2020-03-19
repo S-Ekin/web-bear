@@ -7,7 +7,8 @@ import * as React from "react";
 import 'highlight.js/styles/atom-one-dark.css';
 import hljs from 'highlight.js';
 import hljsNumber from 'highlightjs-line-numbers2.js';
-
+import {VelocityComponent} from "velocity-react";
+import {SvgIcon} from '@component/icon/index';
 //hljs.initHighlightingOnLoad();
 hljsNumber.init(hljs);
 //hljs.initLineNumbersOnLoad({singleLine: true});
@@ -16,9 +17,10 @@ hljsNumber.init(hljs);
 type Props={
     children:string;
     language?:string;
+    tit:React.ReactChild;
 };
 type States={
-
+    expand:boolean;
 };
 interface ICodeBlock {
     codeRef:React.RefObject<HTMLDivElement>;
@@ -35,7 +37,7 @@ class CodeBlock extends React.PureComponent<Props,States> implements ICodeBlock{
     // }
     codeRef:ICodeBlock['codeRef']=React.createRef();
     state:States={
-
+        expand:false,
     };
    
     componentDidMount(){
@@ -43,15 +45,34 @@ class CodeBlock extends React.PureComponent<Props,States> implements ICodeBlock{
         hljs.highlightBlock(dom);
         hljs.lineNumbersBlock(dom);
     }
+    slideFn=()=>{
+        this.setState(pre=>{
+           return {
+                expand:!pre.expand
+           } ;
+        });
+    }
     render(){
-        const {children,language} = this.props;
+        const {children,language,tit} = this.props;
+        const {expand} = this.state;
 
         return (
-            <pre>
-                <code ref={this.codeRef} className={`language-${language}`}>
-                    {children}
-                </code>
-            </pre>
+            <div>
+                <div className="flex-center">
+                    {tit}
+                    <span onClick={this.slideFn}><SvgIcon className={expand ? 'arrow-down' :'arrow-up'}/></span>
+                    
+                </div>
+                <VelocityComponent animation={expand ? "slideDown" : "slideUp"}>
+                    <pre>
+                        <code ref={this.codeRef} className={`language-${language}`}>
+                            {children}
+                        </code>
+                    </pre>
+                </VelocityComponent>
+                 
+            </div>
+           
         );
     }
 }

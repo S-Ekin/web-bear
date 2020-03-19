@@ -23,7 +23,7 @@ type Props={
 	emptyTxt?: string;//空数据时显示文字
     getCheckFn?:(fn:any)=>void;//获取选中的
     initSelectVal?:{id:string};//通过外界改变表格的选中
-    clickOrCheckForbid?:(node:IImmutalbeMap<any>,field:string)=>boolean;
+    clickOrCheckForbid?:(node:IImmutalbeMap<any>,field?:string)=>boolean;
     bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<any>>)=>void;//把获取选中的项的函数传递给外部
 };
 type States={
@@ -103,7 +103,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
 
         });     
     }
-    click(path:string){
+    expand(path:string){
         const {childField} = this.props;
         const arr = path.split(',').join(`,${childField},`).split(',');
         const {immutabData} = this.state;
@@ -112,6 +112,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
         if(!newNode){
             return ;
         }
+       
         this.setState(pre=>{
             return{
                 immutabData:pre.immutabData.updateIn(arr,(val:IImmutalbeMap<common['node']>)=>{
@@ -122,7 +123,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
         });
     }
     checkChild(path:string){
-        const {childField,idField} = this.props;
+        const {childField,idField,clickOrCheckForbid,tabField} = this.props;
         const {selectArr,immutabData} = this.state;
         const arr = path.split(',').join(`,${childField},`).split(',');
         let _select = selectArr;
@@ -130,6 +131,10 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
         let newNode = immutabData.getIn(arr);
         //错误兼容
         if(!newNode){
+            return ;
+        } 
+        
+        if(clickOrCheckForbid && clickOrCheckForbid(newNode,tabField)){
             return ;
         }
         this.setState(pre=>{
@@ -200,7 +205,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
 		};
 	}
     checkPar(path:string){
-        const {childField} = this.props;
+        const {childField,tabField,clickOrCheckForbid} = this.props;
         const {selectArr,immutabData} = this.state;
 		const indexArr = path
 			.split(",")
@@ -210,6 +215,9 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
        let newNode = immutabData.getIn(indexArr);
         //错误兼容
         if(!newNode){
+            return ;
+        }
+        if(clickOrCheckForbid && clickOrCheckForbid(newNode,tabField)){
             return ;
         }
 		this.setState(pre => {
@@ -252,7 +260,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
     }
     changeState:common['changeState']=(path,key)=>{
         if(key==="expand"){
-            this.click(path);          
+            this.expand(path);          
         }else if(key==="active"){
             this.checkChild(path);
         }else if(key==='checkPar'){
@@ -298,7 +306,8 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
         
     }
     componentDidMount(){
-        this.setSameH();
+      //  this.setSameH();
+        this.whilefn();
     }
     //比对所有区域的高度，设置为一样高
     setSameH(){
@@ -351,7 +360,59 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
             });
         }
     }
-    
+    //用while代替递归
+    whilefn () {
+        const rootRoot = this.tabMainTabBodyDomArr;
+        let domArr = [rootRoot] ;
+
+        while (domArr.length) {
+         
+           const contains:any[] = [];
+           domArr.forEach(arr=>{
+
+                const tabDomArr =  arr.map(val=>{
+                  return val.firstElementChild!;
+                });
+
+                const tabHArr = tabDomArr.map(val=>{
+                    return val.clientHeight;
+                }).sort();
+                const maxH = tabHArr[tabHArr.length-1];
+
+                if(tabHArr[0]!==maxH){ // 高度不同
+                    // tslint:disable-next-line: variable-name
+                    const trArr_Arr = tabDomArr.map(val=>{
+                            return val.lastElementChild!.children;
+                    });
+
+                    [...trArr_Arr[0]].forEach((tr,index)=>{
+
+                        const trDomArr = trArr_Arr.map(trArr=>{
+                            return trArr[index];
+                        });
+
+                        const trHArr = trDomArr.map(val=>{
+                            return val.clientHeight;
+                        }).sort();
+
+                        const trHMax = trHArr[trHArr.length-1];
+                        if(tr.classList.contains('tree-td')){
+                           const childDomArr = trDomArr.map(val=>{
+                                return val.firstChild!.firstChild!;
+                            });
+                            contains.push(childDomArr);
+                        }else{
+                            trDomArr.forEach(val=>{
+                                (val as HTMLElement).style.height = `${trHMax}px`;
+                            });
+                        }
+                    });
+                }
+           });    
+           
+           domArr = contains;
+        }
+    }
     render(){
         const {height} = this.props;
         return (

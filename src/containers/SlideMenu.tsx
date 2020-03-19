@@ -84,7 +84,14 @@ const menuList = [
       {
         id: "41",
         name: "二叉树",
-        url: "/bintree",
+        url: "/blog/bintree",
+        icon: "",
+        children: []
+      },
+      {
+        id: "42",
+        name: "自由树",
+        url: "/blog/tree",
         icon: "",
         children: []
       }

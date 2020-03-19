@@ -140,6 +140,19 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
 
     const rotate = configObj.rotate;
 
+    const code1 = (
+               <div className="inp-item">
+              <Input
+                name="initTime"
+                changeFn={this.outsideChangeState}
+                value={outTimeVal}
+              >
+                设置日历时间 initTime：
+              </Input>
+              <Button handle={this.outSetTime}>设置</Button>
+            </div>
+            );
+
     return (
       <div className="g-layout calendar-demo">
         <div className="g-layout-head">
@@ -200,20 +213,11 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             </div>
           </div>
           <div className="g-item-show">
-            <div className="inp-item">
-              <Input
-                name="initTime"
-                changeFn={this.outsideChangeState}
-                value={outTimeVal}
-              >
-                设置日历时间 initTime：
-              </Input>
-              <Button handle={this.outSetTime}>设置</Button>
-            </div>
-            <CodeBlock>{str1}</CodeBlock>
+           
+            <CodeBlock tit={code1}>{str1}</CodeBlock>
           </div>
           <div className="g-item-show">
-            <CodeBlock>
+            <CodeBlock tit='点击回调函数'>
             {str2}
             </CodeBlock>
           </div>

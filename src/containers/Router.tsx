@@ -32,10 +32,10 @@ const routerConfig = {
 			),
 		loading: () => <span>loading......</span>,
 	},
-	bintree: {
+	blog: {
 		loader: () =>
 			import(
-				/*webpackChunkName: "bintree" */ "../blog/bintree/Demo"
+				/*webpackChunkName: "blog" */ "./Router/BlogRoute"
 			),
 		loading: () => <span>loading......</span>,
 	},
@@ -54,7 +54,7 @@ class MainRouter extends React.PureComponent{
 				<Route path="/table" component={loadable(routerConfig.tableRouter)} />
 				<Route path="/loading" component={loadable(routerConfig.loadingRouter)} />
 				<Route path="/combo" component={loadable(routerConfig.comboRouter)} />
-				<Route path="/bintree" component={loadable(routerConfig.bintree)} />
+				<Route path="/blog" component={loadable(routerConfig.blog)} />
 				<div id="s-modal"/>
 			</>
 			);
