@@ -26,8 +26,8 @@ const formatterTreeData = function (fixObj: filedObj,defaultVal:string,data:any[
         
 		let oldSelectedIndex = "";
 		let listSelected:IImmutalbeList<string> = Immutable.List([]);
-		let oindex = 0 ;
-		let prePath:any = [];
+		// let oindex = 0 ;
+		// let prePath:any = [];
 		const immutableData: states["immutableData"] = Immutable.fromJS(
 			data as node[],
 			function(_key, val, path:any) {
@@ -102,27 +102,31 @@ const formatterTreeData = function (fixObj: filedObj,defaultVal:string,data:any[
 							}
 						}
 					}
-					// 计算索引
-					oindex +=1;
-					let countIndex:any ;
-					// 判断当前的与上一个的路径是不是父子关系
-					const parArr = prePath!.slice(0,prePath.length-2);
-					if(path!.join(',')===parArr.join(',')){
-						//父子关系,是目录
-						countIndex =  children.get(0).get('order') - 1; 
-					}else{
-						countIndex = oindex + (path!.length - 1 ) / 2 ;
-					}
-					prePath = path ;
-					// 节点路径
-					const nodePath = path!.filter((str:string|number)=>{
-						return typeof str  === 'number';
-					}).join(',');
-					// 节点层级
-					const nodeLev = ((path!.length as number) + 1 ) / 2 ;
+
+					// // 计算索引
+					// oindex +=1;
+					// let countIndex:any ;
+					// // 判断当前的与上一个的路径是不是父子关系
+					// const parArr = prePath!.slice(0,prePath.length-2);
+					// if(path!.join(',')===parArr.join(',')){
+					// 	//父子关系,是目录
+					// 	countIndex =  children.get(0).get('order') - 1; 
+					// }else{
+					// 	countIndex = oindex + (path!.length - 1 ) / 2 ;
+					// }
+					// prePath = path ;
+					// // 节点路径
+					// const nodePath = path!.filter((str:string|number)=>{
+					// 	return typeof str  === 'number';
+					// }).join(',');
+					// // 节点层级
+					// const nodeLev = ((path!.length as number) + 1 ) / 2 ;
+					
 					//添加字段
 					node = node.withMutations(map => {
-						return map.set("active", active).set("expand", true).set('order',countIndex).set('nodePath',nodePath).set('nodeLev',nodeLev);
+						return map.set("active", active).set("expand", true);
+
+						//.set('order',countIndex).set('nodePath',nodePath).set('nodeLev',nodeLev);
 					});
 					return node;
 				} else {

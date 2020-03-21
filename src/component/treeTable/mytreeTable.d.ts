@@ -2,6 +2,7 @@ declare namespace MyTreeTabSpace {
 	export interface columnItem {
 		field:string;
 		children:string;
+		align?:"center" | "left" | 'right';
 		width:number;// 必须给个值，号计算不同区域的表格宽度，这样才可以让可以滚动的区域自适应宽度。
 		formatter?:(
 				node: IImmutalbeMap<any>, //节点
@@ -23,6 +24,7 @@ declare namespace MyTreeTabSpace {
 		};
 		fixObj: {
 			childField:string;
+    		noOrder?:boolean;
 			multiply?: boolean;
 			itemIcon?: string;
 			idField: string;//表格的节点标识

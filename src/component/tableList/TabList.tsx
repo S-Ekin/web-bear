@@ -7,12 +7,14 @@ import * as React from "react";
 import * as Immutable from "immutable";
 import TabView from './TabView';
 import {GroupCols} from './GroupCols';
+import {Empty} from "../icon/index";
 type common =MyTabListSpace.common;
 type childType =React.ComponentElement<common['groupCol'],any> ;
 type Props={
 	data: any[];
     children: childType[] | childType;
     height?:number;
+    noOrder?:boolean;
 	noPageNums?: boolean;//页码
 	idField: string;//表格的节点标识
 	multiply?: boolean;//多选
@@ -76,7 +78,9 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
             return null ;
         }
     }
-
+    static defaultProps = {
+        height:300
+    }
     fieldArr:ITabList['fieldArr'];
     fixObj:ITabList['fixObj'];
     tabMainTabBodyDomArr:HTMLDivElement[] = [];
@@ -96,19 +100,43 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
         
     } 
     getFieldArr(arr:Props['children']){
+        const {noOrder,multiply} = this.props;
+       return React.Children.map(arr,function(val,index){
 
-       return React.Children.map(arr,function(val){
-
-            const {children,forzen} = val.props ;
+            const {children,forzen,} = val.props ;
             let widTotal = 0;
             const child = React.Children.map(children,function(node){
-                const {children,width,field,formatter} = node.props ;
+                const {children,width,field,formatter,align} = node.props ;
                 widTotal += width;
                 return {
-                    width,field,formatter,text:children
+                    width,field,formatter,text:children,align
                 };
             });
 
+           
+            if(!noOrder && index === 0){
+                  const orderCol:any = {
+                      width:60,
+                      field:"order",
+                      text:'序号' ,
+                      formatter:undefined, 
+                      align:'center'
+                   };
+                   child.unshift(orderCol); 
+                   widTotal+=60;
+            }
+            if(multiply && index === 0 ){
+                 const checkCol:any = {
+                      width:60,
+                      field:"check",
+                      text:'全选' ,
+                      formatter:undefined, 
+                      align:'center'
+                   };
+                   child.unshift(checkCol); 
+                   widTotal+=60;
+            }
+            
             return {
                 child,
                 width:widTotal,
@@ -118,12 +146,13 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
         });     
     } 
     initFixObj(){
-        const {tabField,idField,multiply,defaultSel,emptyTxt} = this.props;
+        const {tabField,idField,multiply,defaultSel,emptyTxt,noOrder} = this.props;
         return {
             tabField:tabField!,
             emptyTxt:emptyTxt!,
             idField:idField!,
             multiply,
+            noOrder,
             defaultSel:defaultSel!,
         };
     } 
@@ -148,7 +177,69 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
         // }else if(key==='checkPar'){
         //     this.checkPar(path);
         // }
+        const index = ~~path - 1 ;
+        if(key==='active'){
+            this.setState(pre=>{
+                return {
+                    immutabData:pre.immutabData.updateIn([index],node=>{
+
+                        const status = node.get('checked');
+
+                        return node.set('checked',!status)
+                    })
+                }
+            })
+        }
+       
+        
     }
+    //比对所有区域的高度，设置为一样高
+    setSameH(){
+        let domArr = this.tabMainTabBodyDomArr;
+        
+        if(domArr.length < 2){
+            return ;
+        }   
+      
+       const tabDom = domArr.map(val=>{
+            return val.firstElementChild!;
+        });
+
+        const tabHArr = tabDom.map(val=>val.clientHeight).sort();
+        const tabHMax = tabHArr[tabHArr.length - 1];
+        if(tabHArr[0]!== tabHMax){
+
+            const trDomArr = tabDom.map(val=>val.lastElementChild!.children);
+
+            [...trDomArr[0]].forEach((val,index)=>{
+
+                const trCompareDom = trDomArr.map(val=>{
+
+                    return val[index];
+                });
+
+                const trHArr = trCompareDom.map(val=>val.clientHeight).sort();
+                const trHMax = trHArr[trHArr.length -1];
+                if(trHMax !== trHArr[0]){
+                    trCompareDom.forEach(element => {
+                            [...(element as HTMLTableRowElement).children]!.forEach(td => {
+                                    
+                                (td as HTMLTableCellElement).style.height = `${trHMax}px`
+
+                            });
+                    });
+                }
+
+
+
+
+            })
+
+        }
+
+
+    }
+
     viewMap(){
         const {} = this.props;
         const {immutabData} = this.state;
@@ -167,14 +258,45 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
             );
        });
     }
-    render(){
-        const {} = this.props;
+    componentDidMount(){
+        this.setSameH();
 
-        const {height} = this.props;
+        this.setTabViewBottomFixHeight();
+    }
+    setTabViewBottomFixHeight(){
+        const arr = this.fieldArr;
+        const res = this.tabMainTabBodyDomArr.findIndex((val,index)=>{
+            let status = false ;
+            if(!arr[index].forzen){ //有横的滚动条
+              status =   val.scrollWidth > val.clientWidth ;
+            }
+
+           return status ;
+
+        })
+
+        if(res !== -1){
+            this.tabMainTabBodyDomArr.forEach((val,index)=>{
+
+                if(arr[index].forzen){
+                    val.style.paddingBottom = '17px'
+                }else if (res!== index){
+                    if(val.scrollWidth <= val.clientWidth){
+                        val.style.paddingBottom = '17px'
+                    }
+                }
+            })
+        }
+    }
+    render(){
+        const {height,emptyTxt,} = this.props;
+        const {immutabData} = this.state;
+        const hasData = !!immutabData.size;
+        const body =  hasData ? this.viewMap() : <Empty txt={emptyTxt} />
         return (
             <div className="treeTap-wrap" style={{height: height,}}>
                  <div className="treeTab">
-                    {this.viewMap()}
+                    {body}
                 </div>
             </div>
            

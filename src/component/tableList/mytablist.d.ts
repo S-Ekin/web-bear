@@ -4,6 +4,7 @@ declare namespace MyTabListSpace {
 		field:string;
 		children:string;
 		width:number;
+		align?:"center" | "left" | 'right';
 		formatter?:(
 				node: IImmutalbeMap<any>, //节点
 				index: number, //列的索引
@@ -29,6 +30,7 @@ declare namespace MyTabListSpace {
 			defaultSel: string;//默认选中的
 			tabField: string;//表格标识
 			emptyTxt: string;//空数据时显示文字
+			noOrder?:boolean;
 		};
 		changeState(path:string,key:'expand'|'active'|'checkPar'):void;
 		node:{

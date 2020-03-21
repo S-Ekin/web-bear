@@ -19,6 +19,18 @@ $border: 1px solid;
     word-break: break-all;
   }
 
+  .td-left {
+    text-align: left;
+  }
+
+  .td-right {
+    text-align: right;
+  }
+
+  .td-center {
+    text-align: center;
+  }
+
   .tab-view-scroll {
     flex: 1;
     border-right: $border;
@@ -38,6 +50,7 @@ $border: 1px solid;
     display: flex;
     flex-direction: column;
     height: 100%;
+    box-sizing: border-box;
 
     &:last-child {
       tr > .td-border:last-child {

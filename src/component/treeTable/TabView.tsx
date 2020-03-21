@@ -76,6 +76,7 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         );
 
     }
+
     componentDidMount(){
         const {setTabBodyDom,viewIndex,config} = this.props;
         if(!config.forzen){
@@ -96,12 +97,7 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         }
 
     }
-    createFixViewBottom(){
-        const {config:{forzen}} = this.props;
-        return forzen ? (
-            <div className="fix-bottom"/>
-        ):undefined;
-    }
+    
     wheelFn=(e:React.WheelEvent<HTMLDivElement>)=>{
         
         const {changeScrollTop,viewIndex} = this.props;
@@ -197,7 +193,6 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
                 </div>
                 <div className="tab-body-wrap">
                     {this.getBody()}
-                    {this.createFixViewBottom()}
                 </div>
             </div>
         );

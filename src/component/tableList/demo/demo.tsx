@@ -31,12 +31,12 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                 </div>
                 <div className="g-layout-article">
                     <div className="g-item-show">
-                        <TabList data={data} idField="event_id" multiply={true}>
+                        <TabList data={data} idField="event_id" multiply={true} noOrder={false}>
                             <GroupCols forzen={true} >
-                                <GroupCols.colItem field="eventNo" width={170}>
+                                <GroupCols.colItem field="eventNo" width={140}>
                                     事件编号
                                 </GroupCols.colItem> 
-                                <GroupCols.colItem field="category_name" width={210}>
+                                <GroupCols.colItem field="category_name" width={120}>
                                     事件类型
                                 </GroupCols.colItem>
                             </GroupCols> 
@@ -44,24 +44,31 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                                 <GroupCols.colItem field="eventNo" width={220}>
                                     事件编号
                                 </GroupCols.colItem> 
-                                <GroupCols.colItem field="a_SHANGBAOSHIJIAN" width={220}>
+                                {/* <GroupCols.colItem field="a_SHANGBAOSHIJIAN" width={220}>
                                     上报日期
-                                </GroupCols.colItem>  
-                                <GroupCols.colItem  field="status_name" width={220}>处理状态</GroupCols.colItem>
-                                <GroupCols.colItem field="a_SHANGBAOREN" width={220}>
+                                </GroupCols.colItem>   */}
+                                {/* <GroupCols.colItem  field="status_name" width={120}>处理状态</GroupCols.colItem>
+                                <GroupCols.colItem field="a_SHANGBAOREN" width={120}>
                                     上报人
                                 </GroupCols.colItem> 
-                                <GroupCols.colItem field="category_name" width={220} >
+                                <GroupCols.colItem field="category_name" width={180} >
                                     事件类型
-                                </GroupCols.colItem>
+                                </GroupCols.colItem> */}
                             </GroupCols> 
                              <GroupCols forzen={true} > 
                                 <GroupCols.colItem field="eventNo" width={120}>
                                     事件编号
                                 </GroupCols.colItem> 
-                                <GroupCols.colItem field="a_SHANGBAOSHIJIAN" width={200}>
+                                <GroupCols.colItem field="a_SHANGBAOSHIJIAN" width={180}>
                                     上报日期
                                 </GroupCols.colItem>  
+                               
+                              
+                            </GroupCols>
+                            <GroupCols  > 
+                                <GroupCols.colItem field="eventNo" width={120}>
+                                    事件编号
+                                </GroupCols.colItem> 
                                
                               
                             </GroupCols>

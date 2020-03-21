@@ -21,9 +21,7 @@ type config = {
   defaultSel?: string; //默认选中的
   tabField?: string; //表格标识
   emptyTxt?: string; //空数据时显示文字
-  // getCheckFn?:(fn:any)=>void;//获取选中的
-  // clickOrCheckForbid?:(node:IImmutalbeMap<any>,field:string)=>boolean;
-  // bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<any>>)=>void;//把获取选中的项的函数传递给外部
+  noOrder?:boolean;
 };
 type Props = {};
 type States = {
@@ -40,7 +38,8 @@ const initConfig = {
   idField: "id",
   defaultSel: "", //默认选中的
   tabField: "", //表格标识
-  emptyTxt: "" //空数据时显示文字
+  emptyTxt: "", //空数据时显示文字
+  noOrder:false,
 };
 class Demo extends React.PureComponent<Props, States> {
   state: States = {
@@ -64,7 +63,7 @@ class Demo extends React.PureComponent<Props, States> {
 
     if (["height"].includes(name)) {
       value = ~~value;
-    } else if (["multiply"].includes(name)) {
+    } else if (["multiply",'noOrder'].includes(name)) {
       value = value === "1" ? true : false;
     }
 
@@ -91,7 +90,8 @@ class Demo extends React.PureComponent<Props, States> {
       emptyTxt,
       tabField,
       idField,
-      defaultSel
+      defaultSel,
+      noOrder
     } = immuConfig.toJS();
     const code1 = (
     <>
@@ -121,7 +121,7 @@ class Demo extends React.PureComponent<Props, States> {
                 <GroupCols.colItem width={180} field="name">
                   列1
                 </GroupCols.colItem>
-                <GroupCols.colItem width={60} field="persons">列2</GroupCols.colItem>
+                <GroupCols.colItem width={60} field="persons" align="center">列2</GroupCols.colItem>
               </GroupCols>
               <GroupCols>
                 <GroupCols.colItem width={140} field="name">
@@ -141,7 +141,10 @@ class Demo extends React.PureComponent<Props, States> {
                 </GroupCols.colItem>
               </GroupCols>
               <GroupCols forzen={true} >
-                <GroupCols.colItem width={240} field="progress">列3</GroupCols.colItem>
+                <GroupCols.colItem width={140} field="name">列3</GroupCols.colItem>
+              </GroupCols>
+              <GroupCols  >
+                <GroupCols.colItem width={140} field="name">列3</GroupCols.colItem>
               </GroupCols>
             </TreeTable>
           </div>
@@ -207,6 +210,28 @@ class Demo extends React.PureComponent<Props, States> {
                   否
                 </CheckBox>
               </div>
+              <div className="inp-item">
+                <span>不要序号 noOrder</span>
+                <CheckBox
+                  name="noOrder"
+                  value="1"
+                  type="radio"
+                  checked={noOrder!}
+                  changeHandle={this.changeConfig}
+                >
+                  是
+                </CheckBox>
+                <CheckBox
+                  name="noOrder"
+                  value="2"
+                  type="radio"
+                  checked={!noOrder}
+                  changeHandle={this.changeConfig}
+                >
+                  否
+                </CheckBox>
+              </div>
+           
               <div className="inp-item">
                 <Input
                   changeFn={this.changeConfig}

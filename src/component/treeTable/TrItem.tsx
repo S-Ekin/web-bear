@@ -71,34 +71,50 @@ class Item extends React.PureComponent<Props,States> implements IItem{
         changeState(index!,isPar?'checkPar':'active');
     }
     getFirstText(text:string){
-        const {lev,isPar,index,fixObj:{multiply},order} = this.props;
+        const {lev,isPar,index,fixObj:{multiply}} = this.props;
         const fn = isPar ? this.clickFn :undefined;
         const className = isPar ? "tree-par" : undefined;
         const check= multiply ? this.checkFn : undefined;
         const checkName = multiply ? 'tree-check' : undefined;
-        order.order ++ ;
         return (
             <div onClick={fn} className={className} data-index={index}>
                 <span onClick={check} className={checkName}>
                     <span style={{paddingRight: lev*14,}} />
                     {this.getCheck()}
                     {this.getIcon()}
-                    {order.order}
                     {text}
                 </span>
             </div>
         );
     }
+
+    getOrder(){
+        const {order} = this.props;
+        order.order ++ ;
+        return order.order;
+    }
     
     render(){
-        const {cols,node,fixObj:{tabField},isMainView} = this.props;
+        const {cols,node,fixObj:{tabField,noOrder},isMainView} = this.props;
         
         const tds= cols.map((td,index)=>{
-            const {field,formatter} = td;
+            const {field,formatter,align} = td;
             const text = formatter ? formatter(node,index,tabField) : node.get(field);
-            const str = isMainView && index === 0 ? this.getFirstText(text) : text ;
+            let str ;
+            let alignName = align ? `td-${align}` : '';
+            if(isMainView){
+                if(noOrder){
+                    str = index === 0 ? this.getFirstText(text) : text;
+                }else{
+                    str = index === 0 ? this.getOrder() : index === 1 ? this.getFirstText(text) : text;
+                    alignName = index === 1 ? "" : alignName;
+                }   
+            }else{
+                
+                str = text ;
+            }
             return (
-                <td key={field} className="td-border">
+                <td key={field} className={`td-border ${alignName}`} >
                     {str}
                 </td>
             );

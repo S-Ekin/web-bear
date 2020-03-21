@@ -29,53 +29,50 @@ class TrItem extends React.PureComponent<Props,States> implements ITrItem{
 
     };
    getCheck(){
-        const {fixObj:{multiply}} = this.props;
-        if(multiply){
-            const {node} = this.props;
+       
+            const {node,index} = this.props;
             const active = node.get('checked') ? 
-            'checkbox-has-selected' : 'checkbox-blank';
-            return ( <SvgIcon className={active}/>);
-        }else{
-            return undefined;
-        }
+            'checkbox-marked' : 'checkbox-blank';
+        return (<span onClick={this.checkFn} className="tree-check" data-index={index}>
+            <SvgIcon className={active}/>
+        </span> );
+        
        
     }
-    clickFn=(e:React.MouseEvent<HTMLDivElement>)=>{
-       
-        const index = e.currentTarget.dataset.index!;
-        const {changeState} = this.props;
-        changeState(index,'expand');
-    }
+   
     checkFn=(e:React.MouseEvent<HTMLSpanElement>)=>{
         e.stopPropagation();
         const dom = e.currentTarget;
-        const index = dom.parentElement!.dataset.index;
+        const index = dom.dataset.index;
         const {changeState} = this.props;
         changeState(index!,'active');
     }
-    getFirstText(text:string){
-        const {index,fixObj:{multiply}} = this.props;
-        const check= multiply ? this.checkFn : undefined;
-        const checkName = multiply ? 'tree-check' : undefined;
-        return (
-            <div onClick={this.clickFn} data-index={index}>
-                <span onClick={check} className={checkName}>
-                    <span />
-                    {this.getCheck()}
-                    {text}
-                </span>
-            </div>
-        );
+    getFirstText(text:React.ReactChild,field:string){
+        const {index} = this.props;
+        
+
+        if(field == "order"){
+            return index ;
+        }else if(field =="check"){
+            return this.getCheck()
+        }else{
+            return text ;
+        }
+
+       
     }
-    
+   
     render(){
         const {cols,node,fixObj:{tabField},isMainView} = this.props;
         const tds= cols.map((td,index)=>{
-            const {field,formatter} = td;
+            const {field,formatter,align} = td;
             const text = formatter ? formatter(node,index,tabField) : node.get(field);
-            const str = isMainView && index === 0 ? this.getFirstText(text) : text ;
+            const str = isMainView ? this.getFirstText(text,field) : text ;
+
+            let alignName = align ? `td-${align}` : '';
+
             return (
-                <td key={field} className="td-border">
+                <td key={field} className={`td-border ${alignName}`}>
                     {str}
                 </td>
             );

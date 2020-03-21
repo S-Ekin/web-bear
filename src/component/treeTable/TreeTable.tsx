@@ -13,6 +13,7 @@ type childType =React.ComponentElement<common['groupCol'],any> ;
 type Props={
     data: any[];
     children: childType[] | childType;
+    noOrder?:boolean;
     height?:number;
     multiply?: boolean;
     itemIcon?: string;
@@ -74,7 +75,6 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
 
         const obj = formatterTreeData({childField:childField!,idField,multiply},defaultSel!,data);
         this.fixObj = this.initFixObj();
-        console.log(obj.data.toJS());
         this.state = {
             immutabData:obj.data,
             preData:data,
@@ -85,18 +85,31 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
     }
     getFieldArr(arr:Props['children']){
 
-       return React.Children.map(arr,function(val){
+        const {noOrder} = this.props;
+
+       return React.Children.map(arr,function(val,index){
 
             const {children,forzen} = val.props ;
             let widTotal = 0 ;
 
             const child = React.Children.map(children,function(node){
-                const {children,width,field,formatter} = node.props ;
+                const {children,width,field,formatter,align} = node.props ;
                 widTotal += width ;
                 return {
-                    width,field,formatter,text:children
+                    width,field,formatter,text:children,align
                 };
             });
+            if(index === 0 && !noOrder){
+                const orderGroup:any = {
+                      width:60,
+                      field:"order",
+                      text:'序号' ,
+                      formatter:undefined, 
+                      align:'center'
+                   };
+                   child.unshift(orderGroup); 
+                   widTotal+=60;
+            }
 
             return {
                 child,
@@ -271,9 +284,9 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
         }
     }
     initFixObj(){
-        const {tabField,idField,multiply,defaultSel,childField,emptyTxt,itemIcon} = this.props;
+        const {tabField,idField,multiply,defaultSel,childField,emptyTxt,itemIcon,noOrder} = this.props;
         return {
-            tabField,emptyTxt,itemIcon,
+            tabField,emptyTxt,itemIcon,noOrder,
             idField,multiply,defaultSel,childField:childField!,
         };
     }
@@ -307,10 +320,36 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
 
         this.tabMainTabBodyDomArr[index] = dom ;
         
+    } 
+    setTabViewBottomFixHeight(){
+        const arr = this.fieldArr;
+        const res = this.tabMainTabBodyDomArr.findIndex((val,index)=>{
+            let status = false ;
+            if(!arr[index].forzen){ //有横的滚动条
+              status =   val.scrollWidth > val.clientWidth ;
+            }
+
+           return status ;
+
+        });
+
+        if(res !== -1){
+            this.tabMainTabBodyDomArr.forEach((val,index)=>{
+
+                if(arr[index].forzen){
+                    val.style.paddingBottom = '17px'
+                }else if (res!== index){
+                    if(val.scrollWidth <= val.clientWidth){
+                        val.style.paddingBottom = '17px'
+                    }
+                }
+            })
+        }
     }
     componentDidMount(){
       //  this.setSameH();
         this.whilefn();
+        this.setTabViewBottomFixHeight();
     }
     //比对所有区域的高度，设置为一样高
     setSameH(){

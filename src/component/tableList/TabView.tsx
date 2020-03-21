@@ -6,6 +6,7 @@
 import * as React from "react";
 import TrItem from './TrItem';
 type common =MyTabListSpace.common;
+import {SvgIcon} from '../icon/index';
 type Props={
     data:common['data'];
     config:common['config'];
@@ -41,12 +42,24 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         changeScrollTop(dom.scrollTop,viewIndex);
         
     }
+    checkAll=()=>{
+
+    }
+    getCheckAll(){
+        const status = true ? "checkbox-marked" :"checkbox-blank";
+        return (
+            <span onClick={this.checkAll}>
+                    <SvgIcon className={status} />
+            </span>
+        )
+    }
     gethead(){
-        const {config:{child:cols}} = this.props;
+        const {config:{child:cols},} = this.props;
         const tds = cols.map(val=>{
             const {text,width,field} = val ;
+            const txt = field === "check" ? this.getCheckAll() : text ;
             return (
-                <th style={{width: width,}} className="td-border" key={field}>{text}</th>
+                <th style={{width: width,}} className="td-border" key={field}>{txt}</th>
             );
         });
         return (
@@ -77,29 +90,27 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
     }
     componentDidMount(){
         const {config,setTabBodyDom,viewIndex} = this.props;
+        const dom = this.tabBodyRef.current;
+        if(!dom){
+            return ;
+        }
         if(!config.forzen){
             this.overBox();
         }
-        const dom = this.tabBodyRef.current!;
         setTabBodyDom(dom,viewIndex);
     }
     //有滚动条的时候
     overBox(){
 
         const tbodyDom = this.tabBodyRef.current!;
-        if(tbodyDom.scrollHeight> tbodyDom.clientHeight){
+        const {config:{forzen}} = this.props;
+        if(!forzen && tbodyDom.scrollHeight> tbodyDom.clientHeight){
             //给自己的头部隐藏的滚动条占位
             const child = this.colHeadRef.current!.firstElementChild as HTMLDivElement;
             child!.style.paddingRight = "18px";
         }
-
     }
-    createFixViewBottom(){
-        const {config:{forzen}} = this.props;
-        return forzen ? (
-            <div className="fix-bottom"/>
-        ):undefined;
-    }
+   
     wheelFn=(e:React.WheelEvent<HTMLDivElement>)=>{
         
         const {changeScrollTop,viewIndex} = this.props;
@@ -130,7 +141,7 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
                 <TrItem
                     key={id}
                     node={val}
-                    index={`${index}`}
+                    index={`${index + 1}`}
                     changeState={changeState}
                     cols={cols}
                     isMainView={isMainView}
@@ -161,6 +172,13 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
                 </div>
         );
     }
+    getMainBody(){
+        return (
+                <div className="tab-body-wrap">
+                    {this.getBody()}
+                </div>
+        );
+    }
     render(){
          const {config:{width,forzen},config} = this.props;
         const styleObj = width && forzen ? {width} : undefined;
@@ -171,10 +189,7 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
                 <div className="tab-head-wrap" ref={this.colHeadRef}>
                     {this.gethead()}
                 </div>
-                <div className="tab-body-wrap">
-                    {this.getBody()}
-                    {this.createFixViewBottom()}
-                </div>
+                {this.getMainBody()}
             </div>
         );
     }
