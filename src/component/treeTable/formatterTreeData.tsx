@@ -109,15 +109,20 @@ const formatterTreeData = function (fixObj: filedObj,defaultVal:string,data:any[
 					const parArr = prePath!.slice(0,prePath.length-2);
 					if(path!.join(',')===parArr.join(',')){
 						//父子关系,是目录
-						const lev = (path!.length - 1 ) / 2;
-						countIndex = lev + 1;
+						countIndex =  children.get(0).get('order') - 1; 
 					}else{
 						countIndex = oindex + (path!.length - 1 ) / 2 ;
 					}
 					prePath = path ;
+					// 节点路径
+					const nodePath = path!.filter((str:string|number)=>{
+						return typeof str  === 'number';
+					}).join(',');
+					// 节点层级
+					const nodeLev = ((path!.length as number) + 1 ) / 2 ;
 					//添加字段
 					node = node.withMutations(map => {
-						return map.set("active", active).set("expand", true).set('order',countIndex);
+						return map.set("active", active).set("expand", true).set('order',countIndex).set('nodePath',nodePath).set('nodeLev',nodeLev);
 					});
 					return node;
 				} else {
