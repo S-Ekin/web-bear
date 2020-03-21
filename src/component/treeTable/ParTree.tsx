@@ -12,9 +12,10 @@ type Props={
     node:IImmutalbeMap<common['node']>;
     fixObj:common['fixObj'];
     lev:number;
+    order:{order:number};
     index:string; // 节点的索引
     isMainView?:boolean;
-  changeState:common['changeState'];
+    changeState:common['changeState'];
 };
 type States={
 
@@ -46,15 +47,16 @@ class ParTree extends React.PureComponent<Props,States> implements IParTree{
     }
     getSubBody(){
 
-        const {node,fixObj,fixObj:{childField,idField},cols,lev,isMainView,index,changeState}  = this.props;
-        
+        const {node,fixObj,fixObj:{childField,idField},cols,lev,isMainView,index,changeState,order}  = this.props;
         const arr:common['data'] = node.get(childField);
         return arr.map((val,oindex)=>{
             const children = val.get(childField);
             const id = val.get(idField);
+          
             if(children && children.size){
                     return (
                         <ParTree
+                            order={order}
                             key={id}
                             node={val}
                             index={`${index},${oindex}`}
@@ -65,10 +67,12 @@ class ParTree extends React.PureComponent<Props,States> implements IParTree{
                             fixObj={fixObj}
                         />
                     );
-            }else{
+            }else{  
+                
                 return (
                         <TrItem
                             key={id}
+                            order={order}
                             lev={lev+1}
                             node={val}
                             index={`${index},${oindex}`}
@@ -83,9 +87,10 @@ class ParTree extends React.PureComponent<Props,States> implements IParTree{
 
     }
     render(){
-        const {cols,fixObj,node,lev,isMainView,index,changeState} = this.props;
+        const {cols,fixObj,node,lev,isMainView,index,changeState,order} = this.props;
         const colgroup = this.createColgroup();
         const expand = node.get('expand');
+       
         return (
             <>
                 <TrItem
@@ -93,6 +98,7 @@ class ParTree extends React.PureComponent<Props,States> implements IParTree{
                     fixObj={fixObj}
                     cols={cols}
                     lev={lev}
+                    order={order}
                     changeState={changeState}
                     index={index}
                     isMainView={isMainView}

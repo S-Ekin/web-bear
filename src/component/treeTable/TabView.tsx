@@ -127,6 +127,7 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
     getBody(){
         const {data,fixObj,fixObj:{idField,childField},config,viewIndex,changeState} = this.props;
         const {child:cols} = config;
+        let order = {order:0} ;
         const trs = data.map((val,index)=>{
             const arr = val.get(childField);
             const id = val.get(idField);
@@ -135,6 +136,7 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
                 return (
                     <ParTree
                         key={id}
+                        order={order}
                         changeState={changeState}
                         lev={0}
                         index={`${index}`}
@@ -148,6 +150,7 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
                 return (
                     <TrItem
                         key={id}
+                        order={order}
                         node={val}
                         index={`${index}`}
                         changeState={changeState}

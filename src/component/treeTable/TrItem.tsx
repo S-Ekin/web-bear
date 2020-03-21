@@ -11,9 +11,10 @@ type Props={
   cols:common['col'][];
   node:IImmutalbeMap<common['node']>;
   fixObj:common['fixObj'];
-  lev:number;
+  lev:number;//层级
   index:string; // 节点的索引
   isPar?:boolean;
+  order:{order:number};
   isMainView?:boolean;
   changeState:common['changeState'];
 };
@@ -70,17 +71,19 @@ class Item extends React.PureComponent<Props,States> implements IItem{
         changeState(index!,isPar?'checkPar':'active');
     }
     getFirstText(text:string){
-        const {lev,isPar,index,fixObj:{multiply}} = this.props;
+        const {lev,isPar,index,fixObj:{multiply},order} = this.props;
         const fn = isPar ? this.clickFn :undefined;
         const className = isPar ? "tree-par" : undefined;
         const check= multiply ? this.checkFn : undefined;
         const checkName = multiply ? 'tree-check' : undefined;
+        order.order ++ ;
         return (
             <div onClick={fn} className={className} data-index={index}>
                 <span onClick={check} className={checkName}>
                     <span style={{paddingRight: lev*14,}} />
                     {this.getCheck()}
                     {this.getIcon()}
+                    {order.order}
                     {text}
                 </span>
             </div>
@@ -89,6 +92,7 @@ class Item extends React.PureComponent<Props,States> implements IItem{
     
     render(){
         const {cols,node,fixObj:{tabField},isMainView} = this.props;
+        
         const tds= cols.map((td,index)=>{
             const {field,formatter} = td;
             const text = formatter ? formatter(node,index,tabField) : node.get(field);

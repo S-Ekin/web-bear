@@ -32,7 +32,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                 <div className="g-layout-article">
                     <div className="g-item-show">
                         <TabList data={data} idField="event_id" multiply={true}>
-                            <GroupCols forzen={true} width={380}>
+                            <GroupCols forzen={true} >
                                 <GroupCols.colItem field="eventNo" width={170}>
                                     事件编号
                                 </GroupCols.colItem> 
@@ -55,7 +55,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                                     事件类型
                                 </GroupCols.colItem>
                             </GroupCols> 
-                             <GroupCols forzen={true} width={320}> 
+                             <GroupCols forzen={true} > 
                                 <GroupCols.colItem field="eventNo" width={120}>
                                     事件编号
                                 </GroupCols.colItem> 

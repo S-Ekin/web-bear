@@ -2,7 +2,7 @@ declare namespace MyTreeTabSpace {
 	export interface columnItem {
 		field:string;
 		children:string;
-		width?:number;
+		width:number;
 		formatter?:(
 				node: IImmutalbeMap<any>, //节点
 				index: number, //列的索引
@@ -15,11 +15,11 @@ declare namespace MyTreeTabSpace {
 		col :(Omit<columnItem,'children'> & {text:string});
 		groupCol :{
 			children:group[] | group;
-			width?:number;
 			forzen?:boolean;
 		}
 		config:Omit<common['groupCol'],'children'> & {
-			child:common['col'][]
+			child:common['col'][];
+			width:number;
 		};
 		fixObj: {
 			childField:string;

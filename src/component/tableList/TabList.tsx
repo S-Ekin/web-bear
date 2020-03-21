@@ -99,10 +99,11 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
 
        return React.Children.map(arr,function(val){
 
-            const {children,width,forzen} = val.props ;
-
+            const {children,forzen} = val.props ;
+            let widTotal = 0;
             const child = React.Children.map(children,function(node){
                 const {children,width,field,formatter} = node.props ;
+                widTotal += width;
                 return {
                     width,field,formatter,text:children
                 };
@@ -110,7 +111,7 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
 
             return {
                 child,
-                width,
+                width:widTotal,
                 forzen
             };
 

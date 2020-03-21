@@ -16,11 +16,12 @@ declare namespace MyTabListSpace {
 		col :(Omit<columnItem,'children'> & {text:string});
 		groupCol :{
 			children:group[] | group;
-			width?:number;
 			forzen?:boolean;
 		}
-		config:Omit<common['groupCol'],'children'> & {
-			child:common['col'][]
+		config:{
+			child:common['col'][];
+			width:number;
+			forzen?:boolean;
 		};
 		fixObj: {
 			multiply?: boolean;

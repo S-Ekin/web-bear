@@ -74,6 +74,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
 
         const obj = formatterTreeData({childField:childField!,idField,multiply},defaultSel!,data);
         this.fixObj = this.initFixObj();
+        console.log(obj.data.toJS());
         this.state = {
             immutabData:obj.data,
             preData:data,
@@ -86,10 +87,12 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
 
        return React.Children.map(arr,function(val){
 
-            const {children,width,forzen} = val.props ;
+            const {children,forzen} = val.props ;
+            let widTotal = 0 ;
 
             const child = React.Children.map(children,function(node){
                 const {children,width,field,formatter} = node.props ;
+                widTotal += width ;
                 return {
                     width,field,formatter,text:children
                 };
@@ -97,7 +100,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
 
             return {
                 child,
-                width,
+                width:widTotal,
                 forzen
             };
 

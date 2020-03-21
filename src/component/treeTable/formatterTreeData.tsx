@@ -26,10 +26,11 @@ const formatterTreeData = function (fixObj: filedObj,defaultVal:string,data:any[
         
 		let oldSelectedIndex = "";
 		let listSelected:IImmutalbeList<string> = Immutable.List([]);
-
+		let oindex = 0 ;
+		let prePath:any = [];
 		const immutableData: states["immutableData"] = Immutable.fromJS(
 			data as node[],
-			function(_key, val, path) {
+			function(_key, val, path:any) {
 				if (Immutable.isKeyed(val)) {
 					let node = (val as Immutable.Collection.Keyed<
 						string,
@@ -101,9 +102,22 @@ const formatterTreeData = function (fixObj: filedObj,defaultVal:string,data:any[
 							}
 						}
 					}
+					// 计算索引
+					oindex +=1;
+					let countIndex:any ;
+					// 判断当前的与上一个的路径是不是父子关系
+					const parArr = prePath!.slice(0,prePath.length-2);
+					if(path!.join(',')===parArr.join(',')){
+						//父子关系,是目录
+						const lev = (path!.length - 1 ) / 2;
+						countIndex = lev + 1;
+					}else{
+						countIndex = oindex + (path!.length - 1 ) / 2 ;
+					}
+					prePath = path ;
 					//添加字段
 					node = node.withMutations(map => {
-						return map.set("active", active).set("expand", true);
+						return map.set("active", active).set("expand", true).set('order',countIndex);
 					});
 					return node;
 				} else {

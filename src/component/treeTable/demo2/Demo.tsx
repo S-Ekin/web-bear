@@ -158,6 +158,200 @@ const str4 =`
            domArr = contains;
         }
     }`;
+const str5 =` 
+class TabView extends React.PureComponent<Props,States> implements ITabView{
+
+getBody(){
+        const {data,fixObj,fixObj:{idField,childField},config,viewIndex,changeState} = this.props;
+        const {child:cols} = config;
+        let order = {order:0} ;
+        const trs = data.map((val,index)=>{
+            const arr = val.get(childField);
+            const id = val.get(idField);
+            const isMainView= viewIndex === 0 ;
+            if(arr && arr.size){
+                return (
+                    <ParTree
+                        key={id}
+                        order={order}
+                        changeState={changeState}
+                        lev={0}
+                        index={index}
+                        node={val}
+                        cols={cols}
+                        isMainView={isMainView}
+                        fixObj={fixObj}
+                    />
+                );
+            }else{
+                return (
+                    <TrItem
+                        key={id}
+                        order={order}
+                        node={val}
+                        index={index}
+                        changeState={changeState}
+                        cols={cols}
+                        isMainView={isMainView}
+                        lev={0}
+                        fixObj={fixObj}
+                    />
+                );
+            }
+        });
+        const colgroup = this.createColgroup();
+        const fn = !config.forzen ? this.scrollFn : undefined;
+        const wheel = config.forzen ? this.wheelFn :undefined;
+        const makeSignFn = !config.forzen ? this.makeSign :undefined;
+
+        return (
+                <div className="tab-body-main" 
+                    onScroll={fn} 
+                    onWheel={wheel}
+                    onMouseEnter={makeSignFn}
+                    onMouseLeave={makeSignFn}
+                    ref={this.tabBodyRef} 
+                >
+                    <table>
+                        {colgroup}
+                        <tbody>
+                            {trs} 
+                        </tbody>
+                    </table>
+                </div>
+        );
+    }
+  }
+
+class ParTree extends React.PureComponent<Props,States> implements IParTree{
+ getSubBody(){
+
+        const {node,fixObj,fixObj:{childField,idField},cols,lev,isMainView,index,changeState,order}  = this.props;
+        const arr:common['data'] = node.get(childField);
+        return arr.map((val,oindex)=>{
+            const children = val.get(childField);
+            const id = val.get(idField);
+          
+            if(children && children.size){
+                    return (
+                        <ParTree
+                            order={order}
+                            key={id}
+                            node={val}
+                            index={index,oindex}
+                            lev={lev+1}
+                            changeState={changeState}
+                            cols={cols}
+                            isMainView={isMainView}
+                            fixObj={fixObj}
+                        />
+                    );
+            }else{  
+                
+                return (
+                        <TrItem
+                            key={id}
+                            order={order}
+                            lev={lev+1}
+                            node={val}
+                            index={index,oindex}
+                            changeState={changeState}
+                            cols={cols}
+                            isMainView={isMainView}
+                            fixObj={fixObj}
+                        />
+                        );
+            }
+        }); 
+
+    }
+    render(){
+        const {cols,fixObj,node,lev,isMainView,index,changeState,order} = this.props;
+        const colgroup = this.createColgroup();
+        const expand = node.get('expand');
+       
+        return (
+            <>
+                <TrItem
+                    node={node}
+                    fixObj={fixObj}
+                    cols={cols}
+                    lev={lev}
+                    order={order}
+                    changeState={changeState}
+                    index={index}
+                    isMainView={isMainView}
+                    isPar={true}
+                />
+                <tr className="tree-td">
+                    <td colSpan={cols.length}>
+                         <VelocityComponent
+					duration={300}
+					animation={expand ? "slideDown" : "slideUp"}
+					interruptBehavior="queue">
+					<div className="tab-body">
+                            <table>
+                                {colgroup}
+                                <tbody>
+                                     {this.getSubBody()}
+                                </tbody>
+                            </table>
+                        </div>
+				</VelocityComponent>
+                        
+                    </td>
+                </tr> 
+               
+                
+            </>
+            
+        );
+    }
+}
+
+class Item extends React.PureComponent<Props,States> implements IItem{
+getFirstText(text:string){
+        const {lev,isPar,index,fixObj:{multiply},order} = this.props;
+        const fn = isPar ? this.clickFn :undefined;
+        const className = isPar ? "tree-par" : undefined;
+        const check= multiply ? this.checkFn : undefined;
+        const checkName = multiply ? 'tree-check' : undefined;
+        order.order ++ ;
+        return (
+            <div onClick={fn} className={className} data-index={index}>
+                <span onClick={check} className={checkName}>
+                    <span style={{paddingRight: lev*14,}} />
+                    {this.getCheck()}
+                    {this.getIcon()}
+                    {order.order}
+                    {text}
+                </span>
+            </div>
+        );
+    }
+    
+    render(){
+        const {cols,node,fixObj:{tabField},isMainView} = this.props;
+        
+        const tds= cols.map((td,index)=>{
+            const {field,formatter} = td;
+            const text = formatter ? formatter(node,index,tabField) : node.get(field);
+            const str = isMainView && index === 0 ? this.getFirstText(text) : text ;
+            return (
+                <td key={field} className="td-border">
+                    {str}
+                </td>
+            );
+        });
+
+        return (
+            <tr >
+                {tds}
+            </tr>
+        );
+    }
+  }
+`;    
 class Demo extends React.PureComponent<Props, States> {
   state: States = {
     immuConfig: createImmutableMap<config>(initConfig),
@@ -233,14 +427,14 @@ class Demo extends React.PureComponent<Props, States> {
               initSelectVal={initSelectVal}
               {...config}
             >
-              <GroupCols forzen={true} width={200}>
-                <GroupCols.colItem width={140} field="name">
+              <GroupCols forzen={true}>
+                <GroupCols.colItem width={180} field="name">
                   列1
                 </GroupCols.colItem>
-                <GroupCols.colItem field="persons">列2</GroupCols.colItem>
+                <GroupCols.colItem width={60} field="persons">列2</GroupCols.colItem>
               </GroupCols>
               <GroupCols>
-                <GroupCols.colItem width={240} field="name">
+                <GroupCols.colItem width={140} field="name">
                   列1
                 </GroupCols.colItem>
                 <GroupCols.colItem field="persons" width={240}>
@@ -249,15 +443,15 @@ class Demo extends React.PureComponent<Props, States> {
                 <GroupCols.colItem width={240} field="begin">
                   列3
                 </GroupCols.colItem>
-                <GroupCols.colItem width={240} field="end">
+                <GroupCols.colItem width={140} field="end">
                   列3
                 </GroupCols.colItem>
-                <GroupCols.colItem width={240} field="progress">
+                <GroupCols.colItem width={140} field="progress">
                   列3
                 </GroupCols.colItem>
               </GroupCols>
-              <GroupCols forzen={true} width={240}>
-                <GroupCols.colItem field="progress">列3</GroupCols.colItem>
+              <GroupCols forzen={true} >
+                <GroupCols.colItem width={240} field="progress">列3</GroupCols.colItem>
               </GroupCols>
             </TreeTable>
           </div>
@@ -361,6 +555,11 @@ class Demo extends React.PureComponent<Props, States> {
           </div>
           <div className="g-item-show">
               <CodeBlock tit="递归比较dom">{str3 + str4}</CodeBlock>
+          </div>
+          <div className="g-item-show">
+            <CodeBlock tit="递归组件ParTree来表示每个节点的序号，层级，路径,关于序号，明白Tritem才是真正渲染的地方，ParTree只是运输过程，在其他地方++order都不行">
+              {str5}
+            </CodeBlock>
           </div>
         </div>
       </div>
