@@ -148,6 +148,7 @@ class Demo extends React.PureComponent<Props, States> {
               </GroupCols>
             </TreeTable>
           </div>
+
           <div className="g-item-show flex-between">
             <div>
               <div className="inp-item">
@@ -261,6 +262,7 @@ class Demo extends React.PureComponent<Props, States> {
               </div>
             </div>
           </div>
+
           <div className="g-item-show">
              
               <CodeBlock tit={code1}>{str1}</CodeBlock>

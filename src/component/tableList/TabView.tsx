@@ -12,6 +12,7 @@ type Props={
     config:common['config'];
     fixObj:common['fixObj'];
     viewIndex:number;
+    startIndex:number;
     changeState:common['changeState'];
     changeScrollTop(top:number,viewIndex:number):void;
     setTabBodyDom(dom:HTMLElement,viewIndex:number):void;
@@ -21,9 +22,11 @@ type States={
 };
 interface ITabView {
     scrollFn(e:React.UIEvent<HTMLDivElement>):void;
+    overBox():void;
+    wheelFn(e:React.WheelEvent<HTMLDivElement>):void;
+    makeSign(e:React.MouseEvent<HTMLDivElement>):void;
 }
 class TabView extends React.PureComponent<Props,States> implements ITabView{
-
 
     state:States={
 
@@ -31,6 +34,7 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
     colHeadRef:React.RefObject<HTMLDivElement> = React.createRef();
     tabBodyRef:React.RefObject<HTMLDivElement> = React.createRef();
     scrollFn=(e:React.UIEvent<HTMLDivElement>)=>{
+        //有标记的才能滚动
         if(!e.currentTarget.classList.contains('action-body')){
             return ;
         }
@@ -42,16 +46,59 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         changeScrollTop(dom.scrollTop,viewIndex);
         
     }
-    checkAll=()=>{
+    //有滚动条的时候
+    overBox(){
+
+        const tbodyDom = this.tabBodyRef.current!;
+        const {config:{forzen}} = this.props;
+        if(!forzen && tbodyDom.scrollHeight> tbodyDom.clientHeight){
+            //给自己的头部隐藏的滚动条占位
+            const child = this.colHeadRef.current!.firstElementChild as HTMLDivElement;
+            child!.style.paddingRight = "18px";
+        }
+    } 
+
+    wheelFn=(e:React.WheelEvent<HTMLDivElement>)=>{
+        
+        const {changeScrollTop,viewIndex} = this.props;
+        const deltay  = e.deltaY; // 每滚动一下，滚动的距离
+        const top = this.tabBodyRef.current!.scrollTop;
+        const distance = top + deltay;
+        this.tabBodyRef.current!.scrollTop = distance;
+        changeScrollTop(distance,viewIndex);
+    }
+    // 用鼠标的进入做标记
+    makeSign=(e:React.MouseEvent<HTMLDivElement>)=>{
+        e.preventDefault();
+        const type = e.type;
+        const dom = e.currentTarget;
+        if(type === "mouseenter"){
+            dom.classList.add('action-body');
+        }else if(type === "mouseleave"){
+            dom.classList.remove('action-body');
+        }
+    }
+    checkAll=(e:React.MouseEvent<HTMLSpanElement>)=>{
+        const dom = e.currentTarget;
+        const status = dom.dataset.status;
+
+        this.props.changeState(status!,'checkPar');
 
     }
     getCheckAll(){
-        const status = true ? "checkbox-marked" :"checkbox-blank";
+        const {data} = this.props;
+        const allChecked = data.every(val=>{
+            const status = val.get('checked');
+            return status ;
+        });
+
+        const hasCheck = data.some(val=>val.get('checked'))
+        const status = allChecked ? "checkbox-marked" : hasCheck ? 'checkbox-has-selected': "checkbox-blank";
         return (
-            <span onClick={this.checkAll}>
-                    <SvgIcon className={status} />
+            <span onClick={this.checkAll} data-status={allChecked}>
+                <SvgIcon className={status} />
             </span>
-        )
+        );
     }
     gethead(){
         const {config:{child:cols},} = this.props;
@@ -99,40 +146,8 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         }
         setTabBodyDom(dom,viewIndex);
     }
-    //有滚动条的时候
-    overBox(){
-
-        const tbodyDom = this.tabBodyRef.current!;
-        const {config:{forzen}} = this.props;
-        if(!forzen && tbodyDom.scrollHeight> tbodyDom.clientHeight){
-            //给自己的头部隐藏的滚动条占位
-            const child = this.colHeadRef.current!.firstElementChild as HTMLDivElement;
-            child!.style.paddingRight = "18px";
-        }
-    }
-   
-    wheelFn=(e:React.WheelEvent<HTMLDivElement>)=>{
-        
-        const {changeScrollTop,viewIndex} = this.props;
-        const deltay  = e.deltaY; // 每滚动一下，滚动的距离
-        const top = this.tabBodyRef.current!.scrollTop;
-        const distance = top + deltay;
-        this.tabBodyRef.current!.scrollTop = distance;
-       
-        changeScrollTop(distance,viewIndex);
-    }
-    makeSign=(e:React.MouseEvent<HTMLDivElement>)=>{
-        e.preventDefault();
-        const type = e.type;
-        const dom = e.currentTarget;
-        if(type === "mouseenter"){
-            dom.classList.add('action-body');
-        }else if(type === "mouseleave"){
-            dom.classList.remove('action-body');
-        }
-    }
     getBody(){
-        const {data,fixObj,fixObj:{idField},config,viewIndex,changeState} = this.props;
+        const {data,fixObj,fixObj:{idField},config,viewIndex,changeState,startIndex} = this.props;
         const {child:cols} = config;
         const trs = data.map((val,index)=>{
             const id = val.get(idField);
@@ -141,7 +156,7 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
                 <TrItem
                     key={id}
                     node={val}
-                    index={`${index + 1}`}
+                    index={`${index + 1+startIndex}`}
                     changeState={changeState}
                     cols={cols}
                     isMainView={isMainView}
@@ -194,6 +209,5 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         );
     }
 }
-
 
 export default TabView;

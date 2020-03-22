@@ -2,10 +2,12 @@ $border: 1px solid;
 
 .treeTap-wrap {
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .treeTab {
-  height: 100%;
+  flex: 1;
   position: relative;
   display: flex;
   overflow: hidden;
@@ -17,6 +19,10 @@ $border: 1px solid;
     padding: 4px;
     box-sizing: border-box;
     word-break: break-all;
+  }
+
+  .tab-over-wid {
+    padding-bottom: 17px;
   }
 
   .td-left {

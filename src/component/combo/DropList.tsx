@@ -191,7 +191,7 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
 			immutableData: obj.data! ,
 			preData:data,
 			preInitComboVal:initComboVal,
-			singleClickPre:'',
+			singleClickPre:obj.singleClickPre,
 		};
 	}
 	clear() {

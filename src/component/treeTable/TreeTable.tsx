@@ -39,6 +39,7 @@ interface ITreeTable {
     fieldArr:config[];
     fixObj:common['fixObj'];
 }
+const compareFn = (a:number,b:number)=>a-b;
 class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
     static defaultProps={
         idField:'id',
@@ -337,19 +338,21 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
             this.tabMainTabBodyDomArr.forEach((val,index)=>{
 
                 if(arr[index].forzen){
-                    val.style.paddingBottom = '17px'
+                    val.classList.add('tab-over-wid');
                 }else if (res!== index){
                     if(val.scrollWidth <= val.clientWidth){
-                        val.style.paddingBottom = '17px'
+                        val.classList.add('tab-over-wid');
                     }
                 }
-            })
+            });
+        }else{
+            this.tabMainTabBodyDomArr.forEach((val)=>{
+                val.classList.remove('tab-over-wid');
+            });
         }
     }
     componentDidMount(){
-      //  this.setSameH();
-        this.whilefn();
-        this.setTabViewBottomFixHeight();
+      this.setDom();
     }
     //比对所有区域的高度，设置为一样高
     setSameH(){
@@ -362,11 +365,14 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
         this.mapDom(domArr);
 
     }
-
+    setDom(){
+        this.whileDomH();
+        this.setTabViewBottomFixHeight();//  this.setSameH();
+    }
     mapDom(domArr:HTMLDivElement[]){
         
         const tableArr = domArr.map(val=>val.firstElementChild!);
-        const tabHArr = tableArr.map(val=>val.clientHeight).sort();
+        const tabHArr = tableArr.map(val=>val.clientHeight).sort(compareFn);
         
         if(tabHArr[0] !== tabHArr[tabHArr.length-1]){ // 高度不同
 
@@ -379,7 +385,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
                 const trHdom = viewTrArr.map(trArr=>{
                     return trArr[index];
                 });
-                const trH = trHdom.map(val=>val.clientHeight).sort();
+                const trH = trHdom.map(val=>val.clientHeight).sort(compareFn);
                 const trHMax = trH[trH.length-1];
 
                 if(trH[0]!== trHMax){ // 高度不同
@@ -403,7 +409,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
         }
     }
     //用while代替递归
-    whilefn () {
+    whileDomH () {
         const rootRoot = this.tabMainTabBodyDomArr;
         let domArr = [rootRoot] ;
 
@@ -418,7 +424,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
 
                 const tabHArr = tabDomArr.map(val=>{
                     return val.clientHeight;
-                }).sort();
+                }).sort(compareFn);
                 const maxH = tabHArr[tabHArr.length-1];
 
                 if(tabHArr[0]!==maxH){ // 高度不同
@@ -435,7 +441,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
 
                         const trHArr = trDomArr.map(val=>{
                             return val.clientHeight;
-                        }).sort();
+                        }).sort(compareFn);
 
                         const trHMax = trHArr[trHArr.length-1];
                         if(tr.classList.contains('tree-td')){

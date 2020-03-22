@@ -32,11 +32,10 @@ declare namespace MyTabListSpace {
 			emptyTxt: string;//空数据时显示文字
 			noOrder?:boolean;
 		};
-		changeState(path:string,key:'expand'|'active'|'checkPar'):void;
+		changeState(path:string,key:''|'active'|'checkPar'):void;
 		node:{
 			[key: string]: any;
-			active: 'selected' | 'hasSelect' | 'noSelect';
-			expand: boolean;
+			checked: boolean;
 		}
 		data:IImmutalbeList<IImmutalbeMap<common['node']>>
 	}

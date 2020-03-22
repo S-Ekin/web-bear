@@ -8,6 +8,7 @@ import * as Immutable from "immutable";
 import TabView from './TabView';
 import {GroupCols} from './GroupCols';
 import {Empty} from "../icon/index";
+import PageSize from './PageSize';
 type common =MyTabListSpace.common;
 type childType =React.ComponentElement<common['groupCol'],any> ;
 type Props={
@@ -28,6 +29,9 @@ type Props={
 type States={
     immutabData:IImmutalbeList<IImmutalbeMap<any>>;
     selectArr:IImmutalbeList<string>;
+    perNums: number; //每页条数
+    curPage: number; //当前页数
+    tableData: IImmutalbeList<IImmutalbeMap<any>>;
     preData:any[];
     preInitSelect?:{id:string}
 };
@@ -43,7 +47,7 @@ interface ITabList {
     fieldArr:config[];
     fixObj:fixObj;
 }
-
+const compareFn = (a:number,b:number)=>a-b;
 const tableInitData=(data:Props["data"],defaulSel:string,idField:string)=>{
         const defaulSelArr = `${defaulSel}`.split(",");
         return  Immutable.fromJS(data,(_key,val,_path)=>{
@@ -72,6 +76,7 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
                 preData:newData,
                 immutabData:data,
                 selectArr:Immutable.List([]),
+                curPage:1,
             };
 
         }else{
@@ -86,7 +91,7 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
     tabMainTabBodyDomArr:HTMLDivElement[] = [];
     constructor(props:Props){
         super(props);
-        const {children,data,idField,defaultSel,initSelectVal} = this.props;
+        const {children,data,idField,defaultSel,initSelectVal,noPageNums} = this.props;
         this.fieldArr = this.getFieldArr(children);
 
         const immutabData= tableInitData(data,defaultSel!,idField);
@@ -95,10 +100,17 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
             immutabData,
             preData:data,
             selectArr:Immutable.List(),
-            preInitSelect:initSelectVal
+            preInitSelect:initSelectVal,
+            perNums:20,
+            curPage:1,
+            tableData: noPageNums ? immutabData : this.getDataByPageAndPerNum(1,20,immutabData)
         };
         
     } 
+    getDataByPageAndPerNum(curPage:number,perNums:number,immutabData:States['immutabData']){
+        const startIndex = (curPage - 1) * perNums;
+        return immutabData.slice(startIndex,perNums + startIndex);
+    }
     getFieldArr(arr:Props['children']){
         const {noOrder,multiply} = this.props;
        return React.Children.map(arr,function(val,index){
@@ -170,79 +182,94 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
         });
     } 
     changeState:common['changeState']=(path,key)=>{
-        // if(key==="expand"){
-        //     this.expand(path);          
-        // }else if(key==="active"){
-        //     this.checkChild(path);
-        // }else if(key==='checkPar'){
-        //     this.checkPar(path);
-        // }
+       
         const index = ~~path - 1 ;
         if(key==='active'){
             this.setState(pre=>{
-                return {
-                    immutabData:pre.immutabData.updateIn([index],node=>{
+                const data = pre.immutabData.updateIn([index],node=>{
 
                         const status = node.get('checked');
 
                         return node.set('checked',!status)
-                    })
+                });
+
+                const pageData = this.getDataByPageAndPerNum(pre.curPage,pre.perNums,data);
+                    
+                return {
+                    immutabData:data,
+                    tableData:pageData
                 }
             })
+        }else if(key==="checkPar"){
+
+             const {noPageNums} = this.props;
+            this.setState(pre=>{
+                const {curPage,perNums,immutabData} = pre;
+                let num:number ;
+                if (!noPageNums) {
+                    //看最后一页是不是满的
+                    const rest = curPage * perNums - immutabData.size;
+                    num = rest > 0 ? perNums - rest : perNums;
+                }else{
+                    num = immutabData.size;
+                }
+                let newData = pre.immutabData;
+                Array.from({ length: num }).forEach((_val,index) => {
+                    //计算要从当前页的起始位置开始
+                    newData = newData.updateIn(
+                        [index + (curPage - 1) * perNums],
+                        val => {
+                            return val.set("checked", path !== "true" );
+                        }
+                    );
+                });
+                  
+                return {
+                    immutabData:newData,
+                    tableData:this.getDataByPageAndPerNum(curPage,perNums,newData)
+                }
+            });
         }
-       
-        
     }
     //比对所有区域的高度，设置为一样高
     setSameH(){
         let domArr = this.tabMainTabBodyDomArr;
-        
         if(domArr.length < 2){
             return ;
         }   
-      
        const tabDom = domArr.map(val=>{
             return val.firstElementChild!;
         });
-
-        const tabHArr = tabDom.map(val=>val.clientHeight).sort();
+        const tabHArr = tabDom.map(val=>val.clientHeight).sort(compareFn);
         const tabHMax = tabHArr[tabHArr.length - 1];
         if(tabHArr[0]!== tabHMax){
-
             const trDomArr = tabDom.map(val=>val.lastElementChild!.children);
-
-            [...trDomArr[0]].forEach((val,index)=>{
+            [...trDomArr[0]].forEach((_val,index)=>{
 
                 const trCompareDom = trDomArr.map(val=>{
 
                     return val[index];
                 });
-
-                const trHArr = trCompareDom.map(val=>val.clientHeight).sort();
+                const trHArr = trCompareDom.map(val=>val.clientHeight).sort(compareFn);
                 const trHMax = trHArr[trHArr.length -1];
                 if(trHMax !== trHArr[0]){
                     trCompareDom.forEach(element => {
                             [...(element as HTMLTableRowElement).children]!.forEach(td => {
                                     
                                 (td as HTMLTableCellElement).style.height = `${trHMax}px`
-
                             });
                     });
                 }
-
-
-
-
             })
-
         }
-
-
     }
-
+    setDom(){
+        this.setSameH();
+        this.setTabViewBottomFixHeight();
+    }
     viewMap(){
-        const {} = this.props;
-        const {immutabData} = this.state;
+        const {tableData,perNums,curPage} = this.state;
+        const startIndex = (curPage - 1)*perNums;
         return this.fieldArr.map((group,index)=>{
             return (
                 <TabView
@@ -250,8 +277,9 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
                     key={index}
                     setTabBodyDom={this.setTabBodyDom}
                     changeScrollTop={this.changeScrollTop}
-                    data={immutabData}
+                    data={tableData}
                     viewIndex={index}
+                    startIndex={startIndex}
                     changeState={this.changeState}
                     fixObj={this.fixObj}
                 />
@@ -259,9 +287,7 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
        });
     }
     componentDidMount(){
-        this.setSameH();
-
-        this.setTabViewBottomFixHeight();
+      this.setDom();
     }
     setTabViewBottomFixHeight(){
         const arr = this.fieldArr;
@@ -270,34 +296,74 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
             if(!arr[index].forzen){ //有横的滚动条
               status =   val.scrollWidth > val.clientWidth ;
             }
-
            return status ;
-
         })
 
         if(res !== -1){
             this.tabMainTabBodyDomArr.forEach((val,index)=>{
-
                 if(arr[index].forzen){
-                    val.style.paddingBottom = '17px'
+                    val.classList.add('tab-over-wid');
                 }else if (res!== index){
                     if(val.scrollWidth <= val.clientWidth){
-                        val.style.paddingBottom = '17px'
+                    val.classList.add('tab-over-wid');
                     }
                 }
             })
+        }else{
+            this.tabMainTabBodyDomArr.forEach((val)=>{
+                val.classList.remove('tab-over-wid');
+            })
         }
     }
+   
+    changePageHandle=(key:'curPage' | "perNums",val:number)=>{
+
+        if(key === "curPage"){
+            this.setState(pre=>{
+                const perNums = pre.perNums;
+               return {
+                   curPage:val,
+                   tableData:this.getDataByPageAndPerNum(val,perNums,pre.immutabData)
+               } 
+            },()=>{
+               this.setDom();
+            })
+        }else if(key === "perNums"){
+            this.setState(pre=>{
+               return {
+                   perNums:val,
+                   curPage:1,
+                   tableData:this.getDataByPageAndPerNum(1,val,pre.immutabData)
+               } 
+            },()=>{
+               this.setDom();
+            })
+        }
+
+       
+    }
     render(){
-        const {height,emptyTxt,} = this.props;
-        const {immutabData} = this.state;
+        const {height,emptyTxt,noPageNums} = this.props;
+        const {immutabData,curPage,perNums} = this.state;
         const hasData = !!immutabData.size;
-        const body =  hasData ? this.viewMap() : <Empty txt={emptyTxt} />
+        const body =  hasData ? this.viewMap() : <Empty txt={emptyTxt} />;
+        const totalPages = Math.ceil(immutabData.size / perNums);
+        const page =  !noPageNums ?(
+            <PageSize 
+                    curPage={curPage} 
+                    perNums={perNums} 
+                    totalNums={immutabData.size}
+                    totalPages={totalPages}
+                    changeHandle={this.changePageHandle}
+                    
+                />
+        ) :undefined;
         return (
             <div className="treeTap-wrap" style={{height: height,}}>
                  <div className="treeTab">
                     {body}
                 </div>
+                {page}
             </div>
            
         );

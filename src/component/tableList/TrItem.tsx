@@ -34,8 +34,8 @@ class TrItem extends React.PureComponent<Props,States> implements ITrItem{
             const active = node.get('checked') ? 
             'checkbox-marked' : 'checkbox-blank';
         return (<span onClick={this.checkFn} className="tree-check" data-index={index}>
-            <SvgIcon className={active}/>
-        </span> );
+                    <SvgIcon className={active}/>
+                </span> );
         
        
     }
