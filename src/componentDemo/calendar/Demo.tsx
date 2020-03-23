@@ -4,11 +4,11 @@
  * @time 2019-10-21
  */
 import * as React from "react";
-import Calendar from "../index";
-import PropsEditConfig from "../demo/PropsEditConfig";
+import Calendar from "@component/calendar/index";
+import PropsEditConfig from "./PropsEditConfig";
 import "./index.scss";
 import { Button } from "@component/button/index";
-import { Input, CheckBox } from "../../input/index";
+import { Input, CheckBox } from "@component/input/index";
 import { createImmutableMap } from "@component/createImmutaleMap";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 

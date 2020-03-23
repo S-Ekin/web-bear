@@ -4,7 +4,7 @@
  * @time 2020-02-19
  */
 import * as React from "react";
-import Loading from '../Loading';
+import Loading from "@component/loading/Loading";
 import loadFn from '@component/loading/loadMethod';
 import './index.scss';
 import {Button} from '@component/button/index';
@@ -17,7 +17,7 @@ type States={
 interface Iindex {
 
 }
-class Index extends React.PureComponent<Props,States> implements Iindex{
+class Demo extends React.PureComponent<Props,States> implements Iindex{
 
 
     loadingRef:React.RefObject<HTMLDivElement> = React.createRef();
@@ -99,4 +99,4 @@ class Index extends React.PureComponent<Props,States> implements Iindex{
 }
 
 
-export default Index;
+export default Demo;

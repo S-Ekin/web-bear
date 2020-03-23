@@ -5,7 +5,7 @@
  */
 import * as React from "react";
 import {Switch,Route} from 'react-router-dom';
-import ButtonDemo from '@component/button/demo/demo';
+import ButtonDemo from '@componentDemo/button/demo';
 
 type Props={
 

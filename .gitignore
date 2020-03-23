@@ -1,5 +1,6 @@
 /node_modules/
 /dist/
+/lib/
 /static/
 # Compiled class file
 *.class

@@ -5,9 +5,9 @@
  */
 import * as React from "react";
 import {Switch,Route} from 'react-router-dom';
-import TableList from '@component/table/demo/Demo';
-import TableTree from '@component/treeTable/demo2/Demo';
-import TableFix from '@component/TableList/demo/demo';
+import TableList from '@componentDemo/table/Demo';
+import TableTree from '@componentDemo/treeTable/Demo';
+import TableFix from '@componentDemo/TableList/demo';
 
 type Props={
 

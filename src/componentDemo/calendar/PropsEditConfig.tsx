@@ -4,7 +4,7 @@
  * @time 2019-10-25
  */
 import * as React from "react";
-import {Input,CheckBox} from "../../input/index";
+import {Input,CheckBox} from "@component/input/index";
 
 type obj = {
         field: string;

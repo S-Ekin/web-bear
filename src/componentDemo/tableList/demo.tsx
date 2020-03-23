@@ -1,27 +1,30 @@
 /**
  * @name name
  * @description description
- * @time 2020-02-25
+ * @time 2020-03-20
  */
 import * as React from "react";
+import { TabList, GroupCols } from "@component/tableList/TabList";
 import "./demo.scss";
-import { GroupCols, TreeTable } from "../TreeTable";
 import data from "./data";
 import { createImmutableMap } from "@component/createImmutaleMap";
 import { Button } from "@component/button/index";
 import { Input, CheckBox } from "@component/input/index";
-import {str1,str4,str2,str3,str5,str6} from './CodeStr';
+import { str1 } from "./CodeStr";
 import CodeBlock from "@container/codeBlock/CodeBlock";
+
 type config = {
+  noPageNums?: boolean; //页码
   multiply?: boolean;
-  itemIcon?: string;
   height?: number;
-  childField?: string;
   idField: string; //表格的节点标识
   defaultSel?: string; //默认选中的
   tabField?: string; //表格标识
   emptyTxt?: string; //空数据时显示文字
-  noOrder?:boolean;
+  noOrder?: boolean;
+  //   getCheckFn?:(fn:any)=>void;//获取选中的
+  //     initSelectVal?:{id:string};//通过外界改变表格的选中
+  //     bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<any>>)=>void;//把获取选中的项的函数传递给外部
 };
 type Props = {};
 type States = {
@@ -32,16 +35,20 @@ type States = {
 };
 const initConfig = {
   multiply: false,
-  height: 240,
-  itemIcon: "file",
-  childField: "children",
-  idField: "id",
+  noPageNums: false,
+  height: 300,
+  idField: "event_id",
   defaultSel: "", //默认选中的
   tabField: "", //表格标识
   emptyTxt: "", //空数据时显示文字
-  noOrder:false,
+  noOrder: false
 };
-class Demo extends React.PureComponent<Props, States> {
+
+interface IDemo {
+
+  refesh ():void; 
+}
+class Demo extends React.PureComponent<Props, States> implements IDemo {
   state: States = {
     immuConfig: createImmutableMap<config>(initConfig),
     config: initConfig,
@@ -63,7 +70,7 @@ class Demo extends React.PureComponent<Props, States> {
 
     if (["height"].includes(name)) {
       value = ~~value;
-    } else if (["multiply",'noOrder'].includes(name)) {
+    } else if (["multiply", "noOrder", "noPageNums"].includes(name)) {
       value = value === "1" ? true : false;
     }
 
@@ -76,7 +83,7 @@ class Demo extends React.PureComponent<Props, States> {
   changeSelect = () => {
     this.setState({
       initSelectVal: {
-        id: "21,22"
+        id: "224,229"
       }
     });
   }
@@ -84,71 +91,74 @@ class Demo extends React.PureComponent<Props, States> {
     const { refreshId, config, immuConfig, initSelectVal } = this.state;
     const {
       height,
-      itemIcon,
-      childField,
       multiply,
       emptyTxt,
       tabField,
       idField,
       defaultSel,
-      noOrder
+      noOrder,
+      noPageNums
     } = immuConfig.toJS();
-    const code1 = (
+     const code1 = (
     <>
        <div>
-         外部控制下拉的选择id:21,22的节点
+         外部控制下拉的选择id:224,229的节点
                 <Button handle={this.changeSelect}>选择</Button>
         </div>
     </>
     );
     return (
       <div className="g-layout">
-        <div className="g-layout-head">
-          <h3>树形表格</h3>
-        </div>
+        <div className="g-layout-head">列表表格</div>
         <div className="g-layout-article">
           <div className="g-item-show">
             <Button handle={this.refesh}>刷新</Button>
           </div>
           <div className="g-item-show">
-            <TreeTable
-              key={refreshId}
-              data={data}
-              initSelectVal={initSelectVal}
-              {...config}
+            <TabList
+                key={refreshId}
+                data={data}
+                initSelectVal={initSelectVal}
+                {...config}
             >
               <GroupCols forzen={true}>
-                <GroupCols.colItem width={180} field="name">
-                  列1
+                <GroupCols.colItem field="eventNo" width={140}>
+                  事件编号
                 </GroupCols.colItem>
-                <GroupCols.colItem width={60} field="persons" align="center">列2</GroupCols.colItem>
+                <GroupCols.colItem field="category_name" width={120}>
+                  事件类型
+                </GroupCols.colItem>
               </GroupCols>
               <GroupCols>
-                <GroupCols.colItem width={140} field="name">
-                  列1
+                <GroupCols.colItem field="a_SHANGBAOSHIJIAN" width={220}>
+                  上报日期
                 </GroupCols.colItem>
-                <GroupCols.colItem field="persons" width={240}>
-                  列2
+                <GroupCols.colItem field="status_name" width={120}>
+                  处理状态
                 </GroupCols.colItem>
-                <GroupCols.colItem width={240} field="begin">
-                  列3
-                </GroupCols.colItem>
-                <GroupCols.colItem width={140} field="end">
-                  列3
-                </GroupCols.colItem>
-                <GroupCols.colItem width={140} field="progress">
-                  列3
-                </GroupCols.colItem>
-              </GroupCols>
-              <GroupCols forzen={true} >
-                <GroupCols.colItem width={140} field="name">列3</GroupCols.colItem>
-              </GroupCols>
-              <GroupCols  >
-                <GroupCols.colItem width={140} field="name">列3</GroupCols.colItem>
-              </GroupCols>
-            </TreeTable>
-          </div>
 
+                <GroupCols.colItem field="category_name" width={180}>
+                  事件类型
+                </GroupCols.colItem>
+              </GroupCols>
+              <GroupCols forzen={true}>
+                <GroupCols.colItem field="a_SHANGBAOREN" width={120}>
+                  上报人
+                </GroupCols.colItem>
+              </GroupCols>
+              <GroupCols>
+                <GroupCols.colItem field="eventNo" width={120}>
+                  事件编号
+                </GroupCols.colItem>
+                <GroupCols.colItem field="category_name" width={120}>
+                  事件类型
+                </GroupCols.colItem>
+                <GroupCols.colItem field="status_name" width={120}>
+                  处理状态
+                </GroupCols.colItem>
+              </GroupCols>
+            </TabList>
+          </div>
           <div className="g-item-show flex-between">
             <div>
               <div className="inp-item">
@@ -164,28 +174,40 @@ class Demo extends React.PureComponent<Props, States> {
               <div className="inp-item">
                 <Input
                   changeFn={this.changeConfig}
-                  name="itemIcon"
-                  value={itemIcon!}
-                >
-                  文件图标 itemIcon:
-                </Input>
-              </div>
-              <div className="inp-item">
-                <Input
-                  changeFn={this.changeConfig}
-                  name="childField"
-                  value={childField!}
-                >
-                  子数组字段 childField:
-                </Input>
-              </div>
-              <div className="inp-item">
-                <Input
-                  changeFn={this.changeConfig}
                   name="idField"
                   value={idField}
                 >
                   节点标识字段 idField:
+                </Input>
+              </div>
+              <div className="inp-item">
+                <span>无页码 noPageNums</span>
+                <CheckBox
+                  name="noPageNums"
+                  value="1"
+                  type="radio"
+                  checked={noPageNums!}
+                  changeHandle={this.changeConfig}
+                >
+                  是
+                </CheckBox>
+                <CheckBox
+                  name="noPageNums"
+                  value="2"
+                  type="radio"
+                  checked={!noPageNums}
+                  changeHandle={this.changeConfig}
+                >
+                  否
+                </CheckBox>
+              </div>
+              <div className="inp-item">
+                <Input
+                  changeFn={this.changeConfig}
+                  name="defaultSel"
+                  value={defaultSel!}
+                >
+                  默认选中 defaultSel:
                 </Input>
               </div>
             </div>
@@ -211,6 +233,7 @@ class Demo extends React.PureComponent<Props, States> {
                   否
                 </CheckBox>
               </div>
+
               <div className="inp-item">
                 <span>不要序号 noOrder</span>
                 <CheckBox
@@ -232,7 +255,7 @@ class Demo extends React.PureComponent<Props, States> {
                   否
                 </CheckBox>
               </div>
-           
+
               <div className="inp-item">
                 <Input
                   changeFn={this.changeConfig}
@@ -251,40 +274,13 @@ class Demo extends React.PureComponent<Props, States> {
                   表格标识 tabField:
                 </Input>
               </div>
-              <div className="inp-item">
-                <Input
-                  changeFn={this.changeConfig}
-                  name="defaultSel"
-                  value={defaultSel!}
-                >
-                  默认选中 defaultSel:
-                </Input>
-              </div>
             </div>
           </div>
-
-          <div className="g-item-show">
-             
+        <div className="g-item-show">
               <CodeBlock tit={code1}>{str1}</CodeBlock>
-          </div>
-          <div className="g-item-show">
-              <CodeBlock language="scss" tit="表格高度和宽度能自适应和有滚动条的关键css">{str2}</CodeBlock>
-          </div>
-          <div className="g-item-show">
-              <CodeBlock tit="递归比较dom">{str3 + str4}</CodeBlock>
-          </div>
-          <div className="g-item-show">
-            <CodeBlock tit="递归组件ParTree来表示每个节点的序号，层级，路径,关于序号，明白Tritem才是真正渲染的地方，ParTree只是运输过程，在其他地方++order都不行,order要做成对象{order：number}来传递和递增">
-              {str5}
-            </CodeBlock>
-          </div>
-          <div className="g-item-show">
-            <CodeBlock tit='Immutable.fromJS()格式化json时，也就是用函数来得到节点的层级，路径，序号'>
-              {str6}
-            </CodeBlock>
-            
-          </div>
+         </div>
         </div>
+       
       </div>
     );
   }

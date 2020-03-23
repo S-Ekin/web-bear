@@ -13,12 +13,15 @@
 		"noUnusedParameters": true,
 		"downlevelIteration": true,
 		"moduleResolution": "node",
+		"removeComments": true,
 		"rootDir": "src",
+		"outDir":"lib",
 		"baseUrl": ".",
 		"strict": true,
-		"declaration": false,
+		"declaration":false,
 		"paths": {
 			"@component/*": ["./src/component/*"],
+			"@componentDemo/*": ["./src/componentDemo/*"],
 			"@css/*": ["./src/css/*"],
 			"@container/*": ["./src/containers/*"]
 		},

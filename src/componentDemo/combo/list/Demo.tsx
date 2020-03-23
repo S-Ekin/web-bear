@@ -5,8 +5,8 @@
  */
 import * as React from "react";
 import "./demo.scss";
-import { ComboTree } from "@component/combo/index";
-import { Input, CheckBox } from "../../input/index";
+import { Combobox} from "@component/combo/index";
+import { Input, CheckBox } from "@component/input/index";
 import { createImmutableMap } from "@component/createImmutaleMap";
 import { Button } from "@component/button/index";
 import CodeBlock from "@container/codeBlock/CodeBlock";
@@ -44,42 +44,25 @@ interface IDemo {
   selectFn: undefined | ((path: string) => void);
 }
 
-const data = [
-  {
-    text: "1",
-    id: "1",
-    children: [
-      {
-        text: "1-1",
-        id: "1-1"
-      },
-      {
-        text: "1-2",
-        id: "1-2"
-      }
-    ]
-  },
-  {
-    text: "2",
-    id: "2",
-    children: [
-      {
-        text: "2-1",
-        id: "2-1",
-        children: [
-          {
-            text: "2-1-1",
-            id: "2-1-1"
-          }
-        ]
-      },
-      {
-        text: "2-2",
-        id: "2-2"
-      }
-    ]
-  }
-];
+const data =  [
+    {
+        text:"1",
+        id:1
+    },
+    {
+        text:"2",
+        id:2
+    },{
+        text:"3",
+        id:3
+    },{
+        text:"4",
+        id:4
+    },{
+        text:"5",
+        id:5
+    },
+]
 
 class Demo extends React.PureComponent<Props, States> implements IDemo {
   selectFn: IDemo["selectFn"] = undefined;
@@ -192,7 +175,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   }
   btnControlSelect = () => {
     this.setState({
-      outControlSelecte: { id: "1-1" }
+      outControlSelecte: { id: "1" }
     });
   };
   render() {
@@ -220,10 +203,10 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     
     return (
       <div className="g-layout comboTree-page">
-        <div className="g-layout-head"><h3>树形下拉框</h3></div>
+        <div className="g-layout-head"><h3>列表下拉框</h3></div>
         <div className="g-layout-article">
           <div className="g-item-show config-box">
-            <ComboTree
+            <Combobox
               data={data}
               key={refreshId}
               clickCallback={this.clickCallback}
@@ -451,7 +434,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
           <div className="g-item-show">
            
             <CodeBlock tit={(
- <div className="inp-item">
+              <>
+               <div className="inp-item">
               <span>启用自定义显示框的文字内容 formatterVal</span>
               <CheckBox
                 name="formatterVal"
@@ -472,7 +456,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 否
               </CheckBox>
             </div>
-          
+              </>
             )}>
               {` //自定义显示框的文字内容，selected所选择的内容
   // formatterVal?: (selected: states["selected"]) => React.ReactChild;
@@ -488,9 +472,9 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             </CodeBlock>
           </div>
           <div className="g-item-show">
-           
-            <CodeBlock tit={(
-               <div className="inp-item">
+            
+            <CodeBlock tit={(<>
+            <div className="inp-item">
               <span>启用自定义下拉框的文字内容 formatterDropItem</span>
               <CheckBox
                 name="formatterDropItem"
@@ -511,7 +495,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 否
               </CheckBox>
             </div>
-            )}>
+            </>)}>
               {`//自定义下拉框的文字内容
   // formatterDropItem?: (node:IImmutalbeMap<any>) => React.ReactChild;
   function formatterDropItem (node:IImmutalbeMap<any>){
@@ -521,9 +505,10 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             </CodeBlock>
           </div>
           <div className="g-item-show ">
-           
+          
             <CodeBlock tit={(
- <div className="inp-item">
+              <>
+                <div className="inp-item">
               <span>
                 启用 点击或是选中之前做的操作，可以阻止下面的操作
                 clickOrCheckForbid
@@ -547,7 +532,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 否
               </CheckBox>
             </div>
-           
+              </>
             )}>{`//点击或是选中之前做的操作，返回true不执行选中操作，默认返回false
   // clickOrCheckForbid?:(node:IImmutalbeMap<any>,field:string)=>boolean;
   clickOrCheckForbid(node: IImmutalbeMap<any>, field: string) {
@@ -559,12 +544,14 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   `}</CodeBlock>
           </div>
           <div className="g-item-show">
-            
+           
             <CodeBlock tit={(
-              <div>
+              <>
+               <div>
               <Button handle={this.btnControlSelect}>选择</Button>
-              <small style={{marginLeft: 16,}}><b>外部控制下拉的选择id:1-1的节点</b></small>
+              <small style={{marginLeft: 16,}}><b>外部控制下拉的选择id:1的节点</b></small>
             </div>
+              </>
             )}>
               {`
   /* data: any[];
@@ -586,7 +573,6 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     `}
             </CodeBlock>
           </div>
-          
         </div>
       </div>
     );

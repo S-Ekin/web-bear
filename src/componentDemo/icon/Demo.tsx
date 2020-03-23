@@ -30,7 +30,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
        return  iconList.map(val=>{
             
             return (
-                <div className="icon-item">
+                <div className="icon-item" key={val}>
                     <p>
                         <SvgIcon className={val} size="big" />
                     </p>

@@ -4,10 +4,10 @@
  * @time 2020-02-20
  */
 import * as React from "react";
-import Loading from '@component/loading/demo/Index';
+import Loading from '@componentDemo/loading/Demo';
 import { Switch,Route } from "react-router-dom";
-import CrashPage from '@component/crashPage/demo/demo';
-import EmptyIcon from '@component/icon/demo/demo';
+import CrashPage from '@componentDemo/crashPage/demo';
+import EmptyIcon from '@componentDemo/icon/demo';
 type Props={
 
 };

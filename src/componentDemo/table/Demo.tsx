@@ -5,7 +5,7 @@
  */
 import * as React from "react";
 import data from "./data";
-import Table from "../index";
+import Table from "@component/table/index";
 import {Button} from "@component/button/index";
 import {Search} from "@component/input/index";
 import * as Immutable from "immutable";
@@ -126,7 +126,6 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
 						data={tableData}
 						idField="event_id"
 						checkbox={true}
-						column={this.column}
 						defaultSel="169"
 						initSelectVal={selectTableVal}
 						bindGetSelectedFn={this.bindgetTableSelecte}

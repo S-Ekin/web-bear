@@ -5,9 +5,9 @@
  */
 import * as React from "react";
 import {Switch , Route} from 'react-router-dom';
-import Calendar from '@component/calendar/demo/Demo';
-import Combobox from '@component/combo/demo/demo';
-import ComboTree from '@component/combo/demo2/demo';
+import Calendar from '@componentDemo/calendar/Demo';
+import Combobox from '@componentDemo/combo/list/demo';
+import ComboTree from '@componentDemo/combo/tree/demo';
 
 type Props={
 
