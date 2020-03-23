@@ -2,7 +2,8 @@
   "name": "@s-ekin/web",
   "version": "2.0.1",
   "description": "",
-  "main": "src/main.tsx",
+  "main": "lib/index.js", 
+  "typings": "lib/index.d.ts",
   "scripts": {
     "test": "webpack-dev-server  --disableHostCheck=true --open=chrome --env=development -w",
     "build": "webpack --env=production --profile",

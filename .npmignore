@@ -4,3 +4,6 @@
 .gitignore
 .vscode
 webpack.config.js
+src
+icon
+.stylelintrc.json

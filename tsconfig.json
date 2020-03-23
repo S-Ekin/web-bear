@@ -18,7 +18,7 @@
 		"outDir":"lib",
 		"baseUrl": ".",
 		"strict": true,
-		"declaration":false,
+		"declaration":true,
 		"paths": {
 			"@component/*": ["./src/component/*"],
 			"@componentDemo/*": ["./src/componentDemo/*"],
