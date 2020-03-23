@@ -1,8 +1,8 @@
 {
   "name": "@s-ekin/web",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "",
-  "main": "lib/index.js", 
+  "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
     "test": "webpack-dev-server  --disableHostCheck=true --open=chrome --env=development -w",
