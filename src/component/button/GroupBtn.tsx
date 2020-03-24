@@ -6,11 +6,14 @@
 import * as React from "react";
 import Button from "./MyButton";
 import {Icon} from "../icon/index";
-type item=ButtonSpace.IGroupBtnsitem;
-
+interface IGroupBtnsitem{
+        id:string;
+        text:string;
+        icon?:string;
+    }
 type props={
     themeTxt:string;//主题名称，用于显示下拉主题
-    list:item[];
+    list:IGroupBtnsitem[];
     icon?:string;
     clickFn:(field:string)=>void;
 };

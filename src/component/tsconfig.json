@@ -1,0 +1,26 @@
+{
+"compilerOptions": {
+		"module": "esnext",
+		"noImplicitAny": true,
+		"sourceMap": false,
+		"isolatedModules": true,
+		"jsx": "react",
+		"allowSyntheticDefaultImports":true,
+		"allowJs": false,
+		"target": "es6",
+		"strictNullChecks": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"downlevelIteration": true,
+		"moduleResolution": "node",
+		"removeComments": true,
+	//	"rootDir": "component",
+		"outDir":"../../lib",
+		"baseUrl": "./",
+		"strict": true,
+		"declaration":true,
+		"lib": ["es2015", "dom", "dom.iterable"],
+		"types": ["node"],
+		"typeRoots":["./typings"]
+	},
+}

@@ -4,7 +4,7 @@
  * @time 2020-03-19
  */
 import * as React from "react";
-import {SvgIcon} from '@component/icon/index';
+import {SvgIcon} from '../icon/index';
 type common = MyTabListSpace.common;
 type Props={
  cols:common['col'][];

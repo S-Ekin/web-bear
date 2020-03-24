@@ -4,17 +4,15 @@
  * @time 2019-10-22
  */
 import * as React from "react";
-
+import {ICommonInterface} from "./calendar";
 interface ICalendarDayView {
 	getTimePickCom():JSX.Element;
 }
 
-type commonInterface = CalendarSpace.commonInterface;
-
 type Props = {
-	curTime: commonInterface["curTime"];
-	showTimeObj: commonInterface["showTimeObj"];
-	selTimeObj: commonInterface["showTimeObj"];
+	curTime: ICommonInterface["curTime"];
+	showTimeObj: ICommonInterface["showTimeObj"];
+	selTimeObj: ICommonInterface["showTimeObj"];
 	clickSelHandle: (e: React.MouseEvent<HTMLElement>) => void;
 	time: boolean;
 	changeTime: any;

@@ -1,3 +1,5 @@
+
+import {ICommonInterface,ICalendarStates} from "./calendar";
 enum calendarType {
   year = 1,
   searson = 2,
@@ -5,10 +7,8 @@ enum calendarType {
   day = 4
 }
 
-type commonInterface = CalendarSpace.commonInterface;
-
 type Props = {
-  rotate?: commonInterface["rotate"]; // 日历类型
+  rotate?: ICommonInterface["rotate"]; // 日历类型
   style?: 1 | 2;
   time?: boolean;
   defaultTime?: string;
@@ -17,7 +17,7 @@ type Props = {
 const timeStrValToTimeObjArr = function(
   isInit: boolean,
   props: Props,
-  curTime: commonInterface["curTime"]
+  curTime: ICommonInterface["curTime"]
 ) {
   if (isInit) {
     return Array.from({ length: props.style! }).map(() => {
@@ -110,12 +110,12 @@ const timeStrValToTimeObjArr = function(
 
 //把时间转化为显示的inp框里的时间数组
 const getInpTimeStrArr = function(
-		selTimeArr: CalendarSpace.CalendarStates["selTimeArr"],
-		rotate:commonInterface["rotate"],
+		selTimeArr:ICalendarStates["selTimeArr"],
+		rotate:ICommonInterface["rotate"],
 		time: boolean
 	):string[] {
 		const getStr = (
-			val: commonInterface["showTimeObj"],
+			val: ICommonInterface["showTimeObj"],
 			rotate: number,
 			time: boolean
 		) => {

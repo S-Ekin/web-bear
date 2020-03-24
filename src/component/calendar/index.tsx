@@ -4,11 +4,12 @@ import * as Immutable from "immutable";
 import CalendarView from "./CalendarView";
 import CalendarInp from "./CalendarInp";
 import {timeStrValToTimeObjArr,calendarType ,getInpTimeStrArr,getCurTime} from './objectFn';
-type commonInterface = CalendarSpace.commonInterface;
+import {ICommonInterface} from "./calendar";
+
 
 type Props = {
 	field: string;
-	rotate?: commonInterface["rotate"]; // 日历类型
+	rotate?: ICommonInterface["rotate"]; // 日历类型
 	style?: 1 | 2;
 	time?: boolean; //可选择时间
 	noInp?: boolean;
@@ -22,25 +23,34 @@ type Props = {
 	clickBack: (
 		timeStr: string,
 		field: string,
-		rotate: commonInterface["rotate"],
-		selTimeList:CalendarSpace.CalendarStates["selTimeArr"]
+		rotate: ICommonInterface["rotate"],
+		selTimeList:States["selTimeArr"]
 	) => void | boolean;
 };
 
-type States = CalendarSpace.CalendarStates & {
+type States = {
 	preRotate:Props['rotate'],
 	preInitTime:Props['initTime'],
+	expand: boolean;
+	selTimeArr: IImmutalbeList<ICommonInterface["showTimeObj"]>;
+	calendarVal: string;
+	rotate:ICommonInterface["rotate"];
+	showViewArr: ("fadeIn" | "fadeOut")[];
 };
 
 //一些固定的类型
-type fixProps=CalendarSpace.fixProps ;
+type fixProps = {
+	style:1|2;
+	time:boolean;
+	noChangeRotate:boolean;
+} ;
 
-interface ICalendar {
-	curTime:commonInterface["curTime"];
+ interface ICalendar {
+	curTime:ICommonInterface["curTime"];
 	fixProps:fixProps;
-	changeBasicState:commonInterface["changeBasicState"];
+	changeBasicState:ICommonInterface["changeBasicState"];
 	createFixProps():fixProps;
-	getShowViewArr(rotate:commonInterface["rotate"]):States["showViewArr"];
+	getShowViewArr(rotate:ICommonInterface["rotate"]):States["showViewArr"];
 }
 
 
@@ -130,7 +140,7 @@ class Calendar extends React.PureComponent<Props, States>
 			clickBack(this.state.calendarVal, field, rotate!,selTimeArr);
 		}
 	}
-	getShowViewArr(rotate:commonInterface["rotate"]){
+	getShowViewArr(rotate:ICommonInterface["rotate"]){
 
 		let animationArr:States["showViewArr"] = new Array(5).fill("fadeOut");
 		animationArr[rotate] = "fadeIn";
@@ -139,10 +149,10 @@ class Calendar extends React.PureComponent<Props, States>
 
 	//比较时间的大小
 	compareTimeRang(
-		selTimeArr:CalendarSpace.CalendarStates["selTimeArr"],
+		selTimeArr:States["selTimeArr"],
 		viewIndex:number,
-		showTimeObj:commonInterface["curTime"],
-		rotate:commonInterface["rotate"],
+		showTimeObj:ICommonInterface["curTime"],
+		rotate:ICommonInterface["rotate"],
 		time:boolean, //是否有时间点
 		){
 
@@ -205,7 +215,7 @@ class Calendar extends React.PureComponent<Props, States>
 		key:K,
 		callback:(states:States)=>States[K],
 		obj?:{
-			showTimeObj:commonInterface['curTime'],
+			showTimeObj:ICommonInterface['curTime'],
 			viewIndex:number;
 		}
 		)=>{

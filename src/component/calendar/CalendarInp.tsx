@@ -7,12 +7,13 @@ import * as React from "react";
 import {VelocityComponent} from "velocity-react";
 import * as Immutable from "immutable";
 import {SvgIcon} from "../icon/index";
+import {ICommonInterface,ICalendarStates} from "./calendar";
 type Props={
     inpVal: string;
 	placeholder: string;
 	style: 1 | 2;
 	ableClear?: boolean;
-	changeBasicState:CalendarSpace.commonInterface["changeBasicState"]
+	changeBasicState:ICommonInterface["changeBasicState"]
 };
 type States={
 
@@ -32,7 +33,7 @@ class CalendarInp extends React.PureComponent<
 	clearValue = (e: React.MouseEvent<HTMLElement>) => {
 		e.stopPropagation();
 		const {changeBasicState,style} = this.props;
-		changeBasicState<"selTimeArr">("selTimeArr",function(_state:CalendarSpace.CalendarStates) {
+		changeBasicState<"selTimeArr">("selTimeArr",function(_state:ICalendarStates) {
 			const initArr = Array.from({ length: style}).map(() => {
 					return {
 						year: "",
@@ -48,7 +49,7 @@ class CalendarInp extends React.PureComponent<
 	}
 	toggleDrop=()=>{
 		const {changeBasicState} = this.props;
-		changeBasicState<"expand">("expand",function(state:CalendarSpace.CalendarStates) {
+		changeBasicState<"expand">("expand",function(state:ICalendarStates) {
 			return !state.expand;
 		});
 	}

@@ -3,8 +3,6 @@
  * @description description
  * @time 2019-10-21
  */
-
-
 import * as React from "react";
 import CalendarDayView from "./CalendarDayView";
 import CalendarYearView from "./CalendarYearView";
@@ -14,6 +12,7 @@ import { VelocityComponent } from "velocity-react";
 import * as Immutable from "immutable";
 import {createImmutableMap} from "../createImmutaleMap";
 import {SvgIcon} from "../icon/index";
+import {ICommonInterface,ICalendarStates } from "./calendar";
 
 enum calendarType {
 	year = 1,
@@ -22,20 +21,18 @@ enum calendarType {
 	day = 4,
 }
 
-type commonInterface = CalendarSpace.commonInterface;
-
 type Props = {
-	selTimeObj: commonInterface["showTimeObj"];
+	selTimeObj: ICommonInterface["showTimeObj"];
 	showViewArr: ("fadeIn" | "fadeOut")[];
 	viewIndex: 0 | 1;
-	rotate:commonInterface["rotate"],
-	curTime: commonInterface["curTime"];
-	fixProps:CalendarSpace.fixProps;
-	changeBasicState:commonInterface["changeBasicState"];
+	rotate:ICommonInterface["rotate"],
+	curTime: ICommonInterface["curTime"];
+	fixProps: ICommonInterface['fixProps'];
+	changeBasicState:ICommonInterface["changeBasicState"];
 };
 
 type States = {
-	showTimeObj: commonInterface["showTimeObj"];
+	showTimeObj: ICommonInterface["showTimeObj"];
 	lastYear: number;
 };
 
@@ -56,7 +53,7 @@ export default class CalendarView
 			lastYear:this.getLastYear(showTimeObj.get("year")),
 		};
 	}
-	getShowTimeObj(selTimeObj:commonInterface["showTimeObj"],curTime:commonInterface["curTime"]){
+	getShowTimeObj(selTimeObj:ICommonInterface["showTimeObj"],curTime:ICommonInterface["curTime"]){
 		return selTimeObj.getIn([0, "year"])
 			? selTimeObj
 			: createImmutableMap(curTime);
@@ -91,7 +88,7 @@ export default class CalendarView
 	) => {
 		const { year, month, day, searson } = this.state.showTimeObj.toJS();
 		const { changeBasicState ,rotate} = this.props;
-		changeBasicState<"selTimeArr">("selTimeArr",function(states:CalendarSpace.CalendarStates) {
+		changeBasicState<"selTimeArr">("selTimeArr",function(states:ICalendarStates) {
 
 				let selTimeArr = states.selTimeArr;
 
@@ -190,7 +187,7 @@ export default class CalendarView
 			const panelRotate = showViewArr.findIndex(val=>val==="fadeIn");
 			if(rotate !== panelRotate){
 				changeBasicState<"showViewArr">("showViewArr",function(){
-					let animationArr: CalendarSpace.CalendarStates["showViewArr"] = new Array(5).fill("fadeOut");
+					let animationArr:ICalendarStates["showViewArr"] = new Array(5).fill("fadeOut");
 					 animationArr[rotate] = "fadeIn";
 					return animationArr; 
 				});
@@ -254,7 +251,7 @@ export default class CalendarView
 			return ;
 		}
 
-		const id = (+e.currentTarget!.dataset.id!) as commonInterface["rotate"];
+		const id = (+e.currentTarget!.dataset.id!) as ICommonInterface["rotate"];
 		this.props.changeBasicState<"rotate">("rotate",function(){
 			return id ;
 		});	
@@ -332,7 +329,7 @@ export default class CalendarView
 		let value =  ~~e.currentTarget.value;
 			value = name === "hour" ? (value>23 ? 23 : value) : (value > 59 ?59 :value);
 
-		changeBasicState<"selTimeArr">("selTimeArr",function(states:CalendarSpace.CalendarStates) {
+		changeBasicState<"selTimeArr">("selTimeArr",function(states:ICalendarStates) {
 
 				let selTimeArr = states.selTimeArr;
 

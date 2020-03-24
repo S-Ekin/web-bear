@@ -4,7 +4,6 @@
  * 颜色：colorType
  */
 import * as React from "react";
-
 type BtnProps = {
 	handle?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 	styleType: "normal-btn" | "dashed-btn" | "line-btn";//边框样式

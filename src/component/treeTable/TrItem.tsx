@@ -4,7 +4,7 @@
  * @time 2020-03-14
  */
 import * as React from "react";
-import { SvgIcon } from "@component/icon";
+import { SvgIcon } from "../icon/index";
 import {activeStatus} from './formatterTreeData';
 type common = MyTreeTabSpace.common;
 type Props={
