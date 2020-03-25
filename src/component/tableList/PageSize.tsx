@@ -18,7 +18,9 @@ type Props = {
 
 type States = {};
 
-interface IPageSize {}
+interface IPageSize {
+	pageCodeHandle(e: React.MouseEvent<HTMLElement>):void;
+}
 const pageNumsArr = [
 	{ id: "1", text: "10" },
 	{ id: "2", text: "20" },

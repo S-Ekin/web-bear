@@ -7,9 +7,10 @@ import * as React from "react";
 import * as Immutable from "immutable";
 import ParMenu from "./ParMenu";
 import {createImmutableMap} from "../createImmutaleMap";
-
+import {IMenuData,fieldObj} from "./menu";
+	
 type props={
-    data:MenuSpace.menuData[];
+    data:IMenuData[];
 	expand: boolean; //是否收缩
 	textField?: string;
 	idField?: string;
@@ -20,19 +21,18 @@ type props={
 type states={
    selected:string;
    immutableData:Immutable.List<IImmutalbeMap<{
-           children:Immutable.List<IImmutalbeMap<MenuSpace.menuData>>;
+           children:Immutable.List<IImmutalbeMap<IMenuData>>;
            [key: string]: any;
 		   selected: boolean;
    }>>;
-   fieldObj:MenuSpace.fieldObj;
+   fieldObj:fieldObj;
+   preData:any[];
 };
 type formatterData = {
     defaultMenuId:string;
     idField:string;
 };
 interface INavMenu{
-    //格式化数据，添加属性selecte:Boolean代表选中
-    formaterData(data:any[],obj:formatterData):void; 
     initState(props:props):states;
     getParMenu():Immutable.List<JSX.Element>;
     changeImmutableData(
@@ -42,39 +42,9 @@ interface INavMenu{
         }
     ):void;
 }
-class NavMenu extends React.PureComponent<props,states> implements INavMenu{
 
-    static defaultProps={
-        textField:"name",
-        idField:"id",
-        iconField:"icon",
-        urlField:"url",
-    };
-    constructor(prop:props){
-        super(prop);
-        
-        this.state = this.initState(this.props);
-
-
-    }
-    initState(props:props){
-
-        const {defaultMenuId,data,idField,textField,urlField,iconField} = props;
-        const newData = this.formaterData(data,{idField:idField!,defaultMenuId:defaultMenuId!});
-
-        return {
-            selected:defaultMenuId || "",
-            immutableData:Immutable.fromJS(newData),
-            fieldObj:createImmutableMap({
-                id:idField!,
-                text:textField!,
-                url:urlField!,
-                icon:iconField!,
-            }),
-        };
-
-    }
-    formaterData(data:MenuSpace.menuData[],obj:formatterData){
+//格式化数据，添加属性selecte:Boolean代表选中
+const formatter  = function(data:IMenuData[],obj:formatterData){
         const {defaultMenuId,idField} = obj;
         return data.map(par=>{
             
@@ -88,8 +58,57 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
 
 
         });
-    }
+    };
 
+class NavMenu extends React.PureComponent<props,states> implements INavMenu{
+    static defaultProps={
+        textField:"name",
+        idField:"id",
+        iconField:"icon",
+        urlField:"url",
+    };
+    static  getDerivedStateFromProps(nextProps:props,preState:states):Partial<states> | null {
+        if(nextProps.data!==preState.preData){
+           const  data = formatter(nextProps.data,{
+                    defaultMenuId:nextProps.defaultMenuId!,
+                    idField:nextProps.idField!
+                });
+            return {
+                preData:nextProps.data,
+                immutableData:Immutable.fromJS(data),
+                selected:nextProps.defaultMenuId || "",
+            };
+        }else{
+            return null ;
+        }
+    }
+   
+    constructor(prop:props){
+        super(prop);
+        
+        this.state = this.initState(this.props);
+
+
+    }
+    initState(props:props){
+
+        const {defaultMenuId,data,idField,textField,urlField,iconField} = props;
+        const newData = formatter(data,{idField:idField!,defaultMenuId:defaultMenuId!});
+
+        return {
+            selected:defaultMenuId || "",
+            immutableData:Immutable.fromJS(newData),
+            fieldObj:createImmutableMap({
+                id:idField!,
+                text:textField!,
+                url:urlField!,
+                icon:iconField!,
+            }),
+            preData:data,
+        };
+
+    }
+    
     getParMenu(){
 
         const {immutableData,fieldObj} = this.state;
@@ -129,17 +148,6 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
         });
     }
 
-	//#todo:要改
-    componentWillReceiveProps(props:props){
-        if(props.data!==this.props.data){
-
-            const data = this.formaterData(props.data,{defaultMenuId:props.defaultMenuId!,idField:props.idField!});
-            this.setState({
-                immutableData:Immutable.fromJS(data),
-                selected:props.defaultMenuId || "",
-            });
-        }
-    }
     render(){
         const parItem =  this.getParMenu();
         return (

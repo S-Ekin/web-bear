@@ -5,6 +5,7 @@
  */
 import * as React from "react";
 import { SvgIcon } from "../icon/index";
+import {IDrop,drop,ICheckboxCom} from "./combo";
 enum activeStatus {
 	select = "selected",
 	hasSelect = "hasSelect",
@@ -12,13 +13,13 @@ enum activeStatus {
 }
 
 
-type comboType = keyof ComboSpace.IDrop;
+type comboType = keyof IDrop;
 type props<P extends comboType> = {
 	node: IImmutalbeMap<any>;
-	fieldObj: ComboSpace.drop<P>["filedObj"];
+	fieldObj: drop<P>["filedObj"];
 	index: string; //节点索引
 	lev?: number; //树形节点的层级
-	CheckBox?: React.ComponentType<ComboSpace.ICheckboxCom>;
+	CheckBox?: React.ComponentType<ICheckboxCom>;
     checkMethod?:(value:string)=>void;
 	formatterDropItem?: (node: IImmutalbeMap<any>) => React.ReactNode;
 	clickFn(index:string):void;

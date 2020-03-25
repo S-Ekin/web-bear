@@ -9,6 +9,7 @@ import * as Immutable from "immutable";
 import {activeStatus,DropItem} from "./DropItem";
 import { VelocityComponent } from "velocity-react";
 import {CheckBox} from "../input/index";
+import {drop} from "./combo";
 type node = {
 	[key: string]: any;
 	active: activeStatus;
@@ -18,7 +19,7 @@ type immutableData = Immutable.List<IImmutalbeMap<node>>;
 
 type props = {
     node: IImmutalbeMap<node>;
-    fieldObj: ComboSpace.drop<"tree">["filedObj"];
+    fieldObj: drop<"tree">["filedObj"];
     index: string;//节点索引
     lev: number//树形节点的层级
 	formatterDropItem?: (node: IImmutalbeMap<any>) => React.ReactNode;

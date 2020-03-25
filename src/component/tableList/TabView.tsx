@@ -5,15 +5,15 @@
  */
 import * as React from "react";
 import TrItem from './TrItem';
-type common =MyTabListSpace.common;
+import {ICommon} from "./mytablist";
 import {SvgIcon} from '../icon/index';
 type Props={
-    data:common['data'];
-    config:common['config'];
-    fixObj:common['fixObj'];
+    data:ICommon['data'];
+    config:ICommon['config'];
+    fixObj:ICommon['fixObj'];
     viewIndex:number;
     startIndex:number;
-    changeState:common['changeState'];
+    changeState:ICommon['changeState'];
     changeScrollTop(top:number,viewIndex:number):void;
     setTabBodyDom(dom:HTMLElement,viewIndex:number):void;
 };
@@ -92,7 +92,7 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
             return status ;
         });
 
-        const hasCheck = data.some(val=>val.get('checked'))
+        const hasCheck = data.some(val=>val.get('checked'));
         const status = allChecked ? "checkbox-marked" : hasCheck ? 'checkbox-has-selected': "checkbox-blank";
         return (
             <span onClick={this.checkAll} data-status={allChecked}>

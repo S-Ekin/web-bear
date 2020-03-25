@@ -6,17 +6,17 @@
 import * as React from "react";
 import { SvgIcon } from "../icon/index";
 import {activeStatus} from './formatterTreeData';
-type common = MyTreeTabSpace.common;
+import {ICommon} from "./mytreeTable";
 type Props={
-  cols:common['col'][];
-  node:IImmutalbeMap<common['node']>;
-  fixObj:common['fixObj'];
+  cols:ICommon['col'][];
+  node:IImmutalbeMap<ICommon['node']>;
+  fixObj:ICommon['fixObj'];
   lev:number;//层级
   index:string; // 节点的索引
   isPar?:boolean;
   order:{order:number};
   isMainView?:boolean;
-  changeState:common['changeState'];
+  changeState:ICommon['changeState'];
 };
 type States={
 

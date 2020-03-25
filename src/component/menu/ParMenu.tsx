@@ -8,17 +8,18 @@ import {SvgIcon } from "../icon/index";
 import * as Immutable from "immutable";
 import {NavLink} from "react-router-dom";
 import * as Velocity from "velocity-react";
+import {IMenuData,fieldObj} from "./menu";
 
 type node =IImmutalbeMap<{
 		[key: string]: any;
 		selected: boolean;
-		children:Immutable.List<IImmutalbeMap<MenuSpace.menuData>>;
+		children:Immutable.List<IImmutalbeMap<IMenuData>>;
 }>;
 
 type props = {
 	node:node;
 	expand:boolean;
-	fieldObj:MenuSpace.fieldObj;
+	fieldObj:fieldObj;
 	parIndex:number;
 	changeData(
         callback:(data:Immutable.List<node>,selected:string)=>{
@@ -33,7 +34,7 @@ type states = {
 
 interface IParMenu {
 	toggleSlide():void;
-	subMenu(children:Immutable.List<IImmutalbeMap<MenuSpace.menuData>>,parIndex:number):Immutable.List<JSX.Element>;
+	subMenu(children:Immutable.List<IImmutalbeMap<IMenuData>>,parIndex:number):Immutable.List<JSX.Element>;
 	getSubCom():JSX.Element;
 }
 class ParMenu extends React.PureComponent<props, states> implements IParMenu{
@@ -86,7 +87,7 @@ class ParMenu extends React.PureComponent<props, states> implements IParMenu{
 		
 
 	}
-	subMenu(children:Immutable.List<IImmutalbeMap<MenuSpace.menuData>>,parIndex:number){
+	subMenu(children:Immutable.List<IImmutalbeMap<IMenuData>>,parIndex:number){
 		const {fieldObj} = this.props;
 		const idField = fieldObj.get("id");
 		const textField = fieldObj.get("text");

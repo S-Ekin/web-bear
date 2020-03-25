@@ -9,8 +9,9 @@ import TabView from './TabView';
 import {GroupCols} from './GroupCols';
 import {Empty} from "../icon/index";
 import PageSize from './PageSize';
-type common =MyTabListSpace.common;
-type childType =React.ComponentElement<common['groupCol'],any> ;
+import {ICommon} from "./mytablist";
+
+type childType =React.ComponentElement<ICommon['groupCol'],any> ;
 type Props={
 	data: any[];
     children: childType[] | childType;
@@ -35,7 +36,7 @@ type States={
     preData:any[];
     preInitSelect?:{id:string}
 };
-type config = common['config'];
+type config =ICommon['config'];
 type fixObj = {
     tabField:string;
     emptyTxt:string;
@@ -65,7 +66,9 @@ const tableInitData=(data:Props["data"],defaulSel:string,idField:string)=>{
         });
     };
 class TabList extends React.PureComponent<Props,States> implements ITabList{
-
+    static defaultProps = {
+        height:300
+    };
       static  getDerivedStateFromProps(nextProps:Props,preState:States):Partial<States> | null {
         if(nextProps.data!==preState.preData || nextProps.initSelectVal!==preState.preInitSelect){
             const newData = nextProps.data;
@@ -83,9 +86,7 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
             return null ;
         }
     }
-    static defaultProps = {
-        height:300
-    }
+   
     fieldArr:ITabList['fieldArr'];
     fixObj:ITabList['fixObj'];
     tabMainTabBodyDomArr:HTMLDivElement[] = [];
@@ -181,7 +182,7 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
             }
         });
     } 
-    changeState:common['changeState']=(path,key)=>{
+    changeState:ICommon['changeState']=(path,key)=>{
        
         const index = ~~path - 1 ;
         if(key==='active'){
@@ -190,7 +191,7 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
 
                         const status = node.get('checked');
 
-                        return node.set('checked',!status)
+                        return node.set('checked',!status);
                 });
 
                 const pageData = this.getDataByPageAndPerNum(pre.curPage,pre.perNums,data);
@@ -198,8 +199,8 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
                 return {
                     immutabData:data,
                     tableData:pageData
-                }
-            })
+                };
+            });
         }else if(key==="checkPar"){
 
              const {noPageNums} = this.props;
@@ -227,7 +228,7 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
                 return {
                     immutabData:newData,
                     tableData:this.getDataByPageAndPerNum(curPage,perNums,newData)
-                }
+                };
             });
         }
     }
@@ -256,11 +257,11 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
                     trCompareDom.forEach(element => {
                             [...(element as HTMLTableRowElement).children]!.forEach(td => {
                                     
-                                (td as HTMLTableCellElement).style.height = `${trHMax}px`
+                                (td as HTMLTableCellElement).style.height = `${trHMax}px`;
                             });
                     });
                 }
-            })
+            });
         }
     }
     setDom(){
@@ -297,7 +298,7 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
               status =   val.scrollWidth > val.clientWidth ;
             }
            return status ;
-        })
+        });
 
         if(res !== -1){
             this.tabMainTabBodyDomArr.forEach((val,index)=>{
@@ -308,11 +309,11 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
                     val.classList.add('tab-over-wid');
                     }
                 }
-            })
+            });
         }else{
             this.tabMainTabBodyDomArr.forEach((val)=>{
                 val.classList.remove('tab-over-wid');
-            })
+            });
         }
     }
    
@@ -324,20 +325,20 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
                return {
                    curPage:val,
                    tableData:this.getDataByPageAndPerNum(val,perNums,pre.immutabData)
-               } 
+               }; 
             },()=>{
                this.setDom();
-            })
+            });
         }else if(key === "perNums"){
             this.setState(pre=>{
                return {
                    perNums:val,
                    curPage:1,
                    tableData:this.getDataByPageAndPerNum(1,val,pre.immutabData)
-               } 
+               }; 
             },()=>{
                this.setDom();
-            })
+            });
         }
 
        

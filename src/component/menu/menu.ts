@@ -1,8 +1,7 @@
-declare namespace MenuSpace {
-	export interface menuData {
+	export interface IMenuData {
 		[key: string]: any;
 		selected: boolean;
-		children: menuData[];
+		children: IMenuData[];
 	}
 	
 	export type fieldObj = IImmutalbeMap<{
@@ -11,5 +10,3 @@ declare namespace MenuSpace {
 		url:string;
 		icon:string;
 	}>;
-  
-}

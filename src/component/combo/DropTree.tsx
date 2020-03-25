@@ -10,7 +10,8 @@ import ParTreeItem from "./ParTreeItem";
 import wrapComboHQC from "./ComboBasic";
 import { CheckBox, Search } from "../input/index";
 import {formatterTreeData,cascade} from './formatterTreeData';
-type props = ComboSpace.drop<"tree">;
+import {drop,ISelected} from "./combo";
+type props = drop<"tree">;
 type states = {
 	immutableData: Immutable.List<IImmutalbeMap<node>>;
 	preData:any[];
@@ -267,7 +268,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 	mapFn(
 		list: IImmutalbeList<IImmutalbeMap<any>>,
 		active: activeStatus,
-		select: IImmutalbeList<ComboSpace.Iselected>,
+		select: IImmutalbeList<ISelected>,
 		filedObj: {
 			idField: string;
 			textField: string;

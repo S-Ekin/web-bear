@@ -10,10 +10,11 @@ import {CheckBox} from "../input/index";
 import Scrollbar from "react-scrollbar";
 import PageSize from "./PageSize";
 import TabBody from "./TBody";
+import {IColumnItem,ITableStates,fieldObj} from "./mytable";
 
 type Props={
 	data: any[];
-    children:React.ReactElement<MyTabSpace.columnItem>[]
+    children:React.ReactElement<IColumnItem>[]
 	noPageNums?: boolean;//页码
 	idField: string;//表格的节点标识
 	checkbox?: boolean;//多选
@@ -24,9 +25,9 @@ type Props={
     initSelectVal?:{id:string};//通过外界改变表格的选中
     bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<any>>)=>void;//把获取选中的项的函数传递给外部
 };
-type States= MyTabSpace.tableStates ;
+type States= ITableStates ;
 interface ITable {
-    fieldObj:MyTabSpace.fieldObj;//一些固定不变的属性，用于传给子组件
+    fieldObj:fieldObj;//一些固定不变的属性，用于传给子组件
 }
 enum checkAllStataus {
     hasChecked="hasCheck",
@@ -59,7 +60,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
             emptyTxt:"当前没有数据！",
     };
 
-    static colItem:React.SFC<MyTabSpace.columnItem> = ({width,children})=>{
+    static colItem:React.SFC<IColumnItem> = ({width,children})=>{
         return (
             <th  style={{width: width,}}>{children}</th>
         );

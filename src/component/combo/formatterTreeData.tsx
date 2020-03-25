@@ -1,12 +1,13 @@
 import * as Immutable from "immutable";
+import {drop,ISelected} from "./combo";
 enum activeStatus {
 	select = "selected",
 	hasSelect = "hasSelect",
 	noSelect = "noSelect",
 }
 type props = {
-	filedObj:ComboSpace.drop<"tree">['filedObj'];
-	initSelect:ComboSpace.drop<'tree'>['initSelect'];
+	filedObj:drop<"tree">['filedObj'];
+	initSelect:drop<'tree'>['initSelect'];
 } ;
 type node = {
 	[key: string]: any;
@@ -29,7 +30,7 @@ const formatterTreeData = function (props: props,defaultVal:string,data:any[],no
 			defaultValArr.length = 1;
 		}
 		let oldSelectedIndex = "";
-		let listSelected: ComboSpace.Iselected[] = [];
+		let listSelected: ISelected[] = [];
 
 		const immutableData: states["immutableData"] = Immutable.fromJS(
 			data as node[],

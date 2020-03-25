@@ -1,6 +1,5 @@
-declare namespace ComboSpace {
 
-    export interface Iselected {
+    export interface ISelected {
         id:string;
         text:string;
     }
@@ -10,14 +9,12 @@ declare namespace ComboSpace {
              childField?:string;
              noSearch?:boolean;
              parAbleClick?:boolean;//文件夹也可以触发点击事件
-        },
+        };
         list:{
             
-        }
-       
+        };
     }
 
-    
    export type filedObj<P extends keyof IDrop> = {
         idField: string;
         textField: string;
@@ -25,19 +22,19 @@ declare namespace ComboSpace {
         itemIcon?: string;
         defaultVal?: string;
         field:string;
-        clickOrCheckForbid:(node:IImmutalbeMap<any>,field:string,selectedArr?:IImmutalbeList<Iselected>)=>boolean;
+        clickOrCheckForbid:(node:IImmutalbeMap<any>,field:string,selectedArr?:IImmutalbeList<ISelected>)=>boolean;
     } & IDrop[P] ;
 
     export type drop<P extends keyof IDrop> = {
-        filedObj: IImmutalbeMap<ComboSpace.filedObj<P>>;
+        filedObj: IImmutalbeMap<filedObj<P>>;
 	    initComboVal?:{id:string};
-	    changeSelect(Iselected:IImmutalbeList<Iselected>,node?:IImmutalbeMap<any>):void;
-	    initSelect(Iselected:IImmutalbeList<Iselected>):void;
         data:any[];
-        selected:IImmutalbeList<Iselected>;
+        selected:IImmutalbeList<ISelected>;
         dropStyle:{maxHeight:number};
         formatterDropItem?:(node:IImmutalbeMap<any>)=>React.ReactNode;
-	    clickMethod:(clickFn:(path?:string)=>void)=>void;//暴露点击方法，用于清除所选
+        clickMethod:(clickFn:(path?:string)=>void)=>void;//暴露点击方法，用于清除所选
+        changeSelect(iselected:IImmutalbeList<ISelected>,node?:IImmutalbeMap<any>):void;
+	    initSelect(iselected:IImmutalbeList<ISelected>):void;
     };
 
     export interface ICheckboxCom {
@@ -50,4 +47,3 @@ declare namespace ComboSpace {
         isControl?: boolean;
     }
       
-}

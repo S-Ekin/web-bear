@@ -6,6 +6,7 @@ import * as React from "react";
 import ComboInp from "./ComboInp";
 import * as Immutable from "immutable";
 import { VelocityComponent } from "velocity-react";
+import {ISelected,IDrop,drop,filedObj} from "./combo";
 type props = {
 	data: any[];
 	idField?: string;
@@ -32,12 +33,12 @@ type props = {
 	//自定义下拉框的文字内容
 	formatterDropItem?: (node:IImmutalbeMap<any>) => React.ReactChild;
 	//点击每行的回调函数
-	clickCallback(selected: ComboSpace.Iselected[], field: string,node?:IImmutalbeMap<any>): void;
+	clickCallback(selected: ISelected[], field: string,node?:IImmutalbeMap<any>): void;
 	
 };
 
 type states = {
-	selected: IImmutalbeList<ComboSpace.Iselected>;
+	selected: IImmutalbeList<ISelected>;
 	drop: boolean;
 };
 
@@ -50,16 +51,16 @@ interface ICombo {
 	documentClickFn(e: MouseEvent): void;
 	changeSelect(selected:states["selected"],node?:IImmutalbeMap<any>):void;
 }
-type comboType = keyof ComboSpace.IDrop;
+type comboType = keyof IDrop;
 
 
 const wrapComboHC = <P extends comboType>(
 	// tslint:disable-next-line: variable-name
-	Drop: React.ComponentType<ComboSpace.drop<P>>,
+	Drop: React.ComponentType<drop<P>>,
 	comboType: comboType
 ) => {
 	return class
-		extends React.PureComponent<props & ComboSpace.IDrop[P], states>
+		extends React.PureComponent<props & IDrop[P], states>
 		implements ICombo {
 		static defaultProps = {
 			idField: "id",
@@ -72,11 +73,11 @@ const wrapComboHC = <P extends comboType>(
 				return false ;
 			}
 		};
-		filedObj!: IImmutalbeMap<ComboSpace.filedObj<P>>;
+		filedObj!: IImmutalbeMap<filedObj<P>>;
 		dropStyle:ICombo["dropStyle"];
 		wrapDomRef: React.RefObject<HTMLDivElement> = React.createRef();
 		selectFn!:ICombo["selectFn"];
-		constructor(props: props & ComboSpace.IDrop[P]) {
+		constructor(props: props & IDrop[P]) {
 			super(props);
 			this.state = this.initState();
 			this.initFieldObj(props);
@@ -87,7 +88,7 @@ const wrapComboHC = <P extends comboType>(
 			this.selectFn = fn;
 		}
 		//把一些固定的字段整合在immutable对象里，传参的时候只用传一个
-		initFieldObj(props: props & ComboSpace.IDrop[P]) {
+		initFieldObj(props: props & IDrop[P]) {
 			const {
 				idField,
 				textField,
@@ -112,7 +113,7 @@ const wrapComboHC = <P extends comboType>(
 				const {
 					childField,
 					noSearch,
-				} = props as ComboSpace.IDrop["tree"];
+				} = props as IDrop["tree"];
 				let treeField = Object.assign(common, { childField, noSearch });
 				this.filedObj = Immutable.fromJS(treeField);
 			}

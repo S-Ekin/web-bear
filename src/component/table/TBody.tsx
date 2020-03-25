@@ -3,7 +3,7 @@
  * @description description
  * @time 2019-09-19
  */
-
+import {fieldObj,ITableFn} from "./mytable";
 import * as React from "react";
 import { CheckBox } from "../input/index";
 
@@ -11,8 +11,8 @@ type Props = {
 	curPage:number;//当前页码
 	perNums:number;//当前每页显示的条数
 	tableData: IImmutalbeList<IImmutalbeMap<any>>; //当前页的数据
-	fileObj: MyTabSpace.fieldObj;
-	changeHandle: MyTabSpace.tableFn["changeState"];
+	fileObj:fieldObj;
+	changeHandle: ITableFn["changeState"];
 };
 interface ITBody {
 	isSameTr: string; //中间变量用于保存要合并的行的某个列的名称
@@ -38,7 +38,7 @@ const TdCheckBox:React.SFC<{
 type TbodyState = {};
 class TBody extends React.PureComponent<Props, TbodyState> implements ITBody {
 	isSameTr = "";
-
+	
 	//#todo:要改
 	componentWillReceiveProps(nexrProps: Props) {
 		if (nexrProps.tableData !== this.props.tableData) {

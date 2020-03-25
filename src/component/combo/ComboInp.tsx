@@ -6,9 +6,10 @@
 import * as React from "react";
 import {SvgIcon} from "../icon/index";
 import * as Immtable from "immutable";
+import {ISelected} from "./combo";
 type props={
     tit:string;
-    selected:Immtable.List<ComboSpace.Iselected>;
+    selected:Immtable.List<ISelected>;
     formatterVal?:(selected:props["selected"])=>React.ReactChild;
     drop:boolean;
     noicon?:boolean;

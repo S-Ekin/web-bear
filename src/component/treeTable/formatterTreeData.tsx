@@ -1,4 +1,5 @@
 import * as Immutable from "immutable";
+import {ICommon} from "./mytreeTable";
 enum activeStatus {
 	select = "selected",
 	hasSelect = "hasSelect",
@@ -10,7 +11,7 @@ type filedObj = {
     childField:string;
 };
 
-type node = MyTreeTabSpace.common['node'];
+type node = ICommon['node'];
 type states = {
 	immutableData: Immutable.List<IImmutalbeMap<node>>;
 };

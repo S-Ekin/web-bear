@@ -5,14 +5,15 @@
  */
 import * as React from "react";
 import {SvgIcon} from '../icon/index';
-type common = MyTabListSpace.common;
+import {ICommon} from "./mytablist";
+
 type Props={
- cols:common['col'][];
-  node:IImmutalbeMap<common['node']>;
-  fixObj:common['fixObj'];
+ cols:ICommon['col'][];
+  node:IImmutalbeMap<ICommon['node']>;
+  fixObj:ICommon['fixObj'];
   index:string; // 节点的索引
   isMainView?:boolean;
-  changeState:common['changeState'];
+  changeState:ICommon['changeState'];
 };
 type States={
 
@@ -33,9 +34,11 @@ class TrItem extends React.PureComponent<Props,States> implements ITrItem{
             const {node,index} = this.props;
             const active = node.get('checked') ? 
             'checkbox-marked' : 'checkbox-blank';
-        return (<span onClick={this.checkFn} className="tree-check" data-index={index}>
+        return (
+                <span onClick={this.checkFn} className="tree-check" data-index={index}>
                     <SvgIcon className={active}/>
-                </span> );
+                </span> 
+                );
         
        
     }
@@ -51,10 +54,10 @@ class TrItem extends React.PureComponent<Props,States> implements ITrItem{
         const {index} = this.props;
         
 
-        if(field == "order"){
+        if(field === "order"){
             return index ;
-        }else if(field =="check"){
-            return this.getCheck()
+        }else if(field ==="check"){
+            return this.getCheck();
         }else{
             return text ;
         }

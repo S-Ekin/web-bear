@@ -6,16 +6,16 @@
 import * as React from "react";
 import TrItem from './TrItem';
 import {VelocityComponent} from 'velocity-react';
-type common = MyTreeTabSpace.common;
+import {ICommon} from "./mytreeTable";
 type Props={
-    cols:common['col'][];
-    node:IImmutalbeMap<common['node']>;
-    fixObj:common['fixObj'];
+    cols:ICommon['col'][];
+    node:IImmutalbeMap<ICommon['node']>;
+    fixObj:ICommon['fixObj'];
     lev:number;
     order:{order:number};
     index:string; // 节点的索引
     isMainView?:boolean;
-    changeState:common['changeState'];
+    changeState:ICommon['changeState'];
 };
 type States={
 
@@ -48,7 +48,7 @@ class ParTree extends React.PureComponent<Props,States> implements IParTree{
     getSubBody(){
 
         const {node,fixObj,fixObj:{childField,idField},cols,lev,isMainView,index,changeState,order}  = this.props;
-        const arr:common['data'] = node.get(childField);
+        const arr:ICommon['data'] = node.get(childField);
         return arr.map((val,oindex)=>{
             const children = val.get(childField);
             const id = val.get(idField);

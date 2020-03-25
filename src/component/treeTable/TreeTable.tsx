@@ -7,8 +7,8 @@ import * as React from "react";
 import {GroupCols} from './GroupCols';
 import TabView from './TabView';
 import {formatterTreeData,activeStatus,cascade} from './formatterTreeData';
-type common = MyTreeTabSpace.common;
-type childType =React.ComponentElement<common['groupCol'],any> ;
+import {ICommon} from "./mytreeTable";
+type childType =React.ComponentElement<ICommon['groupCol'],any> ;
 
 type Props={
     data: any[];
@@ -28,16 +28,16 @@ type Props={
     bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<any>>)=>void;//把获取选中的项的函数传递给外部
 };
 type States={
-    immutabData:IImmutalbeList<IImmutalbeMap<common['node']>>;
+    immutabData:IImmutalbeList<IImmutalbeMap<ICommon['node']>>;
     selectArr:IImmutalbeList<string>;
     preData:any[];
     preInitSelect?:{id:string}
 };
 
-type config = common['config'];
+type config = ICommon['config'];
 interface ITreeTable {
     fieldArr:config[];
-    fixObj:common['fixObj'];
+    fixObj:ICommon['fixObj'];
 }
 const compareFn = (a:number,b:number)=>a-b;
 class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
@@ -132,7 +132,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
        
         this.setState(pre=>{
             return{
-                immutabData:pre.immutabData.updateIn(arr,(val:IImmutalbeMap<common['node']>)=>{
+                immutabData:pre.immutabData.updateIn(arr,(val:IImmutalbeMap<ICommon['node']>)=>{
                     const expand = val.get('expand');
                     return val.set('expand',!expand);
                 })
@@ -241,7 +241,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
 			const data = pre.immutabData;
 
 			let _data = data;
-			_data = _data.updateIn(indexArr, (val: IImmutalbeMap<common['node']>) => {
+			_data = _data.updateIn(indexArr, (val: IImmutalbeMap<ICommon['node']>) => {
 				//判断这个node有没有被选中
 				let node = val;
 				const active =
@@ -275,7 +275,7 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
 			};
 		});
     }
-    changeState:common['changeState']=(path,key)=>{
+    changeState:ICommon['changeState']=(path,key)=>{
         if(key==="expand"){
             this.expand(path);          
         }else if(key==="active"){

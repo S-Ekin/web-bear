@@ -6,13 +6,13 @@
 import * as React from "react";
 import ParTree from './ParTree';
 import TrItem from './TrItem';
-type common = MyTreeTabSpace.common;
+import {ICommon} from "./mytreeTable";
 type Props={
-    data:common['data'];
-    config:common['config'];
-    fixObj:common['fixObj'];
+    data:ICommon['data'];
+    config:ICommon['config'];
+    fixObj:ICommon['fixObj'];
     viewIndex:number;
-    changeState:common['changeState'];
+    changeState:ICommon['changeState'];
     setTabBodyDom(dom:HTMLDivElement,index:number):void;
     changeScrollTop(top:number,viewIndex:number):void;
 };

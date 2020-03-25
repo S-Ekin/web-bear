@@ -3,7 +3,7 @@
  * @description description
  * @time 2019-09-19
  */
-
+import {ITableFn} from "./mytable";
 import * as React from "react";
 import { Combobox } from "../combo/index";
 import { SvgIcon } from "../icon/index";
@@ -13,12 +13,14 @@ type Props = {
 	curPage: number; //当前的页码
 	totalPages: number; //总页数
 	totalNums: Number; //总条数
-	changeHandle: MyTabSpace.tableFn["changeState"];
+	changeHandle: ITableFn["changeState"];
 };
 
 type States = {};
 
-interface IPageSize {}
+interface IPageSize {
+	pageCodeHandle(e: React.MouseEvent<HTMLElement>):void;
+}
 const pageNumsArr = [
 	{ id: "1", text: "10" },
 	{ id: "2", text: "20" },

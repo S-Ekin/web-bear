@@ -7,8 +7,9 @@ import * as React from "react";
 import wrapComboHQC from "./ComboBasic";
 import * as Immutable from "immutable";
 import { DropItem, activeStatus } from "./DropItem";
+import {drop,ISelected} from "./combo";
 
-type props = ComboSpace.drop<"list">;
+type props = drop<"list">;
 type states = {
 	immutableData: Immutable.List<IImmutalbeMap<node>>;
 	singleClickPre:string; //单选时，记录上一次选择的
@@ -36,7 +37,7 @@ const formatterData = function(props: props,defaultVal:string) {
 		}
 		//避免改变props里的data
 		const copyData = JSON.parse(JSON.stringify(data));
-		let listSelect: ComboSpace.Iselected[] = [];
+		let listSelect: ISelected[] = [];
 		let oldSelected = "";
 		const _data = copyData.map((val: node, index: number) => {
 			const isDefault = defaultValArr.includes(`${val[id]}`);
@@ -166,7 +167,7 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
 			}else{
 				return {
 					preInitComboVal:nextProps.initComboVal,
-				}
+				};
 			}
 			
 		}

@@ -4,14 +4,14 @@
  * @time 2020-03-10
  */
 import * as React from "react";
-
-type Props=MyTabListSpace.common['groupCol'];
+import {ICommon,IColumnItem} from "./mytablist";
+type Props=ICommon['groupCol'];
 type States={
 		
 };
 
 class GroupCols extends React.PureComponent<Props,States> {
-    static colItem:React.SFC<MyTabListSpace.columnItem & {children:string}> = ()=>{
+    static colItem:React.SFC<IColumnItem & {children:string}> = ()=>{
         return <></>;
     }
     state:States={
