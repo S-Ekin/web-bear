@@ -6,7 +6,7 @@
 import * as React from "react";
 import TrItem from './TrItem';
 import {ICommon} from "./mytablist";
-import {SvgIcon} from '../icon/index';
+import {SvgIcon} from '../my-icon/index';
 type Props={
     data:ICommon['data'];
     config:ICommon['config'];

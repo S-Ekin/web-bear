@@ -5,7 +5,7 @@
  */
 import * as React from "react";
 import { VelocityComponent } from "velocity-react";
-import {SvgIcon} from "../icon/index";
+import {SvgIcon} from "../my-icon/index";
 
 type props={
     searchHandle: (keyword: string,field:string) => void;

@@ -7,7 +7,7 @@ import * as React from "react";
 import * as Immutable from "immutable";
 import TabView from './TabView';
 import {GroupCols} from './GroupCols';
-import {Empty} from "../icon/index";
+import {Empty} from "../my-icon/index";
 import PageSize from './PageSize';
 import {ICommon} from "./mytablist";
 

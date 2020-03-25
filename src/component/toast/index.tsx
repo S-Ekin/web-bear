@@ -7,7 +7,7 @@ import * as React from "react";
 import * as Immutable from "immutable";
 import * as ReactDom from "react-dom";
 import { VelocityComponent } from "velocity-react";
-import { SvgIcon} from "../icon/index";
+import { SvgIcon} from "../my-icon/index";
 type props = {};
 type messageItem = {
 	id: string;

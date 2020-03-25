@@ -4,7 +4,7 @@
  * @time 2020-03-19
  */
 import * as React from "react";
-import {SvgIcon} from '../icon/index';
+import {SvgIcon} from '../my-icon/index';
 import {ICommon} from "./mytablist";
 
 type Props={

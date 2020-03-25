@@ -4,7 +4,7 @@
  * @time 2020-03-14
  */
 import * as React from "react";
-import { SvgIcon } from "../icon/index";
+import { SvgIcon } from "../my-icon/index";
 import {activeStatus} from './formatterTreeData';
 import {ICommon} from "./mytreeTable";
 type Props={

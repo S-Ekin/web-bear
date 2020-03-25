@@ -4,7 +4,7 @@
  * @time 2019-08-16
  */
 import * as React from "react";
-import { SvgIcon } from "../icon/index";
+import { SvgIcon } from "../my-icon/index";
 import {IDrop,drop,ICheckboxCom} from "./combo";
 enum activeStatus {
 	select = "selected",

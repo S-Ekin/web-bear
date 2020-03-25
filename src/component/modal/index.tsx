@@ -7,7 +7,7 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import {VelocityComponent} from "velocity-react";
-import {Icon} from "../icon/index";
+import {Icon} from "../my-icon/index";
 
 
 type ModalProps = {

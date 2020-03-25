@@ -5,7 +5,7 @@
  */
 import * as React from "react";
 import * as Immutable from "immutable";
-import {Empty} from "../icon/index";
+import {Empty} from "../my-icon/index";
 import {CheckBox} from "../input/index";
 import Scrollbar from "react-scrollbar";
 import PageSize from "./PageSize";

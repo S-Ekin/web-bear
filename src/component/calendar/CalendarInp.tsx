@@ -6,7 +6,7 @@
 import * as React from "react";
 import {VelocityComponent} from "velocity-react";
 import * as Immutable from "immutable";
-import {SvgIcon} from "../icon/index";
+import {SvgIcon} from "../my-icon/index";
 import {ICommonInterface,ICalendarStates} from "./calendar";
 type Props={
     inpVal: string;

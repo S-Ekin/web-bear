@@ -6,7 +6,7 @@
 import {ITableFn} from "./mytable";
 import * as React from "react";
 import { Combobox } from "../combo/index";
-import { SvgIcon } from "../icon/index";
+import { SvgIcon } from "../my-icon/index";
 
 type Props = {
 	perNums: number; //每页条数

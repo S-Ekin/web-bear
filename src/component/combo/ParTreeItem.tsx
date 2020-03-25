@@ -4,7 +4,7 @@
  * @time 2019-08-17
  */
 import * as React from "react";
-import { SvgIcon } from "../icon/index";
+import { SvgIcon } from "../my-icon/index";
 import * as Immutable from "immutable";
 import {activeStatus,DropItem} from "./DropItem";
 import { VelocityComponent } from "velocity-react";

@@ -11,7 +11,7 @@ import CalendarSearsonView from "./CalendarSearsonView";
 import { VelocityComponent } from "velocity-react";
 import * as Immutable from "immutable";
 import {createImmutableMap} from "../createImmutaleMap";
-import {SvgIcon} from "../icon/index";
+import {SvgIcon} from "../my-icon/index";
 import {ICommonInterface,ICalendarStates } from "./calendar";
 
 enum calendarType {

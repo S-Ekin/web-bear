@@ -3,7 +3,7 @@
  * @description 自定义的复选框和单选框
  */
 import * as React from "react";
-import { SvgIcon } from "../icon/index";
+import { SvgIcon } from "../my-icon/index";
 
 type props = {
 	changeHandle: (e: React.ChangeEvent<HTMLInputElement>) => void;

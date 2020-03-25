@@ -4,7 +4,7 @@
  * @time 2019-08-14
  */
 import * as React from "react";
-import {SvgIcon} from "../icon/index";
+import {SvgIcon} from "../my-icon/index";
 import * as Immtable from "immutable";
 import {ISelected} from "./combo";
 type props={

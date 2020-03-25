@@ -4,7 +4,7 @@
  * @time 2019-08-14
  */
 import * as React from "react";
-import {SvgIcon } from "../icon/index";
+import {SvgIcon } from "../my-icon/index";
 import * as Immutable from "immutable";
 import {NavLink} from "react-router-dom";
 import * as Velocity from "velocity-react";
