@@ -1,6 +1,6 @@
 import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import {SvgIcon} from "@component/icon/index";
+import {SvgIcon} from "@component/my-icon/index";
 
 type HeadProp = {
 	expand:boolean;

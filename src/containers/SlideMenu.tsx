@@ -1,7 +1,7 @@
 import * as React from "react";
 import {NavMenu} from "@component/menu/index";
 import * as Velocity from "velocity-react";
-import { SvgIcon } from "@component/icon/index";
+import { SvgIcon } from "@component/my-icon/index";
 
 type slideMenu = {
 	data: any[];

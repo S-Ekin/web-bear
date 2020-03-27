@@ -4,8 +4,8 @@
  * @time 2020-02-21
  */
 import * as React from "react";
-import Empty from '@component/icon/Empty';
-import {SvgIcon} from '@component/icon/index';
+import Empty from '@component/my-icon/Empty';
+import {SvgIcon} from '@component/my-icon/index';
 import './demo.scss';
 type Props={
 

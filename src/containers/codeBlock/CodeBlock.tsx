@@ -8,7 +8,7 @@ import 'highlight.js/styles/atom-one-dark.css';
 import hljs from 'highlight.js';
 import hljsNumber from 'highlightjs-line-numbers2.js';
 import {VelocityComponent} from "velocity-react";
-import {SvgIcon} from '@component/icon/index';
+import {SvgIcon} from '@component/my-icon/index';
 //hljs.initHighlightingOnLoad();
 hljsNumber.init(hljs);
 //hljs.initLineNumbersOnLoad({singleLine: true});
