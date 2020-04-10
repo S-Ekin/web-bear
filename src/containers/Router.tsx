@@ -39,6 +39,13 @@ const routerConfig = {
 			),
 		loading: () => <span>loading......</span>,
 	},
+	modal: {
+		loader: () =>
+			import(
+				/*webpackChunkName: "modal" */ "./Router/ModalRoute"
+			),
+		loading: () => <span>loading......</span>,
+	},
 };
 
 class MainRouter extends React.PureComponent{
@@ -55,6 +62,7 @@ class MainRouter extends React.PureComponent{
 				<Route path="/loading" component={loadable(routerConfig.loadingRouter)} />
 				<Route path="/combo" component={loadable(routerConfig.comboRouter)} />
 				<Route path="/blog" component={loadable(routerConfig.blog)} />
+				<Route path="/alert" component={loadable(routerConfig.modal)} />
 				<div id="s-modal"/>
 			</>
 			);

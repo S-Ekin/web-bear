@@ -357,6 +357,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
                 ) : undefined;
                 
 		return (
+           <div className="g-table-wrap">
 			<div className="g-table" ref={this.tableContainer}>
 				<div className={"m-fixTabHead "}>
                     {this.getFixHead()}
@@ -364,6 +365,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 				{mianBody}
 				{pageSize}
 			</div>
+            </div>
 		);
     }
 }
