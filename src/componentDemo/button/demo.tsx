@@ -8,7 +8,9 @@ import { Button, GroupBtn } from "@component/button/index";
 
 type Props = {};
 type States = {};
-interface IDemo {}
+interface IDemo {
+	getItem():JSX.Element[];
+}
 type config = {
 	color: "danger" | "primary" | "green" | "yellow"; //颜色
 };
