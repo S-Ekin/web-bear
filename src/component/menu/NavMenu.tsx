@@ -8,6 +8,7 @@ import * as Immutable from "immutable";
 import ParMenu from "./ParMenu";
 import {createImmutableMap} from "../createImmutaleMap";
 import {IMenuData,fieldObj} from "./menu";
+import Scrollbar from "react-scrollbar";
 	
 type props={
     data:IMenuData[];
@@ -151,9 +152,14 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
     render(){
         const parItem =  this.getParMenu();
         return (
-            <ul className="g-menu">
-                {parItem} 
-            </ul>
+            <Scrollbar
+                horizontal={false}
+            >
+                <ul className="g-menu">
+                    {parItem} 
+                </ul>
+            </Scrollbar>
+            
         ); 
     }
 }

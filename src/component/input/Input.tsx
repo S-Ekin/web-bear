@@ -11,6 +11,7 @@ type props={
     value:string;
     name?:string;
     type?:"text"|"number";
+    width?:number;
     styleName?:"normal" ;
     changeFn(e:React.ChangeEvent<HTMLInputElement>):void;
 };
@@ -35,7 +36,8 @@ class Input extends React.PureComponent<props,states> implements IInput{
         return lab ;
     }
     render(){
-        const {value,name,dataSet,styleName,changeFn,type} = this.props;
+        const {value,name,dataSet,styleName,changeFn,type,width} = this.props;
+        const style = width ? {width:width} : undefined;
         return (
 			<label className="g-inp-lab">
 				{this.getInpTit()}
@@ -44,6 +46,7 @@ class Input extends React.PureComponent<props,states> implements IInput{
 					className={`s-inp ${styleName}`}
                     name={name}
                     type={type}
+                    style={style}
 					data-set={dataSet}
 					onChange={changeFn}
 				/>
