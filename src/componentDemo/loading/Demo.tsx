@@ -78,12 +78,13 @@ class Demo extends React.PureComponent<Props,States> implements IIndex{
                 <p className="title">
                   通过调用loading方法,默认容器是div.g-main,3s后调用关闭方法
                 </p>
-                <div className="btn-box">
+                <div className="m-optBtn">
                   <Button val="open" handle={this.btnLoadingFn}>
                     打开
                   </Button>
                   <Button
                     colorType="green"
+                    styleType="line-btn"
                     val="close"
                     handle={this.btnLoadingFn}
                   >

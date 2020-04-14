@@ -118,13 +118,9 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       };
     });
   }
-  
-  render() {
-    const { calendarObj, refreshId, configObj, outTimeVal,initTime } = this.state;
-
-    const rotate = configObj.rotate;
-
-    const code1 = (
+  getCodeBlockTit1=()=>{
+    const { outTimeVal } = this.state;
+    return (
                <div className="inp-item">
               <Input
                 name="initTime"
@@ -136,6 +132,10 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <Button handle={this.outSetTime}>设置</Button>
             </div>
             );
+  }
+  render() {
+    const { calendarObj, refreshId, configObj,initTime } = this.state;
+    const rotate = configObj.rotate;
 
     return (
       <div className="g-layout calendar-demo">
@@ -198,7 +198,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
           </div>
           <div className="g-item-show">
            
-            <CodeBlock tit={code1}>{str1}</CodeBlock>
+            <CodeBlock tit={this.getCodeBlockTit1}>{str1}</CodeBlock>
           </div>
           <div className="g-item-show">
             <CodeBlock tit='点击回调函数'>

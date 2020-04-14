@@ -6,6 +6,7 @@
 import * as React from "react";
 import {Switch,Route} from 'react-router-dom';
 import Toast from "../../componentDemo/toast/index";
+import Modal from "../../componentDemo/modal/Demo";
 
 type Props={
 
@@ -26,7 +27,7 @@ class ModalRoute extends React.PureComponent<Props,States> implements IModalRout
 
         return (
             <Switch>
-            <Route component={Toast} path="/alert/modal" />
+            <Route component={Modal} path="/alert/modal" />
             <Route component={Toast} path="/alert/toast" />
         </Switch>
         );

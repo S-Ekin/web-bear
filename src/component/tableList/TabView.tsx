@@ -23,7 +23,7 @@ type States={
 interface ITabView {
     scrollFn(e:React.UIEvent<HTMLDivElement>):void;
     overBox():void;
-    wheelFn(e:React.WheelEvent<HTMLDivElement>):void;
+    wheelFn(e:WheelEvent):void;
     makeSign(e:React.MouseEvent<HTMLDivElement>):void;
 }
 class TabView extends React.PureComponent<Props,States> implements ITabView{
@@ -58,8 +58,8 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         }
     } 
 
-    wheelFn=(e:React.WheelEvent<HTMLDivElement>)=>{
-        
+    wheelFn=(e:WheelEvent)=>{
+        e.preventDefault();
         const {changeScrollTop,viewIndex} = this.props;
         const deltay  = e.deltaY; // 每滚动一下，滚动的距离
         const top = this.tabBodyRef.current!.scrollTop;
@@ -145,6 +145,18 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
             this.overBox();
         }
         setTabBodyDom(dom,viewIndex);
+      //添加滚轮事件
+        const {current} = this.tabBodyRef;
+        if(config.forzen){
+            //直接绑定在dom上，避免绑定在react上导致滚动的时候报 passive的错误，滚动表格带动整个页面的滚动条滚动
+            current!.addEventListener("wheel",this.wheelFn);
+        }
+    }
+    componentWillUnmount(){
+        const {config} = this.props;
+         if(config.forzen){
+            this.tabBodyRef.current!.removeEventListener("wheel",this.wheelFn);
+        }
     }
     getBody(){
         const {data,fixObj,fixObj:{idField},config,viewIndex,changeState,startIndex} = this.props;
@@ -167,13 +179,11 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         });
         const colgroup = this.createColgroup();
         const fn = !config.forzen ? this.scrollFn : undefined;
-        const wheel = config.forzen ? this.wheelFn :undefined;
         const makeSignFn = !config.forzen ? this.makeSign :undefined;
 
         return (
                 <div className="tab-body-main" 
                     onScroll={fn} 
-                    onWheel={wheel}
                     onMouseEnter={makeSignFn}
                     onMouseLeave={makeSignFn}
                     ref={this.tabBodyRef} 

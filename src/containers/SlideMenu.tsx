@@ -32,8 +32,8 @@ const menuList = [
       },
       {
         id: "12",
-        name: "美化按钮",
-        url: "/button/input",
+        name: "页面布局",
+        url: "/button/layout",
         icon: "",
         children: []
 	  },

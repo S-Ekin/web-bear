@@ -80,6 +80,16 @@ class Demo extends React.PureComponent<Props, States> {
       }
     });
   }
+  getCodeBlockTit1=()=>{
+    return (
+    <>
+       <div>
+         外部控制下拉的选择id:224,229的节点
+                <Button handle={this.changeSelect}>选择</Button>
+        </div>
+    </>
+    );
+  }
   render() {
     const { refreshId, config, immuConfig, initSelectVal } = this.state;
     const {
@@ -93,14 +103,7 @@ class Demo extends React.PureComponent<Props, States> {
       defaultSel,
       noOrder
     } = immuConfig.toJS();
-    const code1 = (
-    <>
-       <div>
-         外部控制下拉的选择id:21,22的节点
-                <Button handle={this.changeSelect}>选择</Button>
-        </div>
-    </>
-    );
+  
     return (
       <div className="g-layout">
         <div className="g-layout-head">
@@ -265,7 +268,7 @@ class Demo extends React.PureComponent<Props, States> {
 
           <div className="g-item-show">
              
-              <CodeBlock tit={code1}>{str1}</CodeBlock>
+              <CodeBlock tit={this.getCodeBlockTit1}>{str1}</CodeBlock>
           </div>
           <div className="g-item-show">
               <CodeBlock language="scss" tit="表格高度和宽度能自适应和有滚动条的关键css">{str2}</CodeBlock>

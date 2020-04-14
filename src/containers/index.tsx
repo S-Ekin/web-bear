@@ -39,7 +39,7 @@ class App extends React.PureComponent<appProps, appState>{
                 <MainRouter />
               </Switch>
             </ErrorBoundary>
-            <div id="wrap-modal" />
+			  	  <div id="inner-modal-wrap"/>
             <div id="wrap-loading" />
             <div id="wrap-notice" />
           </div>

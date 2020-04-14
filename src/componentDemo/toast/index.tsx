@@ -38,7 +38,7 @@ const str1 = `
                 <MainRouter />
               </Switch>
             </ErrorBoundary>
-            <div id="wrap-modal" />
+			  	  <div id="inner-modal-wrap"/>
             <div id="wrap-loading" />
             <div id="wrap-notice" />
           </div>
@@ -76,7 +76,7 @@ class Demo extends React.PureComponent<Props, States> implements IIndex {
     const type = immuConfig.get("type");
     const keep = immuConfig.get('keep');
     return (
-      <div className="g-layout loading-box">
+      <div className="g-layout ">
         <div className="g-layout-head">
           <h3>toast</h3>
         </div>

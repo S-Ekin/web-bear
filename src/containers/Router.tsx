@@ -63,7 +63,6 @@ class MainRouter extends React.PureComponent{
 				<Route path="/combo" component={loadable(routerConfig.comboRouter)} />
 				<Route path="/blog" component={loadable(routerConfig.blog)} />
 				<Route path="/alert" component={loadable(routerConfig.modal)} />
-				<div id="s-modal"/>
 			</>
 			);
 

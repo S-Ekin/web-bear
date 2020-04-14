@@ -160,7 +160,99 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     this.setState({
       outControlSelecte: { id: "1-1" }
     });
-  };
+  }; 
+  
+  getCodeBlockTit1=()=>{
+    const {formatterVal} = this.state.obj.toJS();
+    return (
+        <div className="inp-item">
+              <span>启用自定义显示框的文字内容 formatterVal</span>
+              <CheckBox
+                name="formatterVal"
+                value="1"
+                type="radio"
+                checked={formatterVal}
+                changeHandle={this.inpChangeFn}
+              >
+                是
+              </CheckBox>
+              <CheckBox
+                name="formatterVal"
+                value="2"
+                type="radio"
+                checked={!formatterVal}
+                changeHandle={this.inpChangeFn}
+              >
+                否
+              </CheckBox>
+            </div>
+          
+            )
+  }
+  getCodeBlockTit2=()=>{
+    const {formatterDropItem} = this.state.obj.toJS();
+    return(
+               <div className="inp-item">
+              <span>启用自定义下拉框的文字内容 formatterDropItem</span>
+              <CheckBox
+                name="formatterDropItem"
+                value="1"
+                type="radio"
+                checked={formatterDropItem}
+                changeHandle={this.inpChangeFn}
+              >
+                是
+              </CheckBox>
+              <CheckBox
+                name="formatterDropItem"
+                value="2"
+                type="radio"
+                checked={!formatterDropItem}
+                changeHandle={this.inpChangeFn}
+              >
+                否
+              </CheckBox>
+            </div>
+            )
+  }
+  getCodeBlockTit3=()=>{
+    const {clickOrCheckForbid} = this.state.obj.toJS();
+    return(
+ <div className="inp-item">
+              <span>
+                启用 点击或是选中之前做的操作，可以阻止下面的操作
+                clickOrCheckForbid
+              </span>
+              <CheckBox
+                name="clickOrCheckForbid"
+                value="1"
+                type="radio"
+                checked={clickOrCheckForbid}
+                changeHandle={this.inpChangeFn}
+              >
+                是
+              </CheckBox>
+              <CheckBox
+                name="clickOrCheckForbid"
+                value="2"
+                type="radio"
+                checked={!clickOrCheckForbid}
+                changeHandle={this.inpChangeFn}
+              >
+                否
+              </CheckBox>
+            </div>
+           
+            )
+  }
+  getCodeBlockTit4=()=>{
+    return(
+              <div>
+              <Button handle={this.btnControlSelect}>选择</Button>
+              <small style={{marginLeft: 16,}}><b>外部控制下拉的选择id:1-1的节点</b></small>
+            </div>
+            )
+  }
   render() {
     const {
       idField,
@@ -416,99 +508,23 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
           </div>
           <div className="g-item-show">
            
-            <CodeBlock tit={(
- <div className="inp-item">
-              <span>启用自定义显示框的文字内容 formatterVal</span>
-              <CheckBox
-                name="formatterVal"
-                value="1"
-                type="radio"
-                checked={formatterVal}
-                changeHandle={this.inpChangeFn}
-              >
-                是
-              </CheckBox>
-              <CheckBox
-                name="formatterVal"
-                value="2"
-                type="radio"
-                checked={!formatterVal}
-                changeHandle={this.inpChangeFn}
-              >
-                否
-              </CheckBox>
-            </div>
-          
-            )}>
+            <CodeBlock tit={this.getCodeBlockTit1}>
               {str1}
             </CodeBlock>
           </div>
           <div className="g-item-show">
            
-            <CodeBlock tit={(
-               <div className="inp-item">
-              <span>启用自定义下拉框的文字内容 formatterDropItem</span>
-              <CheckBox
-                name="formatterDropItem"
-                value="1"
-                type="radio"
-                checked={formatterDropItem}
-                changeHandle={this.inpChangeFn}
-              >
-                是
-              </CheckBox>
-              <CheckBox
-                name="formatterDropItem"
-                value="2"
-                type="radio"
-                checked={!formatterDropItem}
-                changeHandle={this.inpChangeFn}
-              >
-                否
-              </CheckBox>
-            </div>
-            )}>
+            <CodeBlock tit={this.getCodeBlockTit2}>
               {str2}
             </CodeBlock>
           </div>
           <div className="g-item-show ">
            
-            <CodeBlock tit={(
- <div className="inp-item">
-              <span>
-                启用 点击或是选中之前做的操作，可以阻止下面的操作
-                clickOrCheckForbid
-              </span>
-              <CheckBox
-                name="clickOrCheckForbid"
-                value="1"
-                type="radio"
-                checked={clickOrCheckForbid}
-                changeHandle={this.inpChangeFn}
-              >
-                是
-              </CheckBox>
-              <CheckBox
-                name="clickOrCheckForbid"
-                value="2"
-                type="radio"
-                checked={!clickOrCheckForbid}
-                changeHandle={this.inpChangeFn}
-              >
-                否
-              </CheckBox>
-            </div>
-           
-            )}>{str3}</CodeBlock>
+            <CodeBlock tit={this.getCodeBlockTit3}>{str3}</CodeBlock>
           </div>
           <div className="g-item-show">
             
-            <CodeBlock tit={(
-              <div>
-              <Button handle={this.btnControlSelect}>选择</Button>
-              <small style={{marginLeft: 16,}}><b>外部控制下拉的选择id:1-1的节点</b></small>
-            </div>
-            )}>
+            <CodeBlock tit={this.getCodeBlockTit4}>
               {str4}
             </CodeBlock>
           </div>
