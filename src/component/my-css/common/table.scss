@@ -1,5 +1,10 @@
 @import "../scss/unit","../scss/variate";
 
+.g-table-wrap {
+  height: 100%;
+  overflow: auto;
+}
+
 .g-table {
   height: calc(100% - 4px);
   flex: 1;

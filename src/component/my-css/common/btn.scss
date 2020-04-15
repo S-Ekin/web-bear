@@ -14,11 +14,12 @@ $yellow:#e4d619;
 .s-btn {
   display: inline-block;
   outline: none;
-  padding: 0.5em 1em;
+  padding: 0 1em;
   cursor: pointer;
   position: relative;
   transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   border-radius: 4px;
+  height: 2em;
 
   &:disabled {
     background: darken($btn-disabled, 40%) !important;

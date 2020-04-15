@@ -32,8 +32,8 @@ const menuList = [
       },
       {
         id: "12",
-        name: "美化按钮",
-        url: "/button/input",
+        name: "页面布局",
+        url: "/button/layout",
         icon: "",
         children: []
 	  },
@@ -164,14 +164,14 @@ const menuList = [
       {
         id: "71",
         name: "一般模态框",
-        url: "/combo/list",
+        url: "/alert/modal",
         icon: "",
         children: []
 	  },
 	    {
         id: "72",
         name: "提示框",
-        url: "/combo/toast",
+        url: "/alert/toast",
         icon: "",
         children: []
       }

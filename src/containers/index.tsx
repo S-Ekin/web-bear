@@ -1,23 +1,22 @@
 import * as React from "react";
-import {BrowserRouter,Switch} from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import SlideMenu from "./SlideMenu";
 import Head from "./Head";
 import MainRouter from "./Router";
-import ErrorBoundary from '@component/crashPage/ErrorBoundary';
 type appProps = {
-
 };
-
+type toggleMenuFn = (expand?:boolean)=>boolean | undefined;
 type appState = {
 	menuExpand:boolean;
 	
 };
-class App extends React.PureComponent<appProps, appState>{
 
+class App extends React.PureComponent<appProps, appState>{
+  toggleMenuFn:toggleMenuFn | undefined ;
 	state :appState = {
 		menuExpand:true
 	};
-
+	
 	toggleMenuSlide=(expand?:boolean)=>{
 
 		this.setState({
@@ -32,17 +31,7 @@ class App extends React.PureComponent<appProps, appState>{
         <SlideMenu expand={menuExpand} toggleMenuFn={this.toggleMenuSlide} />
         <div className="g-content">
           <Head expand={menuExpand} toggleMenuFn={this.toggleMenuSlide} />
-
-          <div className="g-main">
-            <ErrorBoundary>
-               <Switch>
-                <MainRouter />
-              </Switch>
-            </ErrorBoundary>
-            <div id="wrap-modal" />
-            <div id="wrap-loading" />
-            <div id="wrap-notice" />
-          </div>
+          <MainRouter />
         </div>
       </BrowserRouter>
     );

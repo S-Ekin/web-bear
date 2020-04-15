@@ -82,9 +82,19 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         if(!config.forzen){
             this.overBox();
         }
-        
         const {current} = this.tabBodyRef;
         setTabBodyDom(current!,viewIndex);
+        //添加滚轮事件
+        if(config.forzen){
+            //直接绑定在dom上，避免绑定在react上导致滚动的时候报 passive的错误，滚动表格带动整个页面的滚动条滚动
+            current!.addEventListener("wheel",this.wheelFn);
+        }
+    }
+    componentWillUnmount(){
+        const {config} = this.props;
+         if(config.forzen){
+            this.tabBodyRef.current!.removeEventListener("wheel",this.wheelFn);
+        }
     }
     //有滚动条的时候
     overBox(){
@@ -97,9 +107,9 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         }
 
     }
-    
-    wheelFn=(e:React.WheelEvent<HTMLDivElement>)=>{
-        
+    //鼠标滚动事件，固定列区的滚动事件
+    wheelFn=(e:WheelEvent)=>{
+        e.preventDefault();
         const {changeScrollTop,viewIndex} = this.props;
         const deltay  = e.deltaY; // 每滚动一下，滚动的距离
         const top = this.tabBodyRef.current!.scrollTop;
@@ -160,13 +170,11 @@ class TabView extends React.PureComponent<Props,States> implements ITabView{
         });
         const colgroup = this.createColgroup();
         const fn = !config.forzen ? this.scrollFn : undefined;
-        const wheel = config.forzen ? this.wheelFn :undefined;
         const makeSignFn = !config.forzen ? this.makeSign :undefined;
 
         return (
                 <div className="tab-body-main" 
                     onScroll={fn} 
-                    onWheel={wheel}
                     onMouseEnter={makeSignFn}
                     onMouseLeave={makeSignFn}
                     ref={this.tabBodyRef} 

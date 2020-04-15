@@ -87,6 +87,16 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       }
     });
   }
+  getCodeBlockTit1(){
+    return (
+    <>
+       <div>
+         外部控制下拉的选择id:224,229的节点
+                <Button handle={this.changeSelect}>选择</Button>
+        </div>
+    </>
+    );
+  }
   render() {
     const { refreshId, config, immuConfig, initSelectVal } = this.state;
     const {
@@ -99,14 +109,6 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       noOrder,
       noPageNums
     } = immuConfig.toJS();
-     const code1 = (
-    <>
-       <div>
-         外部控制下拉的选择id:224,229的节点
-                <Button handle={this.changeSelect}>选择</Button>
-        </div>
-    </>
-    );
     return (
       <div className="g-layout">
         <div className="g-layout-head">列表表格</div>
@@ -277,7 +279,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             </div>
           </div>
         <div className="g-item-show">
-              <CodeBlock tit={code1}>{str1}</CodeBlock>
+              <CodeBlock tit={this.getCodeBlockTit1()}>{str1}</CodeBlock>
          </div>
         </div>
        

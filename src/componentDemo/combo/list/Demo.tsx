@@ -10,6 +10,8 @@ import { Input, CheckBox } from "@component/input/index";
 import { createImmutableMap } from "@component/createImmutaleMap";
 import { Button } from "@component/button/index";
 import CodeBlock from "@container/codeBlock/CodeBlock";
+import * as  ComboSpace from "@component/combo/combo";
+import {data,str1,str2,str3,str4} from "./CodeStr";
 type item = {
   idField: string;
   textField: string;
@@ -43,26 +45,6 @@ type States = {
 interface IDemo {
   selectFn: undefined | ((path: string) => void);
 }
-
-const data =  [
-    {
-        text:"1",
-        id:1
-    },
-    {
-        text:"2",
-        id:2
-    },{
-        text:"3",
-        id:3
-    },{
-        text:"4",
-        id:4
-    },{
-        text:"5",
-        id:5
-    },
-]
 
 class Demo extends React.PureComponent<Props, States> implements IDemo {
   selectFn: IDemo["selectFn"] = undefined;
@@ -147,7 +129,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   };
 
   clickCallback = (
-    selecte: ComboSpace.Iselected[],
+    selecte: ComboSpace.ISelected[],
     field: string,
     node?: IImmutalbeMap<any>
   ) => {
@@ -164,7 +146,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   formatterDropItem(node: IImmutalbeMap<any>) {
     return `自定义${node.get("text")}`;
   }
-  formatterVal(selecteArr: IImmutalbeList<ComboSpace.Iselected>) {
+  formatterVal(selecteArr: IImmutalbeList<ComboSpace.ISelected>) {
     console.log(selecteArr);
 
     return selecteArr
@@ -178,6 +160,103 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       outControlSelecte: { id: "1" }
     });
   };
+  getCodeBlockTit1(){
+    const {formatterVal} = this.state.obj.toJS();
+    return(
+              <>
+               <div className="inp-item">
+              <span>启用自定义显示框的文字内容 formatterVal</span>
+              <CheckBox
+                name="formatterVal"
+                value="1"
+                type="radio"
+                checked={formatterVal}
+                changeHandle={this.inpChangeFn}
+              >
+                是
+              </CheckBox>
+              <CheckBox
+                name="formatterVal"
+                value="2"
+                type="radio"
+                checked={!formatterVal}
+                changeHandle={this.inpChangeFn}
+              >
+                否
+              </CheckBox>
+            </div>
+              </>
+            )
+  }
+  getCodeBlockTit2(){
+    const {formatterDropItem} = this.state.obj.toJS();
+    return(<>
+            <div className="inp-item">
+              <span>启用自定义下拉框的文字内容 formatterDropItem</span>
+              <CheckBox
+                name="formatterDropItem"
+                value="1"
+                type="radio"
+                checked={formatterDropItem}
+                changeHandle={this.inpChangeFn}
+              >
+                是
+              </CheckBox>
+              <CheckBox
+                name="formatterDropItem"
+                value="2"
+                type="radio"
+                checked={!formatterDropItem}
+                changeHandle={this.inpChangeFn}
+              >
+                否
+              </CheckBox>
+            </div>
+            </>)
+  }
+
+  getCodeBlockTit3(){
+    const {clickOrCheckForbid} = this.state.obj.toJS();
+    return (
+              <>
+                <div className="inp-item">
+              <span>
+                启用 点击或是选中之前做的操作，可以阻止下面的操作
+                clickOrCheckForbid
+              </span>
+              <CheckBox
+                name="clickOrCheckForbid"
+                value="1"
+                type="radio"
+                checked={clickOrCheckForbid}
+                changeHandle={this.inpChangeFn}
+              >
+                是
+              </CheckBox>
+              <CheckBox
+                name="clickOrCheckForbid"
+                value="2"
+                type="radio"
+                checked={!clickOrCheckForbid}
+                changeHandle={this.inpChangeFn}
+              >
+                否
+              </CheckBox>
+            </div>
+              </>
+            )
+  }
+
+  getCodeBlockTit4(){
+    return (
+              <>
+               <div>
+              <Button handle={this.btnControlSelect}>选择</Button>
+              <small style={{marginLeft: 16,}}><b>外部控制下拉的选择id:1的节点</b></small>
+            </div>
+              </>
+            )
+  }
   render() {
     const {
       idField,
@@ -432,145 +511,24 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             </div>
           </div>
           <div className="g-item-show">
-           
-            <CodeBlock tit={(
-              <>
-               <div className="inp-item">
-              <span>启用自定义显示框的文字内容 formatterVal</span>
-              <CheckBox
-                name="formatterVal"
-                value="1"
-                type="radio"
-                checked={formatterVal}
-                changeHandle={this.inpChangeFn}
-              >
-                是
-              </CheckBox>
-              <CheckBox
-                name="formatterVal"
-                value="2"
-                type="radio"
-                checked={!formatterVal}
-                changeHandle={this.inpChangeFn}
-              >
-                否
-              </CheckBox>
-            </div>
-              </>
-            )}>
-              {` //自定义显示框的文字内容，selected所选择的内容
-  // formatterVal?: (selected: states["selected"]) => React.ReactChild;
-              function formatterVal (selecteArr:IImmutalbeList<ComboSpace.Iselected>){
-
-    console.log(selecteArr);
-    
-    return selecteArr.map(val=>{
-
-      return '$-' + val.text
-    }).join(',');
-  }`}
+            <CodeBlock tit={this.getCodeBlockTit1()}>
+              {str1}
             </CodeBlock>
           </div>
           <div className="g-item-show">
             
-            <CodeBlock tit={(<>
-            <div className="inp-item">
-              <span>启用自定义下拉框的文字内容 formatterDropItem</span>
-              <CheckBox
-                name="formatterDropItem"
-                value="1"
-                type="radio"
-                checked={formatterDropItem}
-                changeHandle={this.inpChangeFn}
-              >
-                是
-              </CheckBox>
-              <CheckBox
-                name="formatterDropItem"
-                value="2"
-                type="radio"
-                checked={!formatterDropItem}
-                changeHandle={this.inpChangeFn}
-              >
-                否
-              </CheckBox>
-            </div>
-            </>)}>
-              {`//自定义下拉框的文字内容
-  // formatterDropItem?: (node:IImmutalbeMap<any>) => React.ReactChild;
-  function formatterDropItem (node:IImmutalbeMap<any>){
-
-    return '自定义'+node.get('text');
-  }`}
+            <CodeBlock tit={this.getCodeBlockTit2()}>
+              {str2}
             </CodeBlock>
           </div>
           <div className="g-item-show ">
           
-            <CodeBlock tit={(
-              <>
-                <div className="inp-item">
-              <span>
-                启用 点击或是选中之前做的操作，可以阻止下面的操作
-                clickOrCheckForbid
-              </span>
-              <CheckBox
-                name="clickOrCheckForbid"
-                value="1"
-                type="radio"
-                checked={clickOrCheckForbid}
-                changeHandle={this.inpChangeFn}
-              >
-                是
-              </CheckBox>
-              <CheckBox
-                name="clickOrCheckForbid"
-                value="2"
-                type="radio"
-                checked={!clickOrCheckForbid}
-                changeHandle={this.inpChangeFn}
-              >
-                否
-              </CheckBox>
-            </div>
-              </>
-            )}>{`//点击或是选中之前做的操作，返回true不执行选中操作，默认返回false
-  // clickOrCheckForbid?:(node:IImmutalbeMap<any>,field:string)=>boolean;
-  clickOrCheckForbid(node: IImmutalbeMap<any>, field: string) {
-    console.log("----clickOrCheckForbid-----");
-    console.log(node, field);
-    console.log("----clickOrCheckForbid-----");
-    return false;
-  }
-  `}</CodeBlock>
+            <CodeBlock tit={this.getCodeBlockTit3()}>{str3}</CodeBlock>
           </div>
           <div className="g-item-show">
            
-            <CodeBlock tit={(
-              <>
-               <div>
-              <Button handle={this.btnControlSelect}>选择</Button>
-              <small style={{marginLeft: 16,}}><b>外部控制下拉的选择id:1的节点</b></small>
-            </div>
-              </>
-            )}>
-              {`
-  /* data: any[];
-  //外部通过这个值来控制下拉框的选中,多个id用字符串分隔
-  initComboVal?:{id:string};
-	//点击每行的回调函数
-	clickCallback(selected: ComboSpace.Iselected[], field: string,node?:IImmutalbeMap<any>): void;
-  */
- function clickCallback  (
-    selecte: ComboSpace.Iselected[],
-    field: string,
-    node?: IImmutalbeMap<any>
-  )  {
-    console.log("-----clickCallback ---");
-    console.log(selecte, field, node);
-    console.log("-----clickCallback ---");
-  };
- // 
-    `}
+            <CodeBlock tit={this.getCodeBlockTit4()}>
+              {str4}
             </CodeBlock>
           </div>
         </div>

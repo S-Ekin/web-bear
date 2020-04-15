@@ -11,7 +11,8 @@ import { Button } from "@component/button/index";
 import { Input, CheckBox } from "@component/input/index";
 import { createImmutableMap } from "@component/createImmutaleMap";
 import CodeBlock from "@container/codeBlock/CodeBlock";
-
+import * as  CalendarSpace from "@component/calendar/calendar";
+import {str1,str2} from './CodeStr';
 type calendarObj = {
   field: string;
   rotate: number; // 日历类型
@@ -37,8 +38,8 @@ interface IDemo {
   clickBack( 
     timeStr: string,
     field: string,
-    rotate: CalendarSpace.commonInterface["rotate"],
-    _selTimeList: CalendarSpace.CalendarStates["selTimeArr"]): void;
+    rotate: CalendarSpace.ICommonInterface["rotate"],
+    _selTimeList: CalendarSpace.ICalendarStates["selTimeArr"]): void;
 }
 
 const initObj = {
@@ -55,23 +56,6 @@ const initObj = {
   noChangeRotate: false
   
 };
-
-const str1 = `<Calendar
-              key={refreshId}
-              initTime={initTime}
-              clickBack={this.clickBack}
-              {...(configObj as any)}
-            />
-`;
-const str2 = `function clickBack(
-    timeStr: string,
-    field: string,
-    rotate: CalendarSpace.commonInterface["rotate"],
-    _selTimeList: CalendarSpace.CalendarStates["selTimeArr"]
-  ){
-    console.log(timeStr, field, rotate,_selTimeList);
-  }`;
-
 class Demo extends React.PureComponent<Props, States> implements IDemo {
   state: States = {
     calendarObj: createImmutableMap<calendarObj>(initObj),
@@ -84,8 +68,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   clickBack(
     timeStr: string,
     field: string,
-    rotate: CalendarSpace.commonInterface["rotate"],
-    _selTimeList: CalendarSpace.CalendarStates["selTimeArr"]
+    rotate: CalendarSpace.ICommonInterface["rotate"],
+    _selTimeList: CalendarSpace.ICalendarStates["selTimeArr"]
   ){
     console.log(timeStr, field, rotate,_selTimeList);
   }
@@ -134,13 +118,9 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       };
     });
   }
-  
-  render() {
-    const { calendarObj, refreshId, configObj, outTimeVal,initTime } = this.state;
-
-    const rotate = configObj.rotate;
-
-    const code1 = (
+  getCodeBlockTit1(){
+    const { outTimeVal } = this.state;
+    return (
                <div className="inp-item">
               <Input
                 name="initTime"
@@ -152,6 +132,10 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <Button handle={this.outSetTime}>设置</Button>
             </div>
             );
+  }
+  render() {
+    const { calendarObj, refreshId, configObj,initTime } = this.state;
+    const rotate = configObj.rotate;
 
     return (
       <div className="g-layout calendar-demo">
@@ -214,7 +198,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
           </div>
           <div className="g-item-show">
            
-            <CodeBlock tit={code1}>{str1}</CodeBlock>
+            <CodeBlock tit={this.getCodeBlockTit1()}>{str1}</CodeBlock>
           </div>
           <div className="g-item-show">
             <CodeBlock tit='点击回调函数'>

@@ -17,7 +17,7 @@ type States={
 	selectTableVal:{id:string}
 };
 interface IDemo {
-  tableGetCheckedFn:()=>IImmutalbeList<IImmutalbeMap<any>>
+  tableGetCheckedFn:()=>IImmutalbeList<IImmutalbeMap<any>>;
 }
 type report ={
     a_FASHENGSHIJIAN: string
@@ -71,7 +71,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
 		selectTableVal:{id:""}
 	};
 	tableGetCheckedFn:IDemo["tableGetCheckedFn"] =function () {
-		return Immutable.List([]) 
+		return Immutable.List([]); 
 	};
 	bindgetTableSelecte=(fn:IDemo["tableGetCheckedFn"])=>{
 		this.tableGetCheckedFn = fn;
@@ -98,7 +98,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
 	clearData=()=>{
 		this.setState({
 			tableData:[]
-		})
+		});
 	}
 	getChecked=()=>{
 		const arr = this.tableGetCheckedFn();

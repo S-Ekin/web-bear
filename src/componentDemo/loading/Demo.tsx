@@ -14,10 +14,10 @@ type Props={
 type States={
     closeTime:number;
 };
-interface Iindex {
-
+interface IIndex {
+    btnLoadingFn(e:React.MouseEvent<HTMLButtonElement>):void;
 }
-class Demo extends React.PureComponent<Props,States> implements Iindex{
+class Demo extends React.PureComponent<Props,States> implements IIndex{
 
 
     loadingRef:React.RefObject<HTMLDivElement> = React.createRef();
@@ -25,7 +25,7 @@ class Demo extends React.PureComponent<Props,States> implements Iindex{
         closeTime:0,
     };
     componentDidMount(){
-        console.log(this.loadingRef)
+        console.log(this.loadingRef);
 
     }
 
@@ -44,8 +44,8 @@ class Demo extends React.PureComponent<Props,States> implements Iindex{
                 this.setState(pre=>{
                     return {
                         closeTime:pre.closeTime+1
-                    }
-                })
+                    };
+                });
 
             },1000);
             window.setTimeout(()=>{
@@ -56,8 +56,8 @@ class Demo extends React.PureComponent<Props,States> implements Iindex{
                 
                 this.setState({
                     closeTime:0
-                })
-            },3000)
+                });
+            },3000);
         }
     }
     render(){
@@ -78,12 +78,13 @@ class Demo extends React.PureComponent<Props,States> implements Iindex{
                 <p className="title">
                   通过调用loading方法,默认容器是div.g-main,3s后调用关闭方法
                 </p>
-                <div className="btn-box">
+                <div className="m-optBtn">
                   <Button val="open" handle={this.btnLoadingFn}>
                     打开
                   </Button>
                   <Button
                     colorType="green"
+                    styleType="line-btn"
                     val="close"
                     handle={this.btnLoadingFn}
                   >

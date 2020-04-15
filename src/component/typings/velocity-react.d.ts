@@ -79,7 +79,7 @@ declare module 'velocity-react' {
     stagger?: number,
     drag?: boolean,
     complete?: (elements: NodeListOf<HTMLElement>) => void,
-    interruptBehavior?:"queue"|"stop"|"finish",
+    interruptBehavior?:"queue"|"stop"|"finish",//连续点击会怎样运动
     runOnMount?:boolean,
   }
 

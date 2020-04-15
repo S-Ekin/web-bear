@@ -6,6 +6,7 @@
 import * as React from "react";
 import {Switch,Route} from 'react-router-dom';
 import ButtonDemo from '@componentDemo/button/demo';
+import Layout from '@componentDemo/Layout/demo';
 
 type Props={
 
@@ -25,6 +26,7 @@ class ButtonRoute extends React.PureComponent<Props,States> {
         return (
             <Switch>
                 <Route component={ButtonDemo} path="/button/common" />
+                <Route component={Layout} path="/button/layout" />
             </Switch>
         );
     }

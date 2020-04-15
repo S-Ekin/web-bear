@@ -17,7 +17,7 @@ hljsNumber.init(hljs);
 type Props={
     children:string;
     language?:string;
-    tit:React.ReactChild;
+    tit:React.ReactNode;
 };
 type States={
     expand:boolean;
@@ -55,7 +55,6 @@ class CodeBlock extends React.PureComponent<Props,States> implements ICodeBlock{
     render(){
         const {children,language,tit} = this.props;
         const {expand} = this.state;
-
         return (
             <div>
                 <div className="flex-center">
@@ -63,7 +62,7 @@ class CodeBlock extends React.PureComponent<Props,States> implements ICodeBlock{
                     <span onClick={this.slideFn}><SvgIcon className={expand ? 'arrow-down' :'arrow-up'}/></span>
                     
                 </div>
-                <VelocityComponent animation={expand ? "slideDown" : "slideUp"}>
+                <VelocityComponent animation={expand ? "slideDown" : "slideUp"} interruptBehavior="queue">
                     <pre>
                         <code ref={this.codeRef} className={`language-${language}`}>
                             {children}
