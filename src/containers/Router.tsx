@@ -1,6 +1,7 @@
-import { Route } from "react-router-dom";
+import { Route ,Switch} from "react-router-dom";
 import * as React from "react";
 import * as loadable from "react-loadable";
+import ErrorBoundary from '@component/crashPage/ErrorBoundary';
 
 const routerConfig = {
 	buttonRouter: {
@@ -49,21 +50,30 @@ const routerConfig = {
 };
 
 class MainRouter extends React.PureComponent{
-	
-	// componentWillUpdate(){
-	// 	noticeFn.clear();
-	// 	console.log('--------------更新----------');
-	// }
+	static  getDerivedStateFromProps() {
+			console.log('gh');
+			
+            return null ;
+    }
 	render(){
-		return (
-			<>
-				<Route path="/button" component={loadable(routerConfig.buttonRouter)} />
-				<Route path="/table" component={loadable(routerConfig.tableRouter)} />
-				<Route path="/loading" component={loadable(routerConfig.loadingRouter)} />
-				<Route path="/combo" component={loadable(routerConfig.comboRouter)} />
-				<Route path="/blog" component={loadable(routerConfig.blog)} />
-				<Route path="/alert" component={loadable(routerConfig.modal)} />
-			</>
+		return ( 
+		
+		<div className="g-main">
+            <ErrorBoundary>
+               <Switch>
+					<Route path="/button" component={loadable(routerConfig.buttonRouter)} />
+					<Route path="/table" component={loadable(routerConfig.tableRouter)} />
+					<Route path="/loading" component={loadable(routerConfig.loadingRouter)} />
+					<Route path="/combo" component={loadable(routerConfig.comboRouter)} />
+					<Route path="/blog" component={loadable(routerConfig.blog)} />
+					<Route path="/alert" component={loadable(routerConfig.modal)} />
+              </Switch>
+            </ErrorBoundary>
+			<div id="inner-modal-wrap"/>
+			<div id="wrap-loading" />
+			<div id="wrap-notice" />
+		</div>
+		
 			);
 
 	}

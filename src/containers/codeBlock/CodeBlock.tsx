@@ -17,7 +17,7 @@ hljsNumber.init(hljs);
 type Props={
     children:string;
     language?:string;
-    tit:string | (()=>JSX.Element);
+    tit:React.ReactNode;
 };
 type States={
     expand:boolean;
@@ -55,11 +55,10 @@ class CodeBlock extends React.PureComponent<Props,States> implements ICodeBlock{
     render(){
         const {children,language,tit} = this.props;
         const {expand} = this.state;
-        const titCom = typeof tit ==="string" ? tit :tit();
         return (
             <div>
                 <div className="flex-center">
-                    {titCom}
+                    {tit}
                     <span onClick={this.slideFn}><SvgIcon className={expand ? 'arrow-down' :'arrow-up'}/></span>
                     
                 </div>

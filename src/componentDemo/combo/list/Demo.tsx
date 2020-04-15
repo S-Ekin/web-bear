@@ -160,7 +160,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       outControlSelecte: { id: "1" }
     });
   };
-  getCodeBlockTit1=()=>{
+  getCodeBlockTit1(){
     const {formatterVal} = this.state.obj.toJS();
     return(
               <>
@@ -188,7 +188,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               </>
             )
   }
-  getCodeBlockTit2=()=>{
+  getCodeBlockTit2(){
     const {formatterDropItem} = this.state.obj.toJS();
     return(<>
             <div className="inp-item">
@@ -215,7 +215,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             </>)
   }
 
-  getCodeBlockTit3=()=>{
+  getCodeBlockTit3(){
     const {clickOrCheckForbid} = this.state.obj.toJS();
     return (
               <>
@@ -247,7 +247,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             )
   }
 
-  getCodeBlockTit4=()=>{
+  getCodeBlockTit4(){
     return (
               <>
                <div>
@@ -511,23 +511,23 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             </div>
           </div>
           <div className="g-item-show">
-            <CodeBlock tit={this.getCodeBlockTit1}>
+            <CodeBlock tit={this.getCodeBlockTit1()}>
               {str1}
             </CodeBlock>
           </div>
           <div className="g-item-show">
             
-            <CodeBlock tit={this.getCodeBlockTit2}>
+            <CodeBlock tit={this.getCodeBlockTit2()}>
               {str2}
             </CodeBlock>
           </div>
           <div className="g-item-show ">
           
-            <CodeBlock tit={this.getCodeBlockTit3}>{str3}</CodeBlock>
+            <CodeBlock tit={this.getCodeBlockTit3()}>{str3}</CodeBlock>
           </div>
           <div className="g-item-show">
            
-            <CodeBlock tit={this.getCodeBlockTit4}>
+            <CodeBlock tit={this.getCodeBlockTit4()}>
               {str4}
             </CodeBlock>
           </div>

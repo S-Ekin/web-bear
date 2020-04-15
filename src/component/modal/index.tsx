@@ -44,6 +44,8 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState> im
 			return {
 				init:true
 			};
+		}else{
+			return null;
 		}
 	}
 	wrap = document.getElementById("wrap-modal")!;

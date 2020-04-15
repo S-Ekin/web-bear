@@ -120,7 +120,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
       });
       
     }
-    getStr1=()=>{
+    getStr1(){
       const {hasSureFn} = this.state;
       return (
         <div className="inp-item">
@@ -147,7 +147,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
       );
     }
     
-    getStr2=()=>{
+    getStr2(){
       const {hasCustomFoot} = this.state;
       return (
         <div className="inp-item">
@@ -315,14 +315,14 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                     </div>
                 <div className="g-item-show">
                     <CodeBlock
-                      tit={this.getStr1}
+                      tit={this.getStr1()}
                     >
                       {str1}
                     </CodeBlock>
                     </div> 
                     <div className="g-item-show">
                       <CodeBlock
-                        tit={this.getStr2}
+                        tit={this.getStr2()}
                       >
                         {str2}
                       </CodeBlock>

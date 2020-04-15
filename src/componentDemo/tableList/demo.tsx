@@ -87,7 +87,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       }
     });
   }
-  getCodeBlockTit1=()=>{
+  getCodeBlockTit1(){
     return (
     <>
        <div>
@@ -279,7 +279,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             </div>
           </div>
         <div className="g-item-show">
-              <CodeBlock tit={this.getCodeBlockTit1}>{str1}</CodeBlock>
+              <CodeBlock tit={this.getCodeBlockTit1()}>{str1}</CodeBlock>
          </div>
         </div>
        

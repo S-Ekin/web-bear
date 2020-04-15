@@ -151,7 +151,8 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
 
     render(){
         const parItem =  this.getParMenu();
-        return (
+        const {expand} = this.props;
+        return expand ? (
             <Scrollbar
                 horizontal={false}
             >
@@ -160,6 +161,10 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
                 </ul>
             </Scrollbar>
             
+        ):(
+          <ul className="g-menu">
+            {parItem} 
+        </ul>
         ); 
     }
 }

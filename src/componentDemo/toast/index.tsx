@@ -23,7 +23,9 @@ const configInit: config = {
   type: "error",
   keep: false,
 };
-interface IIndex {}
+interface IIndex {
+  openToast():void;
+}
 const str1 = `
   // 在路由初始化的时候要初始化弹框的容器 wrap-notice
   // 保存notice 的实例，用实例上的方法来添加和减少 提示
@@ -54,7 +56,7 @@ class Demo extends React.PureComponent<Props, States> implements IIndex {
     const { immuConfig } = this.state;
     const { type, text ,keep} = immuConfig.toJS();
     notice.add(text, type,keep);
-  };
+  }
   changeConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
     const name = dom.name as any;
@@ -69,7 +71,7 @@ class Demo extends React.PureComponent<Props, States> implements IIndex {
         immuConfig: pre.immuConfig.set(name, value),
       };
     });
-  };
+  }
   render() {
     const {} = this.props;
     const { immuConfig } = this.state;
