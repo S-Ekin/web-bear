@@ -9,7 +9,8 @@ type slideMenu = {
 
 type SlideMenuProp = {
 	expand:boolean;
- 	toggleMenuFn:(expand?:boolean)=>void;
+   toggleMenuFn:(expand?:boolean)=>void;
+   callback():void;
 };
 type SlideMenuState = {
 
@@ -203,7 +204,7 @@ class SlideMenu extends React.PureComponent<SlideMenuProp , SlideMenuState>{
 	render() {
 
 		const { data } = this.state;
-		const {expand} = this.props;
+		const {expand,callback} = this.props;
 		return (
 			<Velocity.VelocityComponent duration={300} animation={{ width: expand ? 250 : 70 }}>
 				<div className={"g-slideMenu " + (!expand ? "expand" : "")}>
@@ -211,7 +212,7 @@ class SlideMenu extends React.PureComponent<SlideMenuProp , SlideMenuState>{
 						<span className="m-logo" />
 					{this.slideMenu()}
 					</div>
-					 <NavMenu data={data} expand={expand}   />
+					 <NavMenu data={data} expand={expand} clickBack={callback}  />
 				</div>
 			</Velocity.VelocityComponent>
 			);

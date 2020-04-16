@@ -17,7 +17,8 @@ type props={
 	idField?: string;
 	urlField?: string;
 	iconField?: string;
-	defaultMenuId?: string;
+    defaultMenuId?: string;
+    clickBack?:()=>void;
 };
 type states={
    selected:string;
@@ -146,6 +147,11 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
             immutableData:data,
             selected:_selected
           };
+        },()=>{
+            const {clickBack} = this.props;
+            if(clickBack){
+                clickBack();
+            }
         });
     }
 

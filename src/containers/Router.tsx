@@ -48,18 +48,23 @@ const routerConfig = {
 		loading: () => <span>loading......</span>,
 	},
 };
-
-class MainRouter extends React.PureComponent{
+type props={
+	init:number;
+};
+class MainRouter extends React.PureComponent<props>{
 	static  getDerivedStateFromProps() {
 			console.log('gh');
 			
             return null ;
     }
 	render(){
+		console.log('render');
+		const {init} = this.props;
+		
 		return ( 
 		
 		<div className="g-main">
-            <ErrorBoundary>
+            <ErrorBoundary init={init}>
                <Switch>
 					<Route path="/button" component={loadable(routerConfig.buttonRouter)} />
 					<Route path="/table" component={loadable(routerConfig.tableRouter)} />

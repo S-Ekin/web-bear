@@ -1,19 +1,43 @@
 import * as React from "react";
 import CrashPage from './CrashPage';
 import notice from '../toast/index';
-export default class ErrorBoundary extends React.Component{
+import {setError} from "./globalError";
 
+type props={
+	init:number;
+};
+type states = {
+	preInit:number;
+	hasError:boolean;
+};
+export default class ErrorBoundary extends React.Component<props,states>{
+	static  getDerivedStateFromProps(nextProps:props,preState:states):Partial<states> | null {
+		if(nextProps.init!==preState.preInit && preState.hasError){
+			notice.clear();
+			return {
+				hasError:false,
+				preInit:nextProps.init
+			};
+		}else{
+			return null;
+		}
+	}
 	static getDerivedStateFromError(error:any){
-
 			console.log(error);
+			setError(true);
 			return {hasError:true} ;
-
 	}
 
-	state = {hasError:false};
+	state:states = {
+		hasError:false,
+		preInit:this.props.init
+	};
 	reload=()=>{
 		this.setState({
 			hasError:false
+		},()=>{
+			setError(false);
+			notice.clear();
 		});
 	}
 	componentDidCatch(_error:any,_info:any){
