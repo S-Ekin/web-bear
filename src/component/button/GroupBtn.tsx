@@ -5,17 +5,17 @@
  */
 import * as React from "react";
 import Button from "./MyButton";
-import {Icon} from "../my-icon/index";
+import {SvgIcon} from "../my-icon/index";
 interface IGroupBtnsitem{
         id:string;
         text:string;
         icon?:string;
     }
 type props={
-    themeTxt:string;//主题名称，用于显示下拉主题
     list:IGroupBtnsitem[];
     icon?:string;
     clickFn:(field:string)=>void;
+    children?:string;
 };
 type states={
 
@@ -35,10 +35,12 @@ class GroupBtn extends React.PureComponent<props,states>{
     getBtns(){
         const {list} = this.props;
         return list.map(val=>{
-            const {text,id} = val;
+            const {text,id,icon} = val;
+        const themeIcon = icon ? <SvgIcon className={icon}/> :undefined;
             return (
                 <li key={id} className="drop-item" onClick={this.clickFn} data-field={id}>
                     <span>
+                        {themeIcon}
                         {text}
                     </span>
                 </li>
@@ -47,14 +49,15 @@ class GroupBtn extends React.PureComponent<props,states>{
         });
     }
     render(){
-        const {themeTxt,icon} = this.props;
-        const themeIcon = icon ? <Icon className={icon}/> :undefined;
+        const {children,icon} = this.props;
+        const themeIcon = icon ? <SvgIcon className={icon}/> :undefined;
+
         return (
          <div className="g-group-btns">
              <div className="drop-theme">
-                <Button noAnimate={true}>
+                <Button noAnimate={true} className={icon ? "has-icon" :""}>
+                    {children}
                     {themeIcon}    
-                    {themeTxt}
                 </Button>
              </div>
              <div className="wrap-drop">

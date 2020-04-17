@@ -28,6 +28,10 @@ $yellow:#e4d619;
     border: none;
     color: white !important;
   }
+
+  &.has-icon {
+    padding-right: 0.5em;
+  }
 }
 //按钮点击时的状态，用于点击时加类名
 .btn-clicked {
@@ -164,6 +168,13 @@ $yellow:#e4d619;
 .g-group-btns {
   position: relative;
   z-index: 3;
+  display: inline-block;
+
+  .drop-theme {
+    .icon {
+      padding-left: 8px;
+    }
+  }
 
   .wrap-drop {
     display: none;
@@ -183,6 +194,10 @@ $yellow:#e4d619;
     padding: 5px;
     border-bottom: 2px solid $normal;
     text-align: center;
+
+    .icon {
+      padding-right: 8px;
+    }
 
     &:last-child {
       border: none;
