@@ -4,6 +4,7 @@ import SlideMenu from "./SlideMenu";
 import Head from "./Head";
 import MainRouter from "./Router";
 import {setError} from "../component/crashPage/globalError";
+import noticeFn from "@component/toast/index";
 
 type appProps = {
 };
@@ -27,7 +28,7 @@ class App extends React.PureComponent<appProps, appState>{
 
 	}
 	navCallBack=()=>{
-		console.log(33);
+		noticeFn.clear();
 		const hasError = setError();
 		if(hasError){
 			this.setState(pre=>{

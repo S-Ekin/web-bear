@@ -13,7 +13,6 @@ type states = {
 export default class ErrorBoundary extends React.Component<props,states>{
 	static  getDerivedStateFromProps(nextProps:props,preState:states):Partial<states> | null {
 		if(nextProps.init!==preState.preInit && preState.hasError){
-			notice.clear();
 			return {
 				hasError:false,
 				preInit:nextProps.init
@@ -22,9 +21,9 @@ export default class ErrorBoundary extends React.Component<props,states>{
 			return null;
 		}
 	}
-	static getDerivedStateFromError(error:any){
-			console.log(error);
+	static getDerivedStateFromError(_error:Error){
 			setError(true);
+			
 			return {hasError:true} ;
 	}
 

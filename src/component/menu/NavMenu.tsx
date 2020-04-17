@@ -6,7 +6,7 @@
 import * as React from "react";
 import * as Immutable from "immutable";
 import ParMenu from "./ParMenu";
-import {createImmutableMap} from "../createImmutaleMap";
+import {createImmutableMap} from "../util/createImmutaleMap";
 import {IMenuData,fieldObj} from "./menu";
 import Scrollbar from "react-scrollbar";
 	

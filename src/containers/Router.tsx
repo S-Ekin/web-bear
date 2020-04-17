@@ -53,8 +53,6 @@ type props={
 };
 class MainRouter extends React.PureComponent<props>{
 	static  getDerivedStateFromProps() {
-			console.log('gh');
-			
             return null ;
     }
 	render(){

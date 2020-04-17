@@ -7,7 +7,7 @@ import * as React from "react";
 import { TabList, GroupCols } from "@component/tableList/TabList";
 import "./demo.scss";
 import data from "./data";
-import { createImmutableMap } from "@component/createImmutaleMap";
+import { createImmutableMap } from "@component/util/createImmutaleMap";
 import { Button } from "@component/button/index";
 import { Input, CheckBox } from "@component/input/index";
 import { str1 } from "./CodeStr";

@@ -7,7 +7,7 @@ import * as React from "react";
 import { Button } from "@component/button/index";
 import notice from "@component/toast/index";
 import { CheckBox, Input } from "@component/input/index";
-import { createImmutableMap } from "@component/createImmutaleMap";
+import { createImmutableMap } from "@component/util/createImmutaleMap";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 type config = {
   text: string;
@@ -61,7 +61,7 @@ class Demo extends React.PureComponent<Props, States> implements IIndex {
     const dom = e.currentTarget;
     const name = dom.name as any;
     let value: any = dom.value;
-    if(name === "kep"){
+    if(name === "keep"){
 
       value = value === "1" ;
 

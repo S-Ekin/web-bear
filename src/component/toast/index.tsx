@@ -13,6 +13,7 @@ type messageItem = {
 	id: string;
 	text: string;
 	type: "error" | "success" | "warn";
+	timerId?:number;
 };
 type states = {
 	messages: IImmutalbeList<messageItem>;
@@ -56,6 +57,13 @@ class Notice extends React.PureComponent<props, states> implements INotice {
 	}
 	clear = () => {
 		this.setState(pre => {
+			// 清除定时器
+			pre.messages.forEach( val => {
+				const {timerId} = val;
+				if(timerId){
+					window.clearTimeout(timerId);
+				}
+			});
 			return {
 				messages: pre.messages.clear(),
 			};
@@ -119,6 +127,18 @@ const createNotice = function(callback?:()=>void) {
 		}
 	});
 };
+const addFn = function(messages:messageItem,keep?:boolean){
+	let timerId:number | undefined;
+	if(!keep){
+			timerId = window.setTimeout(function(){
+				noticeRef!.remove(messages.id);
+			},2000);
+			messages.timerId = timerId;
+	}
+	noticeRef!.add(messages);
+
+};
+
 const notice = {
 	//添加提示
 	add: function(
@@ -127,30 +147,19 @@ const notice = {
 		keep?:boolean//是否保持，true不关闭
 	) {
 		const id = `${createTimekey()}`;
-		const obj ={
+		const obj:messageItem ={
 			id,
 			type,
 			text,
 		};
+		
 		if (!noticeRef) {
 			createNotice (function(){
-
-			noticeRef!.add(obj);
-
-		});
-
-		} else{
-			
-			noticeRef!.add(obj);
+				addFn(obj,keep);
+			});
+		}else{
+			addFn(obj,keep);
 		}
-
-		//执行定时器删去添加的
-		if(!keep){
-			window.setTimeout(function(){
-				noticeRef!.remove(id);
-			},2000);
-		}
-		
 	},
 	clear: function() {
 		if (noticeRef) {

@@ -10,7 +10,7 @@ import CalendarMonthView from "./CalendarMonthView";
 import CalendarSearsonView from "./CalendarSearsonView";
 import { VelocityComponent } from "velocity-react";
 import * as Immutable from "immutable";
-import {createImmutableMap} from "../createImmutaleMap";
+import {createImmutableMap} from "../util/createImmutaleMap";
 import {SvgIcon} from "../my-icon/index";
 import {ICommonInterface,ICalendarStates } from "./calendar";
 

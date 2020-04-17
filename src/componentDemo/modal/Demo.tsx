@@ -8,7 +8,7 @@ import Layout from "@component/layout/Layout";
 import {Button} from "@component/button/index";
 import Modal from "@component/modal/index";
 import { Input, CheckBox } from "@component/input/index";
-import { createImmutableMap } from "@component/createImmutaleMap";
+import { createImmutableMap } from "@component/util/createImmutaleMap";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import {str1,str2,str3} from "./codeStr";
 type Props={

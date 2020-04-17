@@ -7,7 +7,7 @@ import * as React from "react";
 import "./demo.scss";
 import { GroupCols, TreeTable } from "@component/treeTable/TreeTable";
 import data from "./data";
-import { createImmutableMap } from "@component/createImmutaleMap";
+import { createImmutableMap } from "@component/util/createImmutaleMap";
 import { Button } from "@component/button/index";
 import { Input, CheckBox } from "@component/input/index";
 import {str1,str4,str2,str3,str5,str6} from './CodeStr';

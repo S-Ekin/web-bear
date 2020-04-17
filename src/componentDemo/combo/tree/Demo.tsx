@@ -7,7 +7,7 @@ import * as React from "react";
 import "./demo.scss";
 import { ComboTree } from "@component/combo/index";
 import { Input, CheckBox } from "@component/input/index";
-import { createImmutableMap } from "@component/createImmutaleMap";
+import { createImmutableMap } from "@component/util/createImmutaleMap";
 import { Button } from "@component/button/index";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import * as  ComboSpace from "@component/combo/combo";

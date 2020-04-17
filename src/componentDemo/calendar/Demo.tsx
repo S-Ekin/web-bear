@@ -9,7 +9,7 @@ import PropsEditConfig from "./PropsEditConfig";
 import "./index.scss";
 import { Button } from "@component/button/index";
 import { Input, CheckBox } from "@component/input/index";
-import { createImmutableMap } from "@component/createImmutaleMap";
+import { createImmutableMap } from "@component/util/createImmutaleMap";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import * as  CalendarSpace from "@component/calendar/calendar";
 import {str1,str2} from './CodeStr';
