@@ -49,20 +49,18 @@ const routerConfig = {
 	},
 };
 type props={
-	init:number;
+
 };
 class MainRouter extends React.PureComponent<props>{
 	static  getDerivedStateFromProps() {
             return null ;
     }
 	render(){
-		console.log('render');
-		const {init} = this.props;
 		
 		return ( 
 		
 		<div className="g-main">
-            <ErrorBoundary init={init}>
+            <ErrorBoundary >
                <Switch>
 					<Route path="/button" component={loadable(routerConfig.buttonRouter)} />
 					<Route path="/table" component={loadable(routerConfig.tableRouter)} />

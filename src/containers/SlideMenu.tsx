@@ -2,19 +2,13 @@ import * as React from "react";
 import {NavMenu} from "@component/menu/index";
 import * as Velocity from "velocity-react";
 import { SvgIcon } from "@component/my-icon/index";
-
-type slideMenu = {
-	data: any[];
-};
+import {event} from "@component/util/Event";
 
 type SlideMenuProp = {
-	expand:boolean;
-   toggleMenuFn:(expand?:boolean)=>void;
-   callback():void;
 };
 type SlideMenuState = {
-
-
+	expand:boolean;
+	data: any[];
 };
 
 const menuList = [
@@ -182,29 +176,45 @@ const menuList = [
 
 class SlideMenu extends React.PureComponent<SlideMenuProp , SlideMenuState>{
 
-	state: slideMenu = {
-		data:menuList,
-	};
-
+	state: SlideMenuState = {
+    data:menuList,
+    expand:true
+  };
+  toggleMenuIcon(){
+    this.setState(pre=>{
+      return {
+        expand:!pre.expand,
+      };
+    });
+  }
 	menuIconHandle=()=>{
-		const {toggleMenuFn} = this.props;
-		toggleMenuFn(true);
+    this.toggleMenuIcon();
+    event.emit('expandIcon');
 	}
 	slideMenu(){
 	 
-		const {expand} = this.props;
+		const {expand} = this.state;
 		const expandIcon = !expand ? (
 						<span className="j-slideBar" onClick={this.menuIconHandle}>
 							<SvgIcon className="menu-slide" size="big" />
 						</span>
 						):undefined;
 			return expandIcon ;
-	}
+  }
+  clickCallBack(){
+    event.emit("menuClick",false);
+  }
+  componentDidMount(){
+    event.on("menuExpand",()=>{
+        this.toggleMenuIcon();
+    });
+  }
+  componentWillUnmount(){
+    event.remove("menuExpand");
+  }
 
 	render() {
-
-		const { data } = this.state;
-		const {expand,callback} = this.props;
+		const { data ,expand} = this.state;
 		return (
 			<Velocity.VelocityComponent duration={300} animation={{ width: expand ? 250 : 70 }}>
 				<div className={"g-slideMenu " + (!expand ? "expand" : "")}>
@@ -212,7 +222,7 @@ class SlideMenu extends React.PureComponent<SlideMenuProp , SlideMenuState>{
 						<span className="m-logo" />
 					{this.slideMenu()}
 					</div>
-					 <NavMenu data={data} expand={expand} clickBack={callback}  />
+					 <NavMenu data={data} expand={expand} clickBack={this.clickCallBack}  />
 				</div>
 			</Velocity.VelocityComponent>
 			);

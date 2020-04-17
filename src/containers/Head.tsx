@@ -1,10 +1,9 @@
 import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import {SvgIcon} from "@component/my-icon/index";
+import {event} from "@component/util/Event";
 
 type HeadProp = {
-	expand:boolean;
- 	toggleMenuFn:(expand?:boolean)=>void;
 };
 
 type HeadState = {
@@ -14,6 +13,7 @@ type HeadState = {
 	newPassword:string;
 	confirmPassword:string;
 	warnTxt:string;
+	showExpandIcon:boolean;
 };
 
 class Head extends React.PureComponent<RouteComponentProps & HeadProp  , HeadState>{
@@ -24,6 +24,7 @@ class Head extends React.PureComponent<RouteComponentProps & HeadProp  , HeadSta
 		password: "",
 		newPassword: "",
 		confirmPassword:"",
+		showExpandIcon:true,
 		warnTxt:""
 	};
 	submit=()=>{
@@ -60,14 +61,28 @@ class Head extends React.PureComponent<RouteComponentProps & HeadProp  , HeadSta
 			password:""
 		}));
 	}
-
-	slideIconHandle=()=>{
-		this.props.toggleMenuFn();
+	toggleExpandIcon(){
+		this.setState(pre=>{
+			return {
+				showExpandIcon:!pre.showExpandIcon
+			};
+		});
 	}
-
+	slideIconHandle=()=>{
+		event.emit('menuExpand');
+		this.toggleExpandIcon();	
+	}
+	componentDidMount(){
+		event.on('expandIcon',()=>{
+			this.toggleExpandIcon();
+		});
+	}
+	componentWillUnmount(){
+		event.remove('expandIcon');
+	}
 	slideIcon(){
-		const { expand } = this.props;
-		const expandIcon = expand ? (
+		const {showExpandIcon} = this.state;
+		const expandIcon = showExpandIcon ? (
 			<span className="j-slideBar" onClick={this.slideIconHandle} >
 				<SvgIcon className="menu-expand" size="big" />
 			</span>

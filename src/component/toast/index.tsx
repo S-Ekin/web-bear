@@ -56,6 +56,10 @@ class Notice extends React.PureComponent<props, states> implements INotice {
 
 	}
 	clear = () => {
+		const {messages} = this.state;
+		if(!messages.size){
+			return ;
+		}
 		this.setState(pre => {
 			// 清除定时器
 			pre.messages.forEach( val => {
