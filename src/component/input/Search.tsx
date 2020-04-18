@@ -9,7 +9,7 @@ import {SvgIcon} from "../my-icon/index";
 
 type props={
     searchHandle: (keyword: string,field:string) => void;
-	closeHandle?: (field?:string) => void;
+	closeHandle?: (field:string) => void;
 	tip?: string;
 	width?:number;
 	field:string;

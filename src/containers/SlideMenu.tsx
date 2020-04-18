@@ -34,11 +34,24 @@ const menuList = [
 	  },
 	  {
         id: "13",
-        name: "动画按钮",
-        url: "/button/animate",
+        name: "输入框类型",
+        url: "/button/input",
         icon: "",
         children: []
-      }
+      },
+      {
+        id: "14",
+        name: "复选框",
+        url: "/button/checkbox",
+        icon: "",
+        children: []
+	  },{
+        id: "15",
+        name: "搜索",
+        url: "/button/search",
+        icon: "",
+        children: []
+	  },
     ]
   },
   {

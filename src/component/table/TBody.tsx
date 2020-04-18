@@ -29,6 +29,7 @@ const TdCheckBox:React.SFC<{
 					<CheckBox
 						checked={checked}
 						value={index}
+						type="checkbox"
 						changeHandle={changeFn}
 					/>
 				</td>

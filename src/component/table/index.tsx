@@ -267,6 +267,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
         const checkCom = checkbox ? (
 									<th>
 										<CheckBox
+                                            type="checkbox"
 											changeHandle={this.checkCurPageAll}
 											checked={curPageCheckAll === checkAllStataus.checked}
 											name="checkAll"
