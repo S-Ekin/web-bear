@@ -14,28 +14,28 @@ export const str2 = `modalCustomFoot=()=>{
       );
     }`;
 
-  export  const str3 =`//里层的modal容器
-  <BrowserRouter>
-        <SlideMenu expand={menuExpand} toggleMenuFn={this.toggleMenuSlide} />
-        <div className="g-content">
-          <Head expand={menuExpand} toggleMenuFn={this.toggleMenuSlide} />
+  export  const str3 =`//里层的modal容器 Router.tsx
+<div className="g-main">
+  <ErrorBoundary init={initRouter} bindGetHasError={this.bindGetHasError}>
+    <Switch>
+      <Route path="/button" component={loadable(routerConfig.buttonRouter)} />
+      <Route path="/table" component={loadable(routerConfig.tableRouter)} />
+      <Route path="/loading" component={loadable(routerConfig.loadingRouter)} />
+      <Route path="/combo" component={loadable(routerConfig.comboRouter)} />
+      <Route path="/blog" component={loadable(routerConfig.blog)} />
+      <Route path="/alert" component={loadable(routerConfig.modal)} />
+      <Route path="/menu" component={loadable(routerConfig.menu)} />
+    </Switch>
+  </ErrorBoundary>
+  <div id="inner-modal-wrap"/>
+  <div id="wrap-loading" />
+  <div id="wrap-notice" />
+</div>
 
-          <div className="g-main">
-            <ErrorBoundary>
-               <Switch>
-                <MainRouter />
-              </Switch>
-            </ErrorBoundary>
-			  	  <div id="inner-modal-wrap"/>
-            <div id="wrap-loading" />
-            <div id="wrap-notice" />
-          </div>
-        </div>
-      </BrowserRouter>
-      //最外层的modal容器
-      <body>
-        <div id="app" class="page"></div>
-        <div id="out-modal-wrap"></div>
-      </body>
+//最外层的modal容器 index.html
+<body>
+  <div id="app" class="page"></div>
+  <div id="out-modal-wrap"></div>
+</body>
       
       `;

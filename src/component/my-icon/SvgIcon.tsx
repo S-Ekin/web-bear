@@ -7,7 +7,7 @@ import * as React from "react";
 
 type props={
     className:string;
-    size:"big" | "middle" | "";
+    size:"big" | "middle" | "normal";
 };
 type states={
 
@@ -15,7 +15,7 @@ type states={
 class SvgIcon extends React.PureComponent<props,states>{
 
     static defaultProps={
-        size:"",
+        size:"normal",
     };
     state:states={
 

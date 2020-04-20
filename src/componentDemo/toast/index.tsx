@@ -29,23 +29,22 @@ interface IIndex {
 const str1 = `
   // 在路由初始化的时候要初始化弹框的容器 wrap-notice
   // 保存notice 的实例，用实例上的方法来添加和减少 提示
-  <BrowserRouter>
-        <SlideMenu expand={menuExpand} toggleMenuFn={this.toggleMenuSlide} />
-        <div className="g-content">
-          <Head expand={menuExpand} toggleMenuFn={this.toggleMenuSlide} />
-
-          <div className="g-main">
-            <ErrorBoundary>
-               <Switch>
-                <MainRouter />
-              </Switch>
-            </ErrorBoundary>
-			  	  <div id="inner-modal-wrap"/>
-            <div id="wrap-loading" />
-            <div id="wrap-notice" />
-          </div>
-        </div>
-      </BrowserRouter>
+<div className="g-main">
+  <ErrorBoundary init={initRouter} bindGetHasError={this.bindGetHasError}>
+    <Switch>
+      <Route path="/button" component={loadable(routerConfig.buttonRouter)} />
+      <Route path="/table" component={loadable(routerConfig.tableRouter)} />
+      <Route path="/loading" component={loadable(routerConfig.loadingRouter)} />
+      <Route path="/combo" component={loadable(routerConfig.comboRouter)} />
+      <Route path="/blog" component={loadable(routerConfig.blog)} />
+      <Route path="/alert" component={loadable(routerConfig.modal)} />
+      <Route path="/menu" component={loadable(routerConfig.menu)} />
+    </Switch>
+  </ErrorBoundary>
+  <div id="inner-modal-wrap"/>
+  <div id="wrap-loading" />
+  <div id="wrap-notice" />
+</div>
 `;
 class Demo extends React.PureComponent<Props, States> implements IIndex {
   state: States = {

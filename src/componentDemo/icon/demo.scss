@@ -1,14 +1,22 @@
 .icon-box {
   .empty-box {
     position: relative;
-    height: 160px;
+    height: 220px;
   }
 
   .icon-item {
     width: 200px;
     height: 100px;
-    display: inline-block;
-    text-align: center;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon-list {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
 
   .icon-name {

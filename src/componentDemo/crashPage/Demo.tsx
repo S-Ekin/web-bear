@@ -5,11 +5,11 @@
  */
 import * as React from "react";
 import {Button} from '@component/button/index';
-import './index.scss';
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import Layout from "@component/layout/Layout";
 import {str1,str2} from "./CodeStr";
 import ErrorBoundary from "@component/crashPage/ErrorBoundary";
+import { CheckBox } from "@component/input";
 type Props={
 
 };
@@ -38,9 +38,19 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
        });
     }
     changeConfig=()=>{
-        this.setState(pre=>{
+        this.setState(()=>{
            return {
-                init:{init:!pre.init.init}
+                init:{init:true}
+           } 
+        })
+    }
+    changeInit=(e:React.ChangeEvent<HTMLInputElement>)=>{
+        const dom = e.currentTarget!;
+        const value = dom.value;
+
+        this.setState(()=>{
+           return {
+                init:{init:value==="1"}
            } 
         })
     }
@@ -54,6 +64,9 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                 <Button handle={this.getHasErrorBtnHandl}>
                 获取错误捕获组件状态
                 </Button>
+                <b style={{paddingLeft: 10,}}>
+                    通过 bindGetHasError
+                </b>
             </div>
         )
     }
@@ -71,10 +84,30 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                         bindGetHasError={this.bindGetHasError} 
                     >
                         <div>
-                            <Button handle={this.createCrash} >抛出整个路由页面的错误</Button>
                         </div>
                         <div className="inp-item">
-                            <Button styleType="line-btn" colorType="danger" handle={this.changeConfig}>改变当前错误捕获组件</Button>
+                            <Button styleType="line-btn" colorType="danger" handle={this.changeConfig}>抛出当前错误捕获组件的错误</Button>
+                        </div>
+                        <div className="inp-item">
+                            <span>
+                                初始化的状态： hasError:
+                            </span>
+                            <CheckBox
+                                changeHandle={this.changeInit}
+                                name="hasError"
+                                value="1"
+                                checked={init.init}
+                            >
+                               有         
+                            </CheckBox> 
+                            <CheckBox
+                                changeHandle={this.changeInit}
+                                name="hasError"
+                                value="2"
+                                checked={!init.init}
+                            >
+                                无        
+                            </CheckBox>
                         </div>
                        
                     </ErrorBoundary>
@@ -88,6 +121,9 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                     <CodeBlock tit={this.getCodeBlockTit()}>
                         {str2}
                     </CodeBlock>
+                </div>
+                <div className="g-item-show">
+                    <Button handle={this.createCrash} >抛出整个路由页面的错误</Button>
                 </div>
               </Layout>
             );
