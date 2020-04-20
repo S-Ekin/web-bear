@@ -2,19 +2,19 @@ import * as React from "react";
 import CrashPage from './CrashPage';
 import notice from '../toast/index';
 type props={
-	init:boolean;
-	bindGetHasError(getHasErrorFn:()=>boolean):void;
+	init:{init:boolean};
+	bindGetHasError?:(getHasErrorFn:()=>boolean)=>void;
 };
 type states = {
 	hasError:boolean;
-	preInit:boolean;
+	preInit:{init:boolean};
 };
 export default class ErrorBoundary extends React.Component<props,states>{
 	static  getDerivedStateFromProps(nextProps:props,preState:states):Partial<states> | null {
 		const newInit = nextProps.init;
 		if(newInit!==preState.preInit){
 			return {
-				hasError:false,
+				hasError:newInit.init,
 				preInit:nextProps.init
 			};
 		}else{
@@ -32,8 +32,9 @@ export default class ErrorBoundary extends React.Component<props,states>{
 	constructor(props:props){
 		super(props);
 		const {bindGetHasError} = props;
-		
-		bindGetHasError(this.getHasError);
+		if(bindGetHasError){
+			bindGetHasError(this.getHasError);
+		}
 	}
 	getHasError=()=>{
 		return this.state.hasError;

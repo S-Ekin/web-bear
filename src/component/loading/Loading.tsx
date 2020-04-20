@@ -1,22 +1,18 @@
 import * as React from "react";
 import {createPortal} from "react-dom";
 
-
 type LoadingProp = {
-		container:HTMLElement;
-}
-
+	container:HTMLElement;
+};
 
 type LoadingState = {
 	
 };
 
 class Loading extends React.PureComponent<LoadingProp,LoadingState>{
-
 	
 	// tslint:disable-next-line: variable-name
 	static LoadingCom:React.SFC=()=>{
-
 		return (
 				<div className="g-loading">
 						<div className="m-loading">
@@ -26,12 +22,9 @@ class Loading extends React.PureComponent<LoadingProp,LoadingState>{
 		);
 	}
 	render(){
-
 		const {container} = this.props;
-		
 		return  createPortal(<Loading.LoadingCom/>,container);  
 	}
-
 }
 
 export default Loading ;

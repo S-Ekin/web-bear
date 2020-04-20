@@ -6,6 +6,13 @@
   "description": "web组件图标",
   "glyphs": [
     {
+      "icon_id": "6813244",
+      "name": "menu",
+      "font_class": "menu",
+      "unicode": "e65c",
+      "unicode_decimal": 58972
+    },
+    {
       "icon_id": "6095690",
       "name": "减",
       "font_class": "minus",

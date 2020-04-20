@@ -31,7 +31,7 @@ const routerConfig = {
 	comboRouter: {
 		loader: () =>
 			import(
-				/*webpackChunkName: "loading" */ "./Router/ComboRouter"
+				/*webpackChunkName: "combo" */ "./Router/ComboRouter"
 			),
 		loading: () => <span>loading......</span>,
 	},
@@ -49,27 +49,32 @@ const routerConfig = {
 			),
 		loading: () => <span>loading......</span>,
 	},
+	menu: {
+		loader: () =>
+			import(
+				/*webpackChunkName: "menu" */ "./Router/MenuRouter"
+			),
+		loading: () => <span>loading......</span>,
+	},
 };
 type props={
 
 };
 type state = {
-	initRouter:boolean;
-	hasError:boolean;
+	initRouter:{init:boolean};
 };
 class MainRouter extends React.PureComponent<props,state>{
 	state:state ={
-		initRouter:false,
-		hasError:false,
+		initRouter:{init:false},
 	};
 	getHasErrorFn:(()=>boolean) | undefined;
 	componentDidMount(){
-		event.on("menuClick",(_status:boolean)=>{
+		event.on("menuClick",(status:boolean)=>{
 			const hasError = this.getHasErrorFn && this.getHasErrorFn() ? true : false;
 			if(hasError){
-				this.setState(pre=>{
+				this.setState(()=>{
 					return {
-						initRouter:!pre.initRouter
+						initRouter:{init:status}
 					};
 				},()=>{
 					notice.clear();
@@ -97,6 +102,7 @@ class MainRouter extends React.PureComponent<props,state>{
 					<Route path="/combo" component={loadable(routerConfig.comboRouter)} />
 					<Route path="/blog" component={loadable(routerConfig.blog)} />
 					<Route path="/alert" component={loadable(routerConfig.modal)} />
+					<Route path="/menu" component={loadable(routerConfig.menu)} />
               </Switch>
             </ErrorBoundary>
 			<div id="inner-modal-wrap"/>
