@@ -2,6 +2,8 @@ import { Route ,Switch} from "react-router-dom";
 import * as React from "react";
 import * as loadable from "react-loadable";
 import ErrorBoundary from '@component/crashPage/ErrorBoundary';
+import {event} from "@component/util/Event";
+import notice from "@component/toast/index";
 
 const routerConfig = {
 	buttonRouter: {
@@ -51,16 +53,43 @@ const routerConfig = {
 type props={
 
 };
-class MainRouter extends React.PureComponent<props>{
-	static  getDerivedStateFromProps() {
-            return null ;
-    }
+type state = {
+	initRouter:boolean;
+	hasError:boolean;
+};
+class MainRouter extends React.PureComponent<props,state>{
+	state:state ={
+		initRouter:false,
+		hasError:false,
+	};
+	getHasErrorFn:(()=>boolean) | undefined;
+	componentDidMount(){
+		event.on("menuClick",(_status:boolean)=>{
+			const hasError = this.getHasErrorFn && this.getHasErrorFn() ? true : false;
+			if(hasError){
+				this.setState(pre=>{
+					return {
+						initRouter:!pre.initRouter
+					};
+				},()=>{
+					notice.clear();
+				});
+			}
+				
+		});
+	}
+	componentWillUnmount(){
+		event.remove("menuClick");
+	}
+	bindGetHasError=(getHasErrorFn:(()=>boolean))=>{
+		this.getHasErrorFn = getHasErrorFn;
+	}
 	render(){
-		
+		const {initRouter} = this.state;
 		return ( 
 		
 		<div className="g-main">
-            <ErrorBoundary >
+            <ErrorBoundary init={initRouter} bindGetHasError={this.bindGetHasError}>
                <Switch>
 					<Route path="/button" component={loadable(routerConfig.buttonRouter)} />
 					<Route path="/table" component={loadable(routerConfig.tableRouter)} />
