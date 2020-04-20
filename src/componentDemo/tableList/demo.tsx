@@ -168,6 +168,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   type="number"
                   changeFn={this.changeConfig}
                   name="height"
+                  norequire={true} 
                   value={`${height}`}
                 >
                   高度 height:
@@ -207,6 +208,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 <Input
                   changeFn={this.changeConfig}
                   name="defaultSel"
+                  norequire={true} 
                   value={defaultSel!}
                 >
                   默认选中 defaultSel:
@@ -262,6 +264,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 <Input
                   changeFn={this.changeConfig}
                   name="emptyTxt"
+                  norequire={true} 
                   value={emptyTxt!}
                 >
                   空数据时显示文字 emptyTxt:
@@ -271,6 +274,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 <Input
                   changeFn={this.changeConfig}
                   name="tabField"
+                  norequire={true} 
                   value={tabField!}
                 >
                   表格标识 tabField:

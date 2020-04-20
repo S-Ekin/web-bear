@@ -93,6 +93,7 @@ class CheckboxDemo extends React.PureComponent<Props,States> implements ICheckbo
                     <Input
                       value={name}
                       name="name"
+                  norequire={true}
                       changeFn={this.changeConfig}
                     >
                       name :
@@ -142,6 +143,7 @@ class CheckboxDemo extends React.PureComponent<Props,States> implements ICheckbo
                     <Input
                       value={value}
                       name="value"
+                  norequire={true}
                       changeFn={this.changeConfig}
                     >
                       value：

@@ -125,6 +125,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <Input
                 name="initTime"
                 changeFn={this.outsideChangeState}
+                  norequire={true} 
                 value={outTimeVal}
               >
                 设置日历时间 initTime：

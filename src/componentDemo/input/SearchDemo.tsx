@@ -78,17 +78,21 @@ class SearchDemo extends React.PureComponent<Props, States>
           </div>
           <div >
               <div className="inp-item">
-                <Input value={field} name="field" changeFn={this.changeConfig}>
+                <Input value={field} name="field" changeFn={this.changeConfig} >
                   field :
                 </Input>
               </div>
                <div className="inp-item">
-                <Input value={tip} name="tip" changeFn={this.changeConfig}>
+                <Input value={tip} name="tip" changeFn={this.changeConfig}
+                  norequire={true}
+                >
                   tip：
                 </Input>
               </div> 
               <div className="inp-item">
-                <Input value={`${width}`} name="width" changeFn={this.changeConfig}>
+                <Input value={`${width}`} name="width" changeFn={this.changeConfig}
+                  norequire={true}
+                >
                   width：
                 </Input>
               </div>

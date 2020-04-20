@@ -365,12 +365,15 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 </CheckBox>
               </div>
               <div className="inp-item">
-                <Input name="tit" changeFn={this.inpChangeFn} value={tit}>
+                <Input name="tit" changeFn={this.inpChangeFn} value={tit}
+                  norequire={true} 
+                >
                   提示语 tit：
                 </Input>
               </div>
               <div className="inp-item">
-                <Input name="field" changeFn={this.inpChangeFn} value={field}>
+                <Input name="field" changeFn={this.inpChangeFn} value={field}
+                >
                   下拉框的标识 field：
                 </Input>
               </div>
@@ -379,6 +382,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   name="itemIcon"
                   changeFn={this.inpChangeFn}
                   value={itemIcon}
+                  norequire={true} 
                 >
                   下拉框每行的图标 itemIcon：
                 </Input>
@@ -390,6 +394,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   name="defaultVal"
                   changeFn={this.inpChangeFn}
                   value={defaultVal}
+                  norequire={true} 
                 >
                   默认选中的 defaultVal ：
                 </Input>
@@ -398,6 +403,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 <Input
                   name="width"
                   type="number"
+                  norequire={true} 
                   changeFn={this.inpChangeFn}
                   value={width + ""}
                 >
@@ -407,6 +413,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <div className="inp-item">
                 <Input
                   name="maxHeight"
+                  norequire={true} 
                   type="number"
                   changeFn={this.inpChangeFn}
                   value={maxHeight ?  maxHeight + "" : '0'}
@@ -417,6 +424,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <div className="inp-item">
                 <Input
                   name="dropWidth"
+                  norequire={true} 
                   type="number"
                   changeFn={this.inpChangeFn}
                   value={dropWidth ? dropWidth + "" : '0'}

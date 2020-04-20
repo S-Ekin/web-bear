@@ -78,6 +78,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 					<div className="inp-item">
 						<Input
 							name="width"
+                  norequire={true} 
 							changeFn={this.inpChangeFn}
 							type="number"
 							value={`${width}`}>
@@ -179,6 +180,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 					<div className="inp-item">
 						<Input
 							name="placeholder"
+                  norequire={true} 
 							changeFn={this.inpChangeFn}
 							value={placeholder}>
 							提示语 placeholder：
@@ -187,6 +189,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 					<div className="inp-item">
 						<Input
 							name="defaultTime"
+                  norequire={true} 
 							changeFn={this.inpChangeFn}
 							value={defaultTime}>
 							默认时间 defaultTime：

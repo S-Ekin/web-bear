@@ -230,6 +230,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                         <div className="inp-item">
                           <Input
                             type="number"
+                  norequire={true} 
                             changeFn={this.changeConfig}
                             name="width"
                             value={width}
@@ -264,6 +265,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                           <Input
                             changeFn={this.changeConfig}
                             name="className"
+                  norequire={true} 
                             value={className}
                           >
                             模态框容器类名 className:

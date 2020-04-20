@@ -361,7 +361,9 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 </CheckBox>
               </div>
               <div className="inp-item">
-                <Input name="tit" changeFn={this.inpChangeFn} value={tit}>
+                <Input name="tit" changeFn={this.inpChangeFn} value={tit}
+                  norequire={true} 
+                >
                   提示语 tit：
                 </Input>
               </div>
@@ -374,6 +376,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 <Input
                   name="itemIcon"
                   changeFn={this.inpChangeFn}
+                  norequire={true} 
                   value={itemIcon}
                 >
                   下拉框每行的图标 itemIcon：
@@ -384,6 +387,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <div className="inp-item">
                 <Input
                   name="defaultVal"
+                  norequire={true} 
                   changeFn={this.inpChangeFn}
                   value={defaultVal}
                 >
@@ -393,6 +397,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <div className="inp-item">
                 <Input
                   name="width"
+                  norequire={true} 
                   type="number"
                   changeFn={this.inpChangeFn}
                   value={width + ""}
@@ -403,6 +408,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <div className="inp-item">
                 <Input
                   name="maxHeight"
+                  norequire={true} 
                   type="number"
                   changeFn={this.inpChangeFn}
                   value={maxHeight ?  maxHeight + "" : '0'}
@@ -413,6 +419,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <div className="inp-item">
                 <Input
                   name="dropWidth"
+                  norequire={true} 
                   type="number"
                   changeFn={this.inpChangeFn}
                   value={dropWidth ? dropWidth + "" : '0'}

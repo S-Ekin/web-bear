@@ -16,6 +16,7 @@ type inputConfig = {
     type:"text"|"number";
     width:number;
     styleName:"normal" ;
+    norequire:boolean;
 };
 type Props={
 
@@ -32,6 +33,7 @@ const inputConfig:inputConfig = {
     name:"",
     type:"text",
     width:0,
+    norequire:false,
     styleName:"normal",
 };
 class Demo extends React.PureComponent<Props,States> implements IDemo{
@@ -58,9 +60,9 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
         const name = dom.name as any;
         let value: any = dom.value;
         if(name === "width"){
-
             value = ~~value;
-
+        }else if(name==="norequire"){
+          value = value === "1";
         }
         this.setState((pre) => {
         return {
@@ -71,7 +73,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
     render(){
         const {immuConfig} = this.state;
 
-        const {value,width,name,dataSet,type,styleName} = immuConfig.toJS();
+        const {value,width,name,dataSet,type,styleName,norequire} = immuConfig.toJS();
 
         return (
           <Layout tit="输入框">
@@ -84,6 +86,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                     name={name}
                     dataSet={dataSet}
                     type={type}
+                    norequire={norequire}
                     styleName={styleName}
                 >
                   输入框：
@@ -94,6 +97,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                   <div className="inp-item">
                     <Input
                       name="value"
+                      norequire={norequire}
                       changeFn={this.changeConfig}
                       value={value}
                     >
@@ -103,6 +107,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                   <div className="inp-item">
                     <Input
                       name="width"
+                  norequire={true}
                       changeFn={this.changeConfig}
                       value={`${width}`}
                     >
@@ -112,6 +117,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                   <div className="inp-item">
                     <Input
                       name="name"
+                  norequire={true}
                       changeFn={this.changeConfig}
                       value={name}
                     >
@@ -123,6 +129,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                   <div className="inp-item">
                     <Input
                       name="dataSet"
+                  norequire={true}
                       changeFn={this.changeConfig}
                       value={dataSet}
                     >
@@ -160,6 +167,27 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                       changeHandle={this.changeConfig}
                     >
                       normal：
+                    </CheckBox>
+                  </div> 
+                  <div className="inp-item">
+                    <span>不是必填 norequire：</span>
+                    <CheckBox
+                      name="norequire"
+                      value="1"
+                      type="radio"
+                      checked={norequire}
+                      changeHandle={this.changeConfig}
+                    >
+                     是
+                    </CheckBox> 
+                     <CheckBox
+                      name="norequire"
+                      value="2"
+                      type="radio"
+                      checked={!norequire}
+                      changeHandle={this.changeConfig}
+                    >
+                     否
                     </CheckBox>
                   </div>
                 </div>

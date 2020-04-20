@@ -13,6 +13,7 @@ type props={
     type?:"text"|"number";
     width?:number;
     styleName?:"normal" ;
+    norequire?:boolean ;
     changeFn(e:React.ChangeEvent<HTMLInputElement>):void;
 };
 type states={
@@ -36,14 +37,15 @@ class Input extends React.PureComponent<props,states> implements IInput{
         return lab ;
     }
     render(){
-        const {value,name,dataSet,styleName,changeFn,type,width} = this.props;
+        const {value,name,dataSet,styleName,changeFn,type,width,norequire} = this.props;
         const style = width ? {width:width} : undefined;
+        const requireName = norequire ? ""  : !value ? "no-fill" :"";
         return (
 			<label className="g-inp-lab">
 				{this.getInpTit()}
 				<input
 					value={value}
-					className={`s-inp ${styleName}`}
+					className={`s-inp ${styleName} ${requireName}`}
                     name={name}
                     type={type}
                     style={style}

@@ -175,6 +175,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   type="text"
                   changeFn={this.changeConfig}
                   name="className"
+                  norequire={true}
                   value={className}
                 >
                   类名 className:
@@ -183,6 +184,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <div className="inp-item">
                 <Input
                   type="text"
+                  norequire={true}
                   changeFn={this.changeConfig}
                   name="name"
                   value={name}
@@ -193,6 +195,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <div className="inp-item">
                 <Input
                   type="text"
+                  norequire={true}
                   changeFn={this.changeConfig}
                   name="val"
                   value={val}
@@ -238,6 +241,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   type="text"
                   changeFn={this.changeConfig}
                   name="dataSet"
+                  norequire={true}
                   value={dataSet}
                 >
                   按钮 dataSet:
@@ -307,6 +311,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   type="text"
                   changeFn={this.changeGroupConfig}
                   name="icon"
+                  norequire={true}
                   value={icon}
                 >
                   父级图标 icon:
