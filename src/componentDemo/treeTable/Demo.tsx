@@ -4,7 +4,6 @@
  * @time 2020-02-25
  */
 import * as React from "react";
-import "./demo.scss";
 import { GroupCols, TreeTable } from "@component/treeTable/TreeTable";
 import data from "./data";
 import { createImmutableMap } from "@component/util/createImmutaleMap";
@@ -113,7 +112,7 @@ class Demo extends React.PureComponent<Props, States> {
           <div className="g-item-show">
             <Button handle={this.refesh}>刷新</Button>
           </div>
-          <div className="g-item-show">
+          <div className="g-item-show" style={{height: 400, overflow: "auto",}}>
             <TreeTable
               key={refreshId}
               data={data}

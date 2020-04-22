@@ -59,6 +59,10 @@ html {
     color: $text-color;
     letter-spacing: 0.1em;
   }
+
+  &.g-shade {
+    background: rgba(0, 0, 0, 0.2);
+  }
 }
 
 .item-inp {
@@ -182,4 +186,16 @@ html {
 /* for block of code */
 .hljs-ln-code {
   padding-left: 10px !important;
+}
+// 表格公用
+.td-left {
+  text-align: left;
+}
+
+.td-right {
+  text-align: right;
+}
+
+.td-center {
+  text-align: center;
 }

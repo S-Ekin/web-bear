@@ -5,7 +5,6 @@
  */
 import * as React from "react";
 import { TabList, GroupCols } from "@component/tableList/TabList";
-import "./demo.scss";
 import data from "./data";
 import { createImmutableMap } from "@component/util/createImmutaleMap";
 import { Button } from "@component/button/index";
@@ -116,7 +115,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
           <div className="g-item-show">
             <Button handle={this.refesh}>刷新</Button>
           </div>
-          <div className="g-item-show">
+          <div className="g-item-show" style={{height: 400, overflow: "auto",}}>
             <TabList
                 key={refreshId}
                 data={data}

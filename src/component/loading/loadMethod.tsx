@@ -4,21 +4,25 @@ import * as React from "react";
 type props = {};
 type states = {
 	show: boolean;
+	hasShade:boolean;
 };
 class Loading extends React.PureComponent<props, states> {
 	state: states = {
 		show: true,
+		hasShade:false
 	};
-	toggle = (show?:boolean) => {
-		this.setState(pre => ({
-			show: show === undefined ? !pre.show :show,
-		}));
+	toggle = (show:boolean,hasShade?:boolean) => {
+		this.setState({
+			show: show,
+			hasShade:!!hasShade
+		});
 	}
 
 	render() {
-		const { show } = this.state;
+		const { show,hasShade } = this.state;
+		const shadeName = hasShade  ?"g-shade" :"";
 		return (
-			<div className={`g-loading ${!show ? "hide-loading" : ""}`} >
+			<div className={`g-loading ${shadeName} ${!show ? "hide-loading" : ""}`} >
 				<div className="m-loading">
 					<b className="loading-text">loading...</b>
 				</div>
@@ -39,13 +43,13 @@ const createLoad = function(callback?:()=>void) {
 };
     
 const loadfn = {
-	open: function() {
+	open: function(hasShade?:boolean) {
 		if (!loadingRef) {
 			createLoad(function(){
-				loadingRef!.toggle(true);
+				loadingRef!.toggle(true,hasShade);
 			});
 		}else{
-				loadingRef!.toggle(true);
+				loadingRef!.toggle(true,hasShade);
 		} 
 	},
 	close: function() {

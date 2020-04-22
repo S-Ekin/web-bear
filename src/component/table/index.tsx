@@ -14,7 +14,9 @@ import {IColumnItem,ITableStates,fieldObj} from "./mytable";
 
 type Props={
 	data: any[];
-    children:React.ReactElement<IColumnItem>[]
+    children:React.ReactElement<IColumnItem>[];
+    hasBorder?:boolean;
+    height?:number;
 	noPageNums?: boolean;//页码
 	idField: string;//表格的节点标识
 	checkbox?: boolean;//多选
@@ -60,9 +62,9 @@ class Table extends React.PureComponent<Props,States> implements ITable{
             emptyTxt:"当前没有数据！",
     };
 
-    static colItem:React.SFC<IColumnItem> = ({width,children})=>{
+    static colItem:React.SFC<IColumnItem> = ({width,children,align="center"})=>{
         return (
-            <th  style={{width: width,}}>{children}</th>
+            <th  style={{width: width,}} className={`td-${align}`}>{children}</th>
         );
     }
    
@@ -173,13 +175,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
         },10);
     }
     getColGroupCom() {
-        const { checkbox ,} = this.props;
-        const {column} = this.fieldObj;
-
-        const cheboxCom = checkbox ? (
-					<col key="checkbox" style={{ width: "40px", }} />
-                ) : undefined;
-
+        const {column,checkbox} = this.fieldObj;
         const list =  column.map(({ width, field }) => {
                     let wObj ;
                     if(width){
@@ -189,11 +185,11 @@ class Table extends React.PureComponent<Props,States> implements ITable{
                         wObj = undefined;
                     }
 					return <col key={field} style={wObj} />;
-				});
+                });
+                const orderWid = checkbox ? 80 : 60 ;
 		return (
 			<colgroup>
-				{cheboxCom}
-                <col style={{ width: "60px",}} key="order" />
+                <col style={{ width: orderWid,}} key="order" />
 				{list}
 			</colgroup>
 		);
@@ -243,20 +239,16 @@ class Table extends React.PureComponent<Props,States> implements ITable{
         const {tableData} = this.state;
         if(tableData.size===0){
             return checkAllStataus.noChecked;
-
         }else{
              const  curPageData =this.getCurPageData();
             const allCheck =   curPageData.every(val=>val.get("checked"));
             if(allCheck){
                 return checkAllStataus.checked;
             }else{
-
                 const hasCheck = curPageData.some(val=>val.get("checked"));
-
                 return hasCheck ? checkAllStataus.hasChecked : checkAllStataus.noChecked;
             }
         }
-      
     }
 
     getFixHead( ){
@@ -265,7 +257,6 @@ class Table extends React.PureComponent<Props,States> implements ITable{
         const curPageCheckAll = this.countCurPageTotalStatus();
         const colgroupCom = this.getColGroupCom();
         const checkCom = checkbox ? (
-									<th>
 										<CheckBox
                                             type="checkbox"
 											changeHandle={this.checkCurPageAll}
@@ -273,15 +264,13 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 											name="checkAll"
 											hasChecked={curPageCheckAll === checkAllStataus.hasChecked}
 										/>
-									</th>
                                 ) : undefined;
         return (
             	<table>
 						{colgroupCom}
 						<thead>
 							<tr>
-								{checkCom}
-							    <th key="order"> 序号 </th> 
+							    <th key="order" className="td-left">{checkCom}序号</th> 
 								{children}
 							</tr>
 						</thead>
@@ -299,11 +288,10 @@ class Table extends React.PureComponent<Props,States> implements ITable{
     getTableBody(){
 
         const {curPage,tableData,perNums} = this.state ;
-        
         return (
                     <Scrollbar
 						className="m-fixTabBody"
-						horizontal={false}
+                        horizontal={false}
 						ref={this.scrollRef}
                     >
 						<table >
@@ -312,6 +300,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 								<TabBody
                                     curPage={curPage}
                                     perNums={perNums}
+                                    selectfn={this.selectedHandle}
 									changeHandle={this.changeState}
                                     tableData={tableData}
                                     fileObj={this.fieldObj}
@@ -331,10 +320,32 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 			return index > -1 ? Math.ceil((index+1)/20) : 1;
 		}
 	} 
+    selectedHandle = (e: React.MouseEvent<HTMLTableCellElement>) => {
+		const index = e.currentTarget!.dataset.index!;
+
+		this.setState(pre => {
+			const data = pre.tableData;
+			const seleted = data.findIndex(val => {
+				return val.get("selected");
+			});
+
+			const tableData =
+				seleted === -1
+					? data.setIn([+index - 1, "selected"], true)
+					: data
+							.setIn([seleted, "selected"], false)
+							.setIn([+index - 1, "selected"], true);
+			return {
+				tableData,
+			};
+		});
+	}
     render(){
         const {
 			noPageNums,
-			emptyTxt,
+            emptyTxt,
+            hasBorder,
+            height
 		} = this.props;
 		const { perNums, curPage, tableData } = this.state;
 		const totalPages = Math.ceil(tableData.size / perNums);
@@ -356,9 +367,10 @@ class Table extends React.PureComponent<Props,States> implements ITable{
                         perNums={perNums}
 					/>
                 ) : undefined;
-                
+        const borderName = hasBorder ? "g-tab-border" : "";
+        const style = height ? {height:height} : undefined;
 		return (
-           <div className="g-table-wrap">
+           <div className={`g-table-wrap ${borderName}`} style={style}>
 			<div className="g-table" ref={this.tableContainer}>
 				<div className={"m-fixTabHead "}>
                     {this.getFixHead()}

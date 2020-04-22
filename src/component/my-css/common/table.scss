@@ -3,6 +3,21 @@
 .g-table-wrap {
   height: 100%;
   overflow: auto;
+
+  &.g-tab-border {
+    td {
+      border-right: 1px solid $normal;
+      border-bottom: 1px solid $normal;
+
+      &:first-child {
+        border-left: 1px solid $normal;
+      }
+    }
+
+    .m-fixTabBody {
+      border-bottom: 1px solid $normal;
+    }
+  }
 }
 
 .g-table {
@@ -11,10 +26,9 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: $shadow;
 
-  .m-optBtn {
-    justify-content: center;
+  .m-label {
+    margin-right: 6px;
   }
 
   table {
@@ -23,15 +37,13 @@
   }
 
   td {
-    padding: 6px;
-    text-align: center;
+    padding: 6px 10px;
     height: 30px;
     word-break: break-all;
   }
 
   th {
-    padding: 10px 6px;
-    text-align: center;
+    padding: 10px 10px;
   }
 
   .m-fixTabHead tr {
@@ -42,6 +54,7 @@
   .m-fixTabHead {
     background: #04a9f5;
     border-radius: 6px;
+    color: white;
   }
 
   .m-fixTabBody {

@@ -168,7 +168,6 @@ $yellow:#e4d619;
 .g-group-btns {
   position: relative;
   z-index: 3;
-  display: inline-block;
 
   .drop-theme {
     .icon {
@@ -179,8 +178,9 @@ $yellow:#e4d619;
   .wrap-drop {
     display: none;
     position: absolute;
-    width: 100%;
     padding-top: 10px;
+    white-space: nowrap;
+    min-width: 100%;
   }
 
   .drop-group {

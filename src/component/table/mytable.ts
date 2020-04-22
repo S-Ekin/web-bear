@@ -2,6 +2,7 @@
 		field:string;
 		width?:number;
 		isRowSpanField?:boolean;//是否为合并字段
+		align?:"center"|"left"|"right";
 		formatter?:(
 				node: IImmutalbeMap<any>, //节点
 				index: string, //节点索引

@@ -9,7 +9,7 @@ import Layout from "@component/layout/Layout";
 import {createImmutableMap} from "@component/util/createImmutaleMap";
 import { Input, CheckBox } from "@component/input/index";
 import CodeBlock from "@container/codeBlock/CodeBlock";
-import {str1,str2,str3,list} from "./CodeStr";
+import {str1,str2,str3,list,str4} from "./CodeStr";
 type Props = {};
 type btnConfig = {
 	styleType: "normal-btn" | "dashed-btn" | "line-btn";//边框样式
@@ -35,8 +35,6 @@ type States = {
 interface IDemo {
 	changeConfig(e: React.ChangeEvent<HTMLInputElement>):void;
 }
-
-
 
 const btnConfig:btnConfig = {
 	styleType: "normal-btn" ,
@@ -296,17 +294,18 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
           <CodeBlock tit="按钮的点击事件：handle">{str1}</CodeBlock>
         </div>
         <div className="g-item-show">
-		<div >
-
-			<GroupBtn 
-				list={list} 
-				clickFn={this.groupFn}
-				icon={icon}
-			>
-              下拉按钮
-            </GroupBtn>
-			<div>
-				 <div className="inp-item">
+          <div>
+            <div className="flex-between">
+              <GroupBtn list={list} clickFn={this.groupFn} icon={icon}>
+                下拉按钮
+              </GroupBtn>
+              <GroupBtn list={list} clickFn={this.groupFn} icon={icon}>
+                下拉按钮
+              </GroupBtn>
+              <Button>test</Button>
+            </div>
+            <div>
+              <div className="inp-item">
                 <Input
                   type="text"
                   changeFn={this.changeGroupConfig}
@@ -317,14 +316,17 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   父级图标 icon:
                 </Input>
               </div>
-			</div>
-		</div>
+            </div>
+          </div>
         </div>
-		<div className="g-item-show">
+        <div className="g-item-show">
           <CodeBlock tit="按钮组的点击事件：clickFn">{str2}</CodeBlock>
         </div>
-		<div className="g-item-show">
+        <div className="g-item-show">
           <CodeBlock tit="按钮组的数据：list">{str3}</CodeBlock>
+        </div>
+         <div className="g-item-show">
+          <CodeBlock tit="按钮组的关键css" language="css">{str4}</CodeBlock>
         </div>
       </Layout>
     );
