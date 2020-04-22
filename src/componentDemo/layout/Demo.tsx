@@ -8,6 +8,7 @@ import Layout from "@component/layout/Layout";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import {createImmutableMap} from "@component/util/createImmutaleMap";
 import { Input} from "@component/input/index";
+import {str1,str2,str3} from "./CodeStr"
 type Props={
 };
 type States={
@@ -24,16 +25,7 @@ const config:config = {
 interface IDemo {
 
 }
-const str1 = `render(){
-        const {tit,children,className} = this.props;
 
-        return (
-          <div className={"g-layout" className}>
-            <div className="g-layout-head">{tit}</div>
-            <div className="g-layout-article">{children}</div>
-          </div>
-        );
-    }`;
 
 class Demo extends React.PureComponent<Props,States> implements IDemo{
 
@@ -80,9 +72,20 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                 </Input>
               </div>
             </div>
+           
             <div className="g-item-show">
               <CodeBlock  tit="布局的html结构">
                 {str1}
+              </CodeBlock>
+            </div> 
+             <div className="g-item-show">
+              <CodeBlock  tit="整个页面结构" language="html">
+                {str3}
+              </CodeBlock>
+            </div> 
+            <div className="g-item-show">
+              <CodeBlock  tit="布局的一些奇怪地方" language="scss">
+                {str2}
               </CodeBlock>
             </div>
           </Layout>

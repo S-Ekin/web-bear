@@ -35,7 +35,7 @@ type States = {
 const initConfig = {
   multiply: false,
   noPageNums: false,
-  height: 300,
+  height: 0,
   idField: "event_id",
   defaultSel: "", //默认选中的
   tabField: "", //表格标识

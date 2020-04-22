@@ -40,6 +40,16 @@ $HeadColor: $theme-color;
 }
 
 .g-content {
+  flex: 1;/* 很重要，为auto的话，即使兄弟元素固定宽度，只要它缩放会影响兄弟元素 */
+  overflow: auto; // 防止子元素过宽，不能隐藏
+  min-height: 600px;
+  height: 100%;
+
+  .g-wrap-content {
+    min-width: 1000px;
+    height: 100%;
+  }
+
   .g-head {
     position: relative;
     z-index: 5;
@@ -138,14 +148,6 @@ $HeadColor: $theme-color;
       align-items: center;
       height: $Head-h;
     }
-  }
-
-  .g-content {
-    flex: 1;/* 很重要，为auto的话，即使兄弟元素固定宽度，只要它缩放会影响兄弟元素 */
-    overflow: hidden; // 防止子元素过宽，不能隐藏
-    //  min-width: 1000px;
-    min-height: 600px;
-    height: 100%;
   }
 }
 

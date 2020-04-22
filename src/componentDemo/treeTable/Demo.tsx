@@ -31,7 +31,7 @@ type States = {
 };
 const initConfig = {
   multiply: false,
-  height: 240,
+  height: 0,
   itemIcon: "file",
   childField: "children",
   idField: "id",

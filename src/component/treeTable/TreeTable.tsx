@@ -463,8 +463,9 @@ class TreeTable extends React.PureComponent<Props,States> implements ITreeTable{
     }
     render(){
         const {height} = this.props;
+        const styleObj = height ? {height: height,} : undefined;
         return (
-            <div className="treeTap-wrap" style={{height: height,}}>
+            <div className="treeTap-wrap" style={styleObj}>
                  <div className="treeTab">
                     {this.viewMap()}
                 </div>

@@ -18,8 +18,11 @@ class App extends React.PureComponent<appProps, appState> {
       <BrowserRouter>
         <SlideMenu />
         <div className="g-content">
-          <Head />
+          <div className="g-wrap-content">
+            <Head />
           <MainRouter />
+          </div>
+          
         </div>
       </BrowserRouter>
     );

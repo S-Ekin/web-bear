@@ -359,8 +359,9 @@ class TabList extends React.PureComponent<Props,States> implements ITabList{
                     
                 />
         ) :undefined;
+        const styleObj = height ? {height: height,} : undefined;
         return (
-            <div className="treeTap-wrap" style={{height: height,}}>
+            <div className="treeTap-wrap" style={styleObj}>
                  <div className="treeTab">
                     {body}
                 </div>
