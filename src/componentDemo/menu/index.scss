@@ -1,0 +1,24 @@
+.menuDemo {
+  .menu-wrap {
+    height: 100%;
+
+    & > div {
+      height: 100%;
+      margin: 0;
+    }
+  }
+
+  .scrollarea {
+    height: 100%;
+  }
+
+  .config {
+    flex: 1;
+    padding: 6px;
+    padding-left: 30px;
+
+    & > .g-item-show {
+      height: 100%;
+    }
+  }
+}

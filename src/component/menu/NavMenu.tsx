@@ -4,6 +4,7 @@
  * @time 2019-08-14
  */
 import * as React from "react";
+import * as Velocity from "velocity-react";
 import * as Immutable from "immutable";
 import ParMenu from "./ParMenu";
 import {createImmutableMap} from "../util/createImmutaleMap";
@@ -12,13 +13,15 @@ import Scrollbar from "react-scrollbar";
 	
 type props={
     data:IMenuData[];
+    width?:number;
 	expand: boolean; //是否收缩
 	textField?: string;
 	idField?: string;
 	urlField?: string;
 	iconField?: string;
     defaultMenuId?: string;
-    clickBack?:()=>void;
+    init?:{id:string};
+    clickBack?:(node:{[key:string]:any})=>void;
 };
 type states={
    selected:string;
@@ -29,6 +32,7 @@ type states={
    }>>;
    fieldObj:fieldObj;
    preData:any[];
+   preInit:{id:string} | undefined;
 };
 type formatterData = {
     defaultMenuId:string;
@@ -49,16 +53,16 @@ interface INavMenu{
 const formatter  = function(data:IMenuData[],obj:formatterData){
         const {defaultMenuId,idField} = obj;
         return data.map(par=>{
-            
             par.selected = false ;
             // 子节点也添加selected;
             par.children.forEach(sub=>{
-
-                sub.selected = defaultMenuId === `${par[idField]}`;
+                const status = defaultMenuId === `${sub[idField]}`;
+                sub.selected =  status;
+                if(status){
+                    par.selected = true;
+                }
             });
             return par ;
-
-
         });
     };
 
@@ -68,6 +72,7 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
         idField:"id",
         iconField:"icon",
         urlField:"url",
+        width:250
     };
     static  getDerivedStateFromProps(nextProps:props,preState:states):Partial<states> | null {
         if(nextProps.data!==preState.preData){
@@ -80,6 +85,17 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
                 immutableData:Immutable.fromJS(data),
                 selected:nextProps.defaultMenuId || "",
             };
+        }else if(nextProps.init!==preState.preInit){
+
+            const  data = formatter(nextProps.data,{
+                    defaultMenuId:nextProps.init!.id,
+                    idField:nextProps.idField!
+            });
+            return {
+                immutableData:Immutable.fromJS(data),
+                preInit:nextProps.init
+            };
+
         }else{
             return null ;
         }
@@ -87,14 +103,11 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
    
     constructor(prop:props){
         super(prop);
-        
         this.state = this.initState(this.props);
-
-
     }
     initState(props:props){
 
-        const {defaultMenuId,data,idField,textField,urlField,iconField} = props;
+        const {defaultMenuId,data,idField,textField,urlField,iconField,init} = props;
         const newData = formatter(data,{idField:idField!,defaultMenuId:defaultMenuId!});
 
         return {
@@ -107,6 +120,7 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
                 icon:iconField!,
             }),
             preData:data,
+            preInit:init,
         };
 
     }
@@ -139,26 +153,35 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
         }
     )=>{
 
-        this.setState(pre=>{
-        
-            const {immutableData,selected} = pre ;
-          const {data,selected:_selected} = callback(immutableData,selected);
-          return {
-            immutableData:data,
-            selected:_selected
-          };
-        },()=>{
-            const {clickBack} = this.props;
-            if(clickBack){
-                clickBack();
+        let selectStringIndex = "";
+        this.setState(
+          (pre) => {
+            const { immutableData, selected } = pre;
+            const { data, selected: _selected } = callback(
+              immutableData,
+              selected
+            );
+            selectStringIndex  = _selected;
+            return {
+              immutableData: data,
+              selected: _selected,
+            };
+          },
+          () => {
+            const { clickBack ,data,} = this.props;
+            if (clickBack) {
+                const indexArr = selectStringIndex.split(",");
+                const node = data[+indexArr[0]!].children[+indexArr[1]];
+                clickBack(node);
             }
-        });
+          }
+        );
     }
 
     render(){
         const parItem =  this.getParMenu();
-        const {expand} = this.props;
-        return expand ? (
+        const {width,children,expand} = this.props;
+        const menuCom = expand ? (
             <Scrollbar
                 horizontal={false}
             >
@@ -172,6 +195,15 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
             {parItem} 
         </ul>
         ); 
+
+		return (
+			<Velocity.VelocityComponent duration={300} animation={{ width: expand ? width || 250: 70 }}>
+				<div className={"g-slideMenu " + (!expand ? "expand" : "")}>
+                     {children}
+					 {menuCom}
+				</div>
+			</Velocity.VelocityComponent>
+			);
     }
 }
 

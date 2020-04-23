@@ -14,6 +14,7 @@ import notice from "./toast/index";
 import {TabList,GroupCols as ListGroup} from "./tableList/TabList";
 import {TreeTable,GroupCols as TreeGroupCols} from "./treeTable/TreeTable";
 import {createImmutableMap} from './util/createImmutaleMap';
+import {event} from './util/Event';
 import Layout from './layout/Layout';
 export {
   Button,
@@ -40,5 +41,6 @@ export {
   ListGroup,
   TreeGroupCols,
   createImmutableMap,
-  Layout
+  Layout,
+  event
 };

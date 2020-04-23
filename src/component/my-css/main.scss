@@ -136,9 +136,12 @@ $HeadColor: $theme-color;
     z-index: 10;
     background-color: $page-bg;
     box-shadow: $shadow;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 
     .scrollarea {
-      height: calc(100% - #{$Head-h});
+      flex: 1;
     }
 
     .g-logo {
