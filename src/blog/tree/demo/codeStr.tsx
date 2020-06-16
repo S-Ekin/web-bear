@@ -1,5 +1,9 @@
-const compareFn = (a:number,b:number)=>a-b;
-class CreateTree {
+/**
+ * @name name...
+ * @description ...
+ */
+
+ const str1 =`class CreateTree {
 
     // 递归
     mapTreeFn(data: any[], childId: number) {
@@ -61,7 +65,7 @@ class CreateTree {
 					user_number: USER_NUMBER,
 					children: [],
 				};
-				orgObject[`${ID}`] = item;
+				orgObject[ID] = item;
 
 				if (PAR_ID === -2) {// 根目录
 					resData.push(item);
@@ -72,7 +76,7 @@ class CreateTree {
 
 			orgArrValues.forEach(val => {
 				const { par_id } = val ;
-				const par = orgObject[`${par_id}`] ;
+				const par = orgObject[par_id] ;
 				if (par) {
 					par.children.push(val);
 				}
@@ -82,9 +86,13 @@ class CreateTree {
 			return resData[0] ;
 		
 	}
-	
+
+}
+`;
+
+const str2 =`
 	// 找到某个节点拥有的总的最底层的子节点数（即所有的叶子节点不包括目录）
-    mapFindNodeChildTotal (total:number, arr:any[]) {
+    mapFindNodeChildTotal (total, arr) {
         let leg = total;
         arr.map(val => {
             const { children } = val;
@@ -98,21 +106,21 @@ class CreateTree {
     }
 
 	// 找出最大的层级 和 设置每个节点总共拥有的最底层的字节点的数（即所有的叶子节点不包括目录）
-    mapTreeSetChildTotalAndFindMaxLev (arr:any[], levObj:{lev:number}, lev:number) {
+    mapTreeSetChildTotalAndFindMaxLev (arr, levObj, lev) {
         let leg = 0;
-        const curLev = lev + 1;
+        lev = lev + 1;
         arr.map(val => {
             const { children } = val;
             const childLeg = children ? children.length : 0;
             if (childLeg) {
-              const totalLeg = this.mapTreeSetChildTotalAndFindMaxLev (children, levObj, lev);
+              const totalLeg = this.mapTreeSetChildTotalAndFindMaxLev(children, levObj, lev);
               val._leg = totalLeg;
               leg = leg + totalLeg;
             } else {
               val._leg = 0;
               leg = leg + 1;
-              if (levObj.lev < curLev) {
-                levObj.lev = curLev;
+              if (levObj.lev < lev) {
+                levObj.lev = lev;
               }  
             }
         });
@@ -120,7 +128,7 @@ class CreateTree {
     }
 
 	// 通过tree创建合并的表格
-    mapCreateTd (arr:any[], lev:number, childrenArr:{val:any,hasExist:boolean}[]):string[] {
+    mapCreateTd (arr, lev, childrenArr) {
             const curLev = lev + 1;
             return arr.map((val) => { 
                 const { children } = val;
@@ -138,28 +146,30 @@ class CreateTree {
                     const childrenArrLeg = childrenArr.length;
                     const tds = childrenArr.map((td, oindex) => {
                         const { val, hasExist } = td;
-                        // tslint:disable-next-line: variable-name
                         const { kpi_name: KpiName } = val;
                         if (oindex === childrenArrLeg - 1) {
-                            return `<td>${KpiName}</td>`;
+                            return <td>{KpiName}</td>·;
                         } else {
                             let str = "";
                             if (!hasExist) {
                                 const legTotal = val._leg;
-                                const rowspan = legTotal ? `rowspan="${legTotal}"` : "";
-                                str = `<td ${rowspan}>${KpiName}</td>`;
+                                const rowspan = legTotal ? "rowspan='{legTotal}'" : "";
+                                str = <td {rowspan}>{KpiName}</td>;
                                 td.hasExist = true;
                                 return str;
                             }
                         }
                     });
-                    return `<tr>${tds.join("")}</tr>`;
+                    return <tr>{tds.join("")}</tr>;
                 }
             });
-	}
-	
-	// 用while代替递归,比较结构相同的多个 tree 的 每个dom节点高度
-    whileDomH () {
+    }
+`;
+
+const str3 = `
+
+const compareFn = (a:number,b:number)=>a-b;
+const  whileDomH = () => {
         const rootRoot = document.getElementsByClassName("tree")!;
         let domArr = [[...rootRoot]] ;
 
@@ -201,7 +211,7 @@ class CreateTree {
                             contains.push(childDomArr);
                         }else{
                             trDomArr.forEach(val=>{
-                                (val as HTMLElement).style.height = `${trHMax}px`;
+                                (val as HTMLElement).style.height = "{trHMax}px";
                             });
                         }
                     });
@@ -210,8 +220,6 @@ class CreateTree {
            
            domArr = contains;
         }
-    }
+    }`;
 
-}
-
-export {CreateTree};
+export { str1, str2, str3 };
