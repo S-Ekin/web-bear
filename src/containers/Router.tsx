@@ -42,6 +42,13 @@ const routerConfig = {
 			),
 		loading: () => <span>loading......</span>,
 	},
+	problem: {
+		loader: () =>
+			import(
+				/*webpackChunkName: "problem" */ "./Router/ProblemRoute"
+			),
+		loading: () => <span>loading......</span>,
+	},
 	modal: {
 		loader: () =>
 			import(
@@ -101,6 +108,7 @@ class MainRouter extends React.PureComponent<props,state>{
 					<Route path="/loading" component={loadable(routerConfig.loadingRouter)} />
 					<Route path="/combo" component={loadable(routerConfig.comboRouter)} />
 					<Route path="/blog" component={loadable(routerConfig.blog)} />
+					<Route path="/problem" component={loadable(routerConfig.problem)} />
 					<Route path="/alert" component={loadable(routerConfig.modal)} />
 					<Route path="/menu" component={loadable(routerConfig.menu)} />
               </Switch>

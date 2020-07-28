@@ -1,0 +1,15 @@
+.item-child {
+  &:first-child {
+    background: #acd;
+  }
+
+  &:last-child {
+    background: #ecc;
+  }
+}
+
+.tit-head {
+  margin: 14px 0;
+  display: flex;
+  justify-content: space-between;
+}

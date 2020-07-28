@@ -195,4 +195,19 @@ export  const menuList = [
               },
             ],
           },
+          {
+            id: "90",
+            name: "问题",
+            url: "/problem",
+            icon: "menu",
+            children: [
+              {
+                id: "91",
+                name: "两者平衡",
+                url: "/problem/balence",
+                icon: "",
+                children: [],
+              },
+            ],
+          },
         ] as any;
