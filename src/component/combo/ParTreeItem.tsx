@@ -62,6 +62,7 @@ class ParTreeItem extends React.PureComponent<props,states> implements IParTreeI
                 hasChecked={hasChecked}
                 checked={checked}
                 value={index}
+				type="checkbox"
                 changeHandle={this.checkFn}
             > 
             {icon}
@@ -117,10 +118,6 @@ class ParTreeItem extends React.PureComponent<props,states> implements IParTreeI
         this.props.toggleExpand(index);
     }
     
-    textClickFn=(e:React.MouseEvent<HTMLDivElement>)=>{
-      e.stopPropagation();
-    }
-    
     render(){
         const {lev,node,index,fieldObj,formatterDropItem} = this.props;
         //层级间的距离左侧的距离
@@ -131,7 +128,6 @@ class ParTreeItem extends React.PureComponent<props,states> implements IParTreeI
 			: node.get(fieldObj.get("textField"));
         const expand = node.get("expand");
         const child = node.get(fieldObj.get("childField")!) as immutableData;
-        const multiply = fieldObj.get("multiply");
         return (
 			<li className="combo-par-item">
 				<div
@@ -141,7 +137,7 @@ class ParTreeItem extends React.PureComponent<props,states> implements IParTreeI
 					<span
 						className="g-item-text"
 						style={levSpaceStyle}
-						onClick={multiply ? this.textClickFn : undefined}>
+						>
 						{this.getCheckbox(text,expand)}
 					</span>
 					<SvgIcon className={`arrow-${expand ? "up" : "down"}`} />

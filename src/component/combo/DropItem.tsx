@@ -47,7 +47,8 @@ class DropItem<P extends comboType>
 		return CheckBox ? (
 			 <CheckBox 
                 hasChecked={hasChecked}
-                checked={checked}
+				checked={checked}
+				type="checkbox"
                 value={index}
                 changeHandle={this.checkFn}
             > 
