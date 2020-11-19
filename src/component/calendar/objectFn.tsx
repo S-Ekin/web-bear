@@ -20,14 +20,15 @@ const timeStrValToTimeObjArr = function(
   curTime: ICommonInterface["curTime"]
 ) {
   if (isInit) {
+    const { month,searson,hour,minute } = curTime;
     return Array.from({ length: props.style! }).map(() => {
       return {
         year: "",
-        month: "",
-        searson: "",
-        day: "",
-        hour: "",
-        minute: ""
+        month,
+        searson,
+        day: 1,
+        hour,
+        minute,
       };
     });
   }
@@ -149,9 +150,9 @@ const getInpTimeStrArr = function(
 
 		const listArr = selTimeArr.map(val => {
 			return getStr(val, rotate, time)!;
-		});
+		}).toJS();
 
-		return listArr.toJS();
+		return listArr[0] ? listArr : [""];
 
     };
     const getCurTime = function() {

@@ -26,6 +26,7 @@ export interface ICommonInterface {
 export interface ICalendarStates {
 		expand: boolean;
 		selTimeArr: IImmutalbeList<ICommonInterface["showTimeObj"]>;
+		showTimeArr: IImmutalbeList<ICommonInterface["showTimeObj"]>;
 		calendarVal: string;
 		rotate:ICommonInterface["rotate"];
 		showViewArr: ("fadeIn" | "fadeOut")[];

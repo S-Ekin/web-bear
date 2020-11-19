@@ -11,6 +11,7 @@ import {ICommonInterface,ICalendarStates} from "./calendar";
 type Props={
     inpVal: string;
 	placeholder: string;
+	curTime: ICommonInterface["curTime"];
 	style: 1 | 2;
 	ableClear?: boolean;
 	changeBasicState:ICommonInterface["changeBasicState"]
@@ -32,16 +33,17 @@ class CalendarInp extends React.PureComponent<
 
 	clearValue = (e: React.MouseEvent<HTMLElement>) => {
 		e.stopPropagation();
-		const {changeBasicState,style} = this.props;
+		const {changeBasicState,style,curTime} = this.props;
 		changeBasicState<"selTimeArr">("selTimeArr",function(_state:ICalendarStates) {
+			const {hour,minute,month,searson } = curTime;
 			const initArr = Array.from({ length: style}).map(() => {
 					return {
 						year: "",
-						month: "",
-						searson: "",
-						day: "",
-						hour: "",
-						minute: "",
+						month,
+						searson,
+						day: 1,
+						hour,
+						minute,
 					};
 				});
 			return Immutable.fromJS(initArr);

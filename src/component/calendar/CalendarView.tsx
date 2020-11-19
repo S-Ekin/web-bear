@@ -10,7 +10,6 @@ import CalendarMonthView from "./CalendarMonthView";
 import CalendarSearsonView from "./CalendarSearsonView";
 import { VelocityComponent } from "velocity-react";
 import * as Immutable from "immutable";
-import {createImmutableMap} from "../util/createImmutaleMap";
 import {SvgIcon} from "../my-icon/index";
 import {ICommonInterface,ICalendarStates } from "./calendar";
 
@@ -23,6 +22,7 @@ enum calendarType {
 
 type Props = {
 	selTimeObj: ICommonInterface["showTimeObj"];
+	showTimeObj: ICommonInterface["showTimeObj"];
 	showViewArr: ("fadeIn" | "fadeOut")[];
 	viewIndex: 0 | 1;
 	rotate:ICommonInterface["rotate"],
@@ -32,7 +32,6 @@ type Props = {
 };
 
 type States = {
-	showTimeObj: ICommonInterface["showTimeObj"];
 	lastYear: number;
 };
 
@@ -46,17 +45,10 @@ export default class CalendarView
 
 	constructor(props:Props){
 		super(props);
-		const {selTimeObj,curTime} = this.props;
-		const showTimeObj = this.getShowTimeObj(selTimeObj,curTime);
+		const {showTimeObj} = this.props;
 		this.state={
-			showTimeObj,
 			lastYear:this.getLastYear(showTimeObj.get("year")),
 		};
-	}
-	getShowTimeObj(selTimeObj:ICommonInterface["showTimeObj"],curTime:ICommonInterface["curTime"]){
-		return selTimeObj.getIn([0, "year"])
-			? selTimeObj
-			: createImmutableMap(curTime);
 	}
 
 	getLastYear(year:number){
@@ -86,10 +78,10 @@ export default class CalendarView
 	changeSelTimeItme = (
 		viewIndex: number,
 	) => {
-		const { year, month, day, searson } = this.state.showTimeObj.toJS();
-		const { changeBasicState ,rotate} = this.props;
+		const { changeBasicState ,rotate, fixProps:{ style }} = this.props;
 		changeBasicState<"selTimeArr">("selTimeArr",function(states:ICalendarStates) {
 
+				const { year, month, day, searson } = states.showTimeArr.get(viewIndex)!.toJS();
 				let selTimeArr = states.selTimeArr;
 
 				if (!selTimeArr.size) {
@@ -115,7 +107,6 @@ export default class CalendarView
 								node
 									.set("year", year)
 									.set("month", searson * 3 - 2)
-									.set("day", day)
 									.set("searson", searson)
 							);
 						});
@@ -146,6 +137,10 @@ export default class CalendarView
 						break;
 				}
 
+				if (style === 2 && !states.selTimeArr.getIn([0,"year"])) {
+					selTimeArr = selTimeArr.set(1-viewIndex,selTimeArr.get(0)!);
+				}
+
 				return selTimeArr;
 
 		});
@@ -156,12 +151,12 @@ export default class CalendarView
 		const dataset = e.currentTarget.dataset;
 		const type = dataset.sign as "day" | "year" | "month" | "searson";
 		const num = ~~dataset.num!;
-		const { viewIndex,changeBasicState} = this.props;
+		const { viewIndex,changeBasicState,fixProps:{style}} = this.props;
 
 		const flag = { [type]: num };
 		const _showTimeobj = Object.assign(
 			{},
-			this.state.showTimeObj.toJS(),
+			this.props.showTimeObj.toJS(),
 			flag
 		);
 		
@@ -176,27 +171,32 @@ export default class CalendarView
 			return ;	
 		}
 
-		this.setState(pre => {
-			return {
-				showTimeObj: pre.showTimeObj.set(type, num),
-			};
-		},()=>{
-			const {rotate,showViewArr,changeBasicState} = this.props;
-			this.changeSelTimeItme(viewIndex);
-			//判断当前选的频率是不是和面板显示的频率一样
-			const panelRotate = showViewArr.findIndex(val=>val==="fadeIn");
-			if(rotate !== panelRotate){
-				changeBasicState<"showViewArr">("showViewArr",function(){
-					let animationArr:ICalendarStates["showViewArr"] = new Array(5).fill("fadeOut");
-					 animationArr[rotate] = "fadeIn";
-					return animationArr; 
-				});
+		changeBasicState("showTimeArr",function (state){	
+			let showTimeArr = state.showTimeArr.setIn([viewIndex,type],num);
+			if (style === 2 && !state.selTimeArr.getIn([0,"year"])) {
+					showTimeArr = showTimeArr.set(1-viewIndex,showTimeArr.get(0)!);
 			}
-		});
+			return showTimeArr;
+		});	
+		const {rotate,showViewArr} = this.props;
+		this.changeSelTimeItme(viewIndex);
+		//判断当前选的频率是不是和面板显示的频率一样
+		const panelRotate = showViewArr.findIndex(val=>val==="fadeIn");
+		if(rotate !== panelRotate){
+			changeBasicState<"showViewArr">("showViewArr",function(){
+				let animationArr:ICalendarStates["showViewArr"] = new Array(5).fill("fadeOut");
+					animationArr[rotate] = "fadeIn";
+				return animationArr; 
+					return animationArr; 
+				return animationArr; 
+					return animationArr; 
+				return animationArr; 
+			});
+		}
 	}
 
 	updatePanelDays(movePre: "next" | "back") {
-		const { showTimeObj } = this.state;
+		const { changeBasicState,viewIndex, showTimeObj } = this.props;
 
 		const year = showTimeObj.get("year"),
 			month = showTimeObj.get("month");
@@ -214,14 +214,15 @@ export default class CalendarView
 				updataYear = month + 1 === 13 ? year + 1 : year;
 				break;
 		}
-
-		this.setState({
-			showTimeObj: showTimeObj.withMutations((map:any) =>
-				map
-					.set("year", updataYear)
-					.set("month",updataMon)
-					.set("searson", Math.ceil(month / 3))
-			),
+		changeBasicState("showTimeArr",(states)=>{
+			return states.showTimeArr.updateIn([viewIndex],(map)=>{
+				return map.withMutations((map:any) =>
+					map
+						.set("year", updataYear)
+						.set("month",updataMon)
+						.set("searson", Math.ceil(month / 3))
+				);
+			});
 		});
 	}
 	// 改变选择的面板
@@ -256,6 +257,20 @@ export default class CalendarView
 			return id ;
 		});	
 
+		// 切换频率时，让面板显示时间是选择的时间
+		if (this.props.selTimeObj.get("year")) {
+			this.props.changeBasicState("showTimeArr",function(state){
+				return state.selTimeArr;
+			});
+		}
+		
+		if (id === 4) { // 防止上次日选的是 31 ，再切换为日时，最大是30
+			this.props.changeBasicState("selTimeArr",function(state){
+				return state.selTimeArr.map(val => {
+					return val.set("day",1);
+				});
+			});	
+		}
 	}
 	controlBtnHandle = (e: React.MouseEvent<HTMLSpanElement>) => {
 		const dataset = e.currentTarget.dataset;
@@ -283,7 +298,7 @@ export default class CalendarView
 		});
 	}
 	getSelTime(){
-		const {showTimeObj} = this.state;
+		const {showTimeObj} = this.props;
 		const {rotate} = this.props;
 		if(rotate === calendarType.day){
 			const year = showTimeObj.get("year");
@@ -356,11 +371,10 @@ export default class CalendarView
 			viewIndex,
 			fixProps:{noChangeRotate,time},
 			rotate,
-			showViewArr
+			showViewArr,
+			showTimeObj,
 		} = this.props;
-		const { showTimeObj, lastYear} = this.state;
-		console.log(showViewArr,"chld");
-		
+		const { lastYear} = this.state;
 
 		const curViewInde = showViewArr.findIndex(val => val === "fadeIn");
 		const showMoveBtn =

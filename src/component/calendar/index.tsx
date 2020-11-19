@@ -33,6 +33,7 @@ type States = {
 	preInitTime:Props['initTime'],
 	expand: boolean;
 	selTimeArr: IImmutalbeList<ICommonInterface["showTimeObj"]>;
+	showTimeArr: IImmutalbeList<ICommonInterface["showTimeObj"]>;
 	calendarVal: string;
 	rotate:ICommonInterface["rotate"];
 	showViewArr: ("fadeIn" | "fadeOut")[];
@@ -95,6 +96,7 @@ class Calendar extends React.PureComponent<Props, States>
 			return {
 				expand: false,
 				selTimeArr,
+				showTimeArr:selTimeArr,
 				calendarVal: timeVal.join(" 至 "),
 				preInitTime:nextProps.initTime,
 				rotate:nextProps.rotate,
@@ -122,13 +124,19 @@ class Calendar extends React.PureComponent<Props, States>
 			renderCallBack,
 		} = this.props;
 		const selTimeArr = Immutable.fromJS(
-			timeStrValToTimeObjArr(ableClear!, this.props,this.curTime)
+			timeStrValToTimeObjArr(ableClear! && !this.props.defaultTime, this.props,this.curTime)
 		);
 
 		const timeVal = getInpTimeStrArr(selTimeArr, rotate!, time!);
+		const showTimeArr = selTimeArr.getIn([0, "year"])
+			? selTimeArr
+			: Immutable.fromJS(
+				timeStrValToTimeObjArr(false, this.props,this.curTime)
+			);
 		this.state = {
 			expand: false,
 			selTimeArr,
+			showTimeArr,
 			calendarVal: timeVal.join(" 至 "),
 			rotate:rotate!,
 			showViewArr:this.getShowViewArr(rotate!),
@@ -158,7 +166,7 @@ class Calendar extends React.PureComponent<Props, States>
 
 		const selTimeArrDate = selTimeArr.toJS();
 
-		if(selTimeArrDate.length===1){
+		if(selTimeArrDate.length===1 || !selTimeArr.getIn([0,"year"])){
 			return false ;
 		}
 
@@ -236,13 +244,13 @@ class Calendar extends React.PureComponent<Props, States>
 		
 		this.setState(pre=>{
 
-			const val = callback(pre) as any ;
+			const val = callback(pre);
 			let obj:any = {};
 			const {time} = this.props;
 
 			if(key === "selTimeArr"){
 				const rotate = pre.rotate;
-				const calendarVal = getInpTimeStrArr(val,rotate,time!).join(" 至 ");
+				const calendarVal = getInpTimeStrArr(val as States["selTimeArr"],rotate,time!).join(" 至 ");
 				
 				obj = {
 					selTimeArr:val,
@@ -250,38 +258,25 @@ class Calendar extends React.PureComponent<Props, States>
 				};
 			}else if(key === "rotate"){
 				const selTimeArr = pre.selTimeArr;
-				const calendarVal = getInpTimeStrArr(selTimeArr,val,time!).join(" 至 ");
-				const showViewArr = this.getShowViewArr(val);
+				const calendarVal = getInpTimeStrArr(selTimeArr,val as States["rotate"],time!).join(" 至 ");
+				const showViewArr = this.getShowViewArr(val as States["rotate"]);
 				return {
 					calendarVal:calendarVal,
 					showViewArr:showViewArr,
 					rotate:val,
 				};
-			}else if(key==="showViewArr"){
-				obj ={
-					showViewArr:val,
-				};
-
 			}else{
 				obj= {
-					[key as "expand"]:val,
+					[key]:val,
 				};
 			}
-
-			console.log(obj);
-			
-
 			return obj;
-			
 		},()=>{
 			if(["rotate","selTimeArr"].includes(key)){
 				const {field,clickBack} = this.props;	
 				const {rotate,calendarVal,selTimeArr} = this.state;	
 				clickBack(calendarVal,field,rotate,selTimeArr);
 			}
-			console.log(this.state,"update");
-			
-			
 		});
 	}
 	
@@ -341,24 +336,25 @@ class Calendar extends React.PureComponent<Props, States>
 			ableClear,
 			style,
 		} = this.props;
-		const { expand, selTimeArr, calendarVal ,rotate,showViewArr} = this.state;
+		const { expand, selTimeArr, calendarVal ,rotate,showViewArr, showTimeArr} = this.state;
 
 		const inpCom = noInp ? undefined : (
 					<CalendarInp
 						inpVal={calendarVal}
 						placeholder={placeholder!}
 						ableClear={ableClear!}
+						curTime={this.curTime}
 						changeBasicState={this.changeBasicState}
 						style={style!}
 					/>
 				);
-		console.log(showViewArr,'par');
 			
 		const secondViews =
 			selTimeArr.size === 2 ? (
 				<CalendarView
 					fixProps={this.fixProps}
 					selTimeObj={selTimeArr.get(1)!}
+					showTimeObj={showTimeArr.get(1)!}
 					curTime={this.curTime}
 					viewIndex={1}
 					showViewArr={showViewArr}
@@ -385,6 +381,7 @@ class Calendar extends React.PureComponent<Props, States>
 								selTimeObj={selTimeArr.get(0)!}
 								showViewArr={showViewArr}
 								curTime={this.curTime}
+								showTimeObj={showTimeArr.get(0)!}
 								rotate={rotate}
 								viewIndex={0}
 								changeBasicState={this.changeBasicState}
