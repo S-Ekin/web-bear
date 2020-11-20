@@ -3,7 +3,7 @@ import { VelocityComponent } from "velocity-react";
 import * as Immutable from "immutable";
 import CalendarView from "./CalendarView";
 import CalendarInp from "./CalendarInp";
-import {timeStrValToTimeObjArr,calendarType ,getInpTimeStrArr,getCurTime} from './objectFn';
+import {timeStrValToTimeObjArr,calendarType ,getInpTimeStrArr,getCurTime,getLastYear} from './objectFn';
 import {ICommonInterface} from "./calendar";
 
 
@@ -32,6 +32,7 @@ type States = {
 	preRotate:Props['rotate'],
 	preInitTime:Props['initTime'],
 	expand: boolean;
+	pannelLastYear:IImmutalbeList<number>;
 	selTimeArr: IImmutalbeList<ICommonInterface["showTimeObj"]>;
 	showTimeArr: IImmutalbeList<ICommonInterface["showTimeObj"]>;
 	calendarVal: string;
@@ -79,10 +80,11 @@ class Calendar extends React.PureComponent<Props, States>
 				ableClear,
 				renderCallBack,
 			} = nextProps;
+			const curTime = getCurTime();
 
 			const objProps =nextProps.initTime? Object.assign({},nextProps,{defaultTime:nextProps.initTime.time}) :nextProps;
 			const selTimeArr = Immutable.fromJS(
-				timeStrValToTimeObjArr(ableClear!,objProps,getCurTime())
+				timeStrValToTimeObjArr(ableClear!,objProps,curTime)
 			);
 			
 			//重置状态
@@ -92,11 +94,18 @@ class Calendar extends React.PureComponent<Props, States>
 			}	
 			let animationArr:States["showViewArr"] = new Array(5).fill("fadeOut");
 			animationArr[nextProps.rotate!] = "fadeIn";
-			
+			const showTimeArr = selTimeArr.getIn([0, "year"])
+			? selTimeArr
+			: Immutable.fromJS(
+				timeStrValToTimeObjArr(false, objProps,curTime)
+			);
 			return {
 				expand: false,
 				selTimeArr,
-				showTimeArr:selTimeArr,
+				showTimeArr,
+				pannelLastYear:selTimeArr.map((val:ICommonInterface["showTimeObj"]) => {
+					return val.get("year");
+				}),
 				calendarVal: timeVal.join(" 至 "),
 				preInitTime:nextProps.initTime,
 				rotate:nextProps.rotate,
@@ -139,6 +148,9 @@ class Calendar extends React.PureComponent<Props, States>
 			showTimeArr,
 			calendarVal: timeVal.join(" 至 "),
 			rotate:rotate!,
+			pannelLastYear:showTimeArr.map((val:ICommonInterface["showTimeObj"])=>{
+				return getLastYear(val.get("year"));
+			}),
 			showViewArr:this.getShowViewArr(rotate!),
 			preInitTime:props.initTime,
 			preRotate:props.rotate
@@ -148,6 +160,7 @@ class Calendar extends React.PureComponent<Props, States>
 			clickBack(this.state.calendarVal, field, rotate!,selTimeArr);
 		}
 	}
+	
 	getShowViewArr(rotate:ICommonInterface["rotate"]){
 
 		let animationArr:States["showViewArr"] = new Array(5).fill("fadeOut");
@@ -336,7 +349,7 @@ class Calendar extends React.PureComponent<Props, States>
 			ableClear,
 			style,
 		} = this.props;
-		const { expand, selTimeArr, calendarVal ,rotate,showViewArr, showTimeArr} = this.state;
+		const { expand, selTimeArr, calendarVal ,rotate,showViewArr, showTimeArr,pannelLastYear} = this.state;
 
 		const inpCom = noInp ? undefined : (
 					<CalendarInp
@@ -357,6 +370,7 @@ class Calendar extends React.PureComponent<Props, States>
 					showTimeObj={showTimeArr.get(1)!}
 					curTime={this.curTime}
 					viewIndex={1}
+					lastYear={pannelLastYear.get(1)!}
 					showViewArr={showViewArr}
 					rotate={rotate}
 					changeBasicState={this.changeBasicState}
@@ -381,6 +395,7 @@ class Calendar extends React.PureComponent<Props, States>
 								selTimeObj={selTimeArr.get(0)!}
 								showViewArr={showViewArr}
 								curTime={this.curTime}
+								lastYear={pannelLastYear.get(0)!}
 								showTimeObj={showTimeArr.get(0)!}
 								rotate={rotate}
 								viewIndex={0}

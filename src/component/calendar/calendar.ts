@@ -25,6 +25,7 @@ export interface ICommonInterface {
 
 export interface ICalendarStates {
 		expand: boolean;
+		pannelLastYear:IImmutalbeList<number>;
 		selTimeArr: IImmutalbeList<ICommonInterface["showTimeObj"]>;
 		showTimeArr: IImmutalbeList<ICommonInterface["showTimeObj"]>;
 		calendarVal: string;

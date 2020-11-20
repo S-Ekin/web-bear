@@ -12,6 +12,7 @@ import { VelocityComponent } from "velocity-react";
 import * as Immutable from "immutable";
 import {SvgIcon} from "../my-icon/index";
 import {ICommonInterface,ICalendarStates } from "./calendar";
+import {getLastYear} from './objectFn';
 
 enum calendarType {
 	year = 1,
@@ -27,12 +28,12 @@ type Props = {
 	viewIndex: 0 | 1;
 	rotate:ICommonInterface["rotate"],
 	curTime: ICommonInterface["curTime"];
+	lastYear: number;
 	fixProps: ICommonInterface['fixProps'];
 	changeBasicState:ICommonInterface["changeBasicState"];
 };
 
 type States = {
-	lastYear: number;
 };
 
 interface ICalendarView {
@@ -42,37 +43,18 @@ interface ICalendarView {
 export default class CalendarView
 	extends React.PureComponent<Props, States>
 	implements ICalendarView {
-
-	constructor(props:Props){
-		super(props);
-		const {showTimeObj} = this.props;
-		this.state={
-			lastYear:this.getLastYear(showTimeObj.get("year")),
-		};
-	}
-
-	getLastYear(year:number){
-
-		let viewIndex = year % 10;
-		viewIndex = viewIndex === 0 ? 10 : viewIndex;
-		const startTime = year - viewIndex + 1;
-		return startTime + 9;
-	}
+	
 	updatePanelYears(movePre: "next" | "back") {
-		this.setState(pre => {
-
-			let lastYear:number = pre.lastYear;
-				lastYear =
-				movePre === "back" ? lastYear - 10 : lastYear + 1;
+		const { viewIndex } = this.props;
+		this.props.changeBasicState("pannelLastYear",function(state){
+			let lastYear = state.pannelLastYear.get(viewIndex)!;
+			lastYear = movePre === "back" ? lastYear - 10 : lastYear + 1;
 
 			let index = lastYear % 10;
 			index = index === 0 ? 10 : index;
 
 			lastYear = lastYear - index + 10;
-
-			return {
-				lastYear,
-			};
+			return state.pannelLastYear.set(viewIndex,lastYear);
 		});
 	}
 	changeSelTimeItme = (
@@ -263,6 +245,13 @@ export default class CalendarView
 				return state.selTimeArr;
 			});
 		}
+
+		// 修改面板的年，让年回到当前显示的年的那个面板
+		this.props.changeBasicState("pannelLastYear",function(state){
+			return state.showTimeArr.map(val=>{
+				return getLastYear(val.get("year"));
+			});
+		});
 		
 		if (id === 4) { // 防止上次日选的是 31 ，再切换为日时，最大是30
 			this.props.changeBasicState("selTimeArr",function(state){
@@ -373,8 +362,8 @@ export default class CalendarView
 			rotate,
 			showViewArr,
 			showTimeObj,
+			 lastYear
 		} = this.props;
-		const { lastYear} = this.state;
 
 		const curViewInde = showViewArr.findIndex(val => val === "fadeIn");
 		const showMoveBtn =

@@ -165,6 +165,13 @@ const getInpTimeStrArr = function(
 		const minute = time.getMinutes();
 
 		return { year, searson, month, day, hour, minute };
+  };
+  
+  const getLastYear = function (year:number){
+		let viewIndex = year % 10;
+		viewIndex = viewIndex === 0 ? 10 : viewIndex;
+		const startTime = year - viewIndex + 1;
+		return startTime + 9;
 	};
 
-export { timeStrValToTimeObjArr, calendarType, getInpTimeStrArr ,getCurTime};
+export { timeStrValToTimeObjArr, calendarType, getInpTimeStrArr ,getCurTime, getLastYear};
