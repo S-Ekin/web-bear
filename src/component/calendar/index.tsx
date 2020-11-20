@@ -5,7 +5,7 @@ import CalendarView from "./CalendarView";
 import CalendarInp from "./CalendarInp";
 import {timeStrValToTimeObjArr,calendarType ,getInpTimeStrArr,getCurTime,getLastYear} from './objectFn';
 import {ICommonInterface} from "./calendar";
-
+import { event } from "../util/autoSlideUp";
 
 type Props = {
 	field: string;
@@ -118,7 +118,7 @@ class Calendar extends React.PureComponent<Props, States>
 		}
 	}
 	
-
+	eventId = new Date().getTime().toString();
 	curTime = getCurTime();
 	wrapDomRef: React.RefObject<HTMLDivElement> = React.createRef();
 	fixProps = this.createFixProps();
@@ -302,22 +302,17 @@ class Calendar extends React.PureComponent<Props, States>
 		};
 		return obj;
 	}
-	documentClickFn = (e: MouseEvent) => {
-		const target = e.target! as HTMLElement;
-		const wrap = this.wrapDomRef.current!;
-
-		if (target !== wrap && !wrap.contains(target)) {
+	documentClickFn = () => {
 				this.setState({
 					expand: false,
 				});
-		}
 	}
 
 	componentDidMount() {
-		document.addEventListener("click", this.documentClickFn);
+		event.on(this.eventId,this.documentClickFn);
 	}
 	componentWillUnmount() {
-		document.removeEventListener("click", this.documentClickFn);
+		event.remove(this.eventId);
 	}
 	timeStrToNumber(strArr:string[]){
 
@@ -341,6 +336,9 @@ class Calendar extends React.PureComponent<Props, States>
 		return str;
 	}
 
+	boxEvent=(e:React.MouseEvent<HTMLDivElement>)=>{
+		e.nativeEvent.stopPropagation();
+	}
 	render() {
 		const {
 			noInp,
@@ -355,6 +353,7 @@ class Calendar extends React.PureComponent<Props, States>
 					<CalendarInp
 						inpVal={calendarVal}
 						placeholder={placeholder!}
+						eventId={this.eventId}
 						ableClear={ableClear!}
 						curTime={this.curTime}
 						changeBasicState={this.changeBasicState}
@@ -378,17 +377,19 @@ class Calendar extends React.PureComponent<Props, States>
 			) : (
 				undefined
 			);
-
+		const activeName = expand ? "autoSlideUp" : "";		
 		return (
 			<div
-				className="g-calendar"
+				className={"g-calendar "+activeName}
+				data-event={this.eventId}
 				style={{ width: ~~width !, }}
+				onClick={this.boxEvent}
 				ref={this.wrapDomRef}>
 				{inpCom}
 				<VelocityComponent
 					animation={expand ? "slideDown" : "slideUp"}
 					interruptBehavior="queue">
-					<div className="g-calendar-box">
+					<div className="g-calendar-box" >
 						<div style={{ display: "flex", }}>
 							<CalendarView
 								fixProps={this.fixProps}

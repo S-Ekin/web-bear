@@ -8,9 +8,11 @@ import {VelocityComponent} from "velocity-react";
 import * as Immutable from "immutable";
 import {SvgIcon} from "../my-icon/index";
 import {ICommonInterface,ICalendarStates} from "./calendar";
+import { slideOther} from "../util/autoSlideUp";
 type Props={
     inpVal: string;
 	placeholder: string;
+	eventId:string;
 	curTime: ICommonInterface["curTime"];
 	style: 1 | 2;
 	ableClear?: boolean;
@@ -50,7 +52,8 @@ class CalendarInp extends React.PureComponent<
 		});
 	}
 	toggleDrop=()=>{
-		const {changeBasicState} = this.props;
+		const {changeBasicState,eventId} = this.props;
+		slideOther(eventId);
 		changeBasicState<"expand">("expand",function(state:ICalendarStates) {
 			return !state.expand;
 		});
