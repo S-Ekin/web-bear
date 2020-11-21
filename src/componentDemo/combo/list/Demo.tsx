@@ -117,16 +117,16 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
         obj: pre.obj.set(field, value)
       };
     });
-  };
+  }
   refershConfig = () => {
     this.setState(pre => {
-      const { clickCallback, formatterDropItem, formatterVal, clickOrCheckForbid, ...obj} = pre.obj.toJS()
+      const { clickCallback, formatterDropItem, formatterVal, clickOrCheckForbid, ...obj} = pre.obj.toJS();
       return {
         comboProps: obj,
         refreshId: pre.refreshId + 1
       };
     });
-  };
+  }
 
   clickCallback = (
     selecte: ComboSpace.ISelected[],
@@ -136,7 +136,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     console.log("-----clickCallback ---");
     console.log(selecte, field, node);
     console.log("-----clickCallback ---");
-  };
+  }
   clickOrCheckForbid(node: IImmutalbeMap<any>, field: string) {
     console.log("----clickOrCheckForbid-----");
     console.log(node, field);
@@ -159,7 +159,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     this.setState({
       outControlSelecte: { id: "1" }
     });
-  };
+  }
   getCodeBlockTit1(){
     const {formatterVal} = this.state.obj.toJS();
     return(
@@ -186,11 +186,12 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               </CheckBox>
             </div>
               </>
-            )
+            );
   }
   getCodeBlockTit2(){
     const {formatterDropItem} = this.state.obj.toJS();
-    return(<>
+    return(
+          <>
             <div className="inp-item">
               <span>启用自定义下拉框的文字内容 formatterDropItem</span>
               <CheckBox
@@ -212,7 +213,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 否
               </CheckBox>
             </div>
-            </>)
+            </>
+            );
   }
 
   getCodeBlockTit3(){
@@ -244,7 +246,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               </CheckBox>
             </div>
               </>
-            )
+            );
   }
 
   getCodeBlockTit4(){
@@ -255,7 +257,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <small style={{marginLeft: 16,}}><b>外部控制下拉的选择id:1的节点</b></small>
             </div>
               </>
-            )
+            );
   }
   render() {
     const {
@@ -290,13 +292,9 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               key={refreshId}
               clickCallback={this.clickCallback}
               initComboVal={outControlSelecte}
-              clickOrCheckForbid={
-                clickOrCheckForbid ? this.clickOrCheckForbid : undefined
-              }
+              clickOrCheckForbid={clickOrCheckForbid ? this.clickOrCheckForbid : undefined}
               formatterVal={formatterVal ? this.formatterVal : undefined}
-              formatterDropItem={
-                formatterDropItem ? this.formatterDropItem : undefined
-              }
+              formatterDropItem={formatterDropItem ? this.formatterDropItem : undefined}
               {...comboProps}
             />
             <Button handle={this.refershConfig}>刷新配置</Button>
@@ -405,7 +403,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   type="number"
                   norequire={true} 
                   changeFn={this.inpChangeFn}
-                  value={width + ""}
+                  value={`${width}`}
                 >
                   显示框宽度 width：
                 </Input>
@@ -416,7 +414,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   norequire={true} 
                   type="number"
                   changeFn={this.inpChangeFn}
-                  value={maxHeight ?  maxHeight + "" : '0'}
+                  value={maxHeight ?  `${maxHeight}` : '0'}
                 >
                   下拉框最大高度 maxHeight:
                 </Input>
@@ -427,7 +425,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   norequire={true} 
                   type="number"
                   changeFn={this.inpChangeFn}
-                  value={dropWidth ? dropWidth + "" : '0'}
+                  value={dropWidth ? `${dropWidth}` : '0'}
                 >
                   下拉框宽度 dropWidth:
                 </Input>

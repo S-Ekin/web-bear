@@ -7,6 +7,7 @@ import ComboInp from "./ComboInp";
 import * as Immutable from "immutable";
 import { VelocityComponent } from "velocity-react";
 import {ISelected,IDrop,drop,filedObj} from "./combo";
+import {slideOther,event} from "../util/autoSlideUp";
 type props = {
 	data: any[];
 	idField?: string;
@@ -43,12 +44,10 @@ type states = {
 };
 
 interface ICombo {
-	wrapDomRef: React.RefObject<HTMLDivElement>;
+	eventId: string;
 	dropStyle:{maxHeight:number};
 	selectFn(path?:string):void;
-	dropToggle(): void;
-	//点击其他地方收缩下拉框
-	documentClickFn(e: MouseEvent): void;
+	dropToggle(e:React.MouseEvent): void;
 	changeSelect(selected:states["selected"],node?:IImmutalbeMap<any>):void;
 }
 type comboType = keyof IDrop;
@@ -73,9 +72,9 @@ const wrapComboHC = <P extends comboType>(
 				return false ;
 			}
 		};
+		eventId = new Date().getTime().toString();
 		filedObj!: IImmutalbeMap<filedObj<P>>;
 		dropStyle:ICombo["dropStyle"];
-		wrapDomRef: React.RefObject<HTMLDivElement> = React.createRef();
 		selectFn!:ICombo["selectFn"];
 		constructor(props: props & IDrop[P]) {
 			super(props);
@@ -119,7 +118,8 @@ const wrapComboHC = <P extends comboType>(
 			}
 		}
 		
-		dropToggle = () => {
+		dropToggle = (e:React.MouseEvent) => {
+			slideOther(e.nativeEvent,this.eventId);
 			this.setState(pre => ({
 				drop: !pre.drop,
 			}));
@@ -130,6 +130,17 @@ const wrapComboHC = <P extends comboType>(
 				drop: false,
 				selected: Immutable.List([]),
 			};
+		}
+		documentClickFn = () => {
+				this.setState({
+					drop: false,
+				});
+		}
+		componentDidMount() {
+			event.on(this.eventId,this.documentClickFn);
+		}
+		componentWillUnmount() {
+			event.remove(this.eventId);
 		}
 		initSelect=(selected:states["selected"])=>{
 			const {renderCallback} = this.props;
@@ -158,22 +169,7 @@ const wrapComboHC = <P extends comboType>(
 			});
 
 		}
-		documentClickFn = (e: MouseEvent) => {
-			const target = e.target! as HTMLElement;
-			const wrap = this.wrapDomRef.current!;
-			if (target !== wrap && wrap && !wrap.contains(target)) {
-				this.setState({
-					drop: false,
-				});
-			}
-		}
-
-		componentDidMount() {
-			document.addEventListener("click", this.documentClickFn);
-		}
-		componentWillUnmount() {
-			document.removeEventListener("click", this.documentClickFn);
-		}
+		
 		render() {
 			const {
 				formatterVal,
@@ -191,11 +187,12 @@ const wrapComboHC = <P extends comboType>(
 			} = this.props;
 			const { selected, drop } = this.state;
 			const palceholder = tit ? tit! : multiply ? "多选" : "单选";
+			const activeName = drop ? "autoSlideUp" : "";		
 			return (
 				<div 
-				className="g-combo" 
+				className={"g-combo " + activeName} 
+				data-event={this.eventId}
 				style={{ width: width !, }} 
-				ref={this.wrapDomRef}
 				>
 					<ComboInp
 						drop={drop}

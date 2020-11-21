@@ -120,7 +120,6 @@ class Calendar extends React.PureComponent<Props, States>
 	
 	eventId = new Date().getTime().toString();
 	curTime = getCurTime();
-	wrapDomRef: React.RefObject<HTMLDivElement> = React.createRef();
 	fixProps = this.createFixProps();
 	constructor(props:Props) {
 		super(props);
@@ -336,9 +335,6 @@ class Calendar extends React.PureComponent<Props, States>
 		return str;
 	}
 
-	boxEvent=(e:React.MouseEvent<HTMLDivElement>)=>{
-		e.nativeEvent.stopPropagation();
-	}
 	render() {
 		const {
 			noInp,
@@ -383,8 +379,7 @@ class Calendar extends React.PureComponent<Props, States>
 				className={"g-calendar "+activeName}
 				data-event={this.eventId}
 				style={{ width: ~~width !, }}
-				onClick={this.boxEvent}
-				ref={this.wrapDomRef}>
+				>
 				{inpCom}
 				<VelocityComponent
 					animation={expand ? "slideDown" : "slideUp"}

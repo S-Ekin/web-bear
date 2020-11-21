@@ -24,7 +24,7 @@ type States={
 
 interface ICalendarInp {
 	clearValue(e: React.MouseEvent<HTMLElement>):void;
-	toggleDrop():void;
+	toggleDrop(e:React.MouseEvent<HTMLDivElement>):void;
 }
 
 class CalendarInp extends React.PureComponent<
@@ -51,9 +51,9 @@ class CalendarInp extends React.PureComponent<
 			return Immutable.fromJS(initArr);
 		});
 	}
-	toggleDrop=()=>{
+	toggleDrop=(e:React.MouseEvent<HTMLDivElement>)=>{
 		const {changeBasicState,eventId} = this.props;
-		slideOther(eventId);
+		slideOther(e.nativeEvent,eventId);
 		changeBasicState<"expand">("expand",function(state:ICalendarStates) {
 			return !state.expand;
 		});

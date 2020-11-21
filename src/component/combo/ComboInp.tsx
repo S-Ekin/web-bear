@@ -16,7 +16,7 @@ type props={
     noRequire?:boolean;
     ableClear?:boolean;
     //下拉事件
-    slideFn():void;
+    slideFn(e:React.MouseEvent):void;
     clearFn():void;
 };
 type states={
