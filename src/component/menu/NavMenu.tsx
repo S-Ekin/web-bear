@@ -9,7 +9,7 @@ import * as Immutable from "immutable";
 import ParMenu from "./ParMenu";
 import {createImmutableMap} from "../util/createImmutaleMap";
 import {IMenuData,fieldObj} from "./menu";
-import Scrollbar from "react-scrollbar";
+import { ScrollBox } from "../scroll/index";
 	
 type props={
     data:IMenuData[];
@@ -54,6 +54,7 @@ const formatter  = function(data:IMenuData[],obj:formatterData){
         const {defaultMenuId,idField} = obj;
         return data.map(par=>{
             par.selected = false ;
+            par.drop = true;
             // 子节点也添加selected;
             par.children.forEach(sub=>{
                 const status = defaultMenuId === `${sub[idField]}`;
@@ -125,6 +126,15 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
 
     }
     
+    toggleSlide=(index:number)=>{
+		this.setState((pre)=>{
+            const drop = !pre.immutableData.getIn([index,"drop"]);
+			return {
+				immutableData:pre.immutableData.setIn([index,"drop"],drop)
+			};
+		});
+	}
+    
     getParMenu(){
 
         const {immutableData,fieldObj} = this.state;
@@ -139,6 +149,7 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
                             expand={expand}
                             fieldObj={fieldObj}
                             parIndex={index}
+                            toggleSlide={this.toggleSlide}
                             changeData={this.changeImmutableData}
                         />
                         );
@@ -182,13 +193,13 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
         const parItem =  this.getParMenu();
         const {width,children,expand} = this.props;
         const menuCom = expand ? (
-            <Scrollbar
-                horizontal={false}
+            <ScrollBox
+                time={300}
             >
                 <ul className="g-menu">
                     {parItem} 
                 </ul>
-            </Scrollbar>
+            </ScrollBox>
             
         ):(
           <ul className="g-menu">

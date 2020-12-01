@@ -1,6 +1,7 @@
 	export interface IMenuData {
 		[key: string]: any;
 		selected: boolean;
+		drop:boolean;
 		children: IMenuData[];
 	}
 	

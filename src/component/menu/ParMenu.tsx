@@ -21,6 +21,7 @@ type props = {
 	expand:boolean;
 	fieldObj:fieldObj;
 	parIndex:number;
+	toggleSlide:(index:number)=>void;
 	changeData(
         callback:(data:Immutable.List<node>,selected:string)=>{
             data:Immutable.List<node>,
@@ -29,23 +30,15 @@ type props = {
     ):void;
 };
 type states = {
-    drop:boolean;
 };
 
 interface IParMenu {
-	toggleSlide():void;
 	subMenu(children:Immutable.List<IImmutalbeMap<IMenuData>>,parIndex:number):Immutable.List<JSX.Element>;
 	getSubCom():JSX.Element;
 }
 class ParMenu extends React.PureComponent<props, states> implements IParMenu{
 	state: states = {
-        drop:true
     };
-    toggleSlide=()=>{
-        this.setState(pre=>({
-            drop:!pre.drop
-        }));
-	}
 	selectItemFn=(e:React.MouseEvent<HTMLSpanElement>)=>{
 
 		const dom = e.currentTarget!;
@@ -132,19 +125,23 @@ class ParMenu extends React.PureComponent<props, states> implements IParMenu{
 				{this.subMenu(child,parIndex)}
 			</ul>
 		);
-
 		return expand ? (
 								<Velocity.VelocityComponent
-										animation={this.state.drop ? "slideDown" : "slideUp"}
+										animation={node.get("drop")? "slideDown" : "slideUp"}
 										duration={300}
 										interruptBehavior="queue">
 										{subCom}
 								</Velocity.VelocityComponent>
 					) :subCom;
 	}
+
+	toggleSlide=()=>{
+		this.props.toggleSlide(this.props.parIndex);
+	}
+	
 	render() {
 		const { node,fieldObj,expand} = this.props;
-		const { drop } = this.state;
+		const  drop  = node.get("drop");
 
 		
 		const activeName = node.get("selected") ? "active" :"";

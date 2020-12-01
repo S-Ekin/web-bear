@@ -7,7 +7,7 @@ import * as React from "react";
 import * as Immutable from "immutable";
 import {Empty} from "../my-icon/index";
 import {CheckBox} from "../input/index";
-import Scrollbar from "react-scrollbar";
+import {ScrollBox} from "../scroll/index";
 import PageSize from "./PageSize";
 import TabBody from "./TBody";
 import {IColumnItem,ITableStates,fieldObj} from "./mytable";
@@ -62,7 +62,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
             emptyTxt:"当前没有数据！",
     };
 
-    static colItem:React.SFC<IColumnItem> = ({width,children,align="center"})=>{
+    static colItem:React.FunctionComponent<IColumnItem> = ({width,children,align="center"})=>{
         return (
             <th  style={{width: width,}} className={`td-${align}`}>{children}</th>
         );
@@ -96,7 +96,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 
     fieldObj = this.initFixObj();
 	tableContainer: React.RefObject<HTMLDivElement> = React.createRef();
-    scrollRef: React.RefObject<Scrollbar> = React.createRef();
+    scrollRef: React.RefObject<ScrollBox> = React.createRef();
     
     constructor(props:Props){
         super(props);
@@ -171,7 +171,8 @@ class Table extends React.PureComponent<Props,States> implements ITable{
         const par = this.tableContainer.current!;
         const top = item.offsetTop  - par.clientHeight + item.clientHeight + 100 ; 
         window.setTimeout(()=>{
-            (this.scrollRef.current! as any).scrollYTo(Math.max(0,top));
+            console.log(top, this.scrollRef.current);
+            // (this.scrollRef.current! as any).scrollYTo(Math.max(0,top));
         },10);
     }
     getColGroupCom() {
@@ -289,11 +290,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 
         const {curPage,tableData,perNums} = this.state ;
         return (
-                    <Scrollbar
-						className="m-fixTabBody"
-                        horizontal={false}
-						ref={this.scrollRef}
-                    >
+                    <ScrollBox >
 						<table >
 							{this.getColGroupCom()}
 							<tbody>
@@ -307,7 +304,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 								/>
 							</tbody>
 						</table>
-					</Scrollbar>
+					</ScrollBox>
         );
     }
     initCurPage(props:Props){

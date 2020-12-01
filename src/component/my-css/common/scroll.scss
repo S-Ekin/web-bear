@@ -1,0 +1,44 @@
+@import "../scss/variate";
+$barW:12px;
+$barInnerW: 8px;
+
+.g-scrollBox {
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+  min-height: 60px;
+
+  .m-scrollBar {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 0;
+    width: $barW;
+    padding: 6px ($barW - $barInnerW ) / 2;
+    z-index: 2;
+    background: none;
+    cursor: pointer;
+
+    &:hover {
+      background: gray;
+      box-shadow: 2px 1px 10px 4px rgba(136, 141, 148, 0.7);
+    }
+  }
+
+  .m-scrollMain {
+    position: absolute;
+    width: 100%;
+    top: 0;
+  }
+
+  .m-moveBar {
+    width: $barInnerW;
+    background: rgb(197, 208, 215);
+    border-radius: $barInnerW;
+    position: absolute;
+
+    &:hover {
+      background: white;
+    }
+  }
+}

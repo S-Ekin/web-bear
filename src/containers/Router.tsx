@@ -63,6 +63,13 @@ const routerConfig = {
 			),
 		loading: () => <span>loading......</span>,
 	},
+	scroll: {
+		loader: () =>
+			import(
+				/*webpackChunkName: "scroll" */ "./Router/ScrollRouter"
+			),
+		loading: () => <span>loading......</span>,
+	},
 };
 type props={
 
@@ -111,6 +118,7 @@ class MainRouter extends React.PureComponent<props,state>{
 					<Route path="/problem" component={loadable(routerConfig.problem)} />
 					<Route path="/alert" component={loadable(routerConfig.modal)} />
 					<Route path="/menu" component={loadable(routerConfig.menu)} />
+					<Route path="/scroll" component={loadable(routerConfig.scroll)} />
               </Switch>
             </ErrorBoundary>
 			<div id="inner-modal-wrap"/>

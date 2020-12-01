@@ -196,6 +196,21 @@ export  const menuList = [
             ],
           },
           {
+            id: "110",
+            name: "滚动条",
+            url: "/scroll",
+            icon: "scroll",
+            children: [
+              {
+                id: "111",
+                name: "普通滚动条",
+                url: "/scroll/normal",
+                icon: "",
+                children: [],
+              },
+            ],
+          },
+          {
             id: "90",
             name: "问题",
             url: "/problem",
