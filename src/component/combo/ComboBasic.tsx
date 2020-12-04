@@ -12,7 +12,8 @@ type props = {
 	data: any[];
 	idField?: string;
 	textField?: string;
-	noIcon?: boolean;//wu下拉图标
+	noIcon?: boolean;//下拉图标
+	noSearch?: boolean;//下拉图标
 	multiply?: boolean;//多选
 	tit?: string;//提示语
 	field: string; //下拉框的标识
@@ -94,6 +95,7 @@ const wrapComboHC = <P extends comboType>(
 				multiply,
 				itemIcon,
 				defaultVal,
+				noSearch,
 				field,
 				clickOrCheckForbid,
 			} = props as props;
@@ -101,6 +103,7 @@ const wrapComboHC = <P extends comboType>(
 				idField: idField!,
 				textField: textField!,
 				multiply,
+				noSearch,
 				itemIcon,
 				defaultVal:`${defaultVal}`,
 				clickOrCheckForbid,

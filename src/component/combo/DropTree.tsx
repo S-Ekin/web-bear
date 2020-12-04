@@ -33,9 +33,9 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 
 		if (nextProps.data !== preState.preData || nextProps.initComboVal!==preState.preInitComboVal) {
 
-			let initComboVal:any = nextProps.initComboVal ;
-				initComboVal = initComboVal ? initComboVal.id :"";
-			const {data,oldSelectedIndex} = formatterTreeData(nextProps,`${initComboVal}`,nextProps.data);
+			const initComboVal = nextProps.initComboVal ? nextProps.initComboVal.id : "";
+			let defaultVal = nextProps.selected.map(val => val.id).join("") + (initComboVal ? ","+initComboVal :"");
+			const {data,oldSelectedIndex} = formatterTreeData(nextProps,defaultVal,nextProps.data);
 			return {
 				immutableData:data ,
 				oldSelectedIndex,
@@ -426,7 +426,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 		const idField = filedObj.get("idField");
 		const childField = filedObj.get("childField");
 		const multiply = filedObj.get("multiply");
-
+		const noSearch = filedObj.get("noSearch");
 		const com = immutableData.map((node, index) => {
 			const child = node.get(childField!) as states["immutableData"];
 			const id = node.get(idField);
@@ -457,15 +457,18 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 				/>
 			);
 		});
+		const searchCom = !noSearch ? (
+			<div style={{ paddingBottom: "0.5em",}}>
+				<Search
+					field="search"
+					searchHandle={this.searchFn}
+					closeHandle={this.closeFn}
+				/>
+			</div>
+		) :undefined;
 		return (
 			<>
-				<div style={{ paddingBottom: "0.5em",}}>
-					<Search
-						field="search"
-						searchHandle={this.searchFn}
-						closeHandle={this.closeFn}
-					/>
-				</div>
+				{searchCom}
 				<ul style={dropStyle} className="drop-ul">
 					{com}
 				</ul>

@@ -53,6 +53,9 @@ class ScrollBox
     const scrollMain = this.moveBar.current!.parentElement!.previousElementSibling as HTMLDivElement;
     let h = top;
     const maxH = this.scrollMainH - this.scrollBoxH;
+    if (maxH <= 0) {
+      return;
+    }
     h = h < 0 ? 0 : h > maxH ? maxH : h;
     const factor = (this.scrollBoxH - moveBarH) / maxH;
     scrollMain.style.top = `${-h}px`;

@@ -8,6 +8,7 @@ import wrapComboHQC from "./ComboBasic";
 import * as Immutable from "immutable";
 import { DropItem, activeStatus } from "./DropItem";
 import {drop,ISelected} from "./combo";
+import { Search } from "../input/index";
 
 type props = drop<"list">;
 type states = {
@@ -25,8 +26,12 @@ interface IDropList {
 	initState(props: props): states;
 }
 
+type formatterObj = {
+	filedObj:props["filedObj"], data:props["data"], initSelect?:props["initSelect"]
+};
+
 //格式化数据，添加选中的字段 active ;
-const formatterData = function(props: props,defaultVal:string) {
+const formatterData = function(props: formatterObj,defaultVal:string) {
 		const { filedObj, data, initSelect } = props;
 		const id = filedObj.get("idField");
 		const text = filedObj.get("textField");
@@ -55,7 +60,9 @@ const formatterData = function(props: props,defaultVal:string) {
 
 			return val;
 		});
-		initSelect(Immutable.List(listSelect));
+		if (initSelect) {
+			initSelect(Immutable.List(listSelect));
+		}
 		//重置上一次选择的索引
 		//this.singleClickPre = oldSelected;
 		return {
@@ -146,10 +153,13 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
 		const {preData,preInitComboVal} = preState;
 		if(nextProps.data !== preData){
 
-			let initComboVal:any = nextProps.initComboVal ;
-			initComboVal = initComboVal ? initComboVal.id :"";
+			const initComboVal = nextProps.initComboVal ? nextProps.initComboVal.id : "";
+			let defaultVal = nextProps.selected.map(val => val.id).join("") + (initComboVal ? ","+initComboVal :"");
 
-			const resObj = formatterData(nextProps,initComboVal);
+			const { filedObj,initSelect,data } = nextProps;
+			const resObj = formatterData({
+				filedObj,data,initSelect
+			},defaultVal);
 			return {
 				preData:nextProps.data,
 				immutableData:resObj.data!,
@@ -185,9 +195,11 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
 		clickMethod(this.clikItem);
 	}
 	initState(props: props) {
-		const {filedObj,data,initComboVal} = props;
+		const {filedObj,data,initComboVal,initSelect} = props;
 		const defaultVal = filedObj.get("defaultVal")!;
-		const obj = formatterData(props,defaultVal);
+		const obj = formatterData({
+			filedObj,data,initSelect
+		},defaultVal);
 		return {
 			immutableData: obj.data! ,
 			preData:data,
@@ -258,10 +270,36 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
 		});
 		
 	}
+	closeFn = () => {
+		const {data,selected,filedObj} = this.props;
+		const defaultVal = selected.map(val=>val.id).join(",");
+		const {data:immutableData, singleClickPre} = formatterData({filedObj,data},defaultVal);
+
+		this.setState({
+			immutableData,
+			singleClickPre
+		});
+	}
+	searchFn = (key: string) => {
+
+		const { filedObj,data,selected } = this.props;
+		const textField = filedObj.get("textField");
+		let searchResult =  data.map(val => val[textField].includes(key));
+		
+		const defaultVal = selected.map(val=>val.id).join(",");
+		const {data:immutableData,singleClickPre} = formatterData({
+			data: searchResult,filedObj
+		},defaultVal);
+		 this.setState({
+			immutableData,
+			singleClickPre,
+		 });
+	}
 	render() {
 		const { immutableData } = this.state;
 		const { filedObj, dropStyle, formatterDropItem } = this.props;
 		const idField = filedObj.get("idField");
+		const noSearch = filedObj.get("noSearch");
 		const com = immutableData.map((node, index) => {
 			return (
 				<DropItem
@@ -274,10 +312,23 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
 				/>
 			);
 		});
+		const searchCom = !noSearch ? (
+			<div style={{ paddingBottom: "0.5em",}}>
+				<Search
+					field="search"
+					searchHandle={this.searchFn}
+					closeHandle={this.closeFn}
+				/>
+			</div>
+			) :undefined;
 		return (
+			<>
+				{searchCom}
 			<ul style={dropStyle} className="drop-ul">
 				{com}
 			</ul>
+			</>
+			
 		);
 	}
 }

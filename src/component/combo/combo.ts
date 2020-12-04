@@ -19,6 +19,7 @@
         idField: string;
         textField: string;
         multiply?: boolean;
+        noSearch?: boolean;
         itemIcon?: string;
         defaultVal?: string;
         field:string;

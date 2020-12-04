@@ -17,6 +17,7 @@ type item = {
   idField: string;
   textField: string;
   noIcon: boolean; //wu下拉图标
+  noSearch: boolean; //多选
   multiply: boolean; //多选
   tit: string; //提示语
   field: string; //下拉框的标识
@@ -56,6 +57,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       noIcon: false,
       multiply: false,
       tit: "",
+      noSearch: false, //多选
       field: "tree",
       itemIcon: "",
       defaultVal: "",
@@ -80,6 +82,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       field: "tree",
       itemIcon: "",
       defaultVal: "",
+      noSearch: false, //多选
       width: 240,
       maxHeight: undefined,
       dropWidth: undefined,
@@ -104,6 +107,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
         "noRequire",
         "ableClear",
         "renderCallback",
+        "noSearch",
         "multiply",
         "noIcon",
         "formatterVal",
@@ -267,6 +271,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       maxHeight,
       dropWidth,
       directionUp,
+      noSearch,
       noRequire,
       formatterDropItem,
       formatterVal,
@@ -355,6 +360,27 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   value="2"
                   type="radio"
                   checked={!multiply}
+                  changeHandle={this.inpChangeFn}
+                >
+                  否
+                </CheckBox>
+              </div>
+              <div className="inp-item">
+                <span>搜索框  noSearch</span>
+                <CheckBox
+                  name="noSearch"
+                  value="1"
+                  type="radio"
+                  checked={noSearch}
+                  changeHandle={this.inpChangeFn}
+                >
+                  是
+                </CheckBox>
+                <CheckBox
+                  name="noSearch"
+                  value="2"
+                  type="radio"
+                  checked={!noSearch}
                   changeHandle={this.inpChangeFn}
                 >
                   否

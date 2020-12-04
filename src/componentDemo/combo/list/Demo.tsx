@@ -17,6 +17,7 @@ type item = {
   textField: string;
   noIcon: boolean; //wu下拉图标
   multiply: boolean; //多选
+  noSearch: boolean; //多选
   tit: string; //提示语
   field: string; //下拉框的标识
   itemIcon: string; //下拉框每行的图标，目录默认用文件夹
@@ -54,6 +55,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       textField: "text",
       noIcon: false,
       multiply: false,
+      noSearch: false, //多选
       tit: "",
       field: "tree",
       itemIcon: "",
@@ -77,6 +79,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       multiply: false,
       tit: "",
       field: "tree",
+      noSearch: false, //多选
       itemIcon: "",
       defaultVal: "",
       width: 240,
@@ -105,6 +108,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
         "renderCallback",
         "multiply",
         "noIcon",
+        "noSearch",
         "formatterVal",
         "clickOrCheckForbid",
         "formatterDropItem"
@@ -277,6 +281,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       formatterDropItem,
       formatterVal,
       clickOrCheckForbid,
+      noSearch,
       renderCallback, //组件第一次加载调用点击事件的回调函数
       ableClear
     } = this.state.obj.toJS();
@@ -357,6 +362,27 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   value="2"
                   type="radio"
                   checked={!multiply}
+                  changeHandle={this.inpChangeFn}
+                >
+                  否
+                </CheckBox>
+              </div>
+              <div className="inp-item">
+                <span>搜索框 noSearch</span>
+                <CheckBox
+                  name="noSearch"
+                  value="1"
+                  type="radio"
+                  checked={noSearch}
+                  changeHandle={this.inpChangeFn}
+                >
+                  是
+                </CheckBox>
+                <CheckBox
+                  name="noSearch"
+                  value="2"
+                  type="radio"
+                  checked={!noSearch}
                   changeHandle={this.inpChangeFn}
                 >
                   否
