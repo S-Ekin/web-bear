@@ -5,10 +5,10 @@ export const closertPar = (el:HTMLElement, parName:string):HTMLElement | null =>
 
     let parEl = el!;
     // 对自身也j检查
-    while (parEl.nodeName !== "BODY" && !parEl.classList.contains(parName)) {
+    while (parEl && parEl.nodeName !== "BODY" && !parEl.classList.contains(parName)) {
         parEl = parEl.parentElement!;
     }
-    if (parEl.tagName === "BODY") {
+    if (!parEl ||parEl.tagName === "BODY") {
         return null;
     }
     return parEl;

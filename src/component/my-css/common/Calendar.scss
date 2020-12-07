@@ -184,11 +184,6 @@ $inp-h:2em;
 
 .g-calendar-box {
   box-shadow: $shadow;
-  display: none;
-
-  & > div {
-    display: flex;
-  }
 
   .g-calendar-view {
     //	width:100%;

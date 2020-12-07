@@ -33,9 +33,12 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 
 		if (nextProps.data !== preState.preData || nextProps.initComboVal!==preState.preInitComboVal) {
 
-			const initComboVal = nextProps.initComboVal ? nextProps.initComboVal.id : "";
-			let defaultVal = nextProps.selected.map(val => val.id).join("") + (initComboVal ? ","+initComboVal :"");
-			const {data,oldSelectedIndex} = formatterTreeData(nextProps,defaultVal,nextProps.data);
+			let defaultVal = nextProps.initComboVal ? [nextProps.initComboVal.id] : [];	
+			// 先保留之前选择的，再加上initComVal要选择的，
+			// 当是单选时，存在一个问题，是要保留已经选择的还是用initComboVal?有时会同时改变数据和initComboVal!（比如新增一个下拉选项，并且要选中这个新的）
+			// 目前的操作时，先保留之前选择的
+			defaultVal = nextProps.selected.toJS().map(val => val.id).concat(defaultVal);
+			const {data,oldSelectedIndex} = formatterTreeData(nextProps,defaultVal.join(","),nextProps.data);
 			return {
 				immutableData:data ,
 				oldSelectedIndex,
@@ -93,7 +96,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 	):any[] {
 		return data.filter(val=>{
 
-			const itemText = val[textField] as string;
+			const itemText = val[textField] as string || "";
 			const isContainer = itemText.includes(key);
 			const child  = val[childField] as any[];
 			
@@ -466,13 +469,13 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 				/>
 			</div>
 		) :undefined;
-		return (
-			<>
+    return (
+			<div className="drop-main">
 				{searchCom}
 				<ul style={dropStyle} className="drop-ul">
 					{com}
 				</ul>
-			</>
+			</div>
 		);
 	}
 }

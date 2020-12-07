@@ -70,6 +70,13 @@ const routerConfig = {
 			),
 		loading: () => <span>loading......</span>,
 	},
+	animate: {
+		loader: () =>
+			import(
+				/*webpackChunkName: "animate" */ "./Router/AnimateRoute"
+			),
+		loading: () => <span>loading......</span>,
+	},
 };
 type props={
 
@@ -119,6 +126,7 @@ class MainRouter extends React.PureComponent<props,state>{
 					<Route path="/alert" component={loadable(routerConfig.modal)} />
 					<Route path="/menu" component={loadable(routerConfig.menu)} />
 					<Route path="/scroll" component={loadable(routerConfig.scroll)} />
+					<Route path="/animate" component={loadable(routerConfig.animate)} />
               </Switch>
             </ErrorBoundary>
 			<div id="inner-modal-wrap"/>

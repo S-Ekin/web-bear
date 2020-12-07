@@ -7,8 +7,8 @@ import * as React from "react";
 import {SvgIcon } from "../my-icon/index";
 import * as Immutable from "immutable";
 import {NavLink} from "react-router-dom";
-import * as Velocity from "velocity-react";
 import {IMenuData,fieldObj} from "./menu";
+import { SlideBox } from "../animate/index";
 
 type node =IImmutalbeMap<{
 		[key: string]: any;
@@ -126,12 +126,9 @@ class ParMenu extends React.PureComponent<props, states> implements IParMenu{
 			</ul>
 		);
 		return expand ? (
-								<Velocity.VelocityComponent
-										animation={node.get("drop")? "slideDown" : "slideUp"}
-										duration={300}
-										interruptBehavior="queue">
-										{subCom}
-								</Velocity.VelocityComponent>
+								<SlideBox slide={node.get("drop")} >
+									{subCom}
+								</SlideBox>
 					) :subCom;
 	}
 

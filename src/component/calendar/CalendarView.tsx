@@ -120,7 +120,7 @@ export default class CalendarView
 				}
 
 				if (style === 2 && !states.selTimeArr.getIn([0,"year"])) {
-					selTimeArr = selTimeArr.set(1-viewIndex,selTimeArr.get(0)!);
+					selTimeArr = selTimeArr.set(1-viewIndex,selTimeArr.get(viewIndex)!);
 				}
 
 				return selTimeArr;
@@ -168,10 +168,6 @@ export default class CalendarView
 			changeBasicState<"showViewArr">("showViewArr",function(){
 				let animationArr:ICalendarStates["showViewArr"] = new Array(5).fill("fadeOut");
 					animationArr[rotate] = "fadeIn";
-				return animationArr; 
-					return animationArr; 
-				return animationArr; 
-					return animationArr; 
 				return animationArr; 
 			});
 		}

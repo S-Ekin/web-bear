@@ -5,7 +5,7 @@
 import * as React from "react";
 import ComboInp from "./ComboInp";
 import * as Immutable from "immutable";
-import { VelocityComponent } from "velocity-react";
+import { SlideBox } from "../animate/index";
 import {ISelected,IDrop,drop,filedObj} from "./combo";
 import {slideOther,event} from "../util/autoSlideUp";
 type props = {
@@ -208,24 +208,25 @@ const wrapComboHC = <P extends comboType>(
 						noRequire={noRequire}
 						clearFn={this.selectFn}
 					/>
-					<VelocityComponent
-						duration={300}
-						animation={drop ? "slideDown" : "slideUp"}
-						interruptBehavior="queue">
-						<div className={`m-drop ${directionUp ? "direction-up" : ""}`} style={dropWidth?{width:dropWidth}:undefined}>
-								<Drop 
-									filedObj={this.filedObj} 
-									data={data} 
-									changeSelect={this.changeSelect}
-									selected={selected}
-									dropStyle={this.dropStyle}
-									initSelect={this.initSelect}
-									initComboVal={initComboVal}	
-									formatterDropItem={formatterDropItem}
-									clickMethod={this.bindSelectFn}
-								/>
-						</div>
-					</VelocityComponent>
+					<div
+						className={`m-drop ${directionUp ? "direction-up" : ""}`}
+					    style={dropWidth?{width:dropWidth}:undefined}
+					>
+						<SlideBox slide={drop} directionUp={directionUp}>
+							<Drop 
+								filedObj={this.filedObj} 
+								data={data} 
+								changeSelect={this.changeSelect}
+								selected={selected}
+								dropStyle={this.dropStyle}
+								initSelect={this.initSelect}
+								initComboVal={initComboVal}	
+								formatterDropItem={formatterDropItem}
+								clickMethod={this.bindSelectFn}
+							/>
+					</SlideBox>
+					</div>
+					
 				</div>
 			);
 		}

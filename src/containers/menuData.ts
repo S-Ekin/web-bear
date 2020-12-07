@@ -211,6 +211,21 @@ export  const menuList = [
             ],
           },
           {
+            id: "120",
+            name: "动画",
+            url: "/animate",
+            icon: "animate",
+            children: [
+              {
+                id: "121",
+                name: "下拉收缩",
+                url: "/animate/slide",
+                icon: "",
+                children: [],
+              },
+            ],
+          },
+          {
             id: "90",
             name: "问题",
             url: "/problem",

@@ -7,7 +7,7 @@ import * as React from "react";
 import { SvgIcon } from "../my-icon/index";
 import * as Immutable from "immutable";
 import {activeStatus,DropItem} from "./DropItem";
-import { VelocityComponent } from "velocity-react";
+import { SlideBox } from "../animate/index";
 import {CheckBox} from "../input/index";
 import {drop} from "./combo";
 type node = {
@@ -122,7 +122,6 @@ class ParTreeItem extends React.PureComponent<props,states> implements IParTreeI
         const {lev,node,index,fieldObj,formatterDropItem} = this.props;
         //层级间的距离左侧的距离
         const levSpaceStyle =  { paddingLeft: `${lev}em`,};
-       // const text = node.get(fieldObj.get("textField"));
         const  text = formatterDropItem
 			? formatterDropItem(node)
 			: node.get(fieldObj.get("textField"));
@@ -142,12 +141,9 @@ class ParTreeItem extends React.PureComponent<props,states> implements IParTreeI
 					</span>
 					<SvgIcon className={`arrow-${expand ? "up" : "down"}`} />
 				</div>
-				<VelocityComponent
-					duration={300}
-					animation={expand ? "slideDown" : "slideUp"}
-					interruptBehavior="queue">
+				<SlideBox slide={expand} >
 					<ul>{this.getSubCom(child, lev, index)}</ul>
-				</VelocityComponent>
+				</SlideBox>
 			</li>
 		);
     }

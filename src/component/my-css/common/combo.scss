@@ -36,6 +36,10 @@ $combo-drop-padding:8px;
 }
 
 .m-drop {
+  .drop-main {
+    padding: $combo-drop-padding;
+  }
+
   .drop-ul {
     overflow: auto;
   }
@@ -92,16 +96,15 @@ $combo-drop-padding:8px;
   }
 
   .m-drop {
-    display: none;
-    background: $combo-bg;
     color: $combo-text-color;
+    margin-top: 8px;
+    box-shadow: $shadow;
     position: absolute;
     box-sizing: border-box;
     width: 100%;
-    box-shadow: $shadow;
-    border-radius: 4px;
-    padding: $combo-drop-padding;
     z-index: 10;
+    border-radius: 4px;
+    background: $combo-bg;
   }
 
   .no-fill {

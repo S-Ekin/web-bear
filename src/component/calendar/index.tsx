@@ -1,5 +1,5 @@
 import * as React from "react";
-import { VelocityComponent } from "velocity-react";
+import { SlideBox } from "../animate/index";
 import * as Immutable from "immutable";
 import CalendarView from "./CalendarView";
 import CalendarInp from "./CalendarInp";
@@ -381,10 +381,10 @@ class Calendar extends React.PureComponent<Props, States>
 				style={{ width: ~~width !, }}
 				>
 				{inpCom}
-				<VelocityComponent
-					animation={expand ? "slideDown" : "slideUp"}
-					interruptBehavior="queue">
-					<div className="g-calendar-box" >
+				<div className="g-calendar-box" >
+					<SlideBox
+						slide={expand}
+					>
 						<div style={{ display: "flex", }}>
 							<CalendarView
 								fixProps={this.fixProps}
@@ -399,8 +399,8 @@ class Calendar extends React.PureComponent<Props, States>
 							/>
 							{secondViews}
 						</div>
-					</div>
-				</VelocityComponent>
+					</SlideBox>
+				</div>
 			</div>
 		);
 	}

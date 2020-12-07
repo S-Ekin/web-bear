@@ -153,13 +153,16 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
 		const {preData,preInitComboVal} = preState;
 		if(nextProps.data !== preData){
 
-			const initComboVal = nextProps.initComboVal ? nextProps.initComboVal.id : "";
-			let defaultVal = nextProps.selected.map(val => val.id).join("") + (initComboVal ? ","+initComboVal :"");
+			let defaultVal = nextProps.initComboVal ? [nextProps.initComboVal.id] : [];
+			// 先保留之前选择的，再加上initComVal要选择的，
+			// 当是单选时，存在一个问题，是要保留已经选择的还是用initComboVal?有时会同时改变数据和initComboVal!（比如新增一个下拉选项，并且要选中这个新的）
+			// 目前的操作时，先保留之前选择的
+			defaultVal = nextProps.selected.toJS().map(val => val.id).concat(defaultVal);
 
 			const { filedObj,initSelect,data } = nextProps;
 			const resObj = formatterData({
 				filedObj,data,initSelect
-			},defaultVal);
+			},defaultVal.join(","));
 			return {
 				preData:nextProps.data,
 				immutableData:resObj.data!,
@@ -322,12 +325,12 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
 			</div>
 			) :undefined;
 		return (
-			<>
+			<div className="drop-main">
 				{searchCom}
-			<ul style={dropStyle} className="drop-ul">
-				{com}
-			</ul>
-			</>
+				<ul style={dropStyle} className="drop-ul">
+					{com}
+				</ul>
+			</div>
 			
 		);
 	}

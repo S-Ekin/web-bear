@@ -7,8 +7,8 @@ import * as React from "react";
 import 'highlight.js/styles/atom-one-dark.css';
 import hljs from 'highlight.js';
 import hljsNumber from 'highlightjs-line-numbers2.js';
-import {VelocityComponent} from "velocity-react";
 import {SvgIcon} from '@component/my-icon/index';
+import { SlideBox } from "@component/animate/index";
 //hljs.initHighlightingOnLoad();
 hljsNumber.init(hljs);
 //hljs.initLineNumbersOnLoad({singleLine: true});
@@ -60,16 +60,14 @@ class CodeBlock extends React.PureComponent<Props,States> implements ICodeBlock{
                 <div className="flex-center">
                     {tit}
                     <span onClick={this.slideFn}><SvgIcon className={expand ? 'arrow-down' :'arrow-up'}/></span>
-                    
                 </div>
-                <VelocityComponent animation={expand ? "slideDown" : "slideUp"} interruptBehavior="queue">
+                <SlideBox slide={expand}>
                     <pre>
                         <code ref={this.codeRef} className={`language-${language}`}>
                             {children}
                         </code>
                     </pre>
-                </VelocityComponent>
-                 
+                </SlideBox>
             </div>
            
         );
