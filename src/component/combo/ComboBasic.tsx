@@ -27,7 +27,7 @@ type props = {
 	renderCallback?: boolean; //组件第一次加载调用点击事件的回调函数
 	ableClear?:boolean;//能够清空所选
 	//外部通过这个值来控制下拉框的选中,id可以是字符串分隔
-	initComboVal?:{id:string};
+	initComboVal?:{id:string}; // 用来完全初始化选择的，不要用混
 	//点击或是选中之前做的操作，返回true不执行选中操作，默认返回false
 	clickOrCheckForbid?:(node:IImmutalbeMap<any>,field:string,selectedArr:states['selected'])=>boolean;
 	//自定义显示框的文字内容，selected所选择的内容

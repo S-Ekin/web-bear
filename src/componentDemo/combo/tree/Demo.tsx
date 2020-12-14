@@ -13,6 +13,7 @@ import CodeBlock from "@container/codeBlock/CodeBlock";
 import * as  ComboSpace from "@component/combo/combo";
 import {data} from "./CodeStr";
 import { str4,str1,str2,str3 } from "./CodeStr";
+import  loadFn from "@component/loading/loadMethod";
 type item = {
   idField: string;
   textField: string;
@@ -43,6 +44,7 @@ type States = {
   comboProps: item;
   refreshId: number;
   outControlSelecte: undefined | { id: string };
+  asyncData:any[];
 };
 interface IDemo {
   selectFn: undefined | ((path: string) => void);
@@ -51,6 +53,7 @@ interface IDemo {
 class Demo extends React.PureComponent<Props, States> implements IDemo {
   selectFn: IDemo["selectFn"] = undefined;
   state: States = {
+    asyncData:data,
     obj: createImmutableMap<item & fnObj>({
       idField: "id",
       textField: "text",
@@ -132,6 +135,27 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       };
     });
   };
+  changeData =(e: React.ChangeEvent<HTMLInputElement>)=>{
+    const dom = e.currentTarget;
+    let _data:any[] = [];
+    if (dom.value === "1") {
+      _data = data;
+    } else {
+      _data = []
+    }
+     this.setState({
+        asyncData: _data
+      })
+  }
+  asyncGetData=()=>{
+    loadFn.open();
+    window.setTimeout(()=>{
+      loadFn.close();
+      this.setState({
+        asyncData:JSON.parse(JSON.stringify(data))
+      })
+    },300)
+  }
 
   clickCallback = (
     selecte: ComboSpace.ISelected[],
@@ -279,7 +303,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       renderCallback, //组件第一次加载调用点击事件的回调函数
       ableClear
     } = this.state.obj.toJS();
-    const { comboProps, refreshId, outControlSelecte } = this.state;
+    const { comboProps, refreshId, outControlSelecte,asyncData } = this.state;
     
     return (
       <div className="g-layout comboTree-page">
@@ -287,7 +311,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
         <div className="g-layout-article">
           <div className="g-item-show config-box">
             <ComboTree
-              data={data}
+              data={asyncData}
               key={refreshId}
               clickCallback={this.clickCallback}
               initComboVal={outControlSelecte}
@@ -300,7 +324,11 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               }
               {...comboProps}
             />
+            <div>
             <Button handle={this.refershConfig}>刷新配置</Button>
+              <span style={{padding: "10px",}}></span>
+              <Button handle={this.asyncGetData}>异步请求数据</Button>
+            </div>
           </div>
           <div className="g-item-show config-box">
             <div>
@@ -410,6 +438,27 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               </div>
             </div>
             <div>
+              <div className="inp-item">
+                <span>数据 data: </span>
+                <CheckBox
+                  name="data"
+                  value="1"
+                  type="radio"
+                  checked={asyncData===data}
+                  changeHandle={this.changeData}
+                >
+                  示例数据
+                </CheckBox>
+                <CheckBox
+                  name="data"
+                  value="2"
+                  type="radio"
+                  checked={asyncData !== data}
+                  changeHandle={this.changeData}
+                >
+                  空数组 (通过异步请求数据按钮，模拟异步数据更新！)
+                </CheckBox>
+              </div>
               <div className="inp-item">
                 <Input
                   name="defaultVal"

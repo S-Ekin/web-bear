@@ -16,6 +16,7 @@ type states = {
 	singleClickPre:string; //单选时，记录上一次选择的
 	preData:any[];
 	preInitComboVal?:{id:string};
+	asyncDefaultVal:boolean;// 用来识别异步请求下拉框数据时，第一次是空[],虽然给了默认值，但是不会选中什么，但是当第二次有了数据后，再用这个默认值去选中，但是之后就不再使用这个。
 };
 type node = {
 	[key: string]: any;
@@ -150,39 +151,41 @@ const clickFn = function(index: string,props:props,state :states) {
 
 class DropList extends React.PureComponent<props, states> implements IDropList {
 	static getDerivedStateFromProps(nextProps:props,preState:states):null | Partial<states>{
-		const {preData,preInitComboVal} = preState;
+		const {preData,preInitComboVal,asyncDefaultVal} = preState;
 		if(nextProps.data !== preData){
 
-			let defaultVal = nextProps.initComboVal ? [nextProps.initComboVal.id] : [];
-			// 先保留之前选择的，再加上initComVal要选择的，
+			let defaultVal = "";
+			if (nextProps.initComboVal !== preInitComboVal) {
+				defaultVal = nextProps.initComboVal ? nextProps.initComboVal.id : "";
+			} else {
+				if (asyncDefaultVal) {
+					defaultVal = nextProps.filedObj.get("defaultVal")!;
+				} else {
+					defaultVal = nextProps.selected.map(val => val.id).join(",");
+				}
+			}
+			// 判断 initCOmVal有没改变，initComVal是完全只用这个值去初始化选择的。
+			// 考虑异步请求的情况
+			// 否则先保留之前选择的。
 			// 当是单选时，存在一个问题，是要保留已经选择的还是用initComboVal?有时会同时改变数据和initComboVal!（比如新增一个下拉选项，并且要选中这个新的）
-			// 目前的操作时，先保留之前选择的
-			defaultVal = nextProps.selected.toJS().map(val => val.id).concat(defaultVal);
 
 			const { filedObj,initSelect,data } = nextProps;
-			const resObj = formatterData({
-				filedObj,data,initSelect
-			},defaultVal.join(","));
+			const resObj = formatterData({ filedObj,data,initSelect },defaultVal);
 			return {
 				preData:nextProps.data,
 				immutableData:resObj.data!,
+				asyncDefaultVal: false,
 				singleClickPre:resObj.singleClickPre!,
 			};
 		}else if(nextProps.initComboVal !== preInitComboVal){
-			const resObj = clickFn(nextProps.initComboVal!.id,nextProps,preState);
-
-			if(resObj){
+			const defaultVal = nextProps.initComboVal ? nextProps.initComboVal.id : "";
+			const { filedObj,initSelect,data } = nextProps;
+			const resObj = formatterData({ filedObj,data,initSelect },defaultVal);
 				return {
 					preInitComboVal:nextProps.initComboVal,
 					immutableData:resObj.data!,
 					singleClickPre:resObj.singleClickPre
 				};
-			}else{
-				return {
-					preInitComboVal:nextProps.initComboVal,
-				};
-			}
-			
 		}
 
 		// tslint:disable-next-line: no-null-keyword
@@ -190,6 +193,7 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
 
 	}
 	state: states = this.initState(this.props);
+	asyncDefaultVal = !!this.props.data.length; 
 	constructor(props: props) {
 		super(props);
 		this.state = this.initState(props);
@@ -208,6 +212,7 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
 			preData:data,
 			preInitComboVal:initComboVal,
 			singleClickPre:obj.singleClickPre,
+			asyncDefaultVal:data.length===0,
 		};
 	}
 	clear() {

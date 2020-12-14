@@ -17,6 +17,7 @@ type states = {
 	preData:any[];
 	preInitComboVal:props['initComboVal'] ;
 	oldSelectedIndex:string;
+	asyncDefaultVal:boolean;// 用来识别异步请求下拉框数据时，第一次是空[],虽然给了默认值，但是不会选中什么，但是当第二次有了数据后，再用这个默认值去选中，但是之后就不再使用这个。
 };
 type node = {
 	[key: string]: any;
@@ -31,14 +32,32 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 
 	static  getDerivedStateFromProps(nextProps:props,preState:states):Partial<states> | null {
 
-		if (nextProps.data !== preState.preData || nextProps.initComboVal!==preState.preInitComboVal) {
+		if (nextProps.data !== preState.preData) {
+			
+			let defaultVal = "";
+			if (nextProps.initComboVal !== preState.preInitComboVal) {
+				defaultVal = nextProps.initComboVal ? nextProps.initComboVal.id : "";
+			} else {
+				if (preState.asyncDefaultVal) {
+					defaultVal = nextProps.filedObj.get("defaultVal")!;
+				} else {
+					defaultVal = nextProps.selected.map(val => val.id).join(",");
+				}
+			}
 
-			let defaultVal = nextProps.initComboVal ? [nextProps.initComboVal.id] : [];	
 			// 先保留之前选择的，再加上initComVal要选择的，
 			// 当是单选时，存在一个问题，是要保留已经选择的还是用initComboVal?有时会同时改变数据和initComboVal!（比如新增一个下拉选项，并且要选中这个新的）
 			// 目前的操作时，先保留之前选择的
-			defaultVal = nextProps.selected.toJS().map(val => val.id).concat(defaultVal);
-			const {data,oldSelectedIndex} = formatterTreeData(nextProps,defaultVal.join(","),nextProps.data);
+			const {data,oldSelectedIndex} = formatterTreeData(nextProps,defaultVal,nextProps.data);
+			return {
+				immutableData:data ,
+				oldSelectedIndex,
+				preData:nextProps.data,
+				preInitComboVal:nextProps.initComboVal
+			};
+		} if(nextProps.initComboVal!==preState.preInitComboVal){
+			const defaultVal = nextProps.initComboVal ? nextProps.initComboVal.id : "";	
+			const {data,oldSelectedIndex} = formatterTreeData(nextProps,defaultVal,nextProps.data);
 			return {
 				immutableData:data ,
 				oldSelectedIndex,
@@ -62,7 +81,8 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 			immutableData: obj.data ,
 			preData:props.data,
 			preInitComboVal:props.initComboVal,
-			oldSelectedIndex:obj.oldSelectedIndex
+			oldSelectedIndex:obj.oldSelectedIndex,
+			asyncDefaultVal: props.data.length===0
 		};
 	}
 	
