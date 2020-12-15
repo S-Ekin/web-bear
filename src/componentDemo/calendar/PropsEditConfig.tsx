@@ -192,7 +192,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
                   norequire={true} 
 							changeFn={this.inpChangeFn}
 							value={defaultTime}>
-							默认时间 defaultTime：
+							默认时间 defaultTime (格式：2020-12-08 12:05)：
 						</Input>
 					</div>
 					<div className="inp-item">

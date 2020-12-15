@@ -103,7 +103,7 @@ class Calendar extends React.PureComponent<Props, States>
 				expand: false,
 				selTimeArr,
 				showTimeArr,
-				pannelLastYear:selTimeArr.map((val:ICommonInterface["showTimeObj"]) => {
+				pannelLastYear: showTimeArr.map((val:ICommonInterface["showTimeObj"]) => {
 					return val.get("year");
 				}),
 				calendarVal: timeVal.join(" 至 "),

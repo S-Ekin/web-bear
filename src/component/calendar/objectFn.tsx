@@ -35,11 +35,17 @@ const timeStrValToTimeObjArr = function(
 
   const { style, rotate, time, defaultTime } = props;
 
-  const selTimeValStr = `${defaultTime}`;
-  //#todo:做时间格式验证
-  // if (selTimeValArr && rotate! > 1 && !selTimeValArr.includes("-")) {
-  // 	selTimeValArr = "";
-  // }
+  let selTimeValStr = `${defaultTime}`;
+  // 做时间格式验证
+  if (selTimeValStr) {
+      const reg = /^\d{4}(-\d{2}){0,2}( [0-2]\d:\d{2})?$/;
+      const  errorFormate = selTimeValStr.split(",").some(val=>{
+        return !reg.test(val)
+      })
+      if(errorFormate){
+  	    selTimeValStr = "";
+      }
+  }
 
   const defaultTimeArr = selTimeValStr.split(",");
 
