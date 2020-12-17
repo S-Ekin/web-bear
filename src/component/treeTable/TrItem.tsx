@@ -37,19 +37,26 @@ class Item extends React.PureComponent<Props,States> implements IItem{
             const active = node.get('active') === activeStatus.hasSelect ? 
             'checkbox-has-selected' :
              node.get('active') === activeStatus.noSelect ? 'checkbox-blank' :'checkbox-marked';
-            return ( <SvgIcon className={active}/>);
+            return ( <SvgIcon className={active} />);
         }else{
             return undefined;
         }
        
     }
+    slideIconEvent = (e:React.MouseEvent<HTMLDivElement>)=>{
+        e.stopPropagation();
+        const index = e.currentTarget.parentElement!.parentElement!.dataset.index!;
+        this.props.changeState(index,"expand");
+    }
     getIcon(){
-        const {node,isPar,fixObj:{itemIcon='file'}} = this.props;
+        const {node,isPar,fixObj:{itemIcon='file',multiply}} = this.props;
         if(isPar){ 
             const expand = node.get('expand');
            return (
                <>
-                <SvgIcon className={expand ? "minus":"plus"}/>
+               <span onClick={multiply ? this.slideIconEvent :undefined}>
+                    <SvgIcon className={expand ? "minus":"plus"}/>
+               </span>
                 <SvgIcon className={expand ? "folder-open":"folder"}/>
                </>
            );

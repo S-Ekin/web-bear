@@ -5,7 +5,7 @@
  */
 import * as React from "react";
 import TrItem from './TrItem';
-import {VelocityComponent} from 'velocity-react';
+import { SlideBox } from "../animate/index";
 import {ICommon} from "./mytreeTable";
 type Props={
     cols:ICommon['col'][];
@@ -106,20 +106,16 @@ class ParTree extends React.PureComponent<Props,States> implements IParTree{
                 />
                 <tr className="tree-td">
                     <td colSpan={cols.length}>
-                         <VelocityComponent
-					duration={300}
-					animation={expand ? "slideDown" : "slideUp"}
-					interruptBehavior="queue">
-					<div className="tab-body">
-                            <table>
-                                {colgroup}
-                                <tbody>
-                                     {this.getSubBody()}
-                                </tbody>
-                            </table>
-                        </div>
-				</VelocityComponent>
-                        
+                         <SlideBox slide={expand} >
+                            <div className="tab-body">
+                                    <table>
+                                        {colgroup}
+                                        <tbody>
+                                            {this.getSubBody()}
+                                        </tbody>
+                                    </table>
+                                </div>
+                        </SlideBox>
                     </td>
                 </tr> 
                

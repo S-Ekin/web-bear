@@ -374,6 +374,7 @@ class Calendar extends React.PureComponent<Props, States>
 				undefined
 			);
 		const activeName = expand ? "autoSlideUp" : "";		
+		const boxW = style!* 240;
 		return (
 			<div
 				className={"g-calendar "+activeName}
@@ -381,7 +382,7 @@ class Calendar extends React.PureComponent<Props, States>
 				style={{ width: ~~width !, }}
 				>
 				{inpCom}
-				<div className="g-calendar-box" >
+				<div className="g-calendar-box" style={{width: `${boxW}px`,}}>
 					<SlideBox
 						slide={expand}
 					>

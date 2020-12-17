@@ -4,7 +4,7 @@
  * @time 2019-08-18
  */
 import * as React from "react";
-import { VelocityComponent } from "velocity-react";
+import { Animate } from "../animate/index";
 import {SvgIcon} from "../my-icon/index";
 
 type props={
@@ -108,13 +108,13 @@ class Search extends React.PureComponent<props,states> implements ISearch{
 					onChange={this.changeFn}
 					onKeyDown={this.keyPress}
 				/>
-				<VelocityComponent animation={searching ? "fadeIn" : "fadeOut"}>
+				<Animate animation={searching ? "fadeIn" : "fadeOut"} elementStr="span">
 					<span
 						className="m-search-close"
 						onClick={this.closeSearch}>
 						<SvgIcon className="close" />
 					</span>
-				</VelocityComponent>
+				</Animate>
 				<span className="j-search-icon" onClick={this.toggleSearch}>
 					<SvgIcon className="search" size="middle" />
 				</span>

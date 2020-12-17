@@ -7,6 +7,7 @@
 import * as React from "react";
 import { Switch, Route } from "react-router-dom";
 import Slide from "@componentDemo/animate/slide/demo";
+import Animate from "@componentDemo/animate/animate/demo";
 type Props={
 
 };
@@ -24,6 +25,7 @@ class AnimateRouter extends React.PureComponent<Props,States> {
         return (
             <Switch>
                 <Route path="/animate/slide"  component={Slide}/>
+                <Route path="/animate/animate"  component={Animate}/>
             </Switch>
         );
     }

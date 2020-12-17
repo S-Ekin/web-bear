@@ -8,7 +8,7 @@ import CalendarDayView from "./CalendarDayView";
 import CalendarYearView from "./CalendarYearView";
 import CalendarMonthView from "./CalendarMonthView";
 import CalendarSearsonView from "./CalendarSearsonView";
-import { VelocityComponent } from "velocity-react";
+import { Animate } from "../animate/index";
 import * as Immutable from "immutable";
 import {SvgIcon} from "../my-icon/index";
 import {ICommonInterface,ICalendarStates } from "./calendar";
@@ -368,7 +368,7 @@ export default class CalendarView
 
 		let duration = new Array(5).fill(0);
 
-		duration[curViewInde] = 300;
+		duration[curViewInde] = 400;
 
 		const arr = ["年", "季", "月","日"];
 		const secondViewName = viewIndex === 1 ? "calendar-view2" :"";
@@ -408,7 +408,7 @@ export default class CalendarView
 					</div>
 				</div>
 				<div className="m-calendar-view">
-					<VelocityComponent
+					<Animate
 						animation={showViewArr[calendarType.day]}
 						duration={duration[calendarType.day]}>
 						<CalendarDayView
@@ -420,8 +420,8 @@ export default class CalendarView
 							changeTime={this.changeTime}
 							viewIndex={viewIndex}
 						/>
-					</VelocityComponent>
-					<VelocityComponent
+					</Animate>
+					<Animate
 						animation={showViewArr[calendarType.year]}
 						duration={duration[calendarType.year]}>
 						<CalendarYearView
@@ -432,8 +432,8 @@ export default class CalendarView
 							rotate={rotate}
 							lastYear={lastYear}
 						/>
-					</VelocityComponent>
-					<VelocityComponent
+					</Animate>
+					<Animate
 						animation={showViewArr[calendarType.month]}
 						duration={duration[calendarType.month]}>
 						<CalendarMonthView
@@ -443,8 +443,8 @@ export default class CalendarView
 							clickSelHandle={this.clickSelHandle}
 							rotate={rotate}
 						/>
-					</VelocityComponent>
-					<VelocityComponent
+					</Animate>
+					<Animate
 						animation={showViewArr[calendarType.searson]}
 						duration={duration[calendarType.searson]}>
 						<CalendarSearsonView
@@ -453,7 +453,7 @@ export default class CalendarView
 							showTimeObj={showTimeObj}
 							clickSelHandle={this.clickSelHandle}
 						/>
-					</VelocityComponent>
+					</Animate>
 				</div>
 			</div>
 		);

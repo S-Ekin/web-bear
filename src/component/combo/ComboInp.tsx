@@ -67,8 +67,8 @@ class ComboInp extends React.PureComponent<props,states> {
                     <div className="combo-value">
                         {selected.size ? formatterVal!(selected):this.getTit(tit)}
                     </div>
-                    {this.getSlideIcon(noicon,drop)}
                     {this.getClearCom(clearStatus)}
+                    {this.getSlideIcon(noicon,drop)}
                 </div>
                 );
     }

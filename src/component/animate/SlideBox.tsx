@@ -55,7 +55,6 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
     const child = dom.firstElementChild! as HTMLDivElement;
     const origin = child.clientHeight;
 
-    const boxW = dom.style.width ? undefined : dom.clientWidth;
     const duration = 300;
     let timeFrom = 0;
     const timeEnd = Math.ceil(duration / 17);
@@ -67,9 +66,6 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
     const originW = child.style.width;
     child.style.width = "100%";
     child.style[direct] = "0";
-    if (boxW) {
-      dom.style.width = `${boxW}px`;
-    }
 
     const fn = () => {
       this.timer = window.requestAnimationFrame(() => {

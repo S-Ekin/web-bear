@@ -4,7 +4,7 @@
  * @time 2019-10-21
  */
 import * as React from "react";
-import {VelocityComponent} from "velocity-react";
+import { Animate } from "../animate/index";
 import * as Immutable from "immutable";
 import {SvgIcon} from "../my-icon/index";
 import {ICommonInterface,ICalendarStates} from "./calendar";
@@ -62,14 +62,15 @@ class CalendarInp extends React.PureComponent<
 		const { inpVal, placeholder, ableClear } = this.props;
 
 		const closeIcon = ableClear ? (
-					<VelocityComponent
+					<Animate
+						elementStr="span"
 						animation={inpVal ? "fadeIn" : "fadeOut"}>
 						<span
 							className="m-search-close"
 							onClick={this.clearValue}>
 							<SvgIcon className="close"/>
 						</span>
-					</VelocityComponent>
+					</Animate>
 				) : undefined ;
 		return (
 			<div className="m-clalendar-inpBox" onClick={this.toggleDrop}>

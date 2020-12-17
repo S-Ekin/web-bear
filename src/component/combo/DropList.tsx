@@ -292,7 +292,7 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
 
 		const { filedObj,data,selected } = this.props;
 		const textField = filedObj.get("textField");
-		let searchResult =  data.map(val => val[textField].includes(key));
+		let searchResult =  data.filter(val => val[textField].includes(key));
 		
 		const defaultVal = selected.map(val=>val.id).join(",");
 		const {data:immutableData,singleClickPre} = formatterData({

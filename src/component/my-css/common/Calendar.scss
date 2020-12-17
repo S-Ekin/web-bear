@@ -36,11 +36,10 @@ $inp-h:2em;
   $mon-width:4em;
   $mon-h:2.5em;
   $sea-width:5em;
-  $sea-h:3em;
+  $sea-h:3.5em;
 
   .item-calendar-view {
     width: 100%;
-    display: none;
   }
 
   .view-item {
@@ -138,7 +137,7 @@ $inp-h:2em;
 
   .searson-group {
     display: flex;
-    margin: 5px 0;
+    margin: 10px 0;
 
     .view-item {
       width: 50%;

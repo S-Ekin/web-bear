@@ -223,6 +223,13 @@ export  const menuList = [
                 icon: "",
                 children: [],
               },
+              {
+                id: "122",
+                name: "动画组件",
+                url: "/animate/animate",
+                icon: "",
+                children: [],
+              }
             ],
           },
           {
