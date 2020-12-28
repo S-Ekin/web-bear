@@ -6,7 +6,7 @@
 import * as React from "react";
 import * as Immutable from "immutable";
 import * as ReactDom from "react-dom";
-import { VelocityComponent } from "velocity-react";
+import { Animate } from "../animate/index";
 import { SvgIcon} from "../my-icon/index";
 type props = {};
 type messageItem = {
@@ -79,10 +79,11 @@ class Notice extends React.PureComponent<props, states> implements INotice {
 		const list = messages.map(val => {
 			const { id, text, type } = val;
 			return (
-				<VelocityComponent
+				<Animate
 					key={id}
-					animation="transition.bounceRightIn"
-					runOnMount={true}>
+					animation="bounceRightIn"
+					duration={500}
+					runMount={true}>
 					<div>
 						<span className="g-alertInfo">
 							<span>
@@ -100,7 +101,7 @@ class Notice extends React.PureComponent<props, states> implements INotice {
 							</span>
 						</span>
 					</div>
-				</VelocityComponent>
+				</Animate>
 			);
 
 		});

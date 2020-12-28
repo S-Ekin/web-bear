@@ -8,13 +8,14 @@
 
 import * as React from "react";
 import { tween } from "./tween";
-const animateTypeArr = ["fadeIn", "fadeOut"];
+const animateTypeArr = ["fadeIn", "fadeOut","bounceRightIn"];
 const domAnimateProps = ["opacity","width","height"];
-type AnimateType = "fadeIn" |  "fadeOut";
+type AnimateType = "fadeIn" |  "fadeOut" | "bounceRightIn";
 type domAnimateProp = {
   width?:number;
-  opacity?:number;
+  opacity?: 0 | 1;
   height?:number;
+  transform? :string;
 }
 type Props = {
   animation: AnimateType | domAnimateProp, // 动画效果过程
@@ -25,10 +26,19 @@ type Props = {
   runMount?:boolean; // 组件挂载的时候就展示
 };
 type States = {};
+type animateState = {
+  opacity?: number;
+  width?: number;
+  height?: number;
+  transform?:number;
+};
 interface ISlideBox {
-  isDomProps:boolean;
 }
-
+const easeTypeObj = {
+  "fadeIn": "easeIn",
+  "fadeOut": "easeIn",
+  "bounceRightIn": "easeOutBack"
+}
 class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
   static defaultProps = {
     duration:300,
@@ -38,11 +48,13 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
   timer=0;
   boxDom: React.RefObject<HTMLDivElement> = React.createRef();
   state: States = {};
-  isDomProps = false;
+  easeType: keyof typeof tween;
+  animateState:animateState ={};
   constructor(props: Props) {
     super(props);
     const {animation} = props;
     this.valideAnimation(animation);
+    this.easeType = this.registerEaseType(animation);
   }
 
   valideAnimation(animation:Props["animation"]){
@@ -51,7 +63,6 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
         throw new Error('不存在改动画名称！请使用'+animateTypeArr.join('，')+"这些动画名称!");
       }
     } else if(typeof animation === "object"){
-      this.isDomProps = true;
       const status= Object.keys(animation).some(val => {
         return !domAnimateProps.includes(val)
       })
@@ -60,52 +71,104 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
       }
     }
   }
-  animate(){
-
+  componentDidMount(){
+    const { runMount,animation,duration} = this.props;
+    this.animateState = this.getStart(animation, this.boxDom.current!,runMount);
+    if(runMount){
+        this.domExcute(this.boxDom.current!,animation as AnimateType,duration!,runMount);
+    } else {
+        // 初始化dom动画属性状态
+        this.initAnimateStateToDom(animation, this.boxDom.current!);
+    }
   }
-  domExcute(dom:HTMLDivElement){
-    const {duration,animation} = this.props;
-    const timeEnd = Math.ceil(duration! / 17);
-    let time = 0 ;
-    const begin = (animation as AnimateType ).includes("In") ? 0 : 1;
-    if (begin) {
-      dom.style.display = "block"
+  registerEaseType (animation:Props["animation"]):this["easeType"] {
+     if (typeof animation === "string") {
+      return easeTypeObj[animation] as this["easeType"];
+    } 
+    return "easeIn";
+  }
+  initAnimateStateToDom (animation:Props["animation"],dom:HTMLDivElement) {
+    if (typeof animation === "string") {
+      const show = animation.includes("In");
+      if (animation === "bounceRightIn") {
+        dom.style.transform = `translateX(${dom.clientWidth}px)`;
+      }
+      dom.style.opacity = show ? "1" : "0";
+    } else {
+       Object.keys(animation).map((key) => {
+        const val = animation[key as keyof domAnimateProp]!;
+        if (key === "transform") {
+          dom.style.transform = val as string;
+        }
+        dom.style[key as any] = val + "px";
+      })
     }
+  }
+
+  getStart(animation:Props["animation"],dom:HTMLDivElement,runMount?:boolean) {
+    const animateState:animateState = {};
+    if (typeof animation === "string") {
+      const show = animation.includes("In");
+      if (animation === "bounceRightIn") {
+        animateState.transform = !runMount ? 0 :this.animateState.transform ? 0 :  dom.clientWidth;
+      }
+        animateState.opacity = !runMount ? show ? 1 : 0 : this.animateState.opacity ? 1 : 0;
+    } else {
+       Object.keys(animation).map((key) => {
+        const val = animation[key as keyof domAnimateProp]!;
+        if (key === "transform") {
+          const translate = (val as string).match(/\d+/);
+          animateState.transform = runMount ? 0 : translate ? translate[0] as unknown as number  : 0;
+        }
+        animateState[key as "opacity"] = runMount ? 0: val as number;
+      })
+    }
+    return animateState;
+  }
+  domExcute(dom:HTMLDivElement,animation:AnimateType,duration:number, runMout?:boolean){
     if (this.timer) {
-      window.cancelAnimationFrame(this.timer);
-      this.timer = 0;
+      return;
     }
-    const fn = ()=>{
+    dom.style.display = "block"; // 让动画可以显示动画
+    const ease = this.easeType;
+    const timeEnd = Math.ceil(duration! / 17);
+    const show = animation.includes("In");
+    let time = 0 ;
+
+   const start = this.animateState;
+   const endObj = this.getStart(animation,dom, runMout);
+   const fn = ()=>{
       this.timer = window.requestAnimationFrame(()=>{
-        dom.style.opacity = tween.easeInOutCubic(time,begin,1 - begin,timeEnd) + "";
+          Object.keys(this.animateState).forEach(val => {
+              const key = val as keyof animateState;
+              if (key === "transform") {
+                  const distance = tween[ease](time,start[key]!,endObj[key]!,timeEnd);
+                  dom.style.transform =`translate(${distance}px, 0px)`;
+              } else {
+                  dom.style[key as any] = tween[ease](time, start[key]!,endObj[key]!,timeEnd) + "";
+              }
+            })
         if(time < timeEnd){
           fn();
         } else {
-          dom.style.display = !begin ? "block" : "none";
+          dom.style.display = show ? "block" : "none";
         }
         time++;
       })
     } 
     fn();
-  }
+    this.animateState = endObj;
+  } 
+  
   componentDidUpdate(preProps: Props) {
     if (this.props.animation!==preProps.animation) {
-      this.domExcute(this.boxDom.current!);
+      this.domExcute(this.boxDom.current!,this.props.animation as AnimateType,this.props.duration!);
     }
-  }
-
-  getStyle(animation:AnimateType){
-    const show = animation.includes("In");
-    const style = {
-      opacity: show? 1 :0,
-      display: show ? "block":"none"
-    }
-    return style;
   }
 
   render() {
-    const { children,animation,className,elementStr } = this.props;
-    const style = this.getStyle(animation as AnimateType);
+    const { children,className,elementStr,runMount } = this.props;
+    const style = runMount ? undefined : {display: this.easeType.includes("In") ? "block" : "block"};
     return elementStr === "div" ? (
       <div 
         className={className}
