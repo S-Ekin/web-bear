@@ -6,7 +6,7 @@
 
 import * as React from "react";
 import * as ReactDom from "react-dom";
-import {VelocityComponent} from "velocity-react";
+import { Animate } from "../animate/index"
 import {SvgIcon} from "../my-icon/index";
 import { Button } from "../button/index";
 
@@ -110,12 +110,14 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState> im
         const styleObj = {transform: `translate(${pointX}px, ${pointY}px)`,};
 		const container = wrap ? wrap : this.wrap ;
 		const component = (
-						<VelocityComponent
-							runOnMount={true}
-							animation={ show ? "transition.bounceDownIn" : "transition.bounceDownOut" }
+						<Animate
+							runMount={true}
+							className={`g-modal ${className}`}
+							animation={ show ? "bounceDownIn" : "bounceDownOut" }
+							duration={600}
 						>
 							<div
-							className={`g-modal ${className}`}
+							style={{height: "100%",}}
 							ref={this.modalDom}
 							onMouseUp={this.headMouseUp}
 							>
@@ -136,7 +138,7 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState> im
 								</div>
 							</div>
 							</div>
-						</VelocityComponent>
+						</Animate>
 						);
 		return ReactDom.createPortal(component, container);
 	}

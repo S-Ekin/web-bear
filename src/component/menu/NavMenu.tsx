@@ -4,7 +4,7 @@
  * @time 2019-08-14
  */
 import * as React from "react";
-import * as Velocity from "velocity-react";
+import { Animate } from "../animate/index";
 import * as Immutable from "immutable";
 import ParMenu from "./ParMenu";
 import {createImmutableMap} from "../util/createImmutaleMap";
@@ -208,12 +208,14 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
         ); 
 
 		return (
-			<Velocity.VelocityComponent duration={300} animation={{ width: expand ? width || 250: 70 }}>
-				<div className={"g-slideMenu " + (!expand ? "expand" : "")}>
-                     {children}
-					 {menuCom}
-				</div>
-			</Velocity.VelocityComponent>
+            <Animate 
+                className={"g-slideMenu " + (!expand ? "expand" : "")} 
+                duration={300} 
+                animation={{ width: expand ? (width || 250): 70 }}
+            >
+                {children}
+                {menuCom}
+			</Animate>
 			);
     }
 }

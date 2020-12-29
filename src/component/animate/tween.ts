@@ -7,8 +7,14 @@ export const tween = {
         const factor = (curTime / duration);
         return progress(end, begin, factor);
     },
-    easeIn: function (curTime:number, begin:number, end:number, duration:number):number {
-        const factor = Math.pow(curTime / duration, 4);
+    easeInCubic: function (curTime:number, begin:number, end:number, duration:number):number {
+        const x = curTime / duration;
+        const factor = Math.pow(x, 3);
+        return progress(end, begin, factor);
+    },
+    easeOutCubic: function (curTime:number, begin:number, end:number, duration:number):number {
+        const x = curTime / duration;
+        const factor = 1 - Math.pow(1 - x, 3);
         return progress(end, begin, factor);
     },
     easeInOutSine: function (curTime:number, begin:number, end:number, duration:number):number {
@@ -51,5 +57,12 @@ export const tween = {
         
         let factor = 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
         return progress(end, begin, factor);
-}
+    },
+    easeInBack(curTime:number, begin:number, end:number, duration:number): number {
+        let x = curTime / duration;
+        const c1 = 1.70158;
+        const c3 = c1 + 1;
+        const factor = c3 * x * x * x - c1 * x * x;
+        return progress(end, begin, factor);
+    },
 };

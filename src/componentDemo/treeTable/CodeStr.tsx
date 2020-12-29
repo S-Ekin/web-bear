@@ -241,10 +241,7 @@ class ParTree extends React.PureComponent<Props,States> implements IParTree{
                 />
                 <tr className="tree-td">
                     <td colSpan={cols.length}>
-                         <VelocityComponent
-					duration={300}
-					animation={expand ? "slideDown" : "slideUp"}
-					interruptBehavior="queue">
+                         <SlideBox slide={expand}>
 					<div className="tab-body">
                             <table>
                                 {colgroup}
@@ -253,7 +250,7 @@ class ParTree extends React.PureComponent<Props,States> implements IParTree{
                                 </tbody>
                             </table>
                         </div>
-				</VelocityComponent>
+				</SlideBox>
                         
                     </td>
                 </tr> 

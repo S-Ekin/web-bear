@@ -8,9 +8,9 @@
 
 import * as React from "react";
 import { tween } from "./tween";
-const animateTypeArr = ["fadeIn", "fadeOut","bounceRightIn"];
+const animateTypeArr = ["fadeIn", "fadeOut","bounceRightIn", "bounceDownIn", "bounceDownOut"];
 const domAnimateProps = ["opacity","width","height"];
-type AnimateType = "fadeIn" |  "fadeOut" | "bounceRightIn";
+type AnimateType = "fadeIn" |  "fadeOut" | "bounceRightIn" |"bounceDownIn" | "bounceDownOut" ;
 type domAnimateProp = {
   width?:number;
   opacity?: 0 | 1;
@@ -35,9 +35,11 @@ type animateState = {
 interface ISlideBox {
 }
 const easeTypeObj = {
-  "fadeIn": "easeIn",
-  "fadeOut": "easeIn",
-  "bounceRightIn": "easeOutBack"
+  "fadeIn": "easeOutCubic",
+  "fadeOut": "easeOutCubic",
+  "bounceRightIn": "easeOutBack",
+  "bounceDownIn": "easeOutBack",
+  "bounceDownOut": "easeInBack",
 }
 class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
   static defaultProps = {
@@ -73,7 +75,8 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
   }
   componentDidMount(){
     const { runMount,animation,duration} = this.props;
-    this.animateState = this.getStart(animation, this.boxDom.current!,runMount);
+    const run =  runMount ? "start" : undefined;
+    this.animateState = this.getStart(animation, this.boxDom.current!,run);
     if(runMount){
         this.domExcute(this.boxDom.current!,animation as AnimateType,duration!,runMount);
     } else {
@@ -85,7 +88,7 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
      if (typeof animation === "string") {
       return easeTypeObj[animation] as this["easeType"];
     } 
-    return "easeIn";
+    return "easeOutCubic";
   }
   initAnimateStateToDom (animation:Props["animation"],dom:HTMLDivElement) {
     if (typeof animation === "string") {
@@ -105,14 +108,29 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
     }
   }
 
-  getStart(animation:Props["animation"],dom:HTMLDivElement,runMount?:boolean) {
+  getStart(animation:Props["animation"],dom:HTMLDivElement,runMount?:"start"|"end") {
     const animateState:animateState = {};
+    dom.style.display = "block"; // 让动画可以显示动画
     if (typeof animation === "string") {
       const show = animation.includes("In");
       if (animation === "bounceRightIn") {
-        animateState.transform = !runMount ? 0 :this.animateState.transform ? 0 :  dom.clientWidth;
+        if (runMount) {
+          animateState.transform = runMount === "end" ? 0 :  dom.clientWidth;
+        }else{
+          animateState.transform = 0 ;
+        }
+      } else if (animation.includes("bounceDown")) {
+         if (runMount) {
+          animateState.transform = show ? runMount === "end" ? 0 :  -dom.clientHeight : runMount === "end" ? dom.clientHeight :  0 ;
+        }else{
+          animateState.transform = show ? 0 : dom.clientHeight ;
+        }
       }
-        animateState.opacity = !runMount ? show ? 1 : 0 : this.animateState.opacity ? 1 : 0;
+      if (runMount) {
+          animateState.opacity  = show ? runMount === "end" ? 1 : 0 : runMount === "end" ? 0 :1;
+        }else{
+          animateState.opacity = show ? 1 : 0;
+        }
     } else {
        Object.keys(animation).map((key) => {
         const val = animation[key as keyof domAnimateProp]!;
@@ -129,58 +147,88 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
     if (this.timer) {
       return;
     }
-    dom.style.display = "block"; // 让动画可以显示动画
-    const ease = this.easeType;
     const timeEnd = Math.ceil(duration! / 17);
-    const show = animation.includes("In");
+    const animationType = typeof animation === "string" ? animation : "In";
+    const show = animationType.includes("In");
     let time = 0 ;
 
    const start = this.animateState;
-   const endObj = this.getStart(animation,dom, runMout);
+   const endObj = this.getStart(animation,dom, runMout ? "end" : undefined);
    const fn = ()=>{
       this.timer = window.requestAnimationFrame(()=>{
           Object.keys(this.animateState).forEach(val => {
               const key = val as keyof animateState;
+              const ease = this.easeType;
               if (key === "transform") {
                   const distance = tween[ease](time,start[key]!,endObj[key]!,timeEnd);
-                  dom.style.transform =`translate(${distance}px, 0px)`;
+                  dom.style.transform = animationType.includes("Down") ?`translate(0px,${distance}px)`:`translate(${distance}px, 0px)`;
               } else {
-                  dom.style[key as any] = tween[ease](time, start[key]!,endObj[key]!,timeEnd) + "";
+                  const distance = tween[ease](time, start[key]!,endObj[key]!,timeEnd) + "";
+                  dom.style[key as any] = distance + (key === "opacity" ? "" : "px") ;
               }
             })
         if(time < timeEnd){
           fn();
         } else {
           dom.style.display = show ? "block" : "none";
+          if (animationType.includes("bounce")){
+            dom.style.transform  = "translate(0px, 0px)";
+          }
+          this.timer = 0;
         }
         time++;
       })
     } 
     fn();
-    this.animateState = endObj;
+    if (runMout) {
+    } else {
+      this.animateState =  endObj;
+    }
   } 
   
   componentDidUpdate(preProps: Props) {
-    if (this.props.animation!==preProps.animation) {
-      this.domExcute(this.boxDom.current!,this.props.animation as AnimateType,this.props.duration!);
+    const { animation,runMount,duration } = this.props;
+    if (typeof animation === "string") {
+      if (animation!==preProps.animation) {
+            this.easeType = this.registerEaseType(animation);
+            if (runMount) {
+              this.animateState = this.getStart(animation, this.boxDom.current!, "start");
+            }
+            this.domExcute(this.boxDom.current!,animation as AnimateType,duration!);
+        }
+    } else {
+      const compare = Object.keys(animation).some((val) => {
+           const k = val as keyof domAnimateProp;
+           return animation[k] !== (preProps.animation as domAnimateProp)[k]
+      })
+      if (compare) {
+         this.easeType = this.registerEaseType(animation);
+            if (runMount) {
+              this.animateState = this.getStart(animation, this.boxDom.current!, "start");
+            }
+            this.domExcute(this.boxDom.current!,animation as AnimateType,duration!);
+      }
     }
   }
 
   render() {
-    const { children,className,elementStr,runMount } = this.props;
-    const style = runMount ? undefined : {display: this.easeType.includes("In") ? "block" : "block"};
+    const { children,className,elementStr, runMount, animation} = this.props;
+    const show = typeof animation === "string" && animation.includes("In") ? true : true;
+    const opacity = runMount ? show ? "0" : "1" :show ? "1" :"0";
     return elementStr === "div" ? (
       <div 
         className={className}
         ref={this.boxDom}
-        style={style}>
+        style={{opacity: opacity,}}
+        >
         {children}
       </div>
     ):( 
       <span
         className={className}
+        style={{opacity: opacity,}}
         ref={this.boxDom}
-        style={style}>
+        >
         {children}
       </span>
     );
