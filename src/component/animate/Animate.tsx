@@ -22,6 +22,7 @@ type Props = {
   elementStr?:"div"|"span",
   styleObj?:React.CSSProperties
   className?: string;
+  display?:"block" | "inline-block" | "flex" ;
   duration?:number;
   runMount?:boolean; // 组件挂载的时候就展示
 };
@@ -46,6 +47,7 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
     duration:300,
     elementStr:"div",
     className: "",
+    display:"block"
   }
   timer=0;
   boxDom: React.RefObject<HTMLDivElement> = React.createRef();
@@ -97,6 +99,7 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
         dom.style.transform = `translateX(${dom.clientWidth}px)`;
       }
       dom.style.opacity = show ? "1" : "0";
+      dom.style.display = show ? this.props.display! : "none";
     } else {
        Object.keys(animation).map((key) => {
         const val = animation[key as keyof domAnimateProp]!;
@@ -110,7 +113,7 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
 
   getStart(animation:Props["animation"],dom:HTMLDivElement,runMount?:"start"|"end") {
     const animateState:animateState = {};
-    dom.style.display = "block"; // 让动画可以显示动画
+    dom.style.display = this.props.display!; // 让动画可以显示动画
     if (typeof animation === "string") {
       const show = animation.includes("In");
       if (animation === "bounceRightIn") {
@@ -145,7 +148,10 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
   }
   domExcute(dom:HTMLDivElement,animation:AnimateType,duration:number, runMout?:boolean){
     if (this.timer) {
-      return;
+      // 取消上一次的动画时间，避免两次动画几乎同时执行时，产生错误的结果，
+      // 例如日历快速的切换年、季频率，会导致同时显示年的视图和季的视图
+      window.cancelAnimationFrame(this.timer);
+      this.timer = 0;
     }
     const timeEnd = Math.ceil(duration! / 17);
     const animationType = typeof animation === "string" ? animation : "In";
@@ -170,7 +176,8 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
         if(time < timeEnd){
           fn();
         } else {
-          dom.style.display = show ? "block" : "none";
+          dom.style.display = show ? this.props.display! : "none";
+          console.log(this.props.display, show , "asdf")
           if (animationType.includes("bounce")){
             dom.style.transform  = "translate(0px, 0px)";
           }
@@ -208,6 +215,12 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
             }
             this.domExcute(this.boxDom.current!,animation as AnimateType,duration!);
       }
+    }
+  }
+
+  componentWillUnmount(){
+    if (this.timer) {
+      window.cancelAnimationFrame(this.timer)
     }
   }
 

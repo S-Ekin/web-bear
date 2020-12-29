@@ -126,7 +126,7 @@ class ParMenu extends React.PureComponent<props, states> implements IParMenu{
 			</ul>
 		);
 		return expand ? (
-								<SlideBox slide={node.get("drop")} >
+								<SlideBox slide={node.get("drop")} isImmedia={true}>
 									{subCom}
 								</SlideBox>
 					) :subCom;

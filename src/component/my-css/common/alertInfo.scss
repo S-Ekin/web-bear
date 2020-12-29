@@ -5,10 +5,19 @@
   right: 20px;
   top: 10px;
   z-index: 20;
-  text-align: right;
-  width: 50%;
+  max-width: 55%;
   overflow: hidden;
   padding: 0 6px;
+  padding-left: 30px;
+  // 让每个提示的div，不为absolute，但是宽度不随父元素的宽度，跟随子元素的宽度
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  & > div {
+    // 让每个提示的div，跟随子元素的宽度
+    width: fit-content;
+  }
 
   .g-alertInfo {
     @extend %shadow;
@@ -22,6 +31,7 @@
     min-width: 280px;
     justify-content: space-between;
     text-align: left;
+    word-break: break-all;
   }
 }
 

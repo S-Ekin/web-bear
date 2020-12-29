@@ -84,8 +84,7 @@ class Notice extends React.PureComponent<props, states> implements INotice {
 					animation="bounceRightIn"
 					duration={500}
 					runMount={true}>
-					<div>
-						<span className="g-alertInfo">
+					<span className="g-alertInfo">
 							<span>
 								<span className={`notice-item ${type}`}>
 									<SvgIcon className={type} size="middle"/>
@@ -100,7 +99,6 @@ class Notice extends React.PureComponent<props, states> implements INotice {
                                     <SvgIcon className="close" />
 							</span>
 						</span>
-					</div>
 				</Animate>
 			);
 

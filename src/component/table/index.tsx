@@ -168,6 +168,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
         if(!item){
             return ;
         }
+        // todo: 滚动到指定位置
         const par = this.tableContainer.current!;
         const top = item.offsetTop  - par.clientHeight + item.clientHeight + 100 ; 
         window.setTimeout(()=>{
