@@ -82,7 +82,7 @@ class Notice extends React.PureComponent<props, states> implements INotice {
 				<Animate
 					key={id}
 					animation="bounceRightIn"
-					duration={500}
+					duration={400}
 					runMount={true}>
 					<span className="g-alertInfo">
 							<span>

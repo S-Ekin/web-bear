@@ -114,7 +114,7 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState> im
 							runMount={true}
 							className={`g-modal ${className}`}
 							animation={ show ? "bounceDownIn" : "bounceDownOut" }
-							duration={600}
+							duration={350}
 						>
 							<div
 							style={{height: "100%",}}

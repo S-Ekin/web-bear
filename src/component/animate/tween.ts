@@ -1,6 +1,8 @@
 // 可查看 https://easings.net/# 不同的缓动函数效果和实现
-const progress = (end:number, begin:number, factor:number) => {
-    return factor * (end - begin) + begin;
+const progress = (_end:number, _begin:number, factor:number) => {
+    const begin = _begin || 0;
+    const end = _end || 0;
+    return factor * (end - begin) + Number(begin);
 };
 export const tween = {
     linear: function (curTime:number, begin:number, end:number, duration:number):number {
@@ -21,12 +23,6 @@ export const tween = {
         const x = curTime / duration;
         const factor = (-(Math.cos(Math.PI * x) - 1) / 2);
         return progress(end, begin, factor);
-    },
-    easeOutQuint (x: number): number {
-        return 1 - Math.pow(1 - x, 5);
-    },
-    easeInCirc (x: number): number {
-        return 1 - Math.sqrt(1 - Math.pow(x, 2));
     },
     easeInOutCubic (curTime:number, begin:number, end:number, duration:number): number {
         const x = curTime / duration;

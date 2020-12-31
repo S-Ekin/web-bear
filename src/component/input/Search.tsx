@@ -108,7 +108,7 @@ class Search extends React.PureComponent<props,states> implements ISearch{
 					onChange={this.changeFn}
 					onKeyDown={this.keyPress}
 				/>
-				<Animate animation={searching ? "fadeIn" : "fadeOut"} elementStr="span">
+				<Animate animation={searching ? "fadeIn" : "fadeOut"} spanWrapEle={true}>
 					<span
 						className="m-search-close"
 						onClick={this.closeSearch}>

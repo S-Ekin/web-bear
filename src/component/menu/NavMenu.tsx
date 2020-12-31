@@ -210,7 +210,7 @@ class NavMenu extends React.PureComponent<props,states> implements INavMenu{
 		return (
             <Animate 
                 className={"g-slideMenu " + (!expand ? "expand" : "")} 
-                duration={300} 
+                duration={240} 
                 display="flex"
                 animation={{ width: expand ? (width || 250): 70 }}
             >

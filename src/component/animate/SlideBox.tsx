@@ -13,12 +13,16 @@ type Props = {
   isImmedia?: boolean; // 连续点击时，立马结束上一次动画
   slide: boolean;
   directionUp?: boolean; // 下拉框在显示框上还是下
+  duration?:number;
 };
 type States = {};
 interface ISlideBox {
   slideFn: (slideDown: boolean) => void;
 }
 class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
+  static defaultProps = {
+    duration:300
+  }
   slideDom: React.RefObject<HTMLDivElement> = React.createRef();
   timer = 0;
   firstSlide = this.props.slide;
@@ -46,7 +50,7 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
   }
 
   queueFn(slideDown: boolean): void {
-    const { directionUp } = this.props;
+    const { directionUp,duration } = this.props;
     const dom = this.slideDom.current!;
     if (slideDown) {
       dom.style.display = "block";
@@ -55,9 +59,8 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
     const child = dom.firstElementChild! as HTMLDivElement;
     const origin = child.clientHeight;
 
-    const duration = 300;
     let timeFrom = 0;
-    const timeEnd = Math.ceil(duration / 17);
+    const timeEnd = Math.ceil(duration! / 12);
     const dispaly = slideDown ? "block" : "none";
     const start = slideDown ? 0 : origin;
     const end = !slideDown ? 0 : origin;

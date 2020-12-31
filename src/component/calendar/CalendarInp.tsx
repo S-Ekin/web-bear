@@ -63,7 +63,7 @@ class CalendarInp extends React.PureComponent<
 
 		const closeIcon = ableClear ? (
 					<Animate
-						elementStr="span"
+						spanWrapEle={true}
 						animation={inpVal ? "fadeIn" : "fadeOut"}>
 						<span
 							className="m-search-close"

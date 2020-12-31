@@ -1,25 +1,24 @@
 @import "../../../component/my-css/scss/variate.scss";
 
-.slideBox-page {
-  .slide-test {
-    width: 300px;
-    padding: 6px;
-    border: 2px solid $normal;
-  }
+.animate-page {
+  $h:250px;
+
+  width: 100%;
+  overflow: hidden;
 
   .text-box {
     border: 1px solid $normal;
-    height: 260px;
+    height: 100%;
     overflow: auto;
-    background: white;
+    background: $theme-color;
+    border-radius: 8px;
+    color: white;
+    text-align: center;
   }
 
-  .item {
-    padding: 5px;
-    border-bottom: 1px solid $normal;
-  }
-
-  .slide-box {
-    margin: 10px 0;
+  .show-box {
+    height: $h;
+    padding: 20px 40px;
+    box-sizing: content-box;
   }
 }

@@ -9,17 +9,11 @@
 import * as React from "react";
 import { tween } from "./tween";
 const animateTypeArr = ["fadeIn", "fadeOut","bounceRightIn", "bounceDownIn", "bounceDownOut"];
-const domAnimateProps = ["opacity","width","height"];
-type AnimateType = "fadeIn" |  "fadeOut" | "bounceRightIn" |"bounceDownIn" | "bounceDownOut" ;
-type domAnimateProp = {
-  width?:number;
-  opacity?: 0 | 1;
-  height?:number;
-  transform? :string;
-}
+const domAnimateProps = ["opacity","width","height","transform"];
+import { AnimateType, domAnimateProp, animateState} from "./animateType"
 type Props = {
   animation: AnimateType | domAnimateProp, // 动画效果过程
-  elementStr?:"div"|"span",
+  spanWrapEle?:boolean,
   styleObj?:React.CSSProperties
   className?: string;
   display?:"block" | "inline-block" | "flex" ;
@@ -27,14 +21,7 @@ type Props = {
   runMount?:boolean; // 组件挂载的时候就展示
 };
 type States = {};
-type animateState = {
-  opacity?: number;
-  width?: number;
-  height?: number;
-  transform?:number;
-};
-interface ISlideBox {
-}
+
 const easeTypeObj = {
   "fadeIn": "easeOutCubic",
   "fadeOut": "easeOutCubic",
@@ -42,7 +29,7 @@ const easeTypeObj = {
   "bounceDownIn": "easeOutBack",
   "bounceDownOut": "easeInBack",
 }
-class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
+class Animate extends React.PureComponent<Props, States>  {
   static defaultProps = {
     duration:300,
     elementStr:"div",
@@ -138,10 +125,11 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
        Object.keys(animation).map((key) => {
         const val = animation[key as keyof domAnimateProp]!;
         if (key === "transform") {
-          const translate = (val as string).match(/\d+/);
-          animateState.transform = runMount ? 0 : translate ? translate[0] as unknown as number  : 0;
+          const translate = (val as string).match(/\d+/g);
+          animateState.transform = runMount==="start" ? [0,0] : translate ? [Number(translate[0]),Number(translate[1] || 0)]  : [0,0];
+        }else {
+          animateState[key as "opacity"] = runMount === "start" ? 0: Number(val) as number;
         }
-        animateState[key as "opacity"] = runMount ? 0: val as number;
       })
     }
     return animateState;
@@ -153,8 +141,8 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
       window.cancelAnimationFrame(this.timer);
       this.timer = 0;
     }
-    const timeEnd = Math.ceil(duration! / 17);
-    const animationType = typeof animation === "string" ? animation : "In";
+    const timeEnd = Math.ceil(duration! / 10);
+    const animationType = typeof animation === "string" ? animation : "objIn";
     const show = animationType.includes("In");
     let time = 0 ;
 
@@ -165,9 +153,19 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
           Object.keys(this.animateState).forEach(val => {
               const key = val as keyof animateState;
               const ease = this.easeType;
+                
               if (key === "transform") {
-                  const distance = tween[ease](time,start[key]!,endObj[key]!,timeEnd);
+                if (animationType === "objIn") {
+
+                  const transformB = start.transform as number[];
+                  const transformE = endObj.transform as number[];
+                  let distanceX = tween[ease](time,transformB[0],transformE[0],timeEnd);
+                  let distanceY = tween[ease](time,transformB[1],transformE[1],timeEnd);
+                  dom.style.transform = `translate(${distanceX}px, ${distanceY}px)`;
+                }else {
+                  const distance = tween[ease](time,start[key] as number,endObj[key] as number,timeEnd);
                   dom.style.transform = animationType.includes("Down") ?`translate(0px,${distance}px)`:`translate(${distance}px, 0px)`;
+                }
               } else {
                   const distance = tween[ease](time, start[key]!,endObj[key]!,timeEnd) + "";
                   dom.style[key as any] = distance + (key === "opacity" ? "" : "px") ;
@@ -177,7 +175,6 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
           fn();
         } else {
           dom.style.display = show ? this.props.display! : "none";
-          console.log(this.props.display, show , "asdf")
           if (animationType.includes("bounce")){
             dom.style.transform  = "translate(0px, 0px)";
           }
@@ -187,20 +184,18 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
       })
     } 
     fn();
-    if (runMout) {
-    } else {
+    if (!runMout && animationType === "objIn") { // 直接用dom属性时，要转换一下顺序
       this.animateState =  endObj;
     }
   } 
   
   componentDidUpdate(preProps: Props) {
-    const { animation,runMount,duration } = this.props;
+    const { animation,duration, runMount } = this.props;
     if (typeof animation === "string") {
       if (animation!==preProps.animation) {
             this.easeType = this.registerEaseType(animation);
-            if (runMount) {
-              this.animateState = this.getStart(animation, this.boxDom.current!, "start");
-            }
+            // 重新改变动画状态
+            this.animateState = this.getStart(animation, this.boxDom.current!, "start");
             this.domExcute(this.boxDom.current!,animation as AnimateType,duration!);
         }
     } else {
@@ -210,9 +205,9 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
       })
       if (compare) {
          this.easeType = this.registerEaseType(animation);
-            if (runMount) {
+           if (runMount || typeof preProps.animation === "string") {
               this.animateState = this.getStart(animation, this.boxDom.current!, "start");
-            }
+           }
             this.domExcute(this.boxDom.current!,animation as AnimateType,duration!);
       }
     }
@@ -225,21 +220,22 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
   }
 
   render() {
-    const { children,className,elementStr, runMount, animation} = this.props;
+    const { children,className,spanWrapEle, runMount, animation, styleObj} = this.props;
     const show = typeof animation === "string" && animation.includes("In") ? true : true;
-    const opacity = runMount ? show ? "0" : "1" :show ? "1" :"0";
-    return elementStr === "div" ? (
+    const opacity = typeof animation === "string" ? runMount ? show ? "0" : "1" :show ? "1" :"0" : "1";
+    const style = Object.assign({opacity: opacity,}, styleObj)
+    return !spanWrapEle ? (
       <div 
         className={className}
         ref={this.boxDom}
-        style={{opacity: opacity,}}
+        style={style}
         >
         {children}
       </div>
     ):( 
       <span
         className={className}
-        style={{opacity: opacity,}}
+        style={style}
         ref={this.boxDom}
         >
         {children}
@@ -248,4 +244,4 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
   }
 }
 
-export default SlideBox;
+export default Animate;
