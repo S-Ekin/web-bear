@@ -159,6 +159,7 @@ class Animate extends React.PureComponent<Props, States>  {
 
                   const transformB = start.transform as number[];
                   const transformE = endObj.transform as number[];
+                  console.log(transformB, transformE, "domEx")
                   let distanceX = tween[ease](time,transformB[0],transformE[0],timeEnd);
                   let distanceY = tween[ease](time,transformB[1],transformE[1],timeEnd);
                   dom.style.transform = `translate(${distanceX}px, ${distanceY}px)`;

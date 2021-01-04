@@ -13,6 +13,7 @@ import CodeBlock from "@container/codeBlock/CodeBlock";
 import { str1 } from "./CodeStr";
 import { Animate } from "@component/animate/index";
 import { AnimateType, domAnimateProp } from "@component/animate/animateType";
+import notice from "@component/toast/index";
 type Props = {};
 type config = {
   animation: AnimateType | domAnimateProp; // 动画效果过程
@@ -27,7 +28,14 @@ type States = {
   immuConfig: IImmutalbeMap<config>;
   preConfig: IImmutalbeMap<config>;
   key: number;
-  animation: AnimateType | keyof domAnimateProp; // 动画效果过程
+  animation: AnimateType | "domProps"; // 动画效果过程
+  animateObj:{
+        "width": string,
+        "height": string,
+        "transformX": string,
+        "transformY": string
+  }
+  domPropsArr:string[];
 };
 interface IDemo {
   changeConfig(e: React.ChangeEvent<HTMLInputElement>): void;
@@ -47,13 +55,15 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     preConfig: createImmutableMap(config),
     animation: "fadeIn",
     key: 1,
+    domPropsArr:["width","height","transform"],
+    animateObj:{
+        "width": "500",
+        "height": "250",
+        "transformX": "0",
+        "transformY": "0"
+    }
   };
-  animateObj={
-      "dom-width": "500",
-      "dom-height": "250",
-      "dom-transformX": "0",
-      "dom-transformY": "0"
-  };
+  
    initStyle = {
      height: 200
    }; 
@@ -77,7 +87,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     const name = dom.name as any;
     if (name === "animation") { // chebkbox
       const val = dom.value as States["animation"];
-      if (!["width", "height", "transform", "opacity"].includes(val)) {
+      if (val !== "domProps") { // 动画名
           this.setState((state)=>{
             return {
               animation: val,
@@ -88,22 +98,33 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       this.setState({
         animation: val,
       });
+    } else if (name === "domProps") { // 属性复选框
+      if (document.querySelectorAll("#propsBox .no-fill").length) {
+        notice.add("填写完整！","warn");
+        return;
+      }
+      const val = dom.value as keyof domAnimateProp;
+      this.setState(pre => {
+        let arr = pre.domPropsArr;
+        if (arr.includes(val)) {
+          arr = arr.filter(key => key!== val);
+        } else {
+          arr = arr.concat([val]);
+        }
+       
+        return {
+          domPropsArr: arr,
+        };
+      }); 
     } else  {// 输入框
         const val = dom.value;
-        if (name.includes(this.state.animation) && val !== this.animateObj[name as "dom-width"] ) {
-           this.setState((state)=>{
-            const objVal = name === "dom-transformX" ?
-             `translate(${val}px, ${this.animateObj["dom-transformY"]}px)` : 
-             name === "dom-transformY" ? `translate(${this.animateObj["dom-transformX"]}px, ${val}px)`  : +val;
-            return {
-              immuConfig: state.immuConfig.set("animation", {
-                [state.animation]: objVal,
-              }),
-            };
-          });
-        }
-
-        this.animateObj[name as "dom-width"] = val;
+        this.setState(pre =>{
+          return {
+            animateObj:Object.assign({},pre.animateObj,{
+                [name]:val,
+            })
+          };
+        });
     }
   }
 
@@ -118,11 +139,25 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
         };
       });
     } else if (type === "btn2") {
-      console.log(1);
+        this.setState(pre =>{
+          const { domPropsArr, animateObj} = pre;
+          const domObj:any = {}; 
+            domPropsArr.forEach(k => {
+              const val = animateObj[k as keyof States["animateObj"]];
+              if (k === "transform") {
+                domObj.transform = `translate(${animateObj["transformX"]}px, ${animateObj["transformY"]}px)`;
+              } else {
+                domObj[k] = val ;
+              }
+          }); 
+          return {
+            immuConfig: pre.immuConfig.set("animation", domObj),
+          };
+        });
     }
   }
   render() {
-    const { preConfig, immuConfig, key, animation} = this.state;
+    const { preConfig, immuConfig, key, animation, domPropsArr, animateObj} = this.state;
     const {
       className,
       runMount,
@@ -136,9 +171,6 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
           <div className="flex-between">
             <Button handle={this.btnHandle} name="btn1">
               刷新配置
-            </Button>
-            <Button handle={this.btnHandle} name="btn2">
-              下拉
             </Button>
           </div>
           <div className="flex-between">
@@ -295,67 +327,82 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               bounceOutIn
             </CheckBox>
           </div>
-          <div className="inp-item">
-            <span>属性名：</span>
+          <div className="inp-item" id="propsBox">
             <CheckBox
               name="animation"
-              value="width"
+              value="domProps"
               type="radio"
-              checked={animation === "width"}
+              checked={animation === "domProps"}
               changeHandle={this.changeAnimation}
             >
-              <Input
-                type="number"
-                blurFn={this.changeAnimation}
-                name="dom-width"
-                width={100}
-                norequire={true}
+              <span>属性名：</span>
+              <Button handle={this.btnHandle} name="btn2" disabled={animation !== "domProps"}>
+               设置
+              </Button>
+              <CheckBox
+                name="domProps"
+                value="width"
+                type="checkbox"
+                checked={domPropsArr.includes("width")}
+                changeHandle={this.changeAnimation}
               >
-                width:
-              </Input>
-            </CheckBox>
-            <CheckBox
-              name="animation"
-              value="height"
-              type="radio"
-              checked={animation === "height"}
-              changeHandle={this.changeAnimation}
-            >
-              <Input
-                type="number"
-                blurFn={this.changeAnimation}
-                name="dom-height"
-                width={100}
-                norequire={true}
+                <Input
+                  type="number"
+                  changeFn={this.changeAnimation}
+                  name="width"
+                  value={animateObj["width"]}
+                  width={100}
+                  norequire={!domPropsArr.includes("width")}
+                >
+                  width:
+                </Input>
+              </CheckBox>
+              <CheckBox
+                name="domProps"
+                value="height"
+                type="checkbox"
+                checked={domPropsArr.includes("height")}
+                changeHandle={this.changeAnimation}
               >
-                height:
-              </Input>
-            </CheckBox>
-            <CheckBox
-              name="animation"
-              value="transform"
-              type="radio"
-              checked={animation === "transform"}
-              changeHandle={this.changeAnimation}
-            >
-              <Input
-                type="number"
-                blurFn={this.changeAnimation}
-                name="dom-transformX"
-                norequire={true}
-                width={100}
+                <Input
+                  type="number"
+                  changeFn={this.changeAnimation}
+                  value={animateObj["height"]}
+                  name="height"
+                  norequire={!domPropsArr.includes("height")}
+                  width={100}
+                >
+                  height:
+                </Input>
+              </CheckBox>
+              <CheckBox
+                name="domProps"
+                value="transform"
+                type="checkbox"
+                checked={domPropsArr.includes("transform")}
+                changeHandle={this.changeAnimation}
               >
-                transformX:
-              </Input>
-              <Input
-                type="number"
-                blurFn={this.changeAnimation}
-                name="dom-transformY"
-                width={100}
-                norequire={true}
-              >
-                transformY:
-              </Input>
+                <Input
+                  type="number"
+                  changeFn={this.changeAnimation}
+                  name="transformX"
+                  value={animateObj["transformX"]}
+                  norequire={!domPropsArr.includes("transform")}
+                  width={100}
+                >
+                  transformX:
+                </Input>
+                <Input
+                  type="number"
+                  changeFn={this.changeAnimation}
+                  name="transformY"
+                  value={animateObj["transformY"]}
+                  norequire={!domPropsArr.includes("transform")}
+                  width={100}
+                >
+                  transformY:
+                </Input>
+              </CheckBox>
             </CheckBox>
           </div>
 
