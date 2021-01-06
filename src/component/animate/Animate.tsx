@@ -125,7 +125,7 @@ class Animate extends React.PureComponent<Props, States>  {
        Object.keys(animation).map((key) => {
         const val = animation[key as keyof domAnimateProp]!;
         if (key === "transform") {
-          const translate = (val as string).match(/\d+/g);
+          const translate = (val as string).match(/-?\d+/g);
           animateState.transform = runMount==="start" ? [0,0] : translate ? [Number(translate[0]),Number(translate[1] || 0)]  : [0,0];
         }else {
           animateState[key as "opacity"] = runMount === "start" ? 0: Number(val) as number;

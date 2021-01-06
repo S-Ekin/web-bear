@@ -22,7 +22,7 @@ interface IDemo {
 
 }
 
-const iconList = ["animate","scroll","menu","plus","minus","loading", "alert", "close", "warn", "menu-expand", "menu-slide", "bin-tree", "calendar1", "arrow-pre", "arrow-next", "dataType", "arrow-left-square", "arrow-right-square", "role", "pdf", "excel", "word", "zip", "txt", "file", "img", "combo", "modal", "table", "toast", "calendar", "success", "error", "empty", "checkbox-blank", "checkbox-marked", "checkbox-has-selected", "radio-off", "input", "radio-on", "search", "setting", "folder", "folder-open", "user", "arrow-up", "arrow-down", "menu-button"];
+const iconList = ["util","animate","scroll","menu","plus","minus","loading", "alert", "close", "warn", "menu-expand", "menu-slide", "bin-tree", "calendar1", "arrow-pre", "arrow-next", "dataType", "arrow-left-square", "arrow-right-square", "role", "pdf", "excel", "word", "zip", "txt", "file", "img", "combo", "modal", "table", "toast", "calendar", "success", "error", "empty", "checkbox-blank", "checkbox-marked", "checkbox-has-selected", "radio-off", "input", "radio-on", "search", "setting", "folder", "folder-open", "user", "arrow-up", "arrow-down", "menu-button"];
 
 class Demo extends React.PureComponent<Props,States> implements IDemo{
 

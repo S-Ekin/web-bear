@@ -1,24 +1,21 @@
 import { Route ,Switch} from "react-router-dom";
 import * as React from "react";
-import * as loadable from "react-loadable";
 import ErrorBoundary from '@component/crashPage/ErrorBoundary';
 import {event} from "@component/util/Event";
 import notice from "@component/toast/index";
-
+import loadable from "@component/util/routerLoad";
 const routerConfig = {
 	buttonRouter: {
 		loader: () =>
 			import(
 				/*webpackChunkName: "buttonRouter" */ "./Router/ButtonRoute"
 			),
-		loading: () => <span>loading......</span>,
 	},
 	tableRouter: {
 		loader: () =>
 			import(
 				/*webpackChunkName: "table" */ "./Router/TableRouter"
 			),
-		loading: () => <span>loading......</span>,
 	},
 	
 	loadingRouter: {
@@ -26,58 +23,51 @@ const routerConfig = {
 			import(
 				/*webpackChunkName: "loading" */ "./Router/LoadingRouter"
 			),
-		loading: () => <span>loading......</span>,
 	},
 	comboRouter: {
 		loader: () =>
 			import(
 				/*webpackChunkName: "combo" */ "./Router/ComboRouter"
 			),
-		loading: () => <span>loading......</span>,
 	},
 	blog: {
 		loader: () =>
 			import(
 				/*webpackChunkName: "blog" */ "./Router/BlogRoute"
 			),
-		loading: () => <span>loading......</span>,
 	},
 	problem: {
 		loader: () =>
 			import(
 				/*webpackChunkName: "problem" */ "./Router/ProblemRoute"
 			),
-		loading: () => <span>loading......</span>,
 	},
 	modal: {
 		loader: () =>
 			import(
 				/*webpackChunkName: "modal" */ "./Router/ModalRoute"
 			),
-		loading: () => <span>loading......</span>,
 	},
 	menu: {
 		loader: () =>
 			import(
 				/*webpackChunkName: "menu" */ "./Router/MenuRouter"
 			),
-		loading: () => <span>loading......</span>,
 	},
-	scroll: {
+	util: {
 		loader: () =>
 			import(
-				/*webpackChunkName: "scroll" */ "./Router/ScrollRouter"
+				/*webpackChunkName: "util" */ "./Router/UtilRouter"
 			),
-		loading: () => <span>loading......</span>,
 	},
 	animate: {
 		loader: () =>
 			import(
 				/*webpackChunkName: "animate" */ "./Router/AnimateRoute"
 			),
-		loading: () => <span>loading......</span>,
 	},
 };
+
 type props={
 
 };
@@ -110,6 +100,7 @@ class MainRouter extends React.PureComponent<props,state>{
 	bindGetHasError=(getHasErrorFn:(()=>boolean))=>{
 		this.getHasErrorFn = getHasErrorFn;
 	}
+	
 	render(){
 		const {initRouter} = this.state;
 		return ( 
@@ -125,7 +116,7 @@ class MainRouter extends React.PureComponent<props,state>{
 					<Route path="/problem" component={loadable(routerConfig.problem)} />
 					<Route path="/alert" component={loadable(routerConfig.modal)} />
 					<Route path="/menu" component={loadable(routerConfig.menu)} />
-					<Route path="/scroll" component={loadable(routerConfig.scroll)} />
+					<Route path="/util" component={loadable(routerConfig.util)} />
 					<Route path="/animate" component={loadable(routerConfig.animate)} />
               </Switch>
             </ErrorBoundary>

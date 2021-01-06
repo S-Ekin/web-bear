@@ -11,7 +11,7 @@ import {createImmutableMap} from "@component/util/createImmutaleMap";
 import { Input,CheckBox } from "@component/input/index";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import {str1 } from "./CodeStr";
-import data from "../table/data";
+import data from "../../table/data";
 import { ScrollBox } from "@component/scroll";
 import { IScrollMethods } from "@component/scroll/scroll";
 type Props = {};

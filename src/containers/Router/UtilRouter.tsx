@@ -5,7 +5,7 @@
  */
 import * as React from "react";
 import { Switch, Route } from "react-router-dom";
-import NormalScrollBox from "@componentDemo/scroll/demo";
+import LoadRoute from "@componentDemo/util/routerLoad/demo";
 type Props={
 
 };
@@ -22,7 +22,7 @@ class ScrollRouter extends React.PureComponent<Props,States> {
 
         return (
             <Switch>
-                <Route path="/scroll/normal"  component={NormalScrollBox}/>
+                <Route path="/util/routerLoad"  component={LoadRoute}/>
             </Switch>
         );
     }

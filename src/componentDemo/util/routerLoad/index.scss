@@ -1,0 +1,16 @@
+.scroll-page {
+  .main-demo {
+    padding: 0 16px;
+
+    .list-item {
+      display: flex;
+      border-top: 1px solid;
+
+      & > div {
+        width: 20%;
+        padding: 8px;
+        border-right: 1px solid;
+      }
+    }
+  }
+}

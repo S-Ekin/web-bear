@@ -197,14 +197,14 @@ export  const menuList = [
           },
           {
             id: "110",
-            name: "滚动条",
-            url: "/scroll",
-            icon: "scroll",
+            name: "工具",
+            url: "/util",
+            icon: "util",
             children: [
               {
                 id: "111",
-                name: "普通滚动条",
-                url: "/scroll/normal",
+                name: "懒加载",
+                url: "/util/routerLoad",
                 icon: "",
                 children: [],
               },
@@ -229,8 +229,15 @@ export  const menuList = [
                 url: "/animate/animate",
                 icon: "",
                 children: [],
-              }
-            ],
+              },
+              {
+                id: "123",
+                name: "普通滚动条",
+                url: "/animate/scroll",
+                icon: "",
+                children: [],
+              },
+            ]
           },
           {
             id: "90",
