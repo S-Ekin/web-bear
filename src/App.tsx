@@ -1,10 +1,7 @@
-//import "./component/my-css/main.scss";
 import "./component/my-css/main.scss";
 import App from "./containers/index";
 import * as React from "react";
 import * as ReactDom from "react-dom";
-import "velocity-animate";
-import 'velocity-animate/velocity.ui';
 import "@component/my-icon/iconfont.js";
 const domApp = document.getElementById("app");
 

@@ -12,11 +12,11 @@ type loadObj<p> = {
     loader(): Promise<React.ComponentType<p> | { default: React.ComponentType<p> }>;
     loading?:()=>React.ReactNode;
 }
-type Props<p>={
+type Props<p> = {
     loadObj:loadObj<p>;
     children:(com:React.ComponentType<RouteComponentProps>)=>React.ReactNode;
 };
-type States<p>={
+type States<p> = {
     Com:React.ComponentType<RouteComponentProps> | undefined;
     preLoadObj:Props<p>["loadObj"];
 };

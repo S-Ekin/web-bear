@@ -10,7 +10,7 @@ module.exports = env => {
 
 	const id_dev = env === "development";
 	return {
-		devtool: id_dev ? "eval-source-map" : "source-map",
+		devtool: id_dev ? "eval-source-map" : "",
 		entry: {
 			main: path.join(__dirname, "src/App.tsx"),
 		},
@@ -98,14 +98,74 @@ module.exports = env => {
 			},
 		},
 		optimization: {
-			//minimize: false,
-
-
+			// minimize: false,
+			namedModules: true,
+			namedChunks: true,
+			chunkIds: 'named',
+			moduleIds: 'named',
+			// 优化持久化缓存的, runtime 指的是 webpack 的运行环境(具体作用就是模块解析, 加载) 和 模块信息清单, 模块信息清单在每次有模块变更(hash 变更)时都会变更, 所以我们想把这部分代码单独打包出来, 配合后端缓存策略, 这样就不会因为某个模块的变更导致包含模块信息的模块(通常会被包含在最后一个 bundle 中)缓存失效. optimization.runtimeChunk 就是告诉 webpack 是否要把这部分单独打包出来.
+			runtimeChunk: {
+				// 包清单
+				name: "runtime",
+			},
+			splitChunks: {
+				automaticNameDelimiter: '~', // 分隔符 yong * 可能会导致报错
+				chunks: 'all', 
+				minSize: 0,
+				name: true, 
+				// maxSize: 0,
+				minChunks: 2,
+				maxAsyncRequests: 5,
+				maxInitialRequests: 3, // 很重要不然会导致有的js不能打包进去 // 每个入口并行加载的最大请求数（最多能拆分的包）是用来限制入口的拆分数量
+				cacheGroups: {
+				common: {
+				  // 检查异步加载的公共代码
+				  name: 'common',
+				  chunks: 'async',
+				  priority: 4,
+				  minChunks: 4
+				},
+				asyncVendors: {
+				  // 异步加载的第三方库
+				  name: 'asyncVendors',
+				  test: /[\\/]node_modules[\\/]/,
+				  chunks: 'async', // 检查异步加载的
+				  priority: 8,
+				  minChunks: 3
+				},
+				default: {
+					// 检查初始化时，自己的源码的公共代码
+					test: /src/,
+					chunks: 'initial',
+					name: 'commonMain', // 这里要是指定了名字那么，那会把所有这个拆分条件的全放在commonMain这个文件下
+					priority: 4,
+					minChunks: 3,
+					// 表示是否使用已有的 chunk，如果为 true 则表示如果当前的 chunk 包含的模块已经被抽取出去了，那么将不会重新生成新的。
+					reuseExistingChunk: true, 
+				},
+				vendors: {
+					// 检查初始化的，同步加载的第三方库 (也就是entry里的js第一次加载时引入的)
+					test: /[\\/]node_modules[\\/]/,
+					chunks: 'initial',
+					name: 'vendor',
+					// filename: '[name].bundle.js',
+					priority: -10,
+					enforce: true, // 强制检查打包，不管最小或最大的chunk限制
+					minChunks: 1,
+					reuseExistingChunk: true, 
+				},
+				// default: { // 这样配置能够把本地加载的公共js拆分出来， 比如多个文件都引入本地的jq  import $ from "./assert/js/jquery.js"; 要是不配置会有默认配置的。默认配置不会的文件名称是以有公共部门的文件名合起来。
+				//   minChunks: 1,
+				//   priority: -20,
+				//   reuseExistingChunk: true,
+				// },
+				},
+			},
 		},
 		plugins: [
 			new MiniCssExtractPlugin({
 				filename: !id_dev ? 'css/[name].css' : 'css/[name].[hash].css',
-				chunkFilename: !id_dev ? 'css/[id].css' : 'css/[id].[hash].css',
+				chunkFilename: !id_dev ? 'css/[name].css' : 'css/[id].[hash].css',
 			}),
 			new htmlWebpackPlugin({
 				title: "ts-react",
@@ -113,14 +173,12 @@ module.exports = env => {
 				inject: "body",
 				hash: true,
 				template: path.join(__dirname, "src/index.html"),
-				chunks: ["manifest", "main", "vendor","commonMain"]
+				chunks: ["runtime", "main", "vendor","commonMain","asyncVendors","common"]
 			}),
 		
 			new CleanDistPlugin(),
 			new webpack.HotModuleReplacementPlugin(),//模块的热替换
-			new webpack.NamedModulesPlugin(), //热更新时显示更新的模块的名字，默认是模块的id
 			new webpack.HashedModuleIdsPlugin(), // so that file hashes don't change unexpectedly
-
 		],
 		devServer: {
 			historyApiFallback: true,

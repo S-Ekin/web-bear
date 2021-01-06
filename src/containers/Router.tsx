@@ -8,7 +8,7 @@ const routerConfig = {
 	buttonRouter: {
 		loader: () =>
 			import(
-				/*webpackChunkName: "buttonRouter" */ "./Router/ButtonRoute"
+				/*webpackChunkName: "input" */ "./Router/InpRoute"
 			),
 	},
 	tableRouter: {
@@ -108,7 +108,7 @@ class MainRouter extends React.PureComponent<props,state>{
 		<div className="g-main">
             <ErrorBoundary init={initRouter} bindGetHasError={this.bindGetHasError}>
                <Switch>
-					<Route path="/button" component={loadable(routerConfig.buttonRouter)} />
+					<Route path="/inp" component={loadable(routerConfig.buttonRouter)} />
 					<Route path="/table" component={loadable(routerConfig.tableRouter)} />
 					<Route path="/loading" component={loadable(routerConfig.loadingRouter)} />
 					<Route path="/combo" component={loadable(routerConfig.comboRouter)} />

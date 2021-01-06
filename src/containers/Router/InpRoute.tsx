@@ -28,11 +28,11 @@ class ButtonRoute extends React.PureComponent<Props,States> {
 
         return (
             <Switch>
-                <Route component={ButtonDemo} path="/button/common" />
-                <Route component={Layout} path="/button/layout" />
-                <Route component={InputDemo} path="/button/input" />
-                <Route component={CheckBoxDemo} path="/button/checkbox" />
-                <Route component={SearchDemo} path="/button/search" />
+                <Route component={ButtonDemo} path="/inp/button" />
+                <Route component={Layout} path="/inp/layout" />
+                <Route component={InputDemo} path="/inp/input" />
+                <Route component={CheckBoxDemo} path="/inp/checkbox" />
+                <Route component={SearchDemo} path="/inp/search" />
             </Switch>
         );
     }
