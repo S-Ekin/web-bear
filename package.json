@@ -1,6 +1,6 @@
 {
   "name": "@s-ekin/web",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "description": "",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -75,6 +75,5 @@
     "webpack-cli": "^3.3.5",
     "webpack-dev-server": "^3.7.2"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
