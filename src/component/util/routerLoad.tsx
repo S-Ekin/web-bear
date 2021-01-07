@@ -14,7 +14,7 @@ type loadObj<p> = {
 }
 type Props<p> = {
     loadObj:loadObj<p>;
-    children:(com:React.ComponentType<RouteComponentProps>)=>React.ReactNode;
+    children:(com:React.ComponentType<any>)=>React.ReactNode;
 };
 type States<p> = {
     Com:React.ComponentType<RouteComponentProps> | undefined;
@@ -63,12 +63,11 @@ class RouterLoad<P> extends React.PureComponent<Props<P>,States<P>> implements I
 
 const loadable = function<e>(loadObj:loadObj<e>){
     //todo: 有点搞不清楚 RouterLoad 明明要传类型参数，这里没有传，而且也不是自动取的 loadObj的类型参数，因为鼠标放上去显示的是 定义类时的那个类型参数名称。
-    return (route:RouteComponentProps)=> {
-        const {location,match,history,staticContext } = route;
+    return (route:e)=> {
         return  (
         <RouterLoad loadObj={loadObj} >
             {
-                (Com:React.ComponentType<RouteComponentProps>)=><Com location={location} match={match} history={history} staticContext={staticContext} />
+                (Com:React.ComponentType<e>)=><Com  {...route} />
             }
         </RouterLoad>
     )

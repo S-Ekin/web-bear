@@ -1,25 +1,4 @@
 export const str1 = `
-class Demo extends React.PureComponent<Props, States> implements IDemo {
-	
-  scrollMethods:undefined | IScrollMethods ;
-  bindScrollMethods = (scrollMethods:IScrollMethods)=>{
-    this.scrollMethods = scrollMethods;
-  }
-	render () {
-		return (
-			<ScrollBox
-				key={key}
-				className={preConfig.get("className")}
-				noStopPageScroll={preConfig.get("noStopPageScroll")}
-				keepBarShow={preConfig.get("keepBarShow")}
-				height={+preConfig.get("height")}
-				bindIntiScroll={this.bindScrollMethods}
-			>
-				<div className="main-demo" >
-				{this.getList()}
-				</div>
-			</ScrollBox>
-		)
-	}
-}
+ // 本质上就是传入异步加载文件的方法 import("../"),因为这个路径得在使用得地方显示指定-才可以根据使用的地方以相对路径找到目标文件。
+ // 然后返回一个 组件，这个组件是带路由参数的。然后直接在要异步加载的地方使用这个组件
 `;

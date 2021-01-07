@@ -183,9 +183,7 @@ class ScrollBox
       const { time } = this.props;
       const scrollMain = this.moveBar.current!.parentElement!
         .previousElementSibling! as HTMLDivElement;
-        console.log("1");
       if(this.upTimer){
-        console.log("return")
         window.cancelAnimationFrame(this.upTimer);
         this.upTimer = 0;
       }

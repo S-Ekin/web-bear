@@ -45,8 +45,9 @@ const tableInitData =(data:Props["data"],defaulSel:string,idField:string)=>{
                    // 对象
                     let obj = val.toOrderedMap();
                     const id = val.get(idField);
+                    const has = defaulSelArr.includes(`${id}`);
                     //添加选中的字段
-                    obj = obj.set("checked",defaulSelArr.includes(`${id}`));
+                    obj = obj.set("checked",has).set("selected", has);
                     return obj ;
                 }else{
                     //数组
@@ -168,12 +169,10 @@ class Table extends React.PureComponent<Props,States> implements ITable{
         if(!item){
             return ;
         }
-        // todo: 滚动到指定位置
-        const par = this.tableContainer.current!;
-        const top = item.offsetTop  - par.clientHeight + item.clientHeight + 100 ; 
+        // 滚动到指定位置
+        const top = item.offsetTop - 12 ; 
         window.setTimeout(()=>{
-            console.log(top, this.scrollRef.current);
-            // (this.scrollRef.current! as any).scrollYTo(Math.max(0,top));
+            this.scrollRef.current!.scrollToTop(Math.max(0,top));
         },10);
     }
     getColGroupCom() {
@@ -291,7 +290,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 
         const {curPage,tableData,perNums} = this.state ;
         return (
-                    <ScrollBox >
+                    <ScrollBox ref={this.scrollRef}>
 						<table >
 							{this.getColGroupCom()}
 							<tbody>

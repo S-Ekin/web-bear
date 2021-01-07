@@ -1,16 +1,37 @@
-.scroll-page {
-  .main-demo {
-    padding: 0 16px;
+.loadable-page {
+  .box {
+    border: 1px solid;
+    margin-top: 16px;
+    padding: 14px;
+  }
 
-    .list-item {
-      display: flex;
-      border-top: 1px solid;
+  .common {
+    color: white;
+    width: 30%;
+    text-align: center;
+    padding: 16px;
+  }
 
-      & > div {
-        width: 20%;
-        padding: 8px;
-        border-right: 1px solid;
-      }
-    }
+  .com1 {
+    background: chocolate;
+    margin-bottom: 20px;
+  }
+
+  .pending {
+    border-style: dashed;
+    background: none;
+    color: black;
+  }
+
+  .async-com {
+    background: burlywood;
+    border-radius: 4px;
+    margin: 10px;
+  }
+
+  .async-com2 {
+    background: chartreuse;
+    border-radius: 4px;
+    margin: 10px;
   }
 }

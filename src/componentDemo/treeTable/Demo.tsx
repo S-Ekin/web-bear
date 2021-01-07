@@ -83,7 +83,7 @@ class Demo extends React.PureComponent<Props, States> {
     return (
     <>
        <div>
-         外部控制下拉的选择id:224,229的节点
+         外部控制下拉的选择id:21,22的节点
                 <Button handle={this.changeSelect}>选择</Button>
         </div>
     </>
@@ -126,27 +126,27 @@ class Demo extends React.PureComponent<Props, States> {
                 <GroupCols.colItem width={60} field="persons" align="center">列2</GroupCols.colItem>
               </GroupCols>
               <GroupCols>
-                <GroupCols.colItem width={140} field="name">
-                  列1
+                <GroupCols.colItem width={140} field="id">
+                  id
                 </GroupCols.colItem>
                 <GroupCols.colItem field="persons" width={240}>
-                  列2
+                  列3
                 </GroupCols.colItem>
                 <GroupCols.colItem width={240} field="begin">
-                  列3
+                  列4
                 </GroupCols.colItem>
                 <GroupCols.colItem width={140} field="end">
-                  列3
+                  列5
                 </GroupCols.colItem>
                 <GroupCols.colItem width={140} field="progress">
-                  列3
+                  列6
                 </GroupCols.colItem>
               </GroupCols>
               <GroupCols forzen={true} >
-                <GroupCols.colItem width={140} field="name">列3</GroupCols.colItem>
+                <GroupCols.colItem width={140} field="name">列7</GroupCols.colItem>
               </GroupCols>
               <GroupCols  >
-                <GroupCols.colItem width={140} field="name">列3</GroupCols.colItem>
+                <GroupCols.colItem width={140} field="name">列8</GroupCols.colItem>
               </GroupCols>
             </TreeTable>
           </div>
