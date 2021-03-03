@@ -9,9 +9,9 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import LoadCom from "../loading/Loading";
 type loadObj<p> = {
-    loader(): Promise<React.ComponentType<p> | { default: React.ComponentType<p> }>;
     loading?:()=>React.ReactNode;
-}
+    loader(): Promise<React.ComponentType<p> | { default: React.ComponentType<p> }>;
+};
 type Props<p> = {
     loadObj:loadObj<p>;
     children:(com:React.ComponentType<any>)=>React.ReactNode;
@@ -20,10 +20,8 @@ type States<p> = {
     Com:React.ComponentType<RouteComponentProps> | undefined;
     preLoadObj:Props<p>["loadObj"];
 };
-interface IrouterLoad {
 
-}
-class RouterLoad<P> extends React.PureComponent<Props<P>,States<P>> implements IrouterLoad{
+class RouterLoad<P> extends React.PureComponent<Props<P>,States<P>> {
 
     state:States<P>={
         Com:undefined,
@@ -34,8 +32,8 @@ class RouterLoad<P> extends React.PureComponent<Props<P>,States<P>> implements I
         loadObj.loader().then((com:any)=>{
             this.setState({
                 Com:com.default,
-            })
-        })
+            });
+        });
     }
 
     getLoad () {
@@ -49,8 +47,8 @@ class RouterLoad<P> extends React.PureComponent<Props<P>,States<P>> implements I
                 this.setState({
                     Com:com.default,
                     preLoadObj: loadObj,
-                })
-            })
+                });
+            });
         }
     }
     render(){
@@ -66,12 +64,10 @@ const loadable = function<e>(loadObj:loadObj<e>){
     return (route:e)=> {
         return  (
         <RouterLoad loadObj={loadObj} >
-            {
-                (Com:React.ComponentType<e>)=><Com  {...route} />
-            }
+            {(Com:React.ComponentType<e>)=><Com  {...route} />}
         </RouterLoad>
-    )
-    }
-}
+    );
+    };
+};
 
 export default loadable;

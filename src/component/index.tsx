@@ -14,10 +14,21 @@ import notice from "./toast/index";
 import {TabList,GroupCols as ListGroup} from "./tableList/TabList";
 import {TreeTable,GroupCols as TreeGroupCols} from "./treeTable/TreeTable";
 import {createImmutableMap} from './util/createImmutaleMap';
+import * as domUtil from './util/domUtil';
+import * as jsUtil from './util/jsUtil';
+import loadable from './util/routerLoad';
 import {event} from './util/Event';
 import Layout from './layout/Layout';
+import { Animate, SlideBox } from "./animate/index";
+import {ScrollBox } from "./scroll/index";
 export {
   Button,
+  jsUtil,
+  domUtil,
+  ScrollBox,
+  loadable,
+  Animate,
+  SlideBox,
   GroupBtn,
   Calendar,
   Combobox,

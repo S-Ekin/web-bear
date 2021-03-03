@@ -159,7 +159,7 @@ class ParMenu extends React.PureComponent<props, states> implements IParMenu{
 					</span> 
 					<span className="nav-text">{text}</span>
 					<span className="m-slide-icon">
-						<SvgIcon className={`arrow-${drop ? "down" : "up"}`} />
+						<SvgIcon className={`arrow-${drop ? "down" : "right"}`} />
 					</span>
 				</div>
 				{sub}
