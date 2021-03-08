@@ -84,9 +84,9 @@ class Notice extends React.PureComponent<props, states> implements INotice {
 					animation="bounceRightIn"
 					duration={400}
 					runMount={true}>
-					<span className="g-alertInfo">
+					<span className={`g-alertInfo ${type}`}>
 							<span>
-								<span className={`notice-item ${type}`}>
+								<span className={`notice-item`}>
 									<SvgIcon className={type} size="middle"/>
 								</span>
 								<span className="txt">{text}</span>
@@ -123,6 +123,9 @@ const fn = (ref:Notice) => {
 
 const createNotice = function(callback?:()=>void) {
 	const wrap = document.getElementById("wrap-notice");
+	if (!wrap) {
+		throw new Error("不存在notice组件的容器，请生成id为 wrap-notice的div");
+	}
 
 	ReactDom.render(<Notice ref={fn} />, wrap,function(){
 		if(callback){

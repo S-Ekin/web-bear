@@ -35,7 +35,7 @@ class ComboInp extends React.PureComponent<props,states> {
     getSlideIcon(noicon:boolean|undefined,drop:boolean){
 
         return !noicon ? (
-            <SvgIcon className={`arrow-${drop?"down":"up"}`}/>
+            <SvgIcon className={`arrow-${drop?"up":"down"}`}/>
         ) : undefined;
     }
     //没有值的时候做提示，模仿input的placeholder

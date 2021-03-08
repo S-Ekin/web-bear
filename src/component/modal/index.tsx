@@ -48,7 +48,15 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState> im
 			return null;
 		}
 	}
-	wrap = document.getElementById("wrap-modal")!;
+	wrap:HTMLElement;
+	constructor(props:ModalProps){
+		super(props);
+		const dom = document.getElementById("inner-wrap-modal");
+		if (!dom) {
+			throw new Error("不存在Modal组件的容器，请生成id为 inner-wrap-modal的div");
+		}
+			this.wrap = dom ;
+	}
 	modalDom:React.RefObject<HTMLDivElement> = React.createRef();
 	
 	state={
@@ -96,11 +104,11 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState> im
 				<Button styleType="line-btn" handle={this.close}>关闭</Button>
 			</>
 		):customFootFn?customFootFn():undefined;
-		return (
+		return content ? (
 			<div className="m-Mfooter">
 				{content}
 			</div>
-		);
+		) : undefined;
 	}
 	getModal(){
 
@@ -127,7 +135,7 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState> im
 									<div className="m-Mtit" onMouseDown={this.headMouseDown}>
 										<span className="tit-name">{tit}</span>
 										<span className="m-Mclose" onClick={this.close}>
-										<SvgIcon className="close" />
+										<SvgIcon className="close" size="middle"/>
 										</span>
 									</div>
 

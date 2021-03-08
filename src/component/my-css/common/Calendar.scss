@@ -6,26 +6,22 @@ $inp-h:2em;
 
 .m-clalendar-inpBox {
   color: $text-color;
+  display: flex;
+  align-items: center;
+  border: 1px solid;
+  border-radius: 4px;
 
   .calendar-inpTxt {
-    border: 1px solid;
-    text-indent: 2.5em;
     cursor: pointer;
     width: 100%;
     background: none;
   }
 
   .calendar-inp-icon {
-    position: absolute;
-    line-height: $inp-h;
-    left: 10px;
+    padding: 0 8px;
   }
 
   .m-search-close {
-    position: absolute;
-    z-index: 5;
-    right: 10px;
-    top: 0.5em;
     cursor: pointer;
   }
 }

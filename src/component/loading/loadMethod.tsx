@@ -34,11 +34,13 @@ class Loading extends React.PureComponent<props, states> {
 let loadingRef:null | Loading = null ;
 const createLoad = function(callback?:()=>void) {
 		const wrap = document.getElementById("wrap-loading");
+		if (!wrap) {
+			throw new Error("不存在Loading组件的容器，请生成id为 wrap-loading");
+		}
 		ReactDom.render(<Loading ref={ref => (loadingRef = ref)} />, wrap,function(){
 			if(callback){
 				callback();
 			}
-			
 		});
 };
     

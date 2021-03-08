@@ -116,7 +116,7 @@ class Search extends React.PureComponent<props,states> implements ISearch{
 					</span>
 				</Animate>
 				<span className="j-search-icon" onClick={this.toggleSearch}>
-					<SvgIcon className="search" size="middle" />
+					<SvgIcon className="search" />
 				</span>
 			</div>
 		);

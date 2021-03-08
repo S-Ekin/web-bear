@@ -204,32 +204,10 @@ class PageSize extends React.PureComponent<Props, States> implements IPageSize {
 
 						<span>{totalNums}条</span>
 					</div>
-					<div style={{ display: "flex", alignItems: "center", }}>
-						<span>每页显示：</span>
-						<Combobox
-							field="pageNums"
-							data={pageNumsArr}
-							width={100}
-							directionUp={true}
-							clickCallback={this.perNumComboClick}
-							defaultVal={perNumId}
-						/>
-						<span>&nbsp;条</span>
-					</div>
+					
 				</div>
 
 				<div className="g-pageRight">
-					<div style={{ marginRight: "20px", }}>
-						<span>跳转到</span>
-						<input
-							className="j-jump-page s-inp normal"
-							value={curPage}
-							type="number"
-							min={1}
-							onChange={this.curNumInpHandle}
-						/>
-					</div>
-
 					<div className="m-code-number">
 						<span
 							className="m-page-num"
@@ -245,6 +223,29 @@ class PageSize extends React.PureComponent<Props, States> implements IPageSize {
 							<SvgIcon className="arrow-right-square" size="middle"/>
 
 						</span>
+					</div>
+					<div style={{ display: "flex", alignItems: "center", margin: "0 16px 0 16px", }}>
+						<Combobox
+							noSearch
+							field="pageNums"
+							data={pageNumsArr}
+							width={80}
+							directionUp={true}
+							clickCallback={this.perNumComboClick}
+							defaultVal={perNumId}
+						/>
+						<span>&nbsp;条/页</span>
+					</div>
+					<div >
+						<span>跳至</span>
+						<input
+							className="j-jump-page s-inp normal"
+							value={curPage}
+							type="number"
+							min={1}
+							onChange={this.curNumInpHandle}
+						/>
+						<span>页</span>
 					</div>
 				</div>
 			</div>

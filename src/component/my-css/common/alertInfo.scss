@@ -1,5 +1,38 @@
 @import "../scss/unit","../scss/variate";
 
+.g-alertInfo {
+  &.warn {
+    border-left: 2px solid $warn;
+  }
+
+  &.success {
+    border-left: 2px solid $success;
+  }
+
+  &.error {
+    border-left: 2px solid $error;
+  }
+
+  .txt {
+    text-align: left;
+    line-height: 1.2rem;
+  }
+
+  .notice-item {
+    padding-right: 16px;
+  }
+
+  .m-alert-close {
+    padding-left: 10px;
+    cursor: pointer;
+    color: #959faf;
+
+    &:hover {
+      color: $theme-color;
+    }
+  }
+}
+
 .g-notification {
   position: absolute;
   right: 20px;
@@ -23,46 +56,13 @@
     @extend %shadow;
 
     background: white;
-    color: black;
     display: inline-flex;
-    padding: 10px;
+    padding: 10px 10px  10px 20px;
     margin: 8px 0;
-    align-items: center;
     min-width: 280px;
+    min-height: 55px;
     justify-content: space-between;
     text-align: left;
     word-break: break-all;
-  }
-}
-
-.g-alertInfo {
-  .txt {
-    text-align: left;
-  }
-
-  .warn {
-    color: $warn;
-  }
-
-  .notice-item {
-    padding-right: 8px;
-    font-size: 24px;
-  }
-
-  .error {
-    color: $error;
-  }
-
-  .success {
-    color: $success;
-  }
-
-  .m-alert-close {
-    padding-left: 10px;
-    cursor: pointer;
-
-    &:hover {
-      color: $theme-color;
-    }
   }
 }

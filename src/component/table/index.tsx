@@ -290,7 +290,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 
         const {curPage,tableData,perNums} = this.state ;
         return (
-                    <ScrollBox ref={this.scrollRef}>
+                    <ScrollBox ref={this.scrollRef} className="m-fixTabBody">
 						<table >
 							{this.getColGroupCom()}
 							<tbody>

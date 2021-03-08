@@ -74,17 +74,18 @@ class CalendarInp extends React.PureComponent<
 				) : undefined ;
 		return (
 			<div className="m-clalendar-inpBox" onClick={this.toggleDrop}>
-				<span className="calendar-inp-icon">
-					<SvgIcon className="calendar"/>
-				</span>
+
 				<input
 					className="s-inp calendar-inpTxt"
 					value={inpVal}
 					placeholder={placeholder}
 					readOnly={true}
 					type="text"
-				/>
+				/>	
 				{closeIcon}
+				<span className="calendar-inp-icon">
+					<SvgIcon className="calendar"/>
+				</span>
 			</div>
 		);
 	}
