@@ -3,7 +3,14 @@ import { SlideBox } from "../animate/index";
 import * as Immutable from "immutable";
 import CalendarView from "./CalendarView";
 import CalendarInp from "./CalendarInp";
-import {timeStrValToTimeObjArr,calendarType ,getInpTimeStrArr,getCurTime,getLastYear} from './objectFn';
+import {
+  timeStrValToTimeObjArr,
+  calendarType,
+  getInpTimeStrArr,
+  getCurTime,
+  getLastYear,
+  timeStrToNumber,
+} from "./objectFn";
 import {ICommonInterface} from "./calendar";
 import { event } from "../util/autoSlideUp";
 
@@ -90,7 +97,7 @@ class Calendar extends React.PureComponent<Props, States>
 			//重置状态
 			const timeVal = getInpTimeStrArr(selTimeArr, rotate!, time!);
 			if(renderCallBack){
-					clickBack(selTimeArr,field,rotate!,selTimeArr);
+					clickBack(timeStrToNumber(timeVal).join(",") ,field,rotate!,selTimeArr);
 			}	
 			let animationArr:States["showViewArr"] = new Array(5).fill("fadeOut");
 			animationArr[nextProps.rotate!] = "fadeIn";
@@ -156,7 +163,8 @@ class Calendar extends React.PureComponent<Props, States>
 		};
 
 		if(renderCallBack){
-			clickBack(this.state.calendarVal, field, rotate!,selTimeArr);
+			const val = timeStrToNumber(timeVal).join(",");
+			clickBack(val, field, rotate!,selTimeArr);
 		}
 	}
 	
@@ -287,11 +295,12 @@ class Calendar extends React.PureComponent<Props, States>
 			if(["rotate","selTimeArr"].includes(key)){
 				const {field,clickBack} = this.props;	
 				const {rotate,calendarVal,selTimeArr} = this.state;	
-				clickBack(calendarVal,field,rotate,selTimeArr);
+				const val =timeStrToNumber(calendarVal.split(" 至 ")).join(",");
+				clickBack(val, field,rotate,selTimeArr);
 			}
 		});
 	}
-	
+
 	createFixProps(){
 		const {style,time,noChangeRotate} = this.props;
 		const obj = {
@@ -313,23 +322,17 @@ class Calendar extends React.PureComponent<Props, States>
 	componentWillUnmount() {
 		event.remove(this.eventId);
 	}
-	timeStrToNumber(strArr:string[]){
 
-		return strArr.map(val=>{
-
-			return val.replace(/-/g,"").replace(/:/g,"").replace(/\s/g,"");
-		});
-
-	}
 	getSelTimeVal() {
-		const { selTimeArr ,calendarVal} = this.state;
+		const { selTimeArr } = this.state;
 		const { time, clickBack, field ,rotate} = this.props;
 		const strArr = getInpTimeStrArr(selTimeArr, rotate!, time!);
 		const str = strArr.join(" 至 ");
 		this.setState({
 			calendarVal: str,
 		},()=>{
-			clickBack(calendarVal, field!, rotate!,selTimeArr);
+			const val = timeStrToNumber(strArr);
+			clickBack(val.join(","), field!, rotate!,selTimeArr);
 		});
 
 		return str;
@@ -374,7 +377,9 @@ class Calendar extends React.PureComponent<Props, States>
 				undefined
 			);
 		const activeName = expand ? "autoSlideUp" : "";		
-		const boxW = style!* 240;
+		const showViewIndex = showViewArr.indexOf("fadeIn");
+		console.log(showViewIndex);
+		const boxW = style!* ([235, 235, 228, 235, 292][showViewIndex]);
 		return (
 			<div
 				className={"g-calendar "+activeName}
@@ -386,7 +391,7 @@ class Calendar extends React.PureComponent<Props, States>
 					<SlideBox
 						slide={expand}
 					>
-						<div style={{ display: "flex", }}>
+						<div style={{ display: "flex", }} >
 							<CalendarView
 								fixProps={this.fixProps}
 								selTimeObj={selTimeArr.get(0)!}

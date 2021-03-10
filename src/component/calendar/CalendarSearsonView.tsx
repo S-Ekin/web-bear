@@ -28,7 +28,7 @@ export default class CalendarSearsonView
 
 	getSeasonItemArr(){
 		const {
-			curTime: { year, month },
+			curTime: { year, searson},
 			selTimeObj,
 			clickSelHandle,
 			showTimeObj,
@@ -52,7 +52,7 @@ export default class CalendarSearsonView
 					).map(() => {
 						const num = ++startSearson;
 
-						const searsonToday = (isSearsonToday && month === num && "calendar-today") || "";
+						const searsonToday = (isSearsonToday && searson === num && "calendar-today") || "";
 							const searsonSel = (isSearsonSel && selSearson === num && "calendar-sel") || "";
 							const className = 	"view-item " + searsonToday + " " + searsonSel;
 						return (

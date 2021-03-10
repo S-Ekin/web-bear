@@ -5,10 +5,9 @@ $slectColor:#aee6ff;
 $inp-h:2em;
 
 .m-clalendar-inpBox {
-  color: $text-color;
   display: flex;
   align-items: center;
-  border: 1px solid;
+  border: 1px solid $normal;
   border-radius: 4px;
 
   .calendar-inpTxt {
@@ -27,17 +26,6 @@ $inp-h:2em;
 }
 
 .m-calendar-view {
-  $day-width:2em;
-  $day-h:2em;
-  $mon-width:4em;
-  $mon-h:2.5em;
-  $sea-width:5em;
-  $sea-h:3.5em;
-
-  .item-calendar-view {
-    width: 100%;
-  }
-
   .view-item {
     text-align: center;
     cursor: pointer;
@@ -54,34 +42,41 @@ $inp-h:2em;
     }
 
     .day-span {
-      width: $day-width;
+      $day-h:2em;
+
+      width: 2em;
       height: $day-h;
       line-height: $day-h;
     }
 
     .mon-span,
     .year-span {
-      width: $mon-width;
+      $mon-h:2.5em;
+
+      width: 3.5em;
       height: $mon-h;
       line-height: $mon-h;
     }
 
     .searson-span {
-      width: $sea-width;
+      $sea-h:3.5em;
+
+      width: 5em;
       height: $sea-h;
       line-height: $sea-h;
     }
   }
 
   .day-disabled {
-    color: #aaaeb3;
-    opacity: 0.5;
+    color: rgba(0, 0, 0, 0.25);
     cursor: not-allowed;
     text-align: center;
 
     span {
+      $day-h:2em;
+
       display: inline-block;
-      width: $day-width;
+      width: 2em;
       height: $day-h;
       line-height: $day-h;
     }
@@ -104,17 +99,26 @@ $inp-h:2em;
     margin: 5px 0;
 
     & > li {
-      width: 14.28%;
+      // width: 14.28%;
+      margin: 0 4px;
     }
   }
 
   .year-group,
   .mon-group {
     display: flex;
-    margin: 5px 0;
+    margin: 8px 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
 
     .view-item {
-      width: 33.3%;
+      padding: 0 8px;
     }
   }
 
@@ -133,10 +137,20 @@ $inp-h:2em;
 
   .searson-group {
     display: flex;
-    margin: 10px 0;
+
+    &:first-child {
+      margin-bottom: 20px;
+    }
 
     .view-item {
-      width: 50%;
+      padding: 0 12px;
+    }
+  }
+
+  .calendar-today {
+    span {
+      border: 1px solid $theme-color;
+      border-radius: 2px;
     }
   }
 
@@ -153,18 +167,9 @@ $inp-h:2em;
     }
   }
 
-  .calendar-today {
-    span {
-      color: $green;
-      font-weight: bold;
-    }
-  }
-
   .m-time {
-    color: #000;
     display: flex;
     justify-content: center;
-    width: 100%;
     padding-top: 6px;
   }
 
@@ -181,15 +186,9 @@ $inp-h:2em;
   box-shadow: $shadow;
 
   .g-calendar-view {
-    //	width:100%;
-    min-width: 240px;
     position: relative;
-    color: $theme-color;
+    color: rgba(0, 0, 0, 0.65);
     font-size: 14px;
-
-    &:nth-child(2) {
-      border-left: 1px solid;
-    }
   }
 
   .m-rotate-drop {
@@ -236,9 +235,7 @@ $inp-h:2em;
     }
 
     .curViewType {
-      border-radius: 100%;
-      border: 1px solid;
-      padding: 4px 6px;
+      padding: 5px 6px;
       cursor: pointer;
       display: block;
     }
@@ -263,7 +260,7 @@ $inp-h:2em;
   }
 
   .m-calendar-view {
-    padding: 4px 0 8px 0;
+    padding: 20px;
     position: relative;
   }
 }

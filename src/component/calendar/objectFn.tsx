@@ -40,8 +40,8 @@ const timeStrValToTimeObjArr = function(
   if (selTimeValStr) {
       const reg = /^\d{4}(-\d{2}){0,2}( [0-2]\d:\d{2})?$/;
       const  errorFormate = selTimeValStr.split(",").some(val=>{
-        return !reg.test(val)
-      })
+        return !reg.test(val);
+      });
       if(errorFormate){
   	    selTimeValStr = "";
       }
@@ -179,5 +179,11 @@ const getInpTimeStrArr = function(
 		const startTime = year - viewIndex + 1;
 		return startTime + 9;
 	};
+// 把显示的时间字符串变为数字，方便传入后端
+  const	timeStrToNumber = function (strArr:string[]){
+		return strArr.map(val=>{
+			return val.replace(/-/g,"").replace(/:/g,"").replace(/\s/g,"");
+		});
+	};
 
-export { timeStrValToTimeObjArr, calendarType, getInpTimeStrArr ,getCurTime, getLastYear};
+export { timeStrValToTimeObjArr, calendarType, getInpTimeStrArr ,getCurTime, getLastYear, timeStrToNumber};

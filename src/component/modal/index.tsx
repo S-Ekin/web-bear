@@ -51,9 +51,9 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState> im
 	wrap:HTMLElement;
 	constructor(props:ModalProps){
 		super(props);
-		const dom = document.getElementById("inner-wrap-modal");
+		const dom = document.getElementById("inner-modal-wrap");
 		if (!dom) {
-			throw new Error("不存在Modal组件的容器，请生成id为 inner-wrap-modal的div");
+			throw new Error("不存在Modal组件的容器，请生成id为 inner-modal-wrap的div");
 		}
 			this.wrap = dom ;
 	}

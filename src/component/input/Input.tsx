@@ -8,6 +8,7 @@ import * as React from "react";
 
 type props={
     dataSet?:string;
+    placeholder?:string;
     value?:string;
     name?:string;
     type?:"text"|"number";
@@ -38,7 +39,7 @@ class Input extends React.PureComponent<props,states> implements IInput{
         return lab ;
     }
     render(){
-        const {value,name,dataSet,styleName,changeFn,type,width,norequire, blurFn} = this.props;
+        const {value,name,dataSet,styleName,changeFn,type,width,norequire, blurFn,placeholder} = this.props;
         const style = width ? {width:width} : undefined;
         const requireName = norequire ? ""  : !value ? "no-fill" :"";
         return (
@@ -48,6 +49,7 @@ class Input extends React.PureComponent<props,states> implements IInput{
 					value={value}
 					className={`s-inp ${styleName} ${requireName}`}
                     name={name}
+                    placeholder={placeholder}
                     type={type}
                     style={style}
                     data-set={dataSet}

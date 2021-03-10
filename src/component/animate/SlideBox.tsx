@@ -14,6 +14,7 @@ type Props = {
   slide: boolean;
   directionUp?: boolean; // 下拉框在显示框上还是下
   duration?:number;
+  slideFnCallback?:(isStart?:boolean)=>boolean|void; // 收缩开始和结束的回调函数。 返回 true 禁止下拉
 };
 type States = {};
 interface ISlideBox {
@@ -21,8 +22,11 @@ interface ISlideBox {
 }
 class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
   static defaultProps = {
-    duration:300
-  }
+    duration:300,
+    slideFnCallback:()=>{
+      return false;
+    }
+  };
   slideDom: React.RefObject<HTMLDivElement> = React.createRef();
   timer = 0;
   firstSlide = this.props.slide;
@@ -50,7 +54,7 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
   }
 
   queueFn(slideDown: boolean): void {
-    const { directionUp,duration } = this.props;
+    const { directionUp,duration, slideFnCallback } = this.props;
     const dom = this.slideDom.current!;
     if (slideDown) {
       dom.style.display = "block";
@@ -88,14 +92,17 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
           child.style.position = "";
           child.style[direct] = "";
           child.style.width = originW;
+          slideFnCallback!();
         }
       });
     };
-    fn();
+    if (!slideFnCallback!(true)) {
+      fn();
+    }
   }
 
   immediaFn(slideDown: boolean): void {
-    const { directionUp } = this.props;
+    const { directionUp, slideFnCallback } = this.props;
     const dom = this.slideDom.current!;
     const hasRun = !!this.timer;
     if (hasRun) {
@@ -140,10 +147,13 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
           child.style.position = "";
           child.style[direct] = "";
           child.style.width = originW;
+          slideFnCallback!();
         }
       });
     };
-    fn();
+    if (!slideFnCallback!(true)) {
+      fn();
+    }
   }
 
   render() {
