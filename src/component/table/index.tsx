@@ -63,9 +63,9 @@ class Table extends React.PureComponent<Props,States> implements ITable{
             emptyTxt:"当前没有数据！",
     };
 
-    static colItem:React.FunctionComponent<IColumnItem> = ({width,children,align="center"})=>{
+    static colItem:React.FunctionComponent<IColumnItem> = ({width,children,align="td-left"})=>{
         return (
-            <th  style={{width: width,}} className={`td-${align}`}>{children}</th>
+            <th  style={{width: width,}} className={`${align}`}>{children}</th>
         );
     }
    
@@ -148,7 +148,7 @@ class Table extends React.PureComponent<Props,States> implements ITable{
     initFixObj(){
         const {idField,checkbox,children,tabField,noPageNums} = this.props;
 
-        const column = children.map(val => {
+        const column:IColumnItem[] = children.map(val => {
             const {children ,...obj} = val.props  as any;
             return obj ;
         });

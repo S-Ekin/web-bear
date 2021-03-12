@@ -45,8 +45,8 @@ class CheckBox extends React.PureComponent<props, states> {
 		const disabledName = disabled ? "disabled-box" : "";
 		return (
 			<label className={`m-label m-lab-${type} ${disabledName}`} onClick={this.clickFn}>
-				<span className="wrap-icon">
-					<SvgIcon className={className} size="middle"/>
+				<span className={`wrap-icon ${className}`}>
+					<SvgIcon className={className} />
 					<input
 					type={type}
 					className="checkBox-inp"

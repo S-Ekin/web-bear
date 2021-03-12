@@ -311,6 +311,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                   </Table.colItem>
                   <Table.colItem
                     width={150}
+                    align="td-left"
                     field="category_name"
                     formatter={this.formatterObj.eventType}
                   >
@@ -319,7 +320,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                   <Table.colItem
                     width={140}
                     field="a_SHANGBAOSHIJIAN"
-                    align="left"
+                    align="td-center"
                     formatter={this.formatterObj.date}
                   >
                     上报日期

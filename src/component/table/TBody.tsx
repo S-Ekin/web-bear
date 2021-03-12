@@ -61,7 +61,7 @@ class TBody extends React.PureComponent<Props, TbodyState> implements ITBody {
 		const {column,tabField} = fileObj;
 
 		return  column.map(node => {
-				const { field, formatter, isRowSpanField,align="center" ,} = node;
+				const { field, formatter, isRowSpanField,align="td-left" ,} = node;
 				const text = formatter
 					? formatter(dataItem, order, tabField)
 					: dataItem.get(field);
@@ -105,6 +105,7 @@ class TBody extends React.PureComponent<Props, TbodyState> implements ITBody {
 					return (
 						<td
 							key={field}
+							data-field={field}
 							className={`td-${align}`}
 							data-index={order}
 							onClick={field === "opt" ? selectfn : undefined}>

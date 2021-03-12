@@ -6,7 +6,7 @@
 [![npm version](https://img.shields.io/npm/v/@s-ekin/web.svg)](https://www.npmjs.com/package/@s-ekin/web)
 
 #### 一. 编码组件时，所有文件里的引用地址，暂且不能使用 **@component/**来应用，因为在编译为组件库时，其他的项目在引用这个库时会报错】
-#### 发布组件代码
+#### 发布组件代码到npm
    - 在 **src/component** 目录下，使用npx tsc 来把组件编译成 js 代码发布
    - 升级包版本 **npm version major | minor | patch**
       - 主版本号:MAJOR 版本号的变更说明新版本产生了不兼容低版本的 API 等，
@@ -17,5 +17,10 @@
       - 使用 npx sass main.scss ../../../../lib/index.css -s compressed --no-source-map 
       - 具体命令看sass 官网
    - 样式文件也可以不编译，直接把**src/component/my-css**放到lib下。
-
+#### 发布到本地库
+   - 全局安装 yalc
+   - 在组件库 yalc publish 发布到本地
+   - 在其他项目里，使用 yalc add @s-ekin/web 来使用这个库。（效果和从npm 里 install 一样）
+   - 当修改组件库时，使用yalc push 可以同步所有使用这个组件库的项目。
+   - 避免使用npm link 来软链 ，导致组件库和项目库同时保存两份 react实例，导致react-router 和 react hook 报错。，同时ts类型也报错。 
 

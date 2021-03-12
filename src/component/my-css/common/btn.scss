@@ -1,25 +1,24 @@
-
 @import "../scss/variate";
 
 /**
 * normal-btn:有背景的按钮 ，line-btn:线框按钮，dashed-btn：虚线按钮
 * danger:颜色为红,primary：主题颜色，green：绿颜色
 */
-
 //$primary:green;
-$primary:#04a9f5;
+$primary:$theme-color;
 $green:green;
 $yellow:#e4d619;
 
 .s-btn {
   display: inline-block;
   outline: none;
-  padding: 0 1em;
+  padding: 0 1.35em;
+  letter-spacing: 2px;
   cursor: pointer;
   position: relative;
   transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   border-radius: 4px;
-  height: 2em;
+  height: 2.25em;
 
   &:disabled {
     background: darken($btn-disabled, 40%) !important;
@@ -63,8 +62,8 @@ $yellow:#e4d619;
   $colorMap:(
     primary:$primary,
     danger:$error ,
-    green:$green ,
-    yellow:$yellow
+    success:$green ,
+    warn:$yellow
   );
 
   @each $key,$val in $colorMap {
@@ -86,8 +85,8 @@ $yellow:#e4d619;
   $colorMap:(
     primary:$primary,
     danger:$error ,
-    green:$green ,
-    yellow:$yellow
+    success:$green ,
+    warn:$yellow
   );
 
   @each $key,$val in $colorMap {
@@ -110,8 +109,8 @@ $yellow:#e4d619;
   $colorMap:(
     primary:$primary,
     danger:$error ,
-    green:$green ,
-    yellow:$yellow
+    success:$green ,
+    warn:$yellow
   );
 
   @each $key,$val in $colorMap {

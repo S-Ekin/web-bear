@@ -378,7 +378,6 @@ class Calendar extends React.PureComponent<Props, States>
 			);
 		const activeName = expand ? "autoSlideUp" : "";		
 		const showViewIndex = showViewArr.indexOf("fadeIn");
-		console.log(showViewIndex);
 		const boxW = style!* ([235, 235, 228, 235, 292][showViewIndex]);
 		return (
 			<div

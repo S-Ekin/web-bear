@@ -24,7 +24,7 @@ interface ISearch {
 }
 class Search extends React.PureComponent<props,states> implements ISearch{ 
 	static defaultProps = {
-		tip: "查询搜索结果...",
+		tip: "查询结果...",
 	};
 	static  getDerivedStateFromProps(nextProps:props,preState:states):Partial<states> | null {
 		if(nextProps.field!==preState.preField) {

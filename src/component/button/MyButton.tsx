@@ -7,7 +7,7 @@ import * as React from "react";
 type BtnProps = {
 	handle?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 	styleType: "normal-btn" | "dashed-btn" | "line-btn";//边框样式
-    colorType?: "danger" | "primary" | "green" | "yellow"; //颜色
+    colorType?: "danger" | "primary" | "warn" | "success"; //颜色
     className:string;//button className
 	name?: string;//button 里的name
 	val?: string;//button 里的value

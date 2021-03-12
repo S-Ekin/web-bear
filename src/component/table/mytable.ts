@@ -1,8 +1,8 @@
-	export interface IColumnItem {
+export interface IColumnItem {
 		field:string;
-		width?:number;
+		width?:number | string;
 		isRowSpanField?:boolean;//是否为合并字段
-		align?:"center"|"left"|"right";
+		align?: string;
 		formatter?:(
 				node: IImmutalbeMap<any>, //节点
 				index: string, //节点索引

@@ -13,7 +13,7 @@ import {str1,str2,str3,list,str4} from "./CodeStr";
 type Props = {};
 type btnConfig = {
 	styleType: "normal-btn" | "dashed-btn" | "line-btn";//边框样式
-    colorType: "danger" | "primary" | "green" | "yellow"; //颜色
+    colorType: "danger" | "primary" | "warn" | "success"; //颜色
     className:string;//button className
 	name: string;//button 里的name
 	val: string;//button 里的value
@@ -142,12 +142,12 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 </CheckBox>
                 <CheckBox
                   name="colorType"
-                  value="green"
+                  value="success"
                   type="radio"
-                  checked={colorType === "green"}
+                  checked={colorType === "success"}
                   changeHandle={this.changeConfig}
                 >
-                  green
+                  success
                 </CheckBox>
                 <CheckBox
                   name="colorType"
@@ -160,12 +160,12 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 </CheckBox>
                 <CheckBox
                   name="colorType"
-                  value="yellow"
+                  value="warn"
                   type="radio"
-                  checked={colorType === "yellow"}
+                  checked={colorType === "warn"}
                   changeHandle={this.changeConfig}
                 >
-                  yellow
+                  warn
                 </CheckBox>
               </div>
               <div className="inp-item">

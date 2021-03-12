@@ -175,7 +175,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   <div className="inp-item">
                     <span>下拉回调函数 slideFnCallback：</span>
                     <span>
-                      slideFnCallback?:(isStart?:boolean)=>boolean|void; // 收缩开始和结束的回调函数。 返回 true 禁止下拉
+                      slideFnCallback?:(isStart?:boolean)boolean|void; // 收缩开始和结束的回调函数。 返回 true 禁止下拉
                     </span>
                   </div>
             </div>

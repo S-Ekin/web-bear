@@ -149,7 +149,7 @@ class Demo extends React.PureComponent<Props,States> implements IIndex{
                     打开
                   </Button>
                   <Button
-                    colorType="green"
+                    colorType="success"
                     styleType="line-btn"
                     name="showPortLoading"
                     val="close"
@@ -218,7 +218,7 @@ class Demo extends React.PureComponent<Props,States> implements IIndex{
                       打开
                     </Button>
                     <Button
-                      colorType="green"
+                      colorType="success"
                       name="showLoading"
                       styleType="line-btn"
                       val="close"
@@ -264,7 +264,7 @@ class Demo extends React.PureComponent<Props,States> implements IIndex{
                     打开
                   </Button>
                   <Button
-                    colorType="green"
+                    colorType="success"
                     styleType="line-btn"
                     val="close"
                     handle={this.btnLoadingFn}
