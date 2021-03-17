@@ -49,22 +49,22 @@ export default class Modal extends React.PureComponent<ModalProps,ModalState> im
 		}
 	}
 	wrap:HTMLElement;
-	constructor(props:ModalProps){
-		super(props);
-		const dom = document.getElementById("inner-modal-wrap");
-		if (!dom) {
-			throw new Error("不存在Modal组件的容器，请生成id为 inner-modal-wrap的div");
-		}
-			this.wrap = dom ;
-	}
 	modalDom:React.RefObject<HTMLDivElement> = React.createRef();
-	
 	state={
 		pointX:0,
-		pointY:0,
+		pointY: -70,
 		preShow:this.props.show,
 		init:false
 	};
+	
+	constructor(props:ModalProps){
+		super(props);
+		const dom = props.wrap || document.getElementById("inner-modal-wrap");
+		if (!dom) {
+			throw new Error("不存在Modal组件的容器，请生成id为 inner-modal-wrap的div 或传入指定id的dom容器！");
+		}
+			this.wrap = dom ;
+	}
 	
 	headMouseDown=(e:React.MouseEvent)=>{
 			const modalDom = (this.modalDom.current)!;

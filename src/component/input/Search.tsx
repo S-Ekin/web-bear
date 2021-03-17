@@ -5,7 +5,8 @@
  */
 import * as React from "react";
 import { Animate } from "../animate/index";
-import {SvgIcon} from "../my-icon/index";
+import {SvgIcon } from "../my-icon/index";
+import { Button } from "../button/index";
 
 type props={
     searchHandle: (keyword: string,field:string) => void;
@@ -95,29 +96,41 @@ class Search extends React.PureComponent<props,states> implements ISearch{
    render() {
 
 		const { searching , keyword } = this.state;
-		const { tip ,width} = this.props;
+		const { tip ,width, children } = this.props;
 		const styleObj = width ? {width}:undefined;
-
+		const JBtn = children ? (
+			<Button handle={this.toggleSearch}>
+				{children}
+			</Button>
+		) : undefined;
+		const searchIcon = children ? undefined : (
+			<span className="j-search-icon" onClick={this.toggleSearch}>
+				<SvgIcon className="search" />
+			</span>
+		);
+		const right = children ? 0.5 : 1.6;
 		return (
-			<div className="m-search" style={styleObj}>
-				<input
-					type="text"
-					className="s-inp"
-					value={keyword}
-					placeholder={tip}
-					onChange={this.changeFn}
-					onKeyDown={this.keyPress}
-				/>
-				<Animate animation={searching ? "fadeIn" : "fadeOut"} spanWrapEle={true}>
-					<span
-						className="m-search-close"
-						onClick={this.closeSearch}>
-						<SvgIcon className="close" />
-					</span>
-				</Animate>
-				<span className="j-search-icon" onClick={this.toggleSearch}>
-					<SvgIcon className="search" />
-				</span>
+			<div className="g-search">
+				<div className="m-search" style={styleObj}>
+					<input
+						type="text"
+						className="s-inp"
+						value={keyword}
+						placeholder={tip}
+						onChange={this.changeFn}
+						onKeyDown={this.keyPress}
+					/>
+					<Animate animation={searching ? "fadeIn" : "fadeOut"} spanWrapEle={true}>
+						<span
+							className="m-search-close"
+							style={{right: right + "em",}}
+							onClick={this.closeSearch}>
+							<SvgIcon className="close" />
+						</span>
+					</Animate>
+					{ searchIcon }
+				</div>
+				{ JBtn }
 			</div>
 		);
 	}

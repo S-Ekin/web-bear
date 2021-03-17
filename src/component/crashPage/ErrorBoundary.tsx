@@ -2,6 +2,8 @@ import * as React from "react";
 import CrashPage from './CrashPage';
 import notice from '../toast/index';
 type props={
+	msg?:string; // 内容
+	type?:"crash" | "noFind"; // 标题
 	init:{init:boolean};
 	bindGetHasError?:(getHasErrorFn:()=>boolean)=>void;
 };
@@ -53,8 +55,10 @@ export default class ErrorBoundary extends React.Component<props,states>{
 	}
 	render(){
 
+		const {type, msg }  = this.props;
+
 		if(this.state.hasError){
-			return <CrashPage reloadFn={this.reload}/>;
+			return <CrashPage reloadFn={this.reload} type={type} msg={msg} />;
 		}else{
 			return this.props.children ;
 		}

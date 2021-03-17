@@ -9,13 +9,15 @@ import CodeBlock from "@container/codeBlock/CodeBlock";
 import Layout from "@component/layout/Layout";
 import {str1,str2} from "./CodeStr";
 import ErrorBoundary from "@component/crashPage/ErrorBoundary";
-import { CheckBox } from "@component/input";
+import { CheckBox, Input } from "@component/input";
 type Props={
 
 };
 type States={
     error:boolean;
     init:{init:boolean}
+    type: "crash"|"noFind";
+    msg:string;
 };
 interface IDemo {
     createCrash():void;
@@ -29,7 +31,9 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
 	}
     state:States={
         error:false,
-        init:{init:false}
+        init:{init:false},
+        type: "crash",
+        msg: "导致的原因可能是数据错误，导致页面损坏！请联系相关人员！",
     };
     createCrash=()=>{
        // throw new Error();
@@ -54,6 +58,14 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
            } 
         })
     }
+    changeInp = (e:React.ChangeEvent<HTMLInputElement>)=>{
+        const dom = e.currentTarget;
+        const value = dom.value.trim();
+        const name = dom.name;
+        this.setState({
+            [name as "msg"]: value,
+        })
+    }
     getHasErrorBtnHandl=()=>{
         const hasError = this.getHasErrorFn!();
         alert(`hasError：${hasError}`)
@@ -71,7 +83,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
         )
     }
     render(){
-        const {error,init} = this.state;
+        const {error,init, type, msg} = this.state;
         if(error){
             throw new Error('故意错误！'); // 显性抛出错误
             // return 隐形抛出错误
@@ -81,6 +93,8 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                 <div className="g-item-show">
                     <ErrorBoundary 
                         init={init}
+                        type={type}
+                        msg={msg}
                         bindGetHasError={this.bindGetHasError} 
                     >
                         <div>
@@ -109,7 +123,32 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                                 无        
                             </CheckBox>
                         </div>
-                       
+                        <div className="inp-item">
+                            <span>
+                                提示类型 type：
+                            </span>
+                            <CheckBox
+                                changeHandle={this.changeInp}
+                                name="type"
+                                value="crash"
+                                checked={type==="crash"}
+                            >
+                               崩溃         
+                            </CheckBox> 
+                            <CheckBox
+                                changeHandle={this.changeInp}
+                                name="type"
+                                value="noFind"
+                                checked={type === "noFind"}
+                            >
+                                404        
+                            </CheckBox>
+                        </div>
+                        <div className="inp-item">
+                           <Input value={msg} norequire name="msg" changeFn={this.changeInp}>
+                            提示内容 tit：
+                           </Input>
+                        </div>
                     </ErrorBoundary>
                 </div> 
                 <div className="g-item-show">

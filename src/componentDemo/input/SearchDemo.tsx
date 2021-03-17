@@ -16,11 +16,13 @@ type config = {
 	tip: string;
 	width:number;
 	field:string;
+  tit: string;
 };
 const config:config = {
 	tip:"",
 	width:0,
 	field:"",
+  tit: "",
 }
 
 type Props={
@@ -61,7 +63,7 @@ class SearchDemo extends React.PureComponent<Props, States>
   }
   render() {
     const {immuConfig} = this.state;
-    const {tip,field,width} = immuConfig.toJS();
+    const {tip,field,width, tit} = immuConfig.toJS();
 
     return (
       <Layout tit="搜索框">
@@ -74,26 +76,35 @@ class SearchDemo extends React.PureComponent<Props, States>
              width={width}
              searchHandle={this.searchHandle}
              closeHandle={this.closeHandle}
-            />
+            >
+              { tit }
+            </Search>
           </div>
           <div >
               <div className="inp-item">
                 <Input value={field} name="field" changeFn={this.changeConfig} >
-                  field :
+                  字段 field :
                 </Input>
               </div>
                <div className="inp-item">
                 <Input value={tip} name="tip" changeFn={this.changeConfig}
                   norequire={true}
                 >
-                  tip：
+                 提示语 tip：
                 </Input>
               </div> 
               <div className="inp-item">
                 <Input value={`${width}`} name="width" changeFn={this.changeConfig}
                   norequire={true}
                 >
-                  width：
+                宽度  width：
+                </Input>
+              </div>
+              <div className="inp-item">
+                <Input value={`${tit}`} name="tit" changeFn={this.changeConfig}
+                  norequire={true}
+                >
+                 搜索按钮 tit：
                 </Input>
               </div>
             </div>

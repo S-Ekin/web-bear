@@ -120,13 +120,29 @@ html {
 
   .crash-main {
     display: flex;
+    align-items: center;
+  }
+
+  .crash-bg {
+    width: 500px;
+    height: 400px;
+    background: url("./img/emptyPage.png") center no-repeat;
+    background-size: cover;
   }
 
   .crash-logo {
-    width: 60px;
-    height: 60px;
-    background: url("./img/crash.svg") center no-repeat;
-    background-size: cover;
+    width: 70px;
+    height: 70px;
+
+    &.crash {
+      background: url("./img/crash.svg") center no-repeat;
+      background-size: contain;
+    }
+
+    &.noFind {
+      background: url("./img/noFind.svg") center no-repeat;
+      background-size: contain;
+    }
   }
 
   .crash-txt {
@@ -135,7 +151,7 @@ html {
   }
 
   .crash-descript {
-    padding-left: 40px;
+    padding-left: 130px;
   }
 }
 

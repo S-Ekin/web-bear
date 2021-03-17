@@ -152,16 +152,17 @@ $inp-border-color:$border-color;
   left: 0;
   opacity: 0;
 }
-//search
+
 .m-search {
   display: flex;
   justify-content: space-between;
   border-radius: 4px;
   border: 1px solid $normal;
   position: relative;
+  flex: 1;
 
   .j-search-icon {
-    padding: 4px;
+    padding: 6px 4px;
 
     &:hover {
       color: $active;
@@ -169,14 +170,13 @@ $inp-border-color:$border-color;
     }
   }
 
-  .m-inp-val {
-    flex: 1;
+  .s-inp {
     position: relative;
+    width: 100%;
   }
 
   .m-search-close {
     position: absolute;
-    right: 2em;
     top: 0.4em;
     color: red;
 
@@ -184,8 +184,13 @@ $inp-border-color:$border-color;
       cursor: pointer;
     }
   }
+}
+//search
+.g-search {
+  display: flex;
 
-  .s-inp {
-    width: 100%;
+  .s-btn {
+    border-radius: 0 4px 4px 0;
+    padding: 0 0.8em;
   }
 }
