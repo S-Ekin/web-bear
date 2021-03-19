@@ -18,6 +18,7 @@ type config = {
   slide: boolean;
   directionUp: boolean; // 下拉框在显示框上还是下
   className:string;
+  duration: number; // 下拉时间
 };
 
 type States = {
@@ -33,6 +34,7 @@ const config:config = {
   isImmedia: false,
   slide: false,
   directionUp: false,
+  duration: 300,
   className:"",
 };
 
@@ -46,7 +48,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   changeConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
     const name = dom.name as keyof config;
-    let value = ["className"].includes(name) ? dom.value.trim():  dom.value === "1";
+    let value = ["className", "duration"].includes(name) ? dom.value.trim():  dom.value === "1";
 
     this.setState((pre) => {
       return {
@@ -88,7 +90,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   render() {
     const { preConfig,immuConfig,key } = this.state;
     const {
-      isImmedia,slide,directionUp,className
+      isImmedia,slide,directionUp,className,duration
 	} = immuConfig.toJS();
     return (
       <Layout tit="下拉组件" className="slideBox-page">
@@ -175,7 +177,9 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   <div className="inp-item">
                     <span>下拉回调函数 slideFnCallback：</span>
                     <span>
-                      slideFnCallback?:(isStart?:boolean)boolean|void; // 收缩开始和结束的回调函数。 返回 true 禁止下拉
+                      slideFnCallback?:(isStart?:boolean)boolean|void; 
+                      <br/>
+                      // 收缩开始和结束的回调函数。 返回 true 禁止下拉
                     </span>
                   </div>
             </div>
@@ -192,19 +196,32 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 </Input>
               </div>
               <div className="inp-item">
+                <Input
+                  type="text"
+                  changeFn={this.changeConfig}
+                  name="duration"
+                  norequire={true}
+                  value={String(duration)}
+                >
+                  动画时间 duration:
+                </Input>
+              </div>
+              <div className="inp-item">
                 样式  styleObj: 【行内样式】
               </div>
             </div>
           </div>
             
         </div>
-        <div className="g-item-show">
+        <div className="g-item-show" style={{paddingBottom: 30,}}>
+          <small>故意让 .slide-box元素使用margin并且与.g-item-show直接接触(下边重合)，下拉容器高度为0时，也就是slide-box高度为0, .slide-box 的margin 与 .g-item-show的padding重合, 使其padding消失了-谁小谁消失，导致有一个跳动（动画时间3000会更明显）</small>
           <div className="slide-test">下拉面板</div>
           <div className="slide-box">
              <SlideBox
               isImmedia={preConfig.get("isImmedia")}
               slide={preConfig.get("slide")}
               key={key}
+              duration={preConfig.get("duration")}
               directionUp={preConfig.get("directionUp")}
               >
                 <div className="text-box">

@@ -10,7 +10,7 @@ import * as React from "react";
 import { tween } from "./tween";
 const animateTypeArr = ["fadeIn", "fadeOut","bounceRightIn", "bounceDownIn", "bounceDownOut"];
 const domAnimateProps = ["opacity","width","height","transform"];
-import { AnimateType, domAnimateProp, animateState} from "./animateType"
+import { AnimateType, domAnimateProp, animateState} from "./animateType";
 type Props = {
   animation: AnimateType | domAnimateProp, // 动画效果过程
   spanWrapEle?:boolean,
@@ -28,14 +28,14 @@ const easeTypeObj = {
   "bounceRightIn": "easeOutBack",
   "bounceDownIn": "easeOutBack",
   "bounceDownOut": "easeInBack",
-}
+};
 class Animate extends React.PureComponent<Props, States>  {
   static defaultProps = {
     duration:300,
     elementStr:"div",
     className: "",
     display:"block"
-  }
+  };
   timer=0;
   boxDom: React.RefObject<HTMLDivElement> = React.createRef();
   state: States = {};
@@ -55,8 +55,8 @@ class Animate extends React.PureComponent<Props, States>  {
       }
     } else if(typeof animation === "object"){
       const status= Object.keys(animation).some(val => {
-        return !domAnimateProps.includes(val)
-      })
+        return !domAnimateProps.includes(val);
+      });
       if (status) {
         throw new Error('不存在该动画属性！请使用'+domAnimateProps.join('，')+"这些动画属性!");
       }
@@ -94,7 +94,7 @@ class Animate extends React.PureComponent<Props, States>  {
           dom.style.transform = val as string;
         }
         dom.style[key as any] = val + "px";
-      })
+      });
     }
   }
 
@@ -126,11 +126,12 @@ class Animate extends React.PureComponent<Props, States>  {
         const val = animation[key as keyof domAnimateProp]!;
         if (key === "transform") {
           const translate = (val as string).match(/-?\d+/g);
-          animateState.transform = runMount==="start" ? [0,0] : translate ? [Number(translate[0]),Number(translate[1] || 0)]  : [0,0];
+          animateState.transform = runMount==="start" ? [0,0] 
+          : translate ? [Number(translate[0]),Number(translate[1] || 0)]  : [0,0];
         }else {
           animateState[key as "opacity"] = runMount === "start" ? 0: Number(val) as number;
         }
-      })
+      });
     }
     return animateState;
   }
@@ -159,7 +160,7 @@ class Animate extends React.PureComponent<Props, States>  {
 
                   const transformB = start.transform as number[];
                   const transformE = endObj.transform as number[];
-                  console.log(transformB, transformE, "domEx")
+                  console.log(transformB, transformE, "domEx");
                   let distanceX = tween[ease](time,transformB[0],transformE[0],timeEnd);
                   let distanceY = tween[ease](time,transformB[1],transformE[1],timeEnd);
                   dom.style.transform = `translate(${distanceX}px, ${distanceY}px)`;
@@ -171,7 +172,7 @@ class Animate extends React.PureComponent<Props, States>  {
                   const distance = tween[ease](time, start[key]!,endObj[key]!,timeEnd) + "";
                   dom.style[key as any] = distance + (key === "opacity" ? "" : "px") ;
               }
-            })
+            });
         if(time < timeEnd){
           fn();
         } else {
@@ -182,8 +183,8 @@ class Animate extends React.PureComponent<Props, States>  {
           this.timer = 0;
         }
         time++;
-      })
-    } 
+      });
+    }; 
     fn();
     if (!runMout && animationType === "objIn") { // 直接用dom属性时，要转换一下顺序
       this.animateState =  endObj;
@@ -202,8 +203,8 @@ class Animate extends React.PureComponent<Props, States>  {
     } else {
       const compare = Object.keys(animation).some((val) => {
            const k = val as keyof domAnimateProp;
-           return animation[k] !== (preProps.animation as domAnimateProp)[k]
-      })
+           return animation[k] !== (preProps.animation as domAnimateProp)[k];
+      });
       if (compare) {
          this.easeType = this.registerEaseType(animation);
            if (runMount || typeof preProps.animation === "string") {
@@ -216,7 +217,7 @@ class Animate extends React.PureComponent<Props, States>  {
 
   componentWillUnmount(){
     if (this.timer) {
-      window.cancelAnimationFrame(this.timer)
+      window.cancelAnimationFrame(this.timer);
     }
   }
 
@@ -224,7 +225,7 @@ class Animate extends React.PureComponent<Props, States>  {
     const { children,className,spanWrapEle, runMount, animation, styleObj} = this.props;
     const show = typeof animation === "string" && animation.includes("In") ? true : true;
     const opacity = typeof animation === "string" ? runMount ? show ? "0" : "1" :show ? "1" :"0" : "1";
-    const style = Object.assign({opacity: opacity,}, styleObj)
+    const style = Object.assign({opacity: opacity,}, styleObj);
     return !spanWrapEle ? (
       <div 
         className={className}

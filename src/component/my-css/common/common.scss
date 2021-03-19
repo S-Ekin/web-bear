@@ -217,7 +217,6 @@ html {
 }
 
 .g-slideBox {
-  overflow: hidden;
   display: block;
   position: relative;
 }
@@ -225,4 +224,8 @@ html {
 .m-flex-center {
   display: flex;
   align-items: center;
+}
+
+.clear-marginMerge {
+  overflow: hidden;
 }

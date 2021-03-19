@@ -63,7 +63,7 @@ class ScrollBox
     const factor = (this.scrollBoxH - moveBarH) / maxH;
     scrollMain.style.top = `${-h}px`;
     this.moveBar.current!.style.top = `${h * factor}px`;
-  };
+  }
   barMove = (e: MouseEvent): void => {
     // 从静止开始启动
     const { moveBarH } = this.state;
@@ -78,7 +78,7 @@ class ScrollBox
     const factor = (this.scrollMainH - this.scrollBoxH) / maxH;
     dom.style.top = `${h}px`;
     scrollMain.style.top = `${-h * factor}px`;
-  };
+  }
   // tslint:disable-next-line: member-ordering
   barMoveEven = fnUtil.throttle(this.barMove, 100);
 
@@ -148,7 +148,7 @@ class ScrollBox
         showBar: true,
       });
     });
-  };
+  }
 
   animateScroll(start: number, end: number, callback: () => void) {
     if (this.timer) {
@@ -160,7 +160,7 @@ class ScrollBox
     const timeEnd = Math.floor(Math.sqrt(Math.abs(end - start)));
     const fn = () => {
       this.timer = window.requestAnimationFrame(() => {
-        const distance = tween.easeInCubic(time, start, end, timeEnd) + "";
+        const distance = String(tween.easeInCubic(time, start, end, timeEnd));
         this.moveBar.current!.style.height = distance + "px";
         if (time < timeEnd) {
           fn();
@@ -199,6 +199,8 @@ class ScrollBox
     }
   }
 
+
+
   barClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     e.currentTarget!.dataset.y = `${e.clientY}`;
     const top = parseInt(e.currentTarget!.style.top || "0", 0);
@@ -207,13 +209,13 @@ class ScrollBox
       "mousemove",
       this.barMoveEven
     );
-  };
+  }
   cancelBarMove = (): void => {
     this.moveBar.current!.parentElement!.parentElement!.removeEventListener(
       "mousemove",
       this.barMoveEven
     );
-  };
+  }
   mouseOver = (e: React.MouseEvent<HTMLDivElement>): void => {
     const dom = e.currentTarget;
     if (!dom.firstElementChild) {
@@ -224,7 +226,7 @@ class ScrollBox
         showBar: true,
       });
     }
-  };
+  }
   mouseLeave = (): void => {
     this.cancelBarMove();
     if (this.props.bindIntiScroll) {
@@ -233,7 +235,7 @@ class ScrollBox
     this.setState({
       showBar: false,
     });
-  };
+  }
   mainMousewheel = (e: React.WheelEvent): void => {
     this.cancelBarMove();
     const { showBar, moveBarH } = this.state;
@@ -252,7 +254,7 @@ class ScrollBox
     const factor = (this.scrollBoxH - moveBarH) / maxH;
     scrollMain.style.top = `${-h}px`;
     this.moveBar.current!.style.top = `${h * factor}px`;
-  };
+  }
   locateBar = (e: React.MouseEvent<HTMLDivElement>): void => {
     const { moveBarH } = this.state;
     let h = e.nativeEvent.offsetY;
@@ -264,7 +266,7 @@ class ScrollBox
     h = h < 0 ? 0 : h > maxH ? maxH : h;
     dom.style.top = `${h}px`;
     scrollMain.style.top = `${-h * factor}px`;
-  };
+  }
   stopProp<k extends Event>(e: k) {
     e.stopPropagation();
   }
