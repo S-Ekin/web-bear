@@ -23,6 +23,7 @@ type obj = {
 type Props={
     obj:IImmutalbeMap<obj>;
 	changeState(key:keyof obj,val: any):void;
+	changeTit(e:React.ChangeEvent<HTMLInputElement>):void;
 };
 type States={
 
@@ -251,6 +252,15 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 							changeHandle={this.inpChangeFn}>
 							否
 						</CheckBox>
+					</div>
+					<div className="inp-item">
+						<Input
+							name="title"
+                  			norequire={true} 
+							changeFn={this.props.changeTit}
+							value={defaultTime}>
+							左侧标题 children：
+						</Input>
 					</div>
                    
 				</div>

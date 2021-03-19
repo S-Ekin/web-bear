@@ -73,7 +73,7 @@ const wrapComboHC = <P extends comboType>(
 				return false ;
 			}
 		};
-		eventId = new Date().getTime().toString();
+		eventId = `${new Date().getTime().toString()}-${this.props.field}`;
 		filedObj!: IImmutalbeMap<filedObj<P>>;
 		dropStyle:ICombo["dropStyle"];
 		selectFn!:ICombo["selectFn"];
@@ -173,7 +173,7 @@ const wrapComboHC = <P extends comboType>(
 
 		}
 		
-		render() {
+		renderCombox() {
 			const {
 				formatterVal,
 				noIcon,
@@ -186,11 +186,11 @@ const wrapComboHC = <P extends comboType>(
 				formatterDropItem,
 				directionUp,
 				ableClear,
-				initComboVal
+				initComboVal,
 			} = this.props;
 			const { selected, drop } = this.state;
 			const palceholder = tit ? tit! : multiply ? "多选" : "单选";
-			const activeName = drop ? "autoSlideUp" : "";		
+			const activeName = drop ? "autoSlideUp" : "";	
 			return (
 				<div 
 				className={"g-combo " + activeName} 
@@ -226,9 +226,18 @@ const wrapComboHC = <P extends comboType>(
 							/>
 					</SlideBox>
 					</div>
-					
 				</div>
 			);
+		}
+
+		render(){
+			const { children } = this.props;
+			return children ? (
+				<div className="m-flex-center">
+					<span className="lab-tit">{children}</span>
+					{this.renderCombox()}
+				</div>
+			): this.renderCombox();
 		}
 	};
 };

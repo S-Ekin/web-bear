@@ -125,7 +125,7 @@ class Calendar extends React.PureComponent<Props, States>
 		}
 	}
 	
-	eventId = new Date().getTime().toString();
+	eventId = `${new Date().getTime().toString()}-${this.props.field}`;
 	curTime = getCurTime();
 	fixProps = this.createFixProps();
 	constructor(props:Props) {
@@ -338,7 +338,7 @@ class Calendar extends React.PureComponent<Props, States>
 		return str;
 	}
 
-	render() {
+	renderCalendar() {
 		const {
 			noInp,
 			width,
@@ -409,6 +409,16 @@ class Calendar extends React.PureComponent<Props, States>
 			</div>
 		);
 	}
+
+	render(){
+			const { children } = this.props;
+			return children ? (
+				<div className="m-flex-center">
+					<span className="lab-tit">{children}</span>
+					{this.renderCalendar()}
+				</div>
+			): this.renderCalendar();
+		}
 }
 
 export default Calendar;

@@ -29,6 +29,7 @@ type calendarObj = {
 type Props = {};
 type States = {
   calendarObj: IImmutalbeMap<calendarObj>;
+  title:string;// 模态框标题
   configObj: calendarObj;
   refreshId: number;
   outTimeVal: string;
@@ -60,6 +61,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   state: States = {
     calendarObj: createImmutableMap<calendarObj>(initObj),
     configObj: initObj,
+    title: "",
     initTime: { time: "" },
     outTimeVal: "",
     refreshId: 0
@@ -134,8 +136,13 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             </div>
             );
   }
+  changeTitle = (e:React.ChangeEvent<HTMLInputElement>)=>{
+    this.setState({
+      title: e.currentTarget.value.trim(),
+    })
+  }
   render() {
-    const { calendarObj, refreshId, configObj,initTime } = this.state;
+    const { calendarObj, refreshId, configObj,initTime,title } = this.state;
     const rotate = configObj.rotate;
 
     return (
@@ -150,11 +157,13 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               initTime={initTime}
               clickBack={this.clickBack}
               {...(configObj as any)}
-            />
+            >
+              {title}
+            </Calendar>
             <Button handle={this.refreshConfig}>刷新配置</Button>
           </div>
           <div className="g-item-show">
-            <PropsEditConfig obj={calendarObj} changeState={this.changeState} />
+            <PropsEditConfig changeTit={this.changeTitle} obj={calendarObj} changeState={this.changeState} />
           </div>
           <div className="g-item-show">
             <div className="inp-item">

@@ -98,7 +98,7 @@ class Search extends React.PureComponent<props,states> implements ISearch{
 		const { searching , keyword } = this.state;
 		const { tip ,width, children } = this.props;
 		const styleObj = width ? {width}:undefined;
-		const JBtn = children ? (
+		const jBtn = children ? (
 			<Button handle={this.toggleSearch}>
 				{children}
 			</Button>
@@ -123,14 +123,14 @@ class Search extends React.PureComponent<props,states> implements ISearch{
 					<Animate animation={searching ? "fadeIn" : "fadeOut"} spanWrapEle={true}>
 						<span
 							className="m-search-close"
-							style={{right: right + "em",}}
+							style={{right: `${right}em`,}}
 							onClick={this.closeSearch}>
 							<SvgIcon className="close" />
 						</span>
 					</Animate>
 					{ searchIcon }
 				</div>
-				{ JBtn }
+				{jBtn}
 			</div>
 		);
 	}

@@ -41,6 +41,7 @@ type fnObj = {
 type Props = {};
 type States = {
   obj: IImmutalbeMap<item & fnObj>;
+  title:string;// 模态框标题
   comboProps: item;
   refreshId: number;
   outControlSelecte: undefined | { id: string };
@@ -54,6 +55,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   selectFn: IDemo["selectFn"] = undefined;
   state: States = {
     asyncData:data,
+    title: "",
     obj: createImmutableMap<item & fnObj>({
       idField: "id",
       textField: "text",
@@ -303,7 +305,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       renderCallback, //组件第一次加载调用点击事件的回调函数
       ableClear
     } = this.state.obj.toJS();
-    const { comboProps, refreshId, outControlSelecte,asyncData } = this.state;
+    const { comboProps, refreshId, outControlSelecte,asyncData,title } = this.state;
     
     return (
       <div className="g-layout comboTree-page">
@@ -323,7 +325,9 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 formatterDropItem ? this.formatterDropItem : undefined
               }
               {...comboProps}
-            />
+            >
+              {title}
+              </ComboTree>
             <div>
             <Button handle={this.refershConfig}>刷新配置</Button>
               <span style={{padding: "10px",}}></span>
@@ -434,6 +438,16 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   value={itemIcon}
                 >
                   下拉框每行的图标 itemIcon：
+                </Input>
+              </div>
+               <div className="inp-item">
+                <Input
+                  name="title"
+                  changeFn={(e)=>{this.setState({title:e.currentTarget.value.trim()})}}
+                  value={title}
+                  norequire={true} 
+                >
+                  下拉框左侧标题 children:
                 </Input>
               </div>
             </div>
