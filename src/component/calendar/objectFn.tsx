@@ -180,10 +180,10 @@ const getInpTimeStrArr = function(
 		return startTime + 9;
 	};
 // 把显示的时间字符串变为数字，方便传入后端
-  const	timeStrToNumber = function (strArr:string[]){
-		return strArr.map(val=>{
+  const	timeStrToNumber = function (strArr:string[],valFormatt:"number"|"string"){
+		return valFormatt === "number" ? strArr.map(val=>{
 			return val.replace(/-/g,"").replace(/:/g,"").replace(/\s/g,"");
-		});
+		}) : strArr;
 	};
 
 export { timeStrValToTimeObjArr, calendarType, getInpTimeStrArr ,getCurTime, getLastYear, timeStrToNumber};

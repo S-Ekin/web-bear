@@ -9,6 +9,7 @@ import * as React from "react";
 type props={
     dataSet?:string;
     placeholder?:string;
+    disabled?:boolean;
     value?:string;
     name?:string;
     type?:"text"|"number";
@@ -39,18 +40,20 @@ class Input extends React.PureComponent<props,states> implements IInput{
         return lab ;
     }
     render(){
-        const {value,name,dataSet,styleName,changeFn,type,width,norequire, blurFn,placeholder} = this.props;
+        const {value,name,dataSet,styleName,changeFn,type,width,norequire, blurFn,placeholder, disabled} = this.props;
         const style = width ? {width:width} : undefined;
-        const requireName = norequire ? ""  : !value ? "no-fill" :"";
+        const requireName = norequire || disabled ? ""  : !value ? "no-fill" :"";
+        const disabledName = disabled ? "disabled" : "";
         return (
 			<label className="g-inp-lab">
 				{this.getInpTit()}
-				<input
+                <input
 					value={value}
-					className={`s-inp ${styleName} ${requireName}`}
+					className={`s-inp ${styleName} ${requireName} ${disabledName}`}
                     name={name}
                     placeholder={placeholder}
                     type={type}
+                    disabled={disabled}
                     style={style}
                     data-set={dataSet}
                     onBlur={blurFn}

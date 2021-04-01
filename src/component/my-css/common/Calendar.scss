@@ -9,11 +9,12 @@ $inp-h:2em;
   align-items: center;
   border: 1px solid $normal;
   border-radius: 4px;
+  cursor: pointer;
 
   .calendar-inpTxt {
-    cursor: pointer;
     width: 100%;
     background: none;
+    cursor: inherit;
   }
 
   .calendar-inp-icon {

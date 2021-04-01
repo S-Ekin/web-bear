@@ -12,6 +12,8 @@ type obj = {
         style:number;
         time: boolean; //可选择时间
         noInp: boolean;
+  		disabled: boolean;
+  		valFormatt: "number" | "string",
         defaultTime: string; //最终显示的时间字符串
         width: number;
         placeholder: string;
@@ -44,7 +46,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 		let value:any = dom.value;
 		if(['width',"rotate",'style'].includes(field)){
 			value = ~~value;	
-		}else if(["time","noInp","ableClear","noChangeRotate","renderCallBack"].includes(field)){
+		}else if(["time","noInp","ableClear","noChangeRotate","renderCallBack", "disabled"].includes(field)){
 
 			value = value === "1" ? true :false ;
 		}
@@ -62,6 +64,8 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
             placeholder,
             ableClear,
             renderCallBack,
+			disabled,
+			valFormatt,
             noChangeRotate,
         } = this.props.obj.toJS();
         
@@ -85,6 +89,27 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 							value={`${width}`}>
 							宽度 width：
 						</Input>
+					</div>
+					<div className="inp-item">
+						<span>禁用 disabled</span>
+						<CheckBox
+						name="disabled"
+						value="1"
+						type="radio"
+						checked={disabled}
+						changeHandle={this.inpChangeFn}
+						>
+						是
+						</CheckBox>
+						<CheckBox
+						name="disabled"
+						value="2"
+						type="radio"
+						checked={!disabled}
+						changeHandle={this.inpChangeFn}
+						>
+						否
+						</CheckBox>
 					</div>
 					<div className="inp-item">
 						<span>频率 rotate：</span>
@@ -251,6 +276,25 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 							checked={!renderCallBack}
 							changeHandle={this.inpChangeFn}>
 							否
+						</CheckBox>
+					</div>
+					<div className="inp-item">
+						<span>输出格式 valFormatt：</span>
+						<CheckBox
+							name="valFormatt"
+							value="number"
+							type="radio"
+							checked={valFormatt === "number"}
+							changeHandle={this.inpChangeFn}>
+							number
+						</CheckBox>
+						<CheckBox
+							name="valFormatt"
+							value="string"
+							type="radio"
+							checked={valFormatt === "string"}
+							changeHandle={this.inpChangeFn}>
+								string
 						</CheckBox>
 					</div>
 					<div className="inp-item">

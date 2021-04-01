@@ -14,6 +14,7 @@ type props={
     drop:boolean;
     noicon?:boolean;
     noRequire?:boolean;
+    disabled?:boolean;
     ableClear?:boolean;
     //下拉事件
     slideFn(e:React.MouseEvent):void;
@@ -57,17 +58,17 @@ class ComboInp extends React.PureComponent<props,states> {
         this.props.clearFn();
     }
     render(){
-        const {selected,slideFn,tit,formatterVal,noicon,drop,noRequire,ableClear} = this.props;
-        const status = noRequire ? "" : selected.size ? "" : "no-fill";
+        const {selected,slideFn,tit,formatterVal,noicon,drop,noRequire,ableClear, disabled} = this.props;
+        const status = noRequire || disabled ? "" : selected.size ? "" : "no-fill";
         const clearStatus = ableClear && selected.size ? true :false;
         return (
-                <div className={`m-combo-inp ${status}`}
-                    onClick={slideFn}
+                <div className={`m-combo-inp ${status} ${disabled ? "disabled": ""}`}
+                    onClick={disabled ? undefined : slideFn}
                 >
                     <div className="combo-value">
                         {selected.size ? formatterVal!(selected):this.getTit(tit)}
                     </div>
-                    {this.getClearCom(clearStatus)}
+                    {disabled ? undefined : this.getClearCom(clearStatus)}
                     {this.getSlideIcon(noicon,drop)}
                 </div>
                 );

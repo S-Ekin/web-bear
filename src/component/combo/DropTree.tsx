@@ -443,7 +443,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 			};
 		});
 	}
-	render() {
+	main() {
 		const { immutableData } = this.state;
 		const { filedObj, dropStyle ,formatterDropItem} = this.props;
 		const idField = filedObj.get("idField");
@@ -497,6 +497,10 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 				</ul>
 			</div>
 		);
+	}
+
+	render(){
+		return this.props.disabled ? null : this.main();	
 	}
 }
 export {DropTree};

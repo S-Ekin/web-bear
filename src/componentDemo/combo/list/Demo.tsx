@@ -30,6 +30,7 @@ type item = {
   noRequire: boolean; //必选
   renderCallback: boolean; //组件第一次加载调用点击事件的回调函数
   ableClear: boolean; //能够清空所选
+  disabled:boolean;
 };
 type fnObj = {
   clickCallback: boolean; //点击每行的回调函数
@@ -64,6 +65,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       field: "tree",
       itemIcon: "",
       defaultVal: "",
+      disabled: false,
       width: 240,
       maxHeight: undefined,
       dropWidth: undefined,
@@ -82,6 +84,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       noIcon: false,
       multiply: false,
       tit: "",
+      disabled: false,
       field: "tree",
       noSearch: false, //多选
       itemIcon: "",
@@ -116,6 +119,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
         "noSearch",
         "formatterVal",
         "clickOrCheckForbid",
+        "disabled",
         "formatterDropItem"
       ].includes(field)
     ) {
@@ -309,6 +313,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       formatterVal,
       clickOrCheckForbid,
       noSearch,
+      disabled,
       renderCallback, //组件第一次加载调用点击事件的回调函数
       ableClear
     } = this.state.obj.toJS();
@@ -357,6 +362,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   文字内容字段 textField:
                 </Input>
               </div>
+              
               <div className="inp-item">
                 <span>下拉图标不显示 noIcon</span>
                 <CheckBox
@@ -557,6 +563,27 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   value="2"
                   type="radio"
                   checked={!noRequire}
+                  changeHandle={this.inpChangeFn}
+                >
+                  否
+                </CheckBox>
+              </div>
+              <div className="inp-item">
+                <span>禁用 disabled</span>
+                <CheckBox
+                  name="disabled"
+                  value="1"
+                  type="radio"
+                  checked={disabled}
+                  changeHandle={this.inpChangeFn}
+                >
+                  是
+                </CheckBox>
+                <CheckBox
+                  name="disabled"
+                  value="2"
+                  type="radio"
+                  checked={!disabled}
                   changeHandle={this.inpChangeFn}
                 >
                   否

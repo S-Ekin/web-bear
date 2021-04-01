@@ -17,6 +17,7 @@ type inputConfig = {
     width:number;
     styleName:"normal" ;
     norequire:boolean;
+    disabled:boolean;
 };
 type Props={
 
@@ -35,6 +36,7 @@ const inputConfig:inputConfig = {
     width:0,
     norequire:false,
     styleName:"normal",
+    disabled: false
 };
 class Demo extends React.PureComponent<Props,States> implements IDemo{
 
@@ -61,7 +63,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
         let value: any = dom.value;
         if(name === "width"){
             value = ~~value;
-        }else if(name==="norequire"){
+        }else if(name==="norequire" || name === "disabled"){
           value = value === "1";
         }
         this.setState((pre) => {
@@ -73,7 +75,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
     render(){
         const {immuConfig} = this.state;
 
-        const {value,width,name,dataSet,type,styleName,norequire} = immuConfig.toJS();
+        const {value,width,name,dataSet,type,styleName,norequire,disabled} = immuConfig.toJS();
 
         return (
           <Layout tit="输入框">
@@ -86,6 +88,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                     name={name}
                     dataSet={dataSet}
                     type={type}
+                    disabled={disabled}
                     norequire={norequire}
                     styleName={styleName}
                 >
@@ -123,6 +126,27 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                     >
                       名称 name：
                     </Input>
+                  </div>
+                  <div className="inp-item">
+                    <span>禁用 disabled：</span>
+                    <CheckBox
+                      name="disabled"
+                      value="1"
+                      type="radio"
+                      checked={disabled}
+                      changeHandle={this.changeConfig}
+                    >
+                     是
+                    </CheckBox> 
+                     <CheckBox
+                      name="disabled"
+                      value="2"
+                      type="radio"
+                      checked={!disabled}
+                      changeHandle={this.changeConfig}
+                    >
+                     否
+                    </CheckBox>
                   </div>
                 </div>
                 <div>

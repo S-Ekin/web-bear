@@ -29,6 +29,7 @@
     export type drop<P extends keyof IDrop> = {
         filedObj: IImmutalbeMap<filedObj<P>>;
 	    initComboVal?:{id:string};
+        disabled?:boolean;
         data:any[];
         selected:IImmutalbeList<ISelected>;
         dropStyle:{maxHeight:number};

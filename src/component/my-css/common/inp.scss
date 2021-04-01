@@ -10,9 +10,8 @@ $inp-border-color:$border-color;
   color: $text-color;
 }
 
-.s-inp[disabled] {
+.s-inp[disabled].normal {
   background: $btn-disabled;
-  font-weight: bolder;
 }
 
 .s-txt {

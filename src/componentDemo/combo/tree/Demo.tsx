@@ -17,6 +17,7 @@ import  loadFn from "@component/loading/loadMethod";
 type item = {
   idField: string;
   textField: string;
+  disabled: boolean;
   noIcon: boolean; //wu下拉图标
   noSearch: boolean; //多选
   multiply: boolean; //多选
@@ -58,6 +59,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     title: "",
     obj: createImmutableMap<item & fnObj>({
       idField: "id",
+      disabled: false,
       textField: "text",
       noIcon: false,
       multiply: false,
@@ -83,6 +85,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       textField: "text",
       noIcon: false,
       multiply: false,
+      disabled: false,
       tit: "",
       field: "tree",
       itemIcon: "",
@@ -115,6 +118,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
         "noSearch",
         "multiply",
         "noIcon",
+        "disabled",
         "formatterVal",
         "clickOrCheckForbid",
         "formatterDropItem"
@@ -297,6 +301,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       maxHeight,
       dropWidth,
       directionUp,
+      disabled,
       noSearch,
       noRequire,
       formatterDropItem,
@@ -532,6 +537,27 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   value="2"
                   type="radio"
                   checked={!directionUp}
+                  changeHandle={this.inpChangeFn}
+                >
+                  否
+                </CheckBox>
+              </div>
+              <div className="inp-item">
+                <span>禁用 disabled</span>
+                <CheckBox
+                  name="disabled"
+                  value="1"
+                  type="radio"
+                  checked={disabled}
+                  changeHandle={this.inpChangeFn}
+                >
+                  是
+                </CheckBox>
+                <CheckBox
+                  name="disabled"
+                  value="2"
+                  type="radio"
+                  checked={!disabled}
                   changeHandle={this.inpChangeFn}
                 >
                   否

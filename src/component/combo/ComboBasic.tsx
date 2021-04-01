@@ -14,6 +14,7 @@ type props = {
 	textField?: string;
 	noIcon?: boolean;//下拉图标
 	noSearch?: boolean;//下拉图标
+	disabled?: boolean;//下拉图标
 	multiply?: boolean;//多选
 	tit?: string;//提示语
 	field: string; //下拉框的标识
@@ -187,10 +188,11 @@ const wrapComboHC = <P extends comboType>(
 				directionUp,
 				ableClear,
 				initComboVal,
+				disabled
 			} = this.props;
 			const { selected, drop } = this.state;
 			const palceholder = tit ? tit! : multiply ? "多选" : "单选";
-			const activeName = drop ? "autoSlideUp" : "";	
+			const activeName = drop ? "autoSlideUp" : "";
 			return (
 				<div 
 				className={"g-combo " + activeName} 
@@ -203,6 +205,7 @@ const wrapComboHC = <P extends comboType>(
 						selected={selected}
 						formatterVal={formatterVal}
 						slideFn={this.dropToggle}
+						disabled={disabled}
 						noicon={noIcon}
 						ableClear={ableClear}
 						noRequire={noRequire}
@@ -216,6 +219,7 @@ const wrapComboHC = <P extends comboType>(
 							<Drop 
 								filedObj={this.filedObj} 
 								data={data} 
+								disabled={disabled}
 								changeSelect={this.changeSelect}
 								selected={selected}
 								dropStyle={this.dropStyle}

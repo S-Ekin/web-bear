@@ -16,6 +16,7 @@ type Props={
 	curTime: ICommonInterface["curTime"];
 	style: 1 | 2;
 	ableClear?: boolean;
+	disabled?: boolean;
 	changeBasicState:ICommonInterface["changeBasicState"]
 };
 type States={
@@ -59,9 +60,9 @@ class CalendarInp extends React.PureComponent<
 		});
 	}
 	render() {
-		const { inpVal, placeholder, ableClear } = this.props;
+		const { inpVal, placeholder, ableClear, disabled } = this.props;
 
-		const closeIcon = ableClear ? (
+		const closeIcon = ableClear && !disabled ? (
 					<Animate
 						spanWrapEle={true}
 						animation={inpVal ? "fadeIn" : "fadeOut"}>
@@ -72,12 +73,14 @@ class CalendarInp extends React.PureComponent<
 						</span>
 					</Animate>
 				) : undefined ;
+
 		return (
-			<div className="m-clalendar-inpBox" onClick={this.toggleDrop}>
+			<div className={`m-clalendar-inpBox ${disabled ? "disabled": ""}`} onClick={disabled ? undefined : this.toggleDrop}>
 
 				<input
 					className="s-inp calendar-inpTxt"
 					value={inpVal}
+					disabled={disabled}
 					placeholder={placeholder}
 					readOnly={true}
 					type="text"

@@ -307,7 +307,7 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
       singleClickPre,
     });
   };
-  render() {
+  main() {
     const { immutableData } = this.state;
     const { filedObj, dropStyle, formatterDropItem } = this.props;
     const idField = filedObj.get("idField");
@@ -341,6 +341,9 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
         </ul>
       </div>
     );
+  }
+  render(){
+    return this.props.disabled ? null : this.main();
   }
 }
 

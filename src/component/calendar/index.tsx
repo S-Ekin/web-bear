@@ -16,6 +16,7 @@ import { event } from "../util/autoSlideUp";
 
 type Props = {
 	field: string;
+	disabled?:boolean;
 	rotate?: ICommonInterface["rotate"]; // 日历类型
 	style?: 1 | 2;
 	time?: boolean; //可选择时间
@@ -27,6 +28,7 @@ type Props = {
 	initTime?:{time:string};//初始化时间
 	renderCallBack?: boolean;//初始化时，调用点击的回调函数
 	noChangeRotate?: boolean;//不能改变频率
+	valFormatt?:"number" | "string" // number:clickBack 传数字值:20200821， string: 2020-08-21;
 	clickBack: (
 		timeStr: string,
 		field: string,
@@ -71,6 +73,7 @@ class Calendar extends React.PureComponent<Props, States>
 			defaultTime: "",
 			width: 280,
 			placeholder: "",
+			valFormatt: "number"
 		};
 		static  getDerivedStateFromProps(nextProps:Props,preState:States):Partial<States> | null {
 			
@@ -86,6 +89,7 @@ class Calendar extends React.PureComponent<Props, States>
 				field,
 				ableClear,
 				renderCallBack,
+				valFormatt
 			} = nextProps;
 			const curTime = getCurTime();
 
@@ -97,7 +101,7 @@ class Calendar extends React.PureComponent<Props, States>
 			//重置状态
 			const timeVal = getInpTimeStrArr(selTimeArr, rotate!, time!);
 			if(renderCallBack){
-					clickBack(timeStrToNumber(timeVal).join(",") ,field,rotate!,selTimeArr);
+					clickBack(timeStrToNumber(timeVal, valFormatt!).join(",") ,field,rotate!,selTimeArr);
 			}	
 			let animationArr:States["showViewArr"] = new Array(5).fill("fadeOut");
 			animationArr[nextProps.rotate!] = "fadeIn";
@@ -137,6 +141,7 @@ class Calendar extends React.PureComponent<Props, States>
 			field,
 			ableClear,
 			renderCallBack,
+			valFormatt
 		} = this.props;
 		const selTimeArr = Immutable.fromJS(
 			timeStrValToTimeObjArr(ableClear! && !this.props.defaultTime, this.props,this.curTime)
@@ -163,7 +168,7 @@ class Calendar extends React.PureComponent<Props, States>
 		};
 
 		if(renderCallBack){
-			const val = timeStrToNumber(timeVal).join(",");
+			const val = timeStrToNumber(timeVal,valFormatt!).join(",");
 			clickBack(val, field, rotate!,selTimeArr);
 		}
 	}
@@ -293,9 +298,9 @@ class Calendar extends React.PureComponent<Props, States>
 			return obj;
 		},()=>{
 			if(["rotate","selTimeArr"].includes(key)){
-				const {field,clickBack} = this.props;	
+				const {field,clickBack,valFormatt} = this.props;	
 				const {rotate,calendarVal,selTimeArr} = this.state;	
-				const val =timeStrToNumber(calendarVal.split(" 至 ")).join(",");
+				const val =timeStrToNumber(calendarVal.split(" 至 "), valFormatt!).join(",");
 				clickBack(val, field,rotate,selTimeArr);
 			}
 		});
@@ -325,41 +330,26 @@ class Calendar extends React.PureComponent<Props, States>
 
 	getSelTimeVal() {
 		const { selTimeArr } = this.state;
-		const { time, clickBack, field ,rotate} = this.props;
+		const { time, clickBack, field ,rotate, valFormatt} = this.props;
 		const strArr = getInpTimeStrArr(selTimeArr, rotate!, time!);
 		const str = strArr.join(" 至 ");
 		this.setState({
 			calendarVal: str,
 		},()=>{
-			const val = timeStrToNumber(strArr);
+			const val = timeStrToNumber(strArr, valFormatt!);
 			clickBack(val.join(","), field!, rotate!,selTimeArr);
 		});
 
 		return str;
 	}
 
-	renderCalendar() {
+
+	drop(){
 		const {
-			noInp,
-			width,
-			placeholder,
-			ableClear,
 			style,
 		} = this.props;
-		const { expand, selTimeArr, calendarVal ,rotate,showViewArr, showTimeArr,pannelLastYear} = this.state;
+		const { expand, selTimeArr, rotate,showViewArr, showTimeArr,pannelLastYear} = this.state;
 
-		const inpCom = noInp ? undefined : (
-					<CalendarInp
-						inpVal={calendarVal}
-						placeholder={placeholder!}
-						eventId={this.eventId}
-						ableClear={ableClear!}
-						curTime={this.curTime}
-						changeBasicState={this.changeBasicState}
-						style={style!}
-					/>
-				);
-			
 		const secondViews =
 			selTimeArr.size === 2 ? (
 				<CalendarView
@@ -376,17 +366,10 @@ class Calendar extends React.PureComponent<Props, States>
 			) : (
 				undefined
 			);
-		const activeName = expand ? "autoSlideUp" : "";		
 		const showViewIndex = showViewArr.indexOf("fadeIn");
 		const boxW = style!* ([235, 235, 228, 235, 292][showViewIndex]);
 		return (
-			<div
-				className={"g-calendar "+activeName}
-				data-event={this.eventId}
-				style={{ width: ~~width !, }}
-				>
-				{inpCom}
-				<div className="g-calendar-box" style={{width: `${boxW}px`,}}>
+			<div className="g-calendar-box" style={{width: `${boxW}px`,}}>
 					<SlideBox
 						slide={expand}
 					>
@@ -405,7 +388,43 @@ class Calendar extends React.PureComponent<Props, States>
 							{secondViews}
 						</div>
 					</SlideBox>
-				</div>
+			</div>
+		);
+	}
+
+	renderCalendar() {
+		const {
+			noInp,
+			width,
+			placeholder,
+			ableClear,
+			style,
+			disabled
+		} = this.props;
+		const { expand, calendarVal} = this.state;
+
+		const inpCom = noInp ? undefined : (
+					<CalendarInp
+						inpVal={calendarVal}
+						placeholder={placeholder!}
+						disabled={disabled}
+						eventId={this.eventId}
+						ableClear={ableClear!}
+						curTime={this.curTime}
+						changeBasicState={this.changeBasicState}
+						style={style!}
+					/>
+				);
+			
+		const activeName = expand ? "autoSlideUp" : "";		
+		return (
+			<div
+				className={"g-calendar "+activeName}
+				data-event={this.eventId}
+				style={{ width: ~~width !, }}
+				>
+				{inpCom}
+				{disabled ? undefined : this.drop()}	
 			</div>
 		);
 	}

@@ -18,7 +18,9 @@ type calendarObj = {
   rotate: number; // 日历类型
   style: number;
   time: boolean; //可选择时间
-  noInp: boolean;
+  noInp: boolean; 
+  valFormatt: "number" | "string"; // 输出的时间格式 normal 是字符串
+  disabled:boolean;
   defaultTime: string; //最终显示的时间字符串
   width: number;
   placeholder: string;
@@ -43,12 +45,14 @@ interface IDemo {
     _selTimeList: CalendarSpace.ICalendarStates["selTimeArr"]): void;
 }
 
-const initObj = {
+const initObj:calendarObj = {
   field: "time",
   rotate: 3,
   style: 1,
   time: false,
   noInp: false,
+  valFormatt: "number",
+  disabled: false,
   defaultTime: "",
   width: 280,
   placeholder: "",

@@ -7,6 +7,10 @@ html {
   color: $text-color;
 }
 //svg图标
+.disabled {
+  color: #ccc !important;
+  cursor: not-allowed;
+}
 
 .icon {
   width: 1em;

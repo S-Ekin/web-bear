@@ -6,6 +6,9 @@ $combo-h:2em;
 $combo-drop-padding:8px;
 
 .m-combo-inp {
+  color: $combo-text-color;
+  cursor: pointer;
+
   .combo-value {
     flex: 1;
     word-break: break-all;
@@ -84,11 +87,9 @@ $combo-drop-padding:8px;
 
   .m-combo-inp {
     position: relative;
-    color: $combo-text-color;
     display: flex;
     flex: 1;
     height: $combo-h;
-    cursor: pointer;
     border: 1px solid $border-color;
     border-radius: 4px;
     align-items: center;
