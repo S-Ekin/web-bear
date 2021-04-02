@@ -149,7 +149,6 @@ export default class CalendarView
 		});
 
 		if(startGtEnd){
-			alert('开始时间要小于结束时间！');
 			return ;	
 		}
 

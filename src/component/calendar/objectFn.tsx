@@ -1,4 +1,5 @@
 
+import * as Immutable from "immutable";
 import {ICommonInterface,ICalendarStates} from "./calendar";
 enum calendarType {
   year = 1,
@@ -161,7 +162,7 @@ const getInpTimeStrArr = function(
 		return listArr[0] ? listArr : [""];
 
     };
-    const getCurTime = function() {
+const getCurTime = function() {
 		const time = new Date();
 		const year = time.getFullYear();
 		const month = time.getMonth() + 1;
@@ -171,14 +172,14 @@ const getInpTimeStrArr = function(
 		const minute = time.getMinutes();
 
 		return { year, searson, month, day, hour, minute };
-  };
+};
   
-  const getLastYear = function (year:number){
-		let viewIndex = year % 10;
-		viewIndex = viewIndex === 0 ? 10 : viewIndex;
-		const startTime = year - viewIndex + 1;
-		return startTime + 9;
-	};
+const getLastYear = function (year:number){
+  let viewIndex = year % 10;
+  viewIndex = viewIndex === 0 ? 10 : viewIndex;
+  const startTime = year - viewIndex + 1;
+  return startTime + 9;
+};
 // 把显示的时间字符串变为数字，方便传入后端
   const	timeStrToNumber = function (strArr:string[],valFormatt:"number"|"string"){
 		return valFormatt === "number" ? strArr.map(val=>{
@@ -186,4 +187,97 @@ const getInpTimeStrArr = function(
 		}) : strArr;
 	};
 
-export { timeStrValToTimeObjArr, calendarType, getInpTimeStrArr ,getCurTime, getLastYear, timeStrToNumber};
+	//比较时间的大小
+	const compareTimeRang = (
+		selTimeArr:ICalendarStates["selTimeArr"],
+		viewIndex:number,
+		showTimeObj:ICommonInterface["curTime"],
+		propsObj:{
+			rotate:ICommonInterface["rotate"],
+			time:boolean, //是否有时间点
+      field:string, 
+      valFormatt: "string" | "number",
+			clickBefore?: ICommonInterface["clickBack"]
+		}
+		)=>{
+
+		const selTimeArrDate = selTimeArr.toJS();
+		const { rotate, time, clickBefore, field, valFormatt} = propsObj;
+    let status = false;
+		selTimeArrDate[viewIndex] = showTimeObj ;
+		if(selTimeArrDate.length===1 || !selTimeArr.getIn([0,"year"])){
+			status = false ;
+		} else {
+      let startgtEnd = status;
+      const startNode = selTimeArrDate[0];
+      const endNode= selTimeArrDate[1];
+      switch(rotate){
+        case calendarType.day :{
+          const mon1 = `${startNode.month}`.padStart(2,'0');
+          const day1= `${startNode.day}`.padStart(2,'0');
+          const mon2 = `${endNode.month}`.padStart(2,'0');
+          const day2= `${endNode.day}`.padStart(2,'0');
+
+          const startTime = `${startNode.year}${mon1}${day1}`;
+          const endTime = `${endNode.year}${mon2}${day2}`;
+          if(time){
+
+            const hour1= `${startNode.month}`.padStart(2,'0');
+            const minute1= `${startNode.day}`.padStart(2,'0');
+            const hour2 = `${endNode.month}`.padStart(2,'0');
+            const minute2= `${endNode.day}`.padStart(2,'0');
+
+            startgtEnd = startTime + `${hour1}${minute1}`  > endTime + `${hour2}${minute2}`;
+
+          }else{
+            startgtEnd = startTime  > endTime;
+          }
+        }
+        break;
+        case calendarType.month :{
+          const mon1 = `${startNode.month}`.padStart(2,'0');
+          const mon2 = `${endNode.month}`.padStart(2,'0');
+          startgtEnd = `${startNode.year}${mon1}` > `${endNode.year}${mon2}`;
+        }
+        break;
+        case calendarType.searson :{
+          const season1 = startNode.searson;
+          const season2  = endNode.searson;
+          startgtEnd = `${startNode.year}${season1}` > `${endNode.year}${season2}`;
+        }
+        break;
+        case calendarType.year :{
+          startgtEnd = `${startNode.year}` > `${endNode.year}`;
+        }
+        break;
+        default:
+          break;
+      }
+      status = startgtEnd;
+    }
+		
+		if(status){
+			alert('开始时间要小于结束时间！');
+		}
+    if(clickBefore){
+      const newSelTimeArr = Immutable.fromJS(selTimeArrDate);
+			const timeVal = getInpTimeStrArr(newSelTimeArr, rotate!, time!);
+			const str = timeStrToNumber(timeVal, valFormatt!).join(",");
+      status = !!clickBefore(str, {
+					field,
+					rotate: rotate!,
+					valFormatt:valFormatt!
+				},newSelTimeArr);
+    }
+		return status ;
+	};
+
+export {
+  timeStrValToTimeObjArr,
+  calendarType,
+  getInpTimeStrArr,
+  getCurTime,
+  getLastYear,
+  timeStrToNumber,
+  compareTimeRang,
+};

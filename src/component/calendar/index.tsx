@@ -10,6 +10,7 @@ import {
   getCurTime,
   getLastYear,
   timeStrToNumber,
+  compareTimeRang
 } from "./objectFn";
 import {ICommonInterface} from "./calendar";
 import { event } from "../util/autoSlideUp";
@@ -17,6 +18,7 @@ import { event } from "../util/autoSlideUp";
 type Props = {
 	field: string;
 	disabled?:boolean;
+	require?: boolean;
 	rotate?: ICommonInterface["rotate"]; // 日历类型
 	style?: 1 | 2;
 	time?: boolean; //可选择时间
@@ -29,12 +31,8 @@ type Props = {
 	renderCallBack?: boolean;//初始化时，调用点击的回调函数
 	noChangeRotate?: boolean;//不能改变频率
 	valFormatt?:"number" | "string" // number:clickBack 传数字值:20200821， string: 2020-08-21;
-	clickBack: (
-		timeStr: string,
-		field: string,
-		rotate: ICommonInterface["rotate"],
-		selTimeList:States["selTimeArr"]
-	) => void | boolean;
+	clickBefore?:ICommonInterface["clickBack"];
+	clickBack: ICommonInterface["clickBack"];
 };
 
 type States = {
@@ -73,7 +71,7 @@ class Calendar extends React.PureComponent<Props, States>
 			defaultTime: "",
 			width: 280,
 			placeholder: "",
-			valFormatt: "number"
+			valFormatt: "number",
 		};
 		static  getDerivedStateFromProps(nextProps:Props,preState:States):Partial<States> | null {
 			
@@ -89,7 +87,8 @@ class Calendar extends React.PureComponent<Props, States>
 				field,
 				ableClear,
 				renderCallBack,
-				valFormatt
+				valFormatt,
+				clickBefore,
 			} = nextProps;
 			const curTime = getCurTime();
 
@@ -101,7 +100,23 @@ class Calendar extends React.PureComponent<Props, States>
 			//重置状态
 			const timeVal = getInpTimeStrArr(selTimeArr, rotate!, time!);
 			if(renderCallBack){
-					clickBack(timeStrToNumber(timeVal, valFormatt!).join(",") ,field,rotate!,selTimeArr);
+				const str = timeStrToNumber(timeVal, valFormatt!).join(",");
+				const forbid = clickBefore ? clickBefore(str ,{
+					field,
+					rotate: rotate!,
+					valFormatt:valFormatt!
+				},selTimeArr) : false;
+				if(forbid){
+					return {
+						preInitTime:nextProps.initTime,
+						preRotate:nextProps.rotate,
+					};
+				}
+				clickBack(str, {
+					field,
+					rotate: rotate!,
+					valFormatt:valFormatt!
+				},selTimeArr);
 			}	
 			let animationArr:States["showViewArr"] = new Array(5).fill("fadeOut");
 			animationArr[nextProps.rotate!] = "fadeIn";
@@ -138,6 +153,7 @@ class Calendar extends React.PureComponent<Props, States>
 			time,
 			rotate,
 			clickBack,
+			clickBefore,
 			field,
 			ableClear,
 			renderCallBack,
@@ -153,6 +169,22 @@ class Calendar extends React.PureComponent<Props, States>
 			: Immutable.fromJS(
 				timeStrValToTimeObjArr(false, this.props,this.curTime)
 			);
+			
+		if(renderCallBack){
+			const val = timeStrToNumber(timeVal,valFormatt!).join(",");
+			const forbid = clickBefore ? clickBefore(val , {
+				field,
+				rotate: rotate!,
+				valFormatt:valFormatt!
+			},selTimeArr) : false;
+			if (!forbid){
+				clickBack(val, {
+					field,
+					rotate: rotate!,
+					valFormatt:valFormatt!
+				},selTimeArr);
+			}
+		}
 		this.state = {
 			expand: false,
 			selTimeArr,
@@ -166,11 +198,6 @@ class Calendar extends React.PureComponent<Props, States>
 			preInitTime:props.initTime,
 			preRotate:props.rotate
 		};
-
-		if(renderCallBack){
-			const val = timeStrToNumber(timeVal,valFormatt!).join(",");
-			clickBack(val, field, rotate!,selTimeArr);
-		}
 	}
 	
 	getShowViewArr(rotate:ICommonInterface["rotate"]){
@@ -180,69 +207,6 @@ class Calendar extends React.PureComponent<Props, States>
 		return animationArr;
 	}
 
-	//比较时间的大小
-	compareTimeRang(
-		selTimeArr:States["selTimeArr"],
-		viewIndex:number,
-		showTimeObj:ICommonInterface["curTime"],
-		rotate:ICommonInterface["rotate"],
-		time:boolean, //是否有时间点
-		){
-
-		const selTimeArrDate = selTimeArr.toJS();
-
-		if(selTimeArrDate.length===1 || !selTimeArr.getIn([0,"year"])){
-			return false ;
-		}
-
-		selTimeArrDate[viewIndex] = showTimeObj ;
-		let startgtEnd = false;
-		const startNode = selTimeArrDate[0];
-		const endNode= selTimeArrDate[1];
-		switch(rotate){
-			case calendarType.day :{
-				const mon1 = `${startNode.month}`.padStart(2,'0');
-				const day1= `${startNode.day}`.padStart(2,'0');
-				const mon2 = `${endNode.month}`.padStart(2,'0');
-				const day2= `${endNode.day}`.padStart(2,'0');
-
-				const startTime = `${startNode.year}${mon1}${day1}`;
-				const endTime = `${endNode.year}${mon2}${day2}`;
-				if(time){
-
-					const hour1= `${startNode.month}`.padStart(2,'0');
-					const minute1= `${startNode.day}`.padStart(2,'0');
-					const hour2 = `${endNode.month}`.padStart(2,'0');
-					const minute2= `${endNode.day}`.padStart(2,'0');
-
-					startgtEnd = startTime + `${hour1}${minute1}`  > endTime + `${hour2}${minute2}`;
-
-				}else{
-					startgtEnd = startTime  > endTime;
-				}
-			}
-			break;
-			case calendarType.month :{
-				const mon1 = `${startNode.month}`.padStart(2,'0');
-				const mon2 = `${endNode.month}`.padStart(2,'0');
-				startgtEnd = `${startNode.year}${mon1}` > `${endNode.year}${mon2}`;
-			}
-			break;
-			case calendarType.searson :{
-				const season1 = startNode.searson;
-				const season2  = endNode.searson;
-				startgtEnd = `${startNode.year}${season1}` > `${endNode.year}${season2}`;
-			}
-			break;
-			case calendarType.year :{
-				startgtEnd = `${startNode.year}` > `${endNode.year}`;
-			}
-			break;
-			default:
-				break;
-		}
-		return startgtEnd ;
-	}
 	//改变基本类型的state
 	changeBasicState=<K extends keyof States>(
 		key:K,
@@ -257,14 +221,34 @@ class Calendar extends React.PureComponent<Props, States>
 		if(obj && key==="selTimeArr"){ 
 			//只比较开始时间和结束时间的大小
 			const {selTimeArr,rotate} = this.state;
-			const {time} = this.props;
-			return this.compareTimeRang(
+			const {time,clickBefore,field,valFormatt} = this.props;
+			return compareTimeRang(
 				selTimeArr,
 				obj.viewIndex,
 				obj.showTimeObj,
-				rotate!,
-				time!
+				{
+					rotate: rotate!,
+					time: time!,
+					field,
+					valFormatt:valFormatt!,
+					clickBefore,
+				}
 				);
+		} 
+
+		if(key === "rotate" && this.props.clickBefore){
+			const {selTimeArr} = this.state;
+			const {time,clickBefore,field,valFormatt} = this.props;
+			const val = callback(this.state) as States["rotate"];
+			const calendarVal = getInpTimeStrArr(selTimeArr,val as States["rotate"],time!).join(" 至 ");
+			const str =timeStrToNumber(calendarVal.split(" 至 "), valFormatt!).join(",");
+			if(clickBefore(str,{
+				field,
+				rotate: val,
+				valFormatt: valFormatt!,
+			},selTimeArr)){
+				return true ;
+			}
 		}
 		
 		this.setState(pre=>{
@@ -301,7 +285,11 @@ class Calendar extends React.PureComponent<Props, States>
 				const {field,clickBack,valFormatt} = this.props;	
 				const {rotate,calendarVal,selTimeArr} = this.state;	
 				const val =timeStrToNumber(calendarVal.split(" 至 "), valFormatt!).join(",");
-				clickBack(val, field,rotate,selTimeArr);
+				clickBack(val,{
+					field,
+					rotate: rotate!,
+					valFormatt:valFormatt!
+				},selTimeArr);
 			}
 		});
 	}
@@ -327,22 +315,6 @@ class Calendar extends React.PureComponent<Props, States>
 	componentWillUnmount() {
 		event.remove(this.eventId);
 	}
-
-	getSelTimeVal() {
-		const { selTimeArr } = this.state;
-		const { time, clickBack, field ,rotate, valFormatt} = this.props;
-		const strArr = getInpTimeStrArr(selTimeArr, rotate!, time!);
-		const str = strArr.join(" 至 ");
-		this.setState({
-			calendarVal: str,
-		},()=>{
-			const val = timeStrToNumber(strArr, valFormatt!);
-			clickBack(val.join(","), field!, rotate!,selTimeArr);
-		});
-
-		return str;
-	}
-
 
 	drop(){
 		const {
@@ -399,6 +371,7 @@ class Calendar extends React.PureComponent<Props, States>
 			placeholder,
 			ableClear,
 			style,
+			require,
 			disabled
 		} = this.props;
 		const { expand, calendarVal} = this.state;
@@ -408,6 +381,7 @@ class Calendar extends React.PureComponent<Props, States>
 						inpVal={calendarVal}
 						placeholder={placeholder!}
 						disabled={disabled}
+						require={require}
 						eventId={this.eventId}
 						ableClear={ableClear!}
 						curTime={this.curTime}

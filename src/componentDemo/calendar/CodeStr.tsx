@@ -8,9 +8,29 @@ export const str1 = `<Calendar
 
 export const str2 = `function clickBack(
     timeStr: string,
-    field: string,
-    rotate: CalendarSpace.commonInterface["rotate"],
+    obj:{
+					field: string,
+					rotate: ICommonInterface["rotate"],
+					valFormatt: ICommonInterface["valFormatt"]
+    },
     _selTimeList: CalendarSpace.CalendarStates["selTimeArr"]
   ){
-    console.log(timeStr, field, rotate,_selTimeList);
-  }`;
+    console.log(timeStr, obj,_selTimeList);
+  }
+  
+  function clickBefore(
+    timeStr: string,
+    obj:{
+					field: string,
+					rotate: ICommonInterface["rotate"],
+					valFormatt: ICommonInterface["valFormatt"]
+    },
+    _selTimeList: CalendarSpace.CalendarStates["selTimeArr"]
+  ){
+    if(obj.field === "forbid"){
+      alert("禁止选择")
+      return true;
+    }
+  }
+  
+  `;

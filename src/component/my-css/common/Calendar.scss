@@ -11,6 +11,10 @@ $inp-h:2em;
   border-radius: 4px;
   cursor: pointer;
 
+  &.no-fill {
+    border-color: $error;
+  }
+
   .calendar-inpTxt {
     width: 100%;
     background: none;

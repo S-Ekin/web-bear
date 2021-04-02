@@ -17,6 +17,7 @@ type Props={
 	style: 1 | 2;
 	ableClear?: boolean;
 	disabled?: boolean;
+	require?: boolean;
 	changeBasicState:ICommonInterface["changeBasicState"]
 };
 type States={
@@ -60,7 +61,7 @@ class CalendarInp extends React.PureComponent<
 		});
 	}
 	render() {
-		const { inpVal, placeholder, ableClear, disabled } = this.props;
+		const { inpVal, placeholder, ableClear, disabled, require } = this.props;
 
 		const closeIcon = ableClear && !disabled ? (
 					<Animate
@@ -73,24 +74,27 @@ class CalendarInp extends React.PureComponent<
 						</span>
 					</Animate>
 				) : undefined ;
-
+        const disabledName = disabled ? "disabled": "";
+        const requireName = require && !disabled && ableClear ? inpVal ? "" : "no-fill": "";
 		return (
-			<div className={`m-clalendar-inpBox ${disabled ? "disabled": ""}`} onClick={disabled ? undefined : this.toggleDrop}>
-
-				<input
-					className="s-inp calendar-inpTxt"
-					value={inpVal}
-					disabled={disabled}
-					placeholder={placeholder}
-					readOnly={true}
-					type="text"
-				/>	
-				{closeIcon}
-				<span className="calendar-inp-icon">
-					<SvgIcon className="calendar"/>
-				</span>
-			</div>
-		);
+      <div
+        className={`m-clalendar-inpBox ${disabledName} ${requireName}`}
+        onClick={disabled ? undefined : this.toggleDrop}
+      >
+        <input
+          className="s-inp calendar-inpTxt"
+          value={inpVal}
+          disabled={disabled}
+          placeholder={placeholder}
+          readOnly={true}
+          type="text"
+        />
+        {closeIcon}
+        <span className="calendar-inp-icon">
+          <SvgIcon className="calendar" />
+        </span>
+      </div>
+    );
 	}
 }
 

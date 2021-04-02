@@ -12,6 +12,7 @@ type obj = {
         style:number;
         time: boolean; //可选择时间
         noInp: boolean;
+  		require: boolean;
   		disabled: boolean;
   		valFormatt: "number" | "string",
         defaultTime: string; //最终显示的时间字符串
@@ -46,7 +47,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 		let value:any = dom.value;
 		if(['width',"rotate",'style'].includes(field)){
 			value = ~~value;	
-		}else if(["time","noInp","ableClear","noChangeRotate","renderCallBack", "disabled"].includes(field)){
+		}else if(["time","noInp","ableClear","noChangeRotate","renderCallBack", "disabled", "require"].includes(field)){
 
 			value = value === "1" ? true :false ;
 		}
@@ -66,6 +67,7 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
             renderCallBack,
 			disabled,
 			valFormatt,
+			require,
             noChangeRotate,
         } = this.props.obj.toJS();
         
@@ -180,6 +182,25 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 							value="0"
 							type="radio"
 							checked={!time}
+							changeHandle={this.inpChangeFn}>
+							否
+						</CheckBox>
+					</div>
+					<div className="inp-item">
+						<span>必选 require：</span>
+						<CheckBox
+							name="require"
+							value="1"
+							type="radio"
+							checked={require}
+							changeHandle={this.inpChangeFn}>
+							是
+						</CheckBox>
+						<CheckBox
+							name="require"
+							value="0"
+							type="radio"
+							checked={!require}
 							changeHandle={this.inpChangeFn}>
 							否
 						</CheckBox>
@@ -306,7 +327,10 @@ class PropsEditConfig extends React.PureComponent<Props,States> implements IProp
 							左侧标题 children：
 						</Input>
 					</div>
-                   
+                   <div className="inp-item">
+					   <span className="lab-tit">点击之前 clickBefore?：</span>
+						<span>点击前的回调函数，返回ture就不会选择当前点击的日期</span>
+					</div>
 				</div>
 			</div>
 		);

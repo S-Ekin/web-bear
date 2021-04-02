@@ -21,6 +21,7 @@ type calendarObj = {
   noInp: boolean; 
   valFormatt: "number" | "string"; // 输出的时间格式 normal 是字符串
   disabled:boolean;
+  require:boolean;
   defaultTime: string; //最终显示的时间字符串
   width: number;
   placeholder: string;
@@ -38,11 +39,7 @@ type States = {
   initTime: { time: string }; //初始化时间
 };
 interface IDemo {
-  clickBack( 
-    timeStr: string,
-    field: string,
-    rotate: CalendarSpace.ICommonInterface["rotate"],
-    _selTimeList: CalendarSpace.ICalendarStates["selTimeArr"]): void;
+  clickBack:CalendarSpace.ICommonInterface["clickBack"];
 }
 
 const initObj:calendarObj = {
@@ -50,6 +47,7 @@ const initObj:calendarObj = {
   rotate: 3,
   style: 1,
   time: false,
+  require: false,
   noInp: false,
   valFormatt: "number",
   disabled: false,
@@ -71,15 +69,24 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     refreshId: 0
   };
 
-  clickBack(
-    timeStr: string,
-    field: string,
-    rotate: CalendarSpace.ICommonInterface["rotate"],
-    _selTimeList: CalendarSpace.ICalendarStates["selTimeArr"]
-  ){
-    console.log(timeStr, field, rotate,_selTimeList);
+  clickBack:CalendarSpace.ICommonInterface["clickBack"] = (
+    _timeStr,
+    obj,
+    _selTimeList,
+  ) =>{
+    console.log(_timeStr, obj,_selTimeList);
   }
-
+  
+  clickBefore:CalendarSpace.ICommonInterface["clickBack"] = (
+    _timeStr,
+    obj,
+    _selTimeList
+  ) =>{
+    if(obj.field === "forbid"){
+      alert("禁止选择")
+      return true;
+    }
+  }
   changeState = (key: keyof calendarObj, val: any) => {
     this.setState(pre => {
       return {
@@ -160,6 +167,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               key={refreshId}
               initTime={initTime}
               clickBack={this.clickBack}
+              clickBefore={this.clickBefore}
               {...(configObj as any)}
             >
               {title}
