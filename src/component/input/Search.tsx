@@ -13,6 +13,7 @@ type props={
 	closeHandle?: (field:string) => void;
 	tip?: string;
 	width?:number;
+	defaultVal?:string;
 	field:string;
 };
 type states={
@@ -96,7 +97,7 @@ class Search extends React.PureComponent<props,states> implements ISearch{
    render() {
 
 		const { searching , keyword } = this.state;
-		const { tip ,width, children } = this.props;
+		const { tip ,width, children, defaultVal } = this.props;
 		const styleObj = width ? {width}:undefined;
 		const jBtn = children ? (
 			<Button handle={this.toggleSearch}>
@@ -114,6 +115,7 @@ class Search extends React.PureComponent<props,states> implements ISearch{
 				<div className="m-search" style={styleObj}>
 					<input
 						type="text"
+						defaultValue={defaultVal}
 						className="s-inp"
 						value={keyword}
 						placeholder={tip}

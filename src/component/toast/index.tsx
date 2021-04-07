@@ -114,8 +114,9 @@ class Notice extends React.PureComponent<props, states> implements INotice {
 
 // tslint:disable-next-line: no-null-keyword
 let noticeRef: null | Notice = null;
+let noticeCount = 0;
 const createTimekey = function() {
-	return new Date().getTime();
+	return ++noticeCount;
 };
 const fn = (ref:Notice) => {
 	noticeRef = ref;
