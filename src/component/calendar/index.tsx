@@ -33,6 +33,7 @@ type Props = {
 	valFormatt?:"number" | "string" // number:clickBack 传数字值:20200821， string: 2020-08-21;
 	clickBefore?:ICommonInterface["clickBack"];
 	clickBack: ICommonInterface["clickBack"];
+    matchTimeStr?:(field:string,value?:string)=>boolean; // 判断是否显示红色框，也就是验证框
 };
 
 type States = {
@@ -71,7 +72,7 @@ class Calendar extends React.PureComponent<Props, States>
 			defaultTime: "",
 			width: 280,
 			placeholder: "",
-			valFormatt: "number",
+			valFormatt: "number", 
 		};
 		static  getDerivedStateFromProps(nextProps:Props,preState:States):Partial<States> | null {
 			
@@ -372,16 +373,20 @@ class Calendar extends React.PureComponent<Props, States>
 			ableClear,
 			style,
 			require,
-			disabled
+			disabled,
+			field,
+			matchTimeStr
 		} = this.props;
 		const { expand, calendarVal} = this.state;
 
 		const inpCom = noInp ? undefined : (
 					<CalendarInp
+						field={field}
 						inpVal={calendarVal}
 						placeholder={placeholder!}
 						disabled={disabled}
 						require={require}
+						matchTimeStr={matchTimeStr!}
 						eventId={this.eventId}
 						ableClear={ableClear!}
 						curTime={this.curTime}

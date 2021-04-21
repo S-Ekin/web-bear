@@ -10,6 +10,7 @@ import Layout from '@componentDemo/Layout/demo';
 import InputDemo from '@componentDemo/input/DemoInput';
 import CheckBoxDemo from '@componentDemo/input/CheckboxDemo';
 import SearchDemo from '@componentDemo/input/SearchDemo';
+import TextareaDemo from '@componentDemo/input/TextareaDemo';
 
 type Props={
 
@@ -31,6 +32,7 @@ class ButtonRoute extends React.PureComponent<Props,States> {
                 <Route component={ButtonDemo} path="/inp/button" />
                 <Route component={Layout} path="/inp/layout" />
                 <Route component={InputDemo} path="/inp/input" />
+                <Route component={TextareaDemo} path="/inp/textarea" />
                 <Route component={CheckBoxDemo} path="/inp/checkbox" />
                 <Route component={SearchDemo} path="/inp/search" />
             </Switch>

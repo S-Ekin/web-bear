@@ -12,7 +12,7 @@ import { Input, CheckBox } from "@component/input/index";
 import { createImmutableMap } from "@component/util/createImmutaleMap";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import * as  CalendarSpace from "@component/calendar/calendar";
-import {str1,str2} from './CodeStr';
+import {str1,str2, str3} from './CodeStr';
 type calendarObj = {
   field: string;
   rotate: number; // 日历类型
@@ -36,6 +36,7 @@ type States = {
   configObj: calendarObj;
   refreshId: number;
   outTimeVal: string;
+  ableMatch: boolean;
   initTime: { time: string }; //初始化时间
 };
 interface IDemo {
@@ -66,6 +67,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     title: "",
     initTime: { time: "" },
     outTimeVal: "",
+    ableMatch: false,
     refreshId: 0
   };
 
@@ -152,8 +154,44 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       title: e.currentTarget.value.trim(),
     })
   }
+   getMatchTit(){
+      const {ableMatch} = this.state;
+      const fn = (e:React.ChangeEvent<HTMLInputElement>)=>{
+        const dom = e.currentTarget;
+        const value = dom.value;
+        this.setState({
+          ableMatch: value === "1"
+        })
+      }
+      return (<div className="inp-item">
+                    <span>开启验证 matchValFn：(有验证函数就不会去匹配norequire)</span>
+                    <CheckBox
+                      name="ableMatch"
+                      value="1"
+                      type="radio"
+                      checked={ableMatch}
+                      changeHandle={fn}
+                    >
+                      是
+                    </CheckBox>
+                    <CheckBox
+                      name="ableMatch"
+                      value="2"
+                      type="radio"
+                      checked={!ableMatch}
+                      changeHandle={fn}
+                    >
+                      否
+                    </CheckBox>
+                  </div>)
+    }
+   matchTimeStr = ( _field: string, timeStr?: string)=>{
+   if(timeStr && timeStr.includes("2022")){
+     return true;
+   }
+  }
   render() {
-    const { calendarObj, refreshId, configObj,initTime,title } = this.state;
+    const { calendarObj, refreshId, configObj,initTime,title,ableMatch } = this.state;
     const rotate = configObj.rotate;
 
     return (
@@ -165,6 +203,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
           <div className="g-item-show flex-between">
             <Calendar
               key={refreshId}
+              matchTimeStr={ableMatch ? this.matchTimeStr : undefined}
               initTime={initTime}
               clickBack={this.clickBack}
               clickBefore={this.clickBefore}
@@ -227,6 +266,9 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             {str2}
             </CodeBlock>
           </div>
+          <div className="g-item-show">
+              <CodeBlock tit={this.getMatchTit()} >{str3}</CodeBlock>
+            </div>
         </div>
       </div>
     );

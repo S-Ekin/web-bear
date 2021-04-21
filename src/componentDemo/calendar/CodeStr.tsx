@@ -34,3 +34,13 @@ export const str2 = `function clickBack(
   }
   
   `;
+  
+  export const str3 = `function matchTimeStr(
+    field: string,
+    timeStr?: string
+  ){
+   if(timeStr.includes("2022")){
+     return true;
+   }
+  }
+`;

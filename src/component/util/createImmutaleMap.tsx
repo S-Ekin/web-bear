@@ -18,14 +18,24 @@ type MapTypeAllowedData<DataType> = { [K in keyof DataType]: DataType[K] };
 
 declare global {
 	interface IImmutalbeMap<DataType extends MapTypeAllowedData<DataType>>
-		extends Immutable.Map< keyof DataType, AllowedValue> {
-		toJS(): DataType;
-		get<K extends keyof DataType>(
-			key: K,
-			notSetValue?: DataType[K]
-		): DataType[K];
-		set<K extends keyof DataType>(key: K, value: DataType[K]): this;
-	}
+    extends Immutable.Map<keyof DataType, AllowedValue> {
+    toJS(): DataType;
+    get<K extends keyof DataType>(
+      key: K,
+      notSetValue?: DataType[K]
+    ): DataType[K];
+    set<K extends keyof DataType>(key: K, value: DataType[K]): this;
+    update<K extends keyof DataType>(
+      key: K,
+      updater: (value: DataType[K]) => DataType[K]
+    ): this;
+    update<K extends keyof DataType>(
+      key: K,
+      notSetValue: DataType[K],
+      updater: (value: DataType[K]) => DataType[K]
+    ): this;
+    update<R>(updater: (value: this) => R): R;
+  }
 	interface IImmutalbeList<DataType extends AllowedValue>
 		extends Immutable.List<DataType> {
 		

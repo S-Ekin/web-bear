@@ -11,6 +11,7 @@ import {ICommonInterface,ICalendarStates} from "./calendar";
 import { slideOther} from "../util/autoSlideUp";
 type Props={
     inpVal: string;
+	field: string;
 	placeholder: string;
 	eventId:string;
 	curTime: ICommonInterface["curTime"];
@@ -18,6 +19,7 @@ type Props={
 	ableClear?: boolean;
 	disabled?: boolean;
 	require?: boolean;
+    matchTimeStr?:(field:string,value?:string)=>boolean; // 判断是否显示红色框，也就是验证框
 	changeBasicState:ICommonInterface["changeBasicState"]
 };
 type States={
@@ -61,7 +63,7 @@ class CalendarInp extends React.PureComponent<
 		});
 	}
 	render() {
-		const { inpVal, placeholder, ableClear, disabled, require } = this.props;
+		const { inpVal, placeholder, ableClear, disabled, require, matchTimeStr, field } = this.props;
 
 		const closeIcon = ableClear && !disabled ? (
 					<Animate
@@ -75,7 +77,8 @@ class CalendarInp extends React.PureComponent<
 					</Animate>
 				) : undefined ;
         const disabledName = disabled ? "disabled": "";
-        const requireName = require && !disabled && ableClear ? inpVal ? "" : "no-fill": "";
+		let noFill = matchTimeStr ? matchTimeStr(field,inpVal) : require && !disabled && ableClear && !inpVal;
+        const requireName =  noFill ? "no-fill": "";
 		return (
       <div
         className={`m-clalendar-inpBox ${disabledName} ${requireName}`}

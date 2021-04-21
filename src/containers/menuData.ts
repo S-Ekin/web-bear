@@ -40,6 +40,13 @@ export  const menuList = [
                 icon: "",
                 children: [],
               },
+              {
+                id: "16",
+                name: "文本框",
+                url: "/inp/textarea",
+                icon: "",
+                children: [],
+              },
             ],
           },
           {
@@ -254,4 +261,19 @@ export  const menuList = [
               },
             ],
           },
+          {
+            id: "100",
+            name: "拖拽",
+            url: "/drag",
+            icon: "menu",
+            children: [
+              {
+                id: "101",
+                name: "拖拽排序",
+                url: "/drag/order",
+                icon: "",
+                children: [],
+              },
+            ],
+          }
         ] as any;

@@ -6,17 +6,17 @@
 import * as React from "react";
 import Layout from "@component/layout/Layout";
 import {createImmutableMap} from "@component/util/createImmutaleMap";
-import {Input,CheckBox} from "@component/input/index";
-import {str1, str4} from "./CodeStr";
+import {Input,CheckBox, Textarea} from "@component/input/index";
+import {str1} from "./CodeStr";
 import CodeBlock from "@container/codeBlock/CodeBlock";
+import "./index.scss";
 type inputConfig = {
     dataSet:string;
     value:string;
     name:string;
-    type:"text"|"number";
     width:number;
+    className: string;
     placeholder:string;
-    styleName:"normal" ;
     norequire:boolean;
     disabled:boolean;
 };
@@ -28,27 +28,25 @@ type States={
     ableMatch: boolean;
 };
 interface IDemo {
-    changeFn(e:React.ChangeEvent<HTMLInputElement>):void;
+    changeFn(e:React.ChangeEvent<HTMLTextAreaElement>):void;
 }
 const inputConfig:inputConfig = {
     dataSet:"",
     value:"",
     placeholder: "提示",
     name:"",
-    type:"text",
     width:0,
     norequire:false,
-    styleName:"normal",
-    disabled: false
+    disabled: false,
+    className: "v-resize",
 };
 class Demo extends React.PureComponent<Props,States> implements IDemo{
-
 
     state:States={
         immuConfig:createImmutableMap(inputConfig),
         ableMatch: false,
     };
-    changeFn=(e:React.ChangeEvent<HTMLInputElement>)=>{
+    changeFn=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
         const dom = e.currentTarget!;
         const dataSet = dom.dataset;
         const name = dom.name;
@@ -80,61 +78,28 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
         };
         });
     }
-    getMatchTit(){
-      const {ableMatch} = this.state;
-      const fn = (e:React.ChangeEvent<HTMLInputElement>)=>{
-        const dom = e.currentTarget;
-        const value = dom.value;
-        this.setState({
-          ableMatch: value === "1"
-        })
-      }
-      return (<div className="inp-item">
-                    <span>开启验证 matchValFn：(有验证函数就不会去匹配norequire)</span>
-                    <CheckBox
-                      name="ableMatch"
-                      value="1"
-                      type="radio"
-                      checked={ableMatch}
-                      changeHandle={fn}
-                    >
-                      是
-                    </CheckBox>
-                    <CheckBox
-                      name="ableMatch"
-                      value="2"
-                      type="radio"
-                      checked={!ableMatch}
-                      changeHandle={fn}
-                    >
-                      否
-                    </CheckBox>
-                  </div>)
-    }
     render(){
-        const {immuConfig, ableMatch} = this.state;
+        const {immuConfig} = this.state;
 
-        const {value,width,name,dataSet,type,styleName,norequire,disabled, placeholder} = immuConfig.toJS();
+        const {value,width,name,dataSet,norequire,disabled, placeholder, className} = immuConfig.toJS();
 
         return (
           <Layout tit="输入框">
             <div className="g-item-show">
               <div className="inp-item">
-                <Input
+                <Textarea
                   changeFn={this.changeFn}
                   value={value}
                   width={width}
                   placeholder={placeholder}
                   name={name}
-                  matchValFn={ableMatch ? this.matchValFn : undefined}
+                  className={className}
                   dataSet={dataSet}
-                  type={type}
                   disabled={disabled}
                   norequire={norequire}
-                  styleName={styleName}
                 >
-                  输入框：
-                </Input>
+                  文本框：
+                </Textarea>
               </div>
               <div className="flex-between">
                 <div>
@@ -230,37 +195,14 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                     </Input>
                   </div>
                   <div className="inp-item">
-                    <span>类型 type：</span>
-                    <CheckBox
-                      name="type"
-                      value="text"
-                      type="radio"
-                      checked={type === "text"}
-                      changeHandle={this.changeConfig}
+                    <Input
+                      name="className"
+                      norequire={true}
+                      changeFn={this.changeConfig}
+                      value={className}
                     >
-                      text：
-                    </CheckBox>
-                    <CheckBox
-                      name="type"
-                      value="number"
-                      type="radio"
-                      checked={type === "number"}
-                      changeHandle={this.changeConfig}
-                    >
-                      number：
-                    </CheckBox>
-                  </div>
-                  <div className="inp-item">
-                    <span>样式 styleName：</span>
-                    <CheckBox
-                      name="styleName"
-                      value="normal"
-                      type="radio"
-                      checked={styleName === "normal"}
-                      changeHandle={this.changeConfig}
-                    >
-                      normal：
-                    </CheckBox>
+                      类名 className：
+                    </Input>
                   </div>
                   <div className="inp-item">
                     <span>不是必填 norequire：</span>
@@ -288,9 +230,6 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
             </div>
             <div className="g-item-show">
               <CodeBlock tit="改变函数">{str1}</CodeBlock>
-            </div>
-            <div className="g-item-show">
-              <CodeBlock tit={this.getMatchTit()} >{str4}</CodeBlock>
             </div>
           </Layout>
         );

@@ -12,25 +12,19 @@ type props={
     disabled?:boolean;
     value?:string;
     name?:string;
-    type?:"text"|"number";
     width?:number;
-    styleName?:"normal";
+    className?: string;
     norequire?:boolean ;
-    matchValFn?:(value?:string)=>boolean; // 判断是否显示红色框，也就是验证框
-    changeFn?:(e:React.ChangeEvent<HTMLInputElement>)=>void;
-    blurFn?:(e:React.ChangeEvent<HTMLInputElement>) =>void;
+    changeFn?:(e:React.ChangeEvent<HTMLTextAreaElement>)=>void;
+    blurFn?:(e:React.ChangeEvent<HTMLTextAreaElement>) =>void;
 };
 type states={
 
 };
-interface IInput {
+interface ITextarea {
     getInpTit():JSX.Element |"";
 }
-class Input extends React.PureComponent<props,states> implements IInput{
-    static defaultProps = {
-        styleName:"normal",
-    };
-
+class Textarea extends React.PureComponent<props,states> implements ITextarea {
     state:states={
 
     };
@@ -45,29 +39,26 @@ class Input extends React.PureComponent<props,states> implements IInput{
           value,
           name,
           dataSet,
-          styleName,
+          className,
           changeFn,
-          type,
           width,
           norequire,
           blurFn,
           placeholder,
           disabled,
-          matchValFn,
         } = this.props;
         const style = width ? {width:width} : undefined;
-        const noFill = matchValFn ? matchValFn(value) : norequire || disabled ? false : !value;
+        const noFill = norequire || disabled ? false : !value;
         const requireName = noFill ? "no-fill" :"";
         const disabledName = disabled ? "disabled" : "";
         return (
-			<label className="g-inp-lab m-inp">
+			<label className="g-inp-lab m-txt">
 				{this.getInpTit()}
-                <input
-					value={value}
-					className={`s-inp ${styleName} ${requireName} ${disabledName}`}
+                <textarea
+					value={value === null ? "" : value}
+					className={`s-txt ${className} ${requireName} ${disabledName}`}
                     name={name}
                     placeholder={placeholder}
-                    type={type}
                     disabled={disabled}
                     style={style}
                     data-set={dataSet}
@@ -80,4 +71,4 @@ class Input extends React.PureComponent<props,states> implements IInput{
 }
 
 
-export default Input;
+export default Textarea;
