@@ -13,6 +13,7 @@ import Layout from "@component/layout/Layout";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import {str1} from "./CodeStr";
 import {CheckBox,Input,Search} from "@component/input/index";
+import  loadFn  from "@component/loading/loadMethod";
 type Props={
 
 };
@@ -24,7 +25,7 @@ type States={
 	refreshId:number;
 };
 interface IDemo {
-  tableGetCheckedFn:()=>IImmutalbeList<IImmutalbeMap<any>>;
+  tableGetCheckedFn:()=>IImmutalbeList<IImmutalbeMap<report>>;
 }
 type report ={
     a_FASHENGSHIJIAN: string
@@ -61,7 +62,7 @@ const config:config = {
 	checkbox: false,
 	defaultSel: "",
 	tabField: "",
-    hasBorder:false,
+  hasBorder: true,
 	emptyTxt: "",
 	height:0,
 };
@@ -153,8 +154,21 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
 	}
 	getChecked=()=>{
 		const arr = this.tableGetCheckedFn();
-		console.log(arr);
+    const str = arr.map(val=>{
+      return val.get("eventNo")
+    })
+    alert(`选中的事件编号：${str.join(",")}`)
 	}
+  reload=()=>{
+    loadFn.open();
+    this.setState(pre=>{
+      return {
+        tableData: JSON.parse(JSON.stringify(pre.tableData))
+      }
+    },()=>{
+      loadFn.close();
+    })
+  }
     render(){
 		const {tableData,selectTableVal,immuConfig,refreshId ,config} = this.state;
 		const {noPageNums,idField,defaultSel,tabField,emptyTxt,checkbox,hasBorder,height} = immuConfig.toJS();
@@ -188,7 +202,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                       否
                     </CheckBox>
                   </div>
-				  <div className="inp-item">
+                  <div className="inp-item">
                     <span>有边框 hasBorder：</span>
                     <CheckBox
                       name="hasBorder"
@@ -231,7 +245,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                 </div>
                 <div>
                   <div className="inp-item">
-                    <span>多选  checkbox：</span>
+                    <span>多选 checkbox：</span>
                     <CheckBox
                       name="checkbox"
                       value="1"
@@ -254,8 +268,8 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                   <div className="inp-item">
                     <Input
                       name="tabField"
-					  value={tabField}
-					  norequire={true}
+                      value={tabField}
+                      norequire={true}
                       changeFn={this.changeConfig}
                     >
                       表格标识 tabField：
@@ -264,19 +278,19 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                   <div className="inp-item">
                     <Input
                       name="emptyTxt"
-					  norequire={true}
-					  width={280}
+                      norequire={true}
+                      width={280}
                       value={emptyTxt}
                       changeFn={this.changeConfig}
                     >
                       无数据提示 emptyTxt：
                     </Input>
                   </div>
-				  <div className="inp-item">
+                  <div className="inp-item">
                     <Input
-					  name="height"
-					  type="number"
-					  norequire={true}
+                      name="height"
+                      type="number"
+                      norequire={true}
                       value={`${height}`}
                       changeFn={this.changeConfig}
                     >
@@ -288,17 +302,18 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
             </div>
             <div className="g-item-show">
               <div className="m-optBtn">
-                <Button handle={this.getRandomData}>重新获取数据</Button>
+                <Button handle={this.getRandomData}>重新随机获取数据</Button>
+                <Button handle={this.reload}>刷新数据</Button>
                 <Button handle={this.clearData}>clear</Button>
                 <Button handle={this.getChecked}>获取选中的</Button>
                 <Search
                   searchHandle={this.selectVal}
                   field="eventId"
-                  tip="搜索事件编号的后4位为id"
+                  tip="搜索事件编号的后4位为id,前面的0不要"
                   width={300}
                 />
               </div>
-              <div style={{ marginTop: 20, height: 400, overflow: "auto",}}>
+              <div style={{ marginTop: 20, height: 400, overflow: "auto", }}>
                 <Table
                   key={refreshId}
                   data={tableData}
@@ -332,7 +347,11 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
                   >
                     上报人
                   </Table.colItem>
-                  <Table.colItem width={120} field="status_name" isRowSpanField={true}>
+                  <Table.colItem
+                    width={120}
+                    field="status_name"
+                    isRowSpanField={true}
+                  >
                     处理状态
                   </Table.colItem>
                   <Table.colItem width={100} field="org_name">
@@ -349,7 +368,12 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
               </div>
             </div>
             <div className="g-item-show">
-              <CodeBlock tit="表格头部作为子组件渲染，把表格的配置组件化" language="html">{str1}</CodeBlock>
+              <CodeBlock
+                tit="表格头部作为子组件渲染，把表格的配置组件化"
+                language="html"
+              >
+                {str1}
+              </CodeBlock>
             </div>
           </Layout>
         );

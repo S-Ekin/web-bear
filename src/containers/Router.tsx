@@ -1,9 +1,10 @@
-import { Route ,Switch} from "react-router-dom";
+import { Redirect, Route ,Switch} from "react-router-dom";
 import * as React from "react";
 import ErrorBoundary from '@component/crashPage/ErrorBoundary';
 import {event} from "@component/util/Event";
 import notice from "@component/toast/index";
 import loadable from "@component/util/routerLoad";
+import DefaultPage from "@component/crashPage/defaultPage";
 const routerConfig = {
 	buttonRouter: {
 		loader: () =>
@@ -118,6 +119,8 @@ class MainRouter extends React.PureComponent<props,state>{
 					<Route path="/menu" component={loadable(routerConfig.menu)} />
 					<Route path="/util" component={loadable(routerConfig.util)} />
 					<Route path="/animate" component={loadable(routerConfig.animate)} />
+					<Redirect from="/" to="/table/list" exact />
+					<Route path="/"  component={DefaultPage}/>
               </Switch>
             </ErrorBoundary>
 			<div id="inner-modal-wrap"/>

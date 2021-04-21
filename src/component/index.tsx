@@ -2,8 +2,9 @@ import { Button, GroupBtn } from "./button/index";
 import Calendar from "./calendar";
 import { ComboTree, Combobox } from "./combo/index";
 import CrashPage from "./crashPage/CrashPage";
+import DefaultPage from "./crashPage/defaultPage";
 import ErrorBoundary from "./crashPage/ErrorBoundary";
-import { Icon, SvgIcon, Empty } from "./my-icon/index";
+import { Icon, SvgIcon, Empty} from "./my-icon/index";
 import { CheckBox, Input, Search, Textarea } from "./input/index";
 import loadFn from "./loading/loadMethod";
 import Loading from "./loading/Loading";
@@ -34,6 +35,7 @@ export {
   Combobox,
   ComboTree,
   CrashPage,
+  DefaultPage,
   ErrorBoundary,
   Icon,
   SvgIcon,

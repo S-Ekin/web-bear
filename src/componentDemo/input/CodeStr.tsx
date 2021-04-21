@@ -30,7 +30,7 @@ export const str1 = `changeFn=(e:React.ChangeEvent<HTMLInputElement>)=>{
     
   }`
 
-  export const str4 = ` matchValFn=(value?:string)=>{
+  export const str4 = ` matchValFn=(field:string, value:string)=>{
         return !value || value.includes("验证");
     }`
 

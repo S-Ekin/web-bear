@@ -16,7 +16,7 @@ type props={
     width?:number;
     styleName?:"normal";
     norequire?:boolean ;
-    matchValFn?:(value?:string)=>boolean; // 判断是否显示红色框，也就是验证框
+    matchValFn?:(field:string,value:string)=>boolean; // 判断是否显示红色框，也就是验证框
     changeFn?:(e:React.ChangeEvent<HTMLInputElement>)=>void;
     blurFn?:(e:React.ChangeEvent<HTMLInputElement>) =>void;
 };
@@ -56,7 +56,7 @@ class Input extends React.PureComponent<props,states> implements IInput{
           matchValFn,
         } = this.props;
         const style = width ? {width:width} : undefined;
-        const noFill = matchValFn ? matchValFn(value) : norequire || disabled ? false : !value;
+        const noFill = matchValFn ? matchValFn(name!, value!) : norequire || disabled ? false : !value;
         const requireName = noFill ? "no-fill" :"";
         const disabledName = disabled ? "disabled" : "";
         return (

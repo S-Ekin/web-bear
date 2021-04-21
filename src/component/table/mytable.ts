@@ -25,6 +25,7 @@ export interface IColumnItem {
 		tableData: IImmutalbeList<IImmutalbeMap<any>>;
 		preData:any[];
 		preInitSelectVal?:{id:string};
+		curOptId:string;
 	}
 	export interface ITableFn {
 		changeState<P extends keyof ITableStates>(

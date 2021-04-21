@@ -23,7 +23,6 @@ type Props={
 	defaultSel?: string;//默认选中的
 	tabField?: string;//表格标识
 	emptyTxt?: string;//空数据时显示文字
-    getCheckFn?:(fn:any)=>void;//获取选中的
     initSelectVal?:{id:string};//通过外界改变表格的选中
     bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<any>>)=>void;//把获取选中的项的函数传递给外部
 };
@@ -56,6 +55,18 @@ const tableInitData =(data:Props["data"],defaulSel:string,idField:string)=>{
         });
     };
 
+const initCurPage = (props: Props, perNums:number, curOptId?:string) => {
+		const {data,idField} =props;
+		if(!curOptId){
+			return 1 ;
+		}else{
+			//当有默认选中的时候，通过这个选中的数的序号看它是在几页
+			const index = data.findIndex(val=>String(val[idField!]) === String(curOptId));
+			const pages = index > -1 ? Math.ceil((index+1)/perNums) : 1;
+			return pages;
+		}
+	}
+
 class Table extends React.PureComponent<Props,States> implements ITable{
      
     static defaultProps={
@@ -73,20 +84,24 @@ class Table extends React.PureComponent<Props,States> implements ITable{
     static getDerivedStateFromProps(nextProps:Props,preState:States):null | Partial<States>{
 
         if(nextProps.data !== preState.preData ){
-            const {defaultSel,data,idField,initSelectVal} = nextProps ;
-            const val = initSelectVal ? initSelectVal.id : defaultSel! ;
+            const {defaultSel,data,idField} = nextProps ;
+            const val = preState.curOptId || defaultSel! ;
             return {
                 tableData:tableInitData(data,val,idField),
-                curPage:1,
+                curPage: initCurPage(nextProps, preState.perNums,preState.curOptId),
                 preData:data,
             };
-        }if(nextProps.initSelectVal!== preState.preInitSelectVal){
+        }
+        
+        if(nextProps.initSelectVal!== preState.preInitSelectVal){
 
             const {data,idField,initSelectVal} = nextProps ;
             const val = initSelectVal ? initSelectVal.id : "";
             return {
                 tableData:tableInitData(data,val,idField),
                 preInitSelectVal:initSelectVal,
+                curPage: initCurPage(nextProps,preState.perNums,val),
+                curOptId: val,
             };
 
         }else{
@@ -104,9 +119,10 @@ class Table extends React.PureComponent<Props,States> implements ITable{
         const {data,defaultSel,idField,initSelectVal,bindGetSelectedFn} = props;
         this.state={
             perNums:20,
-            curPage:this.initCurPage(props),
+            curPage: initCurPage(props, 20, defaultSel!),
             tableData:tableInitData(data,defaultSel!,idField),
             preData:data,
+            curOptId: defaultSel!,
             preInitSelectVal:initSelectVal
         };
 
@@ -307,19 +323,9 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 					</ScrollBox>
         );
     }
-    initCurPage(props:Props){
-		const {data,defaultSel,idField} =props;
-		if(!defaultSel){
-			return 1 ;
-		}else{
-			// tslint:disable-next-line: triple-equals
-			const index = data.findIndex(val=>val[idField!] == defaultSel);
-			return index > -1 ? Math.ceil((index+1)/20) : 1;
-		}
-	} 
     selectedHandle = (e: React.MouseEvent<HTMLTableCellElement>) => {
 		const index = e.currentTarget!.dataset.index!;
-
+        const {idField} = this.props;
 		this.setState(pre => {
 			const data = pre.tableData;
 			const seleted = data.findIndex(val => {
@@ -332,8 +338,13 @@ class Table extends React.PureComponent<Props,States> implements ITable{
 					: data
 							.setIn([seleted, "selected"], false)
 							.setIn([+index - 1, "selected"], true);
+            const curOptId = 
+				seleted === -1
+					? data.getIn([+index - 1, idField])
+					: data.getIn([seleted, idField]);
 			return {
 				tableData,
+                curOptId,
 			};
 		});
 	}
