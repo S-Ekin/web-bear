@@ -39,7 +39,7 @@ const timeStrValToTimeObjArr = function(
   let selTimeValStr = `${defaultTime}`;
   // 做时间格式验证
   if (selTimeValStr) {
-      const reg = /^\d{4}(-\d{2}){0,2}( [0-2]\d:\d{2})?$/;
+      const reg = /^\d{4}(-\d{2}){0,2}( [0-2]\d(:\d{2}){1,2})?$/;
       const  errorFormate = selTimeValStr.split(",").some(val=>{
         return !reg.test(val);
       });

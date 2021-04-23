@@ -123,7 +123,7 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
   }
 
   immediaFn(slideDown: boolean): void {
-    const { directionUp, slideFnCallback } = this.props;
+    const { directionUp, slideFnCallback, duration } = this.props;
     const dom = this.slideDom.current!;
     const hasRun = !!this.timer;
     if (hasRun) {
@@ -139,9 +139,8 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
     const origin = child.clientHeight;
     let start: number;
 
-    const duration = 300;
     let timeFrom = 0;
-    const timeEnd = Math.ceil(duration / 17);
+    const timeEnd = Math.ceil(duration! / 17);
 
     if (hasRun) {
       start = parseInt(dom.style.height, 0);
