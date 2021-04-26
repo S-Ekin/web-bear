@@ -84,6 +84,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     obj,
     _selTimeList
   ) =>{
+    console.log(_timeStr);
     if(obj.field === "forbid"){
       alert("禁止选择")
       return true;

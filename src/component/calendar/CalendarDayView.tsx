@@ -67,7 +67,6 @@ implements ICalendarDayView{
 		const {selTimeObj, changeTime, viewIndex} = this.props;
 		const hour = selTimeObj.get("hour"),
 			minute = selTimeObj.get("minute");
-
 		return (
 			<div className="m-time">
 				<div>

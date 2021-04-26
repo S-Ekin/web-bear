@@ -226,7 +226,7 @@ class Calendar extends React.PureComponent<Props, States>
 			return compareTimeRang(
 				selTimeArr,
 				obj.viewIndex,
-				obj.showTimeObj,
+				obj.showTimeObj, // 最新选择的时间， 但是还没有更新到state上
 				{
 					rotate: rotate!,
 					time: time!,

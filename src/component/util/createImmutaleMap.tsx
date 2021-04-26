@@ -38,7 +38,6 @@ declare global {
   }
 	interface IImmutalbeList<DataType extends AllowedValue>
 		extends Immutable.List<DataType> {
-		
 	}
     
 }

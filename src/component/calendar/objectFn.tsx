@@ -201,7 +201,7 @@ const getLastYear = function (year:number){
 		}
 		)=>{
 
-		const selTimeArrDate = selTimeArr.toJS();
+		const selTimeArrDate:ICommonInterface["curTime"][] = selTimeArr.toJS();
 		const { rotate, time, clickBefore, field, valFormatt} = propsObj;
     let status = false;
 		selTimeArrDate[viewIndex] = showTimeObj ;
@@ -222,10 +222,10 @@ const getLastYear = function (year:number){
           const endTime = `${endNode.year}${mon2}${day2}`;
           if(time){
 
-            const hour1= `${startNode.month}`.padStart(2,'0');
-            const minute1= `${startNode.day}`.padStart(2,'0');
-            const hour2 = `${endNode.month}`.padStart(2,'0');
-            const minute2= `${endNode.day}`.padStart(2,'0');
+            const hour1= `${startNode.hour}`.padStart(2,'0');
+            const minute1= `${startNode.minute}`.padStart(2,'0');
+            const hour2 = `${endNode.hour}`.padStart(2,'0');
+            const minute2= `${endNode.minute}`.padStart(2,'0');
 
             startgtEnd = startTime + `${hour1}${minute1}`  > endTime + `${hour2}${minute2}`;
 
@@ -259,7 +259,7 @@ const getLastYear = function (year:number){
 		if(status){
 			alert('开始时间要小于结束时间！');
 		}
-    if(clickBefore){
+    if(!status && clickBefore){
       const newSelTimeArr = Immutable.fromJS(selTimeArrDate);
 			const timeVal = getInpTimeStrArr(newSelTimeArr, rotate!, time!);
 			const str = timeStrToNumber(timeVal, valFormatt!).join(",");

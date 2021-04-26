@@ -14,7 +14,7 @@ import {IColumnItem,ITableStates,fieldObj} from "./mytable";
 
 type Props={
 	data: any[];
-    children:React.ReactElement<IColumnItem>[];
+    children:(React.ReactElement<IColumnItem> | undefined)[];
     hasBorder?:boolean;
     height?:number;
 	noPageNums?: boolean;//页码
@@ -65,7 +65,7 @@ const initCurPage = (props: Props, perNums:number, curOptId?:string) => {
 			const pages = index > -1 ? Math.ceil((index+1)/perNums) : 1;
 			return pages;
 		}
-	}
+	};
 
 class Table extends React.PureComponent<Props,States> implements ITable{
      
@@ -164,8 +164,8 @@ class Table extends React.PureComponent<Props,States> implements ITable{
     initFixObj(){
         const {idField,checkbox,children,tabField,noPageNums} = this.props;
 
-        const column:IColumnItem[] = children.map(val => {
-            const {children ,...obj} = val.props  as any;
+        const column:IColumnItem[] = children.filter(val=>val).map(val => {
+            const {children ,...obj} = val!.props  as any;
             return obj ;
         });
 

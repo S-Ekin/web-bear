@@ -138,7 +138,7 @@ export default class CalendarView
 		const flag = { [type]: num };
 		const _showTimeobj = Object.assign(
 			{},
-			this.props.showTimeObj.toJS(),
+			this.props.showTimeObj.toJS(), // 这里不能用选择的时间，因为selTime 是 7月12日，而切换到12月再点击10日，则会有完全不同的时间
 			flag
 		);
 		
@@ -151,7 +151,7 @@ export default class CalendarView
 		if(startGtEnd){
 			return ;	
 		}
-
+		// 要同步showTime 和 selTime 不然比较会出错
 		changeBasicState("showTimeArr",function (state){	
 			let showTimeArr = state.showTimeArr.setIn([viewIndex,type],num);
 			if (style === 2 && !state.selTimeArr.getIn([0,"year"])) {
@@ -327,6 +327,22 @@ export default class CalendarView
 		const {changeBasicState} = this.props;
 		let value =  ~~e.currentTarget.value;
 			value = name === "hour" ? (value>23 ? 23 : value) : (value > 59 ?59 :value);
+		const flag = { [name]: value };
+		const _showTimeobj = Object.assign(
+			{},
+			this.props.selTimeObj.toJS(),
+			flag
+		);
+			console.log(flag,_showTimeobj);
+		//比较开始和结束的大小
+		const startGtEnd = changeBasicState<"selTimeArr">("selTimeArr",(state)=>state.selTimeArr,{
+			viewIndex,
+			showTimeObj:_showTimeobj
+		});
+
+		if(startGtEnd){
+			return ;	
+		}
 
 		changeBasicState<"selTimeArr">("selTimeArr",function(states:ICalendarStates) {
 
@@ -342,6 +358,8 @@ export default class CalendarView
 						return node.set(name,value);
 					});
 				});
+
+				console.log(selTimeArr.toJS(),"更新");
 
 				return selTimeArr;
 
