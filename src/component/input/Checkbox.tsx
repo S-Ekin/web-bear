@@ -24,7 +24,7 @@ class CheckBox extends React.PureComponent<props, states> {
 	clickFn=(e:React.MouseEvent<HTMLLabelElement>)=>{
 		 e.stopPropagation();
 	}
-	getClassName(){
+	getClassName(disabled?:boolean){
 		
 		let name = "" ;
 		const {type,checked,hasChecked} = this.props;
@@ -37,11 +37,11 @@ class CheckBox extends React.PureComponent<props, states> {
 			name = checked ? "radio-on" : "radio-off";
 
 		}
-		return name ;
+		return disabled ? `dis-${name}` : name;
 	}
 	render() {
 		const { type,name,value,checked,changeHandle,children,disabled} = this.props;
-		const className = this.getClassName();
+		const className = this.getClassName(disabled);
 		const disabledName = disabled ? "disabled-box" : "";
 		return (
 			<label className={`m-label m-lab-${type} ${disabledName}`} onClick={this.clickFn}>

@@ -1,7 +1,6 @@
 @import "../scss/variate";
 
 $sel: $theme-color;
-$slectColor:#aee6ff;
 $inp-h:2em;
 
 .m-clalendar-inpBox {
@@ -18,7 +17,6 @@ $inp-h:2em;
   .calendar-inpTxt {
     width: 100%;
     background: none;
-    cursor: inherit;
   }
 
   .calendar-inp-icon {
@@ -181,9 +179,13 @@ $inp-h:2em;
   .wacth-time {
     width: 64px;
     height: 24px;
-    border: 1px solid $theme-color;
+    border: 1px solid $normal;
     border-radius: 4px;
     text-align: center;
+
+    &:focus {
+      border-color: $theme-color;
+    }
   }
 }
 
@@ -250,7 +252,7 @@ $inp-h:2em;
 
       span {
         &:hover {
-          color: $green;
+          color: $theme-color;
         }
       }
     }
@@ -283,5 +285,11 @@ $inp-h:2em;
     width: 100%;
     color: $theme-color;
     position: relative;
+  }
+
+  &:hover {
+    .m-clalendar-inpBox {
+      border-color: $theme-color;
+    }
   }
 }

@@ -275,7 +275,7 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
         return null;
       }
     });
-  };
+  }
   closeFn = () => {
     const { data, selected, filedObj } = this.props;
     const defaultVal = selected.map((val) => val.id).join(",");
@@ -288,7 +288,7 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
       immutableData,
       singleClickPre,
     });
-  };
+  }
   searchFn = (key: string) => {
     const { filedObj, data, selected } = this.props;
     const textField = filedObj.get("textField");
@@ -306,7 +306,7 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
       immutableData,
       singleClickPre,
     });
-  };
+  }
   main() {
     const { immutableData } = this.state;
     const { filedObj, dropStyle, formatterDropItem } = this.props;

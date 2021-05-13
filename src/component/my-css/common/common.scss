@@ -1,25 +1,14 @@
 @import "./btn.scss" ,"./modal.scss","./alertInfo.scss","./table.scss","./Calendar.scss","./menu.scss","./layout.scss","./inp.scss",'./combo.scss','./treeTab.scss', "./scroll.scss";
 @import "../scss/variate";
 
-html {
-  width: 100%;
-  height: 100%;
-  color: $text-color;
-}
 //svg图标
-.disabled {
-  color: #ccc;
-  cursor: not-allowed;
-  border-color: #ccc !important;
-  background-color: rgba($color:#ccc, $alpha: 0.3);
-}
-
 .icon {
   width: 1em;
   height: 1em;
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+  font-size: 12px;
 
   &.middle {
     font-size: 22px;
@@ -93,21 +82,6 @@ html {
   }
 }
 
-// 动画提醒
-.m-warn {
-  color: $error;
-  position: absolute;
-  padding: 6px;
-  animation: alertAnimate 0.4s cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
-  transform: translateX(300px);
-}
-
-@keyframes alertAnimate {
-  to {
-    transform: translateX(0);
-  }
-}
-
 .border {
   border-radius: 4px;
   border: 1px solid #029efa;
@@ -117,9 +91,7 @@ html {
   min-height: 30px;
 }
 
-.default-page {
-  height: 100%;
-}
+// 空页面
 
 .g-crash-page {
   height: 100%;
@@ -141,17 +113,18 @@ html {
   }
 
   .crash-logo {
+    width: 70px;
+    height: 70px;
+
     &.crash {
       background: url("./img/crash.svg") center no-repeat;
       background-size: contain;
-      width: 70px;
-      height: 70px;
     }
 
     &.noFind {
       background: url("./img/noFind.svg") center no-repeat;
       background-size: contain;
-      width: 180px;
+      width: 170px;
       height: 120px;
     }
   }
@@ -159,6 +132,7 @@ html {
   .crash-txt {
     line-height: 2em;
     padding: 16px 0;
+    width: 360px;
   }
 
   .crash-descript {
@@ -175,10 +149,10 @@ html {
   text-align: center;
 
   .empty-icon {
-    background: url("./img/empty.svg") center no-repeat;
+    background: url("./img/empty.png") center no-repeat;
     background-size: contain;
-    width: 120px;
-    height: 120px;
+    width: 416px;
+    height: 362px;
     margin: auto;
   }
 
@@ -193,27 +167,6 @@ html {
   }
 }
 
-/* for block of numbers */
-.hljs-ln-numbers {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  text-align: center;
-  color: #ccc;
-  border-right: 1px solid #ccc;
-  vertical-align: top;
-  padding-right: 5px !important;
-
-  /* your custom style here */
-}
-
-/* for block of code */
-.hljs-ln-code {
-  padding-left: 10px !important;
-}
 // 表格公用
 .td-left {
   text-align: left;
@@ -227,7 +180,9 @@ html {
   text-align: center;
 }
 
+// 所有收缩的下拉框
 .g-slideBox {
+  overflow: hidden;
   display: block;
   position: relative;
 }
@@ -235,8 +190,4 @@ html {
 .m-flex-center {
   display: flex;
   align-items: center;
-}
-
-.clear-marginMerge {
-  overflow: hidden;
 }

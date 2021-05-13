@@ -1,12 +1,13 @@
+
 @import "../scss/variate";
 
 /**
 * normal-btn:有背景的按钮 ，line-btn:线框按钮，dashed-btn：虚线按钮
-* danger:颜色为红,primary：主题颜色，green：绿颜色
+* danger:颜色为红,primary：主题颜色，grey：灰色
 */
-//$primary:green;
+
 $primary:$theme-color;
-$green:green;
+$grey:#d9d9d9;
 $yellow:#e4d619;
 
 .s-btn {
@@ -62,7 +63,7 @@ $yellow:#e4d619;
   $colorMap:(
     primary:$primary,
     danger:$error ,
-    success:$green ,
+    normal: $grey ,
     warn:$yellow
   );
 
@@ -81,21 +82,21 @@ $yellow:#e4d619;
 .line-btn {
   border: 2px solid;
   background: none;
+  color: #595959;
 
   $colorMap:(
-    primary:$primary,
+    primary:$grey,
+    normal:$primary,
     danger:$error ,
-    success:$green ,
     warn:$yellow
   );
 
   @each $key,$val in $colorMap {
     &.#{$key} {
-      color: $val;
       border-color: $val;
 
       &:hover {
-        border-color: lighten($val, 15%);
+        border-color: $theme-color;
       }
     }
   }
@@ -109,7 +110,7 @@ $yellow:#e4d619;
   $colorMap:(
     primary:$primary,
     danger:$error ,
-    success:$green ,
+    normal:$grey,
     warn:$yellow
   );
 

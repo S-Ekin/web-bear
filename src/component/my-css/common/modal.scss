@@ -3,6 +3,7 @@
 $M_width:400px;
 $Tit_H:40px;
 $bg: $page-bg;
+$normal:$normal;
 
 .g-modal {
   position: absolute;
@@ -33,7 +34,6 @@ $bg: $page-bg;
   min-width: $M_width;
   $pading:24px;
 
-  color: $text-color;
   box-shadow: $shadow;
   border-radius: 6px;
   background-color: $bg;
@@ -44,36 +44,36 @@ $bg: $page-bg;
     position: relative;
     align-items: center;
     cursor: move;
+    border-bottom: 1px solid $normal;
   }
 
   .tit-name {
-    padding: 10px 10px;
-    width: calc(100% - 56px);
-    border-bottom: 2px solid #4ca9d0;
-    font-size: 20px;
+    padding-left: 20px;
+    flex: 1;
+    font-size: 16px;
   }
 
   .m-Mclose {
-    color: #029efa;
+    color: $normal;
     position: absolute;
-    right: $pading;
+    right: 20px;
     top: 14px;
     cursor: pointer;
 
     &:hover {
-      color: lighten(#029efa, 20%);
+      color: $error;
     }
   }
 
   .m-Mbody {
-    padding: $pading;
+    padding: 30px 40px 40px 40px;
     overflow: auto;
   }
 
   .m-Mfooter {
     display: flex;
-    justify-content: flex-end;
-    padding: 10px;
+    justify-content: center;
+    padding: 10px 0 40px 0;
 
     .s-btn {
       margin-right: 10px;

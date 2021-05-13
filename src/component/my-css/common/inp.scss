@@ -1,14 +1,14 @@
 @import "../scss/variate";
-$inp-h:2em;
-$inp-border-color:$border-color;
+$inp-h:2.2em;
+$inp-border-color:$normal;
+$disabled-color:#d9d9d9;
 
 .s-inp {
   height: $inp-h;
   text-indent: 0.5em;
   border: 0;
   outline: 0;
-  color: $text-color;
-  background: none;
+  box-sizing: content-box;
 }
 
 .s-txt {
@@ -27,6 +27,10 @@ $inp-border-color:$border-color;
 
   &:disabled {
     cursor: not-allowed;
+  }
+
+  &:hover {
+    border-color: $theme-color;
   }
 }
 
@@ -49,6 +53,15 @@ $inp-border-color:$border-color;
   border: 1px solid;
   border-radius: 4px;
   border-color: $inp-border-color;
+  background: none;
+
+  &:hover {
+    border-color: $theme-color;
+  }
+
+  &:focus {
+    border-color: $theme-color;
+  }
 }
 
 .no-fill {
@@ -89,18 +102,63 @@ $inp-border-color:$border-color;
   }
 }
 
+/* radio */
+// .m-radio {
+//   @extend %inpbox;
+// }
+
+// .m-checkbox {
+//   @extend %inpbox;
+// }
+
 .m-label {
   display: inline-flex;
   align-items: center;
-  margin-right: 10px;
   cursor: pointer;
+
+  &.m-lab-radio {
+    margin-right: 20px;
+
+    .radio-on {
+      color: #1989fa;
+    }
+
+    .radio-off {
+      color: #d5d8de;
+    }
+
+    &:hover {
+      .radio-off {
+        color: $theme-color;
+      }
+    }
+  }
+
+  &.m-lab-checkbox {
+    margin-right: 10px;
+
+    .checkbox-marked,
+    .checkbox-has-selected {
+      color: #1989fa;
+    }
+
+    .checkbox-blank {
+      color: #d5d8de;
+    }
+
+    &:hover {
+      .checkbox-blank {
+        color: $theme-color;
+      }
+    }
+  }
 
   .wrap-icon {
     position: relative;
+    padding-right: 6px;
   }
 
   .icon {
-    color: $text-color;
     cursor: pointer;
   }
 
@@ -121,6 +179,10 @@ $inp-border-color:$border-color;
   .icon {
     cursor: not-allowed;
   }
+
+  .wrap-icon {
+    color: $disabled-color;
+  }
 }
 
 .lab-tit {
@@ -133,20 +195,12 @@ $inp-border-color:$border-color;
   align-items: center;
 }
 
-/* radio */
-.m-radio {
-  @extend %inpbox;
-}
-
-.m-checkbox {
-  @extend %inpbox;
-}
-
 .file-inp {
   position: absolute;
   left: 0;
   opacity: 0;
 }
+//search
 
 .m-search {
   display: flex;
@@ -157,7 +211,7 @@ $inp-border-color:$border-color;
   flex: 1;
 
   .j-search-icon {
-    padding: 6px 4px;
+    padding: 8px 4px;
 
     &:hover {
       color: $active;
@@ -166,13 +220,14 @@ $inp-border-color:$border-color;
   }
 
   .s-inp {
+    // flex: 1;
     position: relative;
-    width: 100%;
+    width: 100%; // 使用flex:1 不能让input 宽度为父容器宽度，
   }
 
   .m-search-close {
     position: absolute;
-    top: 0.4em;
+    top: 0.6em;
     color: red;
 
     &:hover {

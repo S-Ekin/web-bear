@@ -8,6 +8,13 @@ $barInnerW: 6px;
   position: relative;
   min-height: 60px;
 
+  .m-moveBar {
+    width: $barInnerW;
+    background: #d9d9d9;
+    border-radius: $barInnerW;
+    position: absolute;
+  }
+
   .m-scrollBar {
     position: absolute;
     height: 100%;
@@ -20,8 +27,11 @@ $barInnerW: 6px;
     cursor: pointer;
 
     &:hover {
-      background: gray;
-      box-shadow: 2px 1px 10px 4px rgba(136, 141, 148, 0.7);
+      background: #d9d9d9;
+
+      .m-moveBar {
+        background: white;
+      }
     }
   }
 
@@ -29,16 +39,5 @@ $barInnerW: 6px;
     position: absolute;
     width: 100%;
     top: 0;
-  }
-
-  .m-moveBar {
-    width: $barInnerW;
-    background: rgb(197, 208, 215);
-    border-radius: $barInnerW;
-    position: absolute;
-
-    &:hover {
-      background: white;
-    }
   }
 }

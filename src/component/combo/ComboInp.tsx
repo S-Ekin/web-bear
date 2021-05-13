@@ -48,7 +48,7 @@ class ComboInp extends React.PureComponent<props,states> {
     }
     getClearCom(show:boolean){
         return  show ? (
-           <span onClick={this.clickFn}>
+           <span onClick={this.clickFn} className="j-close">
                <SvgIcon className={`close`}/>
            </span> 
         ) : undefined;

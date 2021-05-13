@@ -1,9 +1,10 @@
 
 @import "../scss/variate";
 $combo-bg:$page-bg;
+$bg:rgba(23, 57, 147, 0.04);
 $combo-text-color:$text-color;
-$combo-h:2em;
-$combo-drop-padding:8px;
+$combo-h:2.2em;
+$combo-drop-padding:5px 8px;
 
 .m-combo-inp {
   color: $combo-text-color;
@@ -13,19 +14,32 @@ $combo-drop-padding:8px;
     flex: 1;
     word-break: break-all;
     overflow: auto;
-    height: 100%;
-    padding-top: 0.3em;
+    height: $combo-h;
+    padding-top: 0.55em;
     box-sizing: border-box;
   }
 
+  &.disabled {
+    .combo-value {
+      height: auto;
+      min-height: $combo-h;
+      max-height: 7em;
+      line-height: 1.3em;
+    }
+  }
+
   .combo-inp-tit {
-    color: rgba($combo-text-color, 0.2);
+    color: #a4afb7;
     font-size: 15px;
   }
 
   &.autoHInp {
     height: auto;
     min-height: $combo-h;
+  }
+
+  .j-close {
+    padding-right: 4px;
   }
 
   .j-slide {
@@ -40,7 +54,7 @@ $combo-drop-padding:8px;
 
 .m-drop {
   .drop-main {
-    padding: $combo-drop-padding;
+    padding: $combo-drop-padding $combo-drop-padding 12px $combo-drop-padding;
   }
 
   .drop-ul {
@@ -56,6 +70,7 @@ $combo-drop-padding:8px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
+    line-height: 1.5em;
 
     &:hover {
       color: lighten($combo-text-color, 20%);
@@ -88,18 +103,22 @@ $combo-drop-padding:8px;
   .m-combo-inp {
     position: relative;
     display: flex;
-    flex: 1;
-    height: $combo-h;
-    border: 1px solid $border-color;
+    border: 1px solid $normal;
     border-radius: 4px;
     align-items: center;
     background-color: $combo-bg;
     padding: 0 4px;
   }
 
+  &:hover {
+    .m-combo-inp {
+      border-color: $theme-color;
+    }
+  }
+
   .m-drop {
     color: $combo-text-color;
-    margin-top: 8px;
+    margin-top: 6px;
     box-shadow: $shadow;
     position: absolute;
     box-sizing: border-box;

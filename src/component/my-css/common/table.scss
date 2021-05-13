@@ -1,24 +1,8 @@
 @import "../scss/unit","../scss/variate";
 
-.g-table-wrap {
-  height: 100%;
-  overflow: auto;
-
-  &.g-tab-border {
-    td {
-      border-right: 1px solid $normal;
-      border-bottom: 1px solid $normal;
-
-      &:first-child {
-        border-left: 1px solid $normal;
-      }
-    }
-
-    .m-fixTabBody {
-      border-bottom: 1px solid $normal;
-    }
-  }
-}
+$h:48px;
+$theme-color:$theme-color;
+$bg:rgba(23, 57, 147, 0.04);
 
 .g-table {
   height: calc(100% - 4px);
@@ -37,13 +21,14 @@
   }
 
   td {
-    padding: 6px 10px;
-    height: 30px;
+    height: $h;
     word-break: break-all;
+    vertical-align: middle;
   }
 
   th {
-    padding: 10px 10px;
+    height: $h;
+    vertical-align: middle;
   }
 
   .m-fixTabHead tr {
@@ -52,18 +37,19 @@
   }
 
   .m-fixTabHead {
-    background: #04a9f5;
+    background: $bg;
     border-radius: 6px;
-    color: white;
+    color: #252836;
+    font-size: 14px;
   }
 
   .m-fixTabBody {
-    //overflow: auto;
     flex: 1;
     position: relative;
+    font-size: 13px;
 
     tr:hover {
-      background: #e6f7ff;
+      background: darken($color: $bg, $amount: 20);
     }
   }
 
@@ -72,7 +58,7 @@
   }
 
   tr.selected {
-    background: #bfe6f9;
+    background: $bg;
     //	border-bottom: 1px solid #e5e6fe;
   }
 
@@ -93,49 +79,65 @@
       }
 
       .j-jump-page {
-        margin: 0 6px;
-        width: 80px;
+        margin: 0 8px;
+        width: 60px;
         background: none;
-        //color: white;
-        color: #333;
-        border-color: #e3e3e3;
+        border-color: $normal;
 
         &:hover {
-          color: $green;
-          border-color: $green;
+          border-color: $theme-color;
         }
 
         &:focus {
-          color: $green;
-          border-color: $green;
+          border-color: $theme-color;
         }
       }
 
       .m-page-num {
         display: inline-block;
         text-align: center;
-        //	background:#fff;
-        border: solid 1px $normal;
-        margin: 0 3px;
-        padding: 6px 10px;
+        line-height: 32px;
+        border: solid 1px #d9d9d9;
+        margin: 0 4px;
+        width: 32px;
+        height: 32px;
         border-radius: 4px;
 
         &:hover {
-          color: $green;
-          border-color: $green;
+          color: $theme-color;
+          border-color: $theme-color;
         }
       }
 
       .m-page-num.active {
-        background: white;
-        color: $green;
-        border-color: $green;
+        color: white;
+        background: $theme-color;
       }
 
       .g-pageRight,
       .g-pageLeft {
         display: flex;
       }
+    }
+  }
+}
+
+.g-table-wrap {
+  height: 100%;
+  overflow: auto;
+
+  &.g-tab-border {
+    td {
+      border-right: 1px solid $normal;
+      border-bottom: 1px solid $normal;
+
+      &:first-child {
+        border-left: 1px solid $normal;
+      }
+    }
+
+    .m-fixTabBody {
+      border-bottom: 1px solid $normal;
     }
   }
 }
