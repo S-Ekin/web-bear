@@ -163,7 +163,7 @@ module.exports = env => {
 			},
 		},
 		plugins: [
-			new MiniCssExtractPlugin({
+			id_dev ? function(){} : new MiniCssExtractPlugin({
 				filename: !id_dev ? 'css/[name].css' : 'css/[name].[hash].css',
 				chunkFilename: !id_dev ? 'css/[name].css' : 'css/[id].[hash].css',
 			}),

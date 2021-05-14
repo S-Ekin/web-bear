@@ -104,7 +104,10 @@ class Head extends React.PureComponent<RouteComponentProps & HeadProp  , HeadSta
 				<div className="g-role-sys">
 					<div style={{ padding: "20px 10px",}}>
 						<SvgIcon className="role"/>
-						<span >&nbsp;角色</span>
+						<span className="opt-space">角色</span>
+						<span className="slide-icon">
+							<SvgIcon className="small-down"/>
+						</span>
 					</div>
 					<ul className="m-sysOpt" style={{left: 16,}}>
 						<li onClick={undefined}>
@@ -119,7 +122,10 @@ class Head extends React.PureComponent<RouteComponentProps & HeadProp  , HeadSta
 				<div className="g-user-opt" >
 					<div style={{ padding: "20px 10px", }}>
 						<SvgIcon className="user"/>
-						<span >&nbsp;SEkin</span>
+						<span className="opt-space">SEkin</span>
+						<span className="slide-icon">
+							<SvgIcon className="small-down"/>
+						</span>
 					</div>
 					<ul className="m-sysOpt" style={{width: 106,}}>
 						<li onClick={undefined}>
@@ -131,6 +137,9 @@ class Head extends React.PureComponent<RouteComponentProps & HeadProp  , HeadSta
 							<span>修改密码</span>
 						</li>
 					</ul>
+				</div>
+				<div className="user-img">
+					<a href="https://github.com/S-Ekin" target="_blank"></a>
 				</div>
 			</div>
 		</div>

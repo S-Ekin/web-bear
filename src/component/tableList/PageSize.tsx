@@ -235,14 +235,14 @@ class PageSize extends React.PureComponent<Props, States> implements IPageSize {
 							className="m-page-num"
 							data-type="pre"
 							onClick={this.controlBtnHandle}>
-							<SvgIcon className="arrow-left-square" size="middle" />
+							<SvgIcon className="arrow-left" />
 						</span>
 						<span>{navigatepageCom}</span>
 						<span
 							className="m-page-num"
 							onClick={this.controlBtnHandle}
 							data-type="next">
-							<SvgIcon className="arrow-right-square" size="middle"/>
+							<SvgIcon className="arrow-right" />
 
 						</span>
 					</div>

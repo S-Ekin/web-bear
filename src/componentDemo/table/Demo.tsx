@@ -14,6 +14,7 @@ import CodeBlock from "@container/codeBlock/CodeBlock";
 import {str1} from "./CodeStr";
 import {CheckBox,Input,Search} from "@component/input/index";
 import  loadFn  from "@component/loading/loadMethod";
+import "./index.scss"
 type Props={
 
 };
@@ -174,7 +175,7 @@ class Demo extends React.PureComponent<Props,States> implements IDemo{
 		const {noPageNums,idField,defaultSel,tabField,emptyTxt,checkbox,hasBorder,height} = immuConfig.toJS();
 
         return (
-          <Layout tit="普通表格">
+          <Layout tit="普通表格" className="page-table">
             <div className="g-item-show">
               <div>
                 <Button handle={this.refesh}>刷新配置</Button>

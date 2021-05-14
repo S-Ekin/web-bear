@@ -91,7 +91,7 @@ class TBody extends React.PureComponent<Props, TbodyState> implements ITBody {
 						return (
 							<td
 								key={field}
-								className={`td-${align}`}
+								className={`${align}`}
 								rowSpan={this.rowSpanNum}>
 								{text}
 							</td>
@@ -106,7 +106,7 @@ class TBody extends React.PureComponent<Props, TbodyState> implements ITBody {
 						<td
 							key={field}
 							data-field={field}
-							className={`td-${align}`}
+							className={`${align}`}
 							data-index={order}
 							onClick={field === "opt" ? selectfn : undefined}>
 							{text}

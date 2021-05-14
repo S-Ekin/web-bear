@@ -27,10 +27,11 @@ $HeadColor: $theme-color;
 /* 基本的页面结构 */
 .g-logo {
   .m-logo {
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 95%;
     background: url("./img/images.png") no-repeat center;
-    background-position-x: -40px;
+    background-position-x: -30px;
+    background-size: contain;
   }
 
   .j-slideBar {
@@ -65,12 +66,16 @@ $HeadColor: $theme-color;
       padding-left: 30px;
       font-size: 32px;
       letter-spacing: 0.5em;
-      font-weight: bolder;
+      font-weight: bold;
     }
 
     .j-slideBar {
       margin-left: 30px;
       cursor: pointer;
+
+      .icon {
+        vertical-align: -0.15em;
+      }
     }
   }
 
@@ -109,7 +114,23 @@ $HeadColor: $theme-color;
 
     .g-role-sys {
       .m-sysOpt {
-        width: 150px;
+        width: 120px;
+      }
+    }
+
+    .user-img {
+      width: 46px;
+      height: 46px;
+      background: url(./img/SEkin.jpg) center no-repeat;
+      background-size: contain;
+      margin-left: 20px;
+      margin-right: 20px;
+      border-radius: 100%;
+
+      & > a {
+        display: block;
+        width: 100%;
+        height: 100%;
       }
     }
 
@@ -118,9 +139,17 @@ $HeadColor: $theme-color;
       position: relative;
       cursor: pointer;
 
+      .slide-icon {
+        transition: transform 0.4s;
+      }
+
       &:hover {
         .m-sysOpt {
           display: block;
+        }
+
+        .slide-icon .icon {
+          transform: rotate(-180deg);
         }
       }
 
@@ -189,4 +218,8 @@ $HeadColor: $theme-color;
       width: 280px;
     }
   }
+}
+
+.default-page {
+  height: 100%;
 }

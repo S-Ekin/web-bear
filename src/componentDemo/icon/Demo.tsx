@@ -22,7 +22,7 @@ interface IDemo {
 
 }
 
-const iconList = ["arrow-icon","util","animate","scroll","menu","plus","minus","loading", "alert", "close", "warn", "menu-expand", "menu-slide", "bin-tree", "calendar1", "arrow-pre", "arrow-next", "dataType", "arrow-left-square", "arrow-right-square", "role", "pdf", "excel", "word", "zip", "txt", "file", "img", "combo", "modal", "table", "toast", "calendar", "success", "error", "empty", "checkbox-blank", "checkbox-marked", "checkbox-has-selected", "radio-off", "input", "radio-on", "search", "setting", "folder", "folder-open", "user", "arrow-up", "arrow-down", "menu-button"];
+const iconList = ["arrow-left","arrow-right","small-down","util","animate","scroll","menu","plus","minus","loading", "alert", "close", "warn", "menu-expand", "menu-slide", "bin-tree", "calendar1", "arrow-pre", "arrow-next", "dataType", "arrow-left-square", "arrow-right-square", "role", "pdf", "excel", "word", "zip", "txt", "file", "img", "combo", "modal", "table", "toast", "calendar", "success", "error", "empty", "dis-checkbox-blank", "dis-checkbox-marked", "dis-checkbox-has-selected", "checkbox-blank", "checkbox-marked", "checkbox-has-selected","dis-radio-off", "dis-radio-on", "radio-off", "input", "radio-on", "search", "setting", "folder", "folder-open", "user", "arrow-up", "arrow-down", "menu-button"];
 
 class Demo extends React.PureComponent<Props,States> implements IDemo{
 
