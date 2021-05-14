@@ -4,7 +4,7 @@
  * @time 2020-04-10
  */
 import * as React from "react";
-import {Switch,Route} from 'react-router-dom';
+import {Switch, Route} from 'react-router-dom';
 import Toast from "../../componentDemo/toast/index";
 import Modal from "../../componentDemo/modal/Demo";
 
@@ -14,25 +14,22 @@ type Props={
 type States={
 
 };
-interface IModalRoute {
-
-}
-class ModalRoute extends React.PureComponent<Props,States> implements IModalRoute{
+class ModalRoute extends React.PureComponent<Props, States> {
 
 
-    state:States={
+  state:States={
 
-    };
-    render(){
+  };
+  render () {
 
-        return (
-            <Switch>
-            <Route component={Modal} path="/alert/modal" />
-            <Route component={Toast} path="/alert/toast" />
-        </Switch>
-        );
-        
-    }
+    return (
+      <Switch>
+        <Route component={Modal} path="/alert/modal" />
+        <Route component={Toast} path="/alert/toast" />
+      </Switch>
+    );
+
+  }
 }
 
 

@@ -9,69 +9,67 @@ import hljs from 'highlight.js';
 import hljsNumber from 'highlightjs-line-numbers2.js';
 import {SvgIcon} from '@component/my-icon/index';
 import { SlideBox } from "@component/animate/index";
-//hljs.initHighlightingOnLoad();
+// hljs.initHighlightingOnLoad();
 hljsNumber.init(hljs);
-//hljs.initLineNumbersOnLoad({singleLine: true});
+// hljs.initLineNumbersOnLoad({singleLine: true});
 
 
 type Props={
-    children:string;
-    language?:string;
-    tit:React.ReactNode;
+  children:string;
+  language?:string;
+  tit:React.ReactNode;
 };
 type States={
-    expand:boolean;
+  expand:boolean;
 };
 interface ICodeBlock {
-    codeRef:React.RefObject<HTMLDivElement>;
+  codeRef:React.RefObject<HTMLDivElement>;
 }
-class CodeBlock extends React.PureComponent<Props,States> implements ICodeBlock{
-    static defaultProps={
-        language:'javascript'
-    };
-    //  static  getDerivedStateFromProps(nextProps:Props,preState:States){
-    //     // console.log('getDerivedStateFromProps');
-    //     // console.log(nextProps);
-    //     // console.log(preState);
-        
-    // }
-    codeRef:ICodeBlock['codeRef']=React.createRef();
-    state:States={
-        expand:false,
-    };
-   
-    componentDidMount(){
-        const dom = this.codeRef.current!;
-        hljs.highlightBlock(dom);
-        hljs.lineNumbersBlock(dom);
-    }
-    slideFn=()=>{
-        this.setState(pre=>{
-           return {
-                expand:!pre.expand
-           } ;
-        });
-    }
-    render(){
-        const {children,language,tit} = this.props;
-        const {expand} = this.state;
-        return (
-            <div>
-                <div className="flex-center">
-                    {tit}
-                    <span onClick={this.slideFn}><SvgIcon className={expand ? 'arrow-down' :'arrow-up'}/></span>
-                </div>
-                <SlideBox slide={expand}>
-                    <pre>
-                        <code ref={this.codeRef} className={`language-${language}`}>
-                            {children}
-                        </code>
-                    </pre>
-                </SlideBox>
-            </div>
-           
-        );
-    }
+class CodeBlock extends React.PureComponent<Props, States> implements ICodeBlock {
+  static defaultProps={
+    language: 'javascript'
+  };
+  //  static  getDerivedStateFromProps(nextProps:Props,preState:States){
+  //     // console.log('getDerivedStateFromProps');
+  //     // console.log(nextProps);
+  //     // console.log(preState);
+
+  // }
+  codeRef:ICodeBlock['codeRef']=React.createRef();
+  state:States={
+    expand: false,
+  };
+
+  componentDidMount () {
+    const dom = this.codeRef.current!;
+    hljs.highlightBlock(dom);
+    // hljs.lineNumbersBlock(dom);
+  }
+  slideFn=() => {
+    this.setState((pre) => ({
+      expand: !pre.expand
+    }));
+  }
+  render () {
+    const {children, language, tit} = this.props;
+    const {expand} = this.state;
+    return (
+      <div>
+        <div className="flex-center">
+          {tit}
+          <span onClick={this.slideFn}><SvgIcon className={expand ? 'arrow-down' : 'arrow-up'}/></span>
+        </div>
+        <SlideBox slide={expand}>
+          <pre>
+            <code ref={this.codeRef} className={`language-${language || ""}`}>
+              {children}
+            </code>
+          </pre>
+        </SlideBox>
+      </div>
+
+    );
+  }
 }
 
 

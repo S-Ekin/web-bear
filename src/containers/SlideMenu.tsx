@@ -4,30 +4,29 @@ import { SvgIcon } from "@component/my-icon/index";
 import {event} from "@component/util/Event";
 import noticeFn from "@component/toast/index";
 import {menuList} from "./menuData";
+import { IMenuData } from "@component/menu/menu";
 type SlideMenuProp = {
 };
 type SlideMenuState = {
-	expand:boolean;
-	data: any[];
+  expand:boolean;
+  data: IMenuData[];
 };
 
 class SlideMenu extends React.PureComponent<SlideMenuProp, SlideMenuState> {
   state: SlideMenuState = {
-    data: menuList,
+    data: menuList as IMenuData[],
     expand: true,
   };
-  toggleMenuIcon() {
-    this.setState((pre) => {
-      return {
-        expand: !pre.expand,
-      };
-    });
+  toggleMenuIcon () {
+    this.setState((pre) => ({
+      expand: !pre.expand,
+    }));
   }
   menuIconHandle = () => {
     this.toggleMenuIcon();
     event.emit("expandIcon");
   };
-  slideMenu() {
+  slideMenu () {
     const { expand } = this.state;
     const expandIcon = !expand ? (
       <span className="j-slideBar" onClick={this.menuIconHandle}>
@@ -36,20 +35,20 @@ class SlideMenu extends React.PureComponent<SlideMenuProp, SlideMenuState> {
     ) : undefined;
     return expandIcon;
   }
-  clickCallBack() {
+  clickCallBack = () => {
     event.emit("menuClick", false);
     noticeFn.clear();
   }
-  componentDidMount() {
+  componentDidMount () {
     event.on("menuExpand", () => {
       this.toggleMenuIcon();
     });
   }
-  componentWillUnmount() {
+  componentWillUnmount () {
     event.remove("menuExpand");
   }
 
-  render() {
+  render () {
     const { data, expand } = this.state;
     return (
       <NavMenu data={data} expand={expand} clickBack={this.clickCallBack}>

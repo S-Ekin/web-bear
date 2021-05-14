@@ -5,6 +5,7 @@
 		"sourceMap": true,
 		"isolatedModules": true,
 		"jsx": "react",
+		"experimentalDecorators": true,
 		"allowSyntheticDefaultImports":true,
 		"allowJs": false,
 		"target": "es6",
@@ -17,8 +18,14 @@
 		"rootDir": "src",
 		"outDir":"lib",
 		"baseUrl": ".",
+		"allowUnreachableCode":true,
+		"allowUnusedLabels":true,
 		"strict": true,
-		"declaration":true,
+		"alwaysStrict": true,
+		"extendedDiagnostics":true,
+		"noImplicitThis":true,
+		"diagnostics":true,
+		"declaration": false,
 		"paths": {
 			"@component/*": ["./src/component/*"],
 			"@componentDemo/*": ["./src/componentDemo/*"],
@@ -27,7 +34,7 @@
 		},
 		"lib": ["es2015", "dom", "dom.iterable"],
 		"types": ["node"],
-		"typeRoots": ["./src/typings"]
-	},
-	"exclude": ["node_modules"]
+	}, 
+   "include": ["src"],
+   "exclude": ["**/node_modules", "**/.*/"],
 }

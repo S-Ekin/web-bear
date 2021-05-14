@@ -9,48 +9,50 @@ import Layout from "@component/layout/Layout";
 import {createImmutableMap} from "@component/util/createImmutaleMap";
 import { Input, CheckBox } from "@component/input/index";
 import CodeBlock from "@container/codeBlock/CodeBlock";
-import {str1,str2,str3,list,str4} from "./CodeStr";
-type Props = {};
+import {str1, str2, str3, list, str4} from "./CodeStr";
+type Props = {
+
+};
 type btnConfig = {
-	styleType: "normal-btn" | "dashed-btn" | "line-btn";//边框样式
-    colorType: "danger" | "primary" | "warn" | "success"; //颜色
-    className:string;//button className
-	name: string;//button 里的name
-	val: string;//button 里的value
-	dataSet: string;//button data-field 
-	noAnimate: boolean;
-	disabled:boolean;
+  styleType: "normal-btn" | "dashed-btn" | "line-btn";// 边框样式
+  colorType: "danger" | "primary" | "warn" | "success"; // 颜色
+  className:string;// button className
+  name: string;// button 里的name
+  val: string;// button 里的value
+  dataSet: string;// button data-field
+  noAnimate: boolean;
+  disabled:boolean;
 };
 
 type group = {
-	icon:string;
-	id:string;
-	text:string;
-	itemIcon?:string;
+  icon:string;
+  id:string;
+  text:string;
+  itemIcon?:string;
 };
 type States = {
-	btnImmuConfig:IImmutalbeMap<btnConfig>;
-	groupImmuConfig:IImmutalbeMap<group>;
+  btnImmuConfig:IImmutalbeMap<btnConfig>;
+  groupImmuConfig:IImmutalbeMap<group>;
 };
 interface IDemo {
-	changeConfig(e: React.ChangeEvent<HTMLInputElement>):void;
+  changeConfig(e: React.ChangeEvent<HTMLInputElement>):void;
 }
 
 const btnConfig:btnConfig = {
-	styleType: "normal-btn" ,
-    colorType: "primary" ,
-    className:"",
-	name: "",
-	val: "",
-	dataSet: "",
-	noAnimate: false,
-	disabled:false,
+  styleType: "normal-btn",
+  colorType: "primary",
+  className: "",
+  name: "",
+  val: "",
+  dataSet: "",
+  noAnimate: false,
+  disabled: false,
 };
 const groupConfig:group = {
-	icon:"",
-	id:"id",
-	text:"text",
-	itemIcon:"",
+  icon: "",
+  id: "id",
+  text: "text",
+  itemIcon: "",
 };
 
 class Demo extends React.PureComponent<Props, States> implements IDemo {
@@ -64,29 +66,25 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   }
   changeConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
-    const name = dom.name as any;
-    let value: any = dom.value;
+    const name = dom.name as "val";
+    let value:string | boolean = dom.value;
 
     if (["disabled", "noAnimate"].includes(name)) {
-      value = value === "1" ? true : false;
+      value = value === "1";
     }
 
-    this.setState((pre) => {
-      return {
-        btnImmuConfig: pre.btnImmuConfig.set(name, value),
-      };
-    });
+    this.setState((pre) => ({
+      btnImmuConfig: pre.btnImmuConfig.set(name, value as string),
+    }));
   }
   changeGroupConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
-    const name = dom.name as any;
-    let value: any = dom.value;
+    const name = dom.name as "id";
+    let value = dom.value;
 
-    this.setState((pre) => {
-      return {
-        groupImmuConfig: pre.groupImmuConfig.set(name, value),
-      };
-    });
+    this.setState((pre) => ({
+      groupImmuConfig: pre.groupImmuConfig.set(name, value),
+    }));
   }
   btnHandle = (e: React.MouseEvent<HTMLButtonElement>) => {
     const dom = e.currentTarget;
@@ -96,8 +94,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     const name = dom.name;
     console.log(val, dataSet, className, name);
   }
-  render() {
-    const { btnImmuConfig,groupImmuConfig } = this.state;
+  render () {
+    const { btnImmuConfig, groupImmuConfig } = this.state;
     const {
       colorType,
       className,
@@ -107,8 +105,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       disabled,
       noAnimate,
       val,
-	} = btnImmuConfig.toJS();
-	const {icon} = groupImmuConfig.toJS();
+    } = btnImmuConfig.toJS();
+    const {icon} = groupImmuConfig.toJS();
     return (
       <Layout tit="按钮">
         <div className="g-item-show ">
@@ -173,7 +171,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   type="text"
                   changeFn={this.changeConfig}
                   name="className"
-                  norequire={true}
+                  norequire
                   value={className}
                 >
                   类名 className:
@@ -182,7 +180,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <div className="inp-item">
                 <Input
                   type="text"
-                  norequire={true}
+                  norequire
                   changeFn={this.changeConfig}
                   name="name"
                   value={name}
@@ -193,7 +191,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               <div className="inp-item">
                 <Input
                   type="text"
-                  norequire={true}
+                  norequire
                   changeFn={this.changeConfig}
                   name="val"
                   value={val}
@@ -239,7 +237,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   type="text"
                   changeFn={this.changeConfig}
                   name="dataSet"
-                  norequire={true}
+                  norequire
                   value={dataSet}
                 >
                   按钮 dataSet:
@@ -310,7 +308,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   type="text"
                   changeFn={this.changeGroupConfig}
                   name="icon"
-                  norequire={true}
+                  norequire
                   value={icon}
                 >
                   父级图标 icon:
@@ -325,7 +323,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
         <div className="g-item-show">
           <CodeBlock tit="按钮组的数据：list">{str3}</CodeBlock>
         </div>
-         <div className="g-item-show">
+        <div className="g-item-show">
           <CodeBlock tit="按钮组的关键css" language="css">{str4}</CodeBlock>
         </div>
       </Layout>

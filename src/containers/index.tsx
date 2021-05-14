@@ -4,7 +4,9 @@ import SlideMenu from "./SlideMenu";
 import Head from "./Head";
 import MainRouter from "./Router";
 
-type appProps = {};
+type appProps = {
+
+};
 type toggleMenuFn = (expand?: boolean) => boolean | undefined;
 type appState = {
 };
@@ -13,16 +15,16 @@ class App extends React.PureComponent<appProps, appState> {
   state: appState = {
   };
 
-  render() {
+  render () {
     return (
       <BrowserRouter>
         <SlideMenu />
         <div className="g-content">
           <div className="g-wrap-content">
             <Head />
-          <MainRouter />
+            <MainRouter />
           </div>
-          
+
         </div>
       </BrowserRouter>
     );

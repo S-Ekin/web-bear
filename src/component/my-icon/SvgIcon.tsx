@@ -6,32 +6,32 @@ import * as React from "react";
 
 
 type props={
-    className:string;
-    size:"big" | "middle" | "normal";
+  className:string;
+  size:"big" | "middle" | "normal";
 };
 type states={
 
 };
-class SvgIcon extends React.PureComponent<props,states>{
+class SvgIcon extends React.PureComponent<props, states> {
 
-    static defaultProps={
-        size:"normal",
-    };
-    state:states={
+  static defaultProps={
+    size: "normal",
+  };
+  state:states={
 
-    };
-    render(){
-        const {className,size} = this.props;
+  };
+  render () {
+    const {className, size} = this.props;
 
-        return (
-            <>
-            <svg className={`icon ${size}`} aria-hidden="true">
-                <use  xlinkHref={`#sekin-${className}`} />
-            </svg>
-            </>
-        );
-    }
+    return (
+      <>
+        <svg className={`icon ${size}`} aria-hidden="true">
+          <use  xlinkHref={`#sekin-${className}`} />
+        </svg>
+      </>
+    );
+  }
 }
 
 
-export default SvgIcon ;
+export default SvgIcon;

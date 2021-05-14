@@ -12,7 +12,7 @@ const loadingCom = showLoading? (
     ) :undefined;
 `;
 
-export const str3 =`// 容器
+export const str3 = `// 容器
 const createLoad = function(callback?:()=>void) {
     const wrap = document.getElementById("wrap-loading");
     ReactDom.render(<Loading ref={ref => (loadingRef = ref)} />, wrap,function(){

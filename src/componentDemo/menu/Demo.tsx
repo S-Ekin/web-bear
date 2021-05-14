@@ -13,94 +13,91 @@ import {menuList} from "@container/menuData";
 import {createImmutableMap} from "@component/util/createImmutaleMap";
 import { CheckBox, Input } from "@component/input/index";
 import {Button} from "@component/button/index";
-type config = {
-	expand: boolean; //是否收缩
-	textField: string;
-	idField: string;
-	urlField: string;
-	iconField: string;
+import { IMenuData } from "@component/menu/menu";
+type Iconfig = {
+  expand: boolean; // 是否收缩
+  textField: string;
+  idField: string;
+  urlField: string;
+  iconField: string;
   defaultMenuId: string;
   width:number;
 };
 
-const config:config = {
-    expand: true, //是否收缩
-    textField: "name",
-    idField: "id",
-    urlField: "url",
-    iconField: "icon",
-    defaultMenuId: "",
-    width:0
+const initConfig:Iconfig = {
+  expand: true, // 是否收缩
+  textField: "name",
+  idField: "id",
+  urlField: "url",
+  iconField: "icon",
+  defaultMenuId: "",
+  width: 0
 };
 
 type Props={
 
 };
 type States={
-    immuConfig:IImmutalbeMap<config>;
-    refreshId:number;
-    config:config;
-    selectedId:{id:string};
-    selectdInpVal:string;
+  immuConfig:IImmutalbeMap<Iconfig>;
+  refreshId:number;
+  config:Iconfig;
+  selectedId:{id:string};
+  selectdInpVal:string;
 };
 interface IDemo {
   changeConfig(e: React.ChangeEvent<HTMLInputElement>):void;
 }
 class Demo extends React.PureComponent<Props, States> implements IDemo {
   state: States = {
-    immuConfig: createImmutableMap(config),
+    immuConfig: createImmutableMap(initConfig),
     refreshId: 0,
-    config: config,
-    selectedId:{id:""},
-    selectdInpVal:"",
+    config: initConfig,
+    selectedId: {id: ""},
+    selectdInpVal: "",
   };
   refesh = () => {
-    this.setState((pre) => {
-      return {
-        refreshId: pre.refreshId + 1,
-        config: pre.immuConfig.toJS(),
-      };
-    });
+    this.setState((pre) => ({
+      refreshId: pre.refreshId + 1,
+      config: pre.immuConfig.toJS(),
+    }));
   }
   changeConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
-    const name = dom.name as any;
-    let value: any = dom.value;
+    const name = dom.name as keyof Iconfig;
+    let value: string | number | boolean = dom.value;
     if (name === "expand") {
       value = value === "1";
-    }else if(name === "width"){
+    } else if (name === "width") {
 
-      value =~~ value ;
+      value = ~~value;
 
     }
-    this.setState((pre) => {
-      return {
-        immuConfig: pre.immuConfig.set(name, value),
-      };
-    });
+    this.setState((pre) => ({
+      immuConfig: pre.immuConfig.set(name, value),
+    }));
   }
-  clickCallBack=(node:any)=>{
+  clickCallBack=(node: AnyObj) => {
     console.log(node);
   }
-  changeMenuId=(e:React.ChangeEvent<HTMLInputElement>)=>{
+  changeMenuId=(e:React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget!;
     const val = dom.value;
 
     this.setState({
-      selectdInpVal:val,
+      selectdInpVal: val,
     });
 
-    
+
   }
-  outControl=()=>{
+  outControl=() => {
     const {selectdInpVal} = this.state;
 
     this.setState({
-      selectedId:{id:selectdInpVal}
+      selectedId: {id: selectdInpVal}
     });
   }
-  render() {
-    const { immuConfig, refreshId, config ,selectdInpVal,selectedId} = this.state;
+  render () {
+    const { immuConfig, refreshId, config, selectdInpVal, selectedId} = this.state;
     const {
       textField,
       idField,
@@ -114,13 +111,13 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     return (
       <Layout tit="菜单" className="menuDemo">
         <div className="flex-between menu-wrap">
-          <NavMenu 
-          key={refreshId} 
-          {...config} 
-          data={menuList}
-          clickBack={this.clickCallBack}
-          init={selectedId}
-           />
+          <NavMenu
+            key={refreshId}
+            {...config}
+            data={menuList as IMenuData[]}
+            clickBack={this.clickCallBack}
+            init={selectedId}
+          />
           <div className="config">
             <div className="g-item-show" >
               <div className="g-item-show">
@@ -151,18 +148,18 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                       <Input
                         changeFn={this.changeConfig}
                         name="defaultMenuId"
-                        norequire={true}
+                        norequire
                         value={defaultMenuId}
                       >
                         defaultMenuId：
                       </Input>
                     </div>
-                     <div className="inp-item">
+                    <div className="inp-item">
                       <Input
                         changeFn={this.changeConfig}
                         name="width"
                         type="number"
-                        norequire={true}
+                        norequire
                         value={`${width}`}
                       >
                         width：
@@ -221,7 +218,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   <Button handle={this.outControl}>设置菜单Id</Button>：
                   <Input
                     value={selectdInpVal}
-                    norequire={true}
+                    norequire
                     changeFn={this.changeMenuId}
                   />
                 </div>

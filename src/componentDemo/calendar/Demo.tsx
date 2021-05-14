@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * @name 日历
  * @description description
@@ -12,38 +13,40 @@ import { Input, CheckBox } from "@component/input/index";
 import { createImmutableMap } from "@component/util/createImmutaleMap";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import * as  CalendarSpace from "@component/calendar/calendar";
-import {str1,str2, str3} from './CodeStr';
-type calendarObj = {
+import {str1, str2, str3} from './CodeStr';
+type IcalendarObj = {
   field: string;
   rotate: number; // 日历类型
   style: number;
-  time: boolean; //可选择时间
-  noInp: boolean; 
+  time: boolean; // 可选择时间
+  noInp: boolean;
   valFormatt: "number" | "string"; // 输出的时间格式 normal 是字符串
   disabled:boolean;
   require:boolean;
-  defaultTime: string; //最终显示的时间字符串
+  defaultTime: string; // 最终显示的时间字符串
   width: number;
   placeholder: string;
   ableClear: boolean;
-  renderCallBack: boolean; //初始化时，调用点击的回调函数
-  noChangeRotate: boolean; //不能改变频率
+  renderCallBack: boolean; // 初始化时，调用点击的回调函数
+  noChangeRotate: boolean; // 不能改变频率
 };
-type Props = {};
+type Props = {
+
+};
 type States = {
-  calendarObj: IImmutalbeMap<calendarObj>;
+  calendarObj: IImmutalbeMap<IcalendarObj>;
   title:string;// 模态框标题
-  configObj: calendarObj;
+  configObj: IcalendarObj;
   refreshId: number;
   outTimeVal: string;
   ableMatch: boolean;
-  initTime: { time: string }; //初始化时间
+  initTime: { time: string }; // 初始化时间
 };
 interface IDemo {
   clickBack:CalendarSpace.ICommonInterface["clickBack"];
 }
 
-const initObj:calendarObj = {
+const initObj:IcalendarObj = {
   field: "time",
   rotate: 3,
   style: 1,
@@ -58,11 +61,11 @@ const initObj:calendarObj = {
   ableClear: false,
   renderCallBack: false,
   noChangeRotate: false
-  
+
 };
 class Demo extends React.PureComponent<Props, States> implements IDemo {
   state: States = {
-    calendarObj: createImmutableMap<calendarObj>(initObj),
+    calendarObj: createImmutableMap<IcalendarObj>(initObj),
     configObj: initObj,
     title: "",
     initTime: { time: "" },
@@ -75,51 +78,46 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     _timeStr,
     obj,
     _selTimeList,
-  ) =>{
-    console.log(_timeStr, obj,_selTimeList);
+  ) => {
+    console.log(_timeStr, obj, _selTimeList);
   }
-  
+
   clickBefore:CalendarSpace.ICommonInterface["clickBack"] = (
     _timeStr,
     obj,
     _selTimeList
-  ) =>{
+  ) => {
     console.log(_timeStr);
-    if(obj.field === "forbid"){
-      alert("禁止选择")
+    console.log(_selTimeList);
+    if (obj.field === "forbid") {
+      alert("禁止选择");
       return true;
     }
   }
-  changeState = (key: keyof calendarObj, val: any) => {
-    this.setState(pre => {
-      return {
-        calendarObj: pre.calendarObj.set(key, val)
-      };
-    });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  changeState = (key: keyof IcalendarObj, val: any) => {
+    this.setState((pre) => ({
+      calendarObj: pre.calendarObj.set(key, val)
+    }));
   }
 
   outSetTime = () => {
-    this.setState(pre => {
-      return {
-        initTime: { time: pre.outTimeVal }
-      };
-    });
+    this.setState((pre) => ({
+      initTime: { time: pre.outTimeVal }
+    }));
   }
 
   outsideChangeState = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
-    const field = dom.name as keyof calendarObj;
-    let value: any = dom.value;
+    const field = dom.name as keyof IcalendarObj;
+    let value = dom.value;
     if (field === "rotate") {
-      value = ~~value;
-      this.setState(pre => {
-        return {
-         
-          configObj: Object.assign({}, pre.configObj, { rotate: value })
-        };
-      });
+      const val = ~~value;
+      this.setState((pre) => ({
+        configObj: Object.assign({}, pre.configObj, { rotate: val })
+      }));
     } else {
-      
+
       this.setState({
         outTimeVal: value
       });
@@ -127,72 +125,70 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   }
 
   refreshConfig = () => {
-    this.setState(pre => {
-      return {
-        refreshId: 1 + pre.refreshId,
-        configObj: pre.calendarObj.toJS()
-      };
-    });
+    this.setState((pre) => ({
+      refreshId: 1 + pre.refreshId,
+      configObj: pre.calendarObj.toJS()
+    }));
   }
-  getCodeBlockTit1(){
+  getCodeBlockTit1 () {
     const { outTimeVal } = this.state;
     return (
-               <div className="inp-item">
-              <Input
-                name="initTime"
-                changeFn={this.outsideChangeState}
-                  norequire={true} 
-                value={outTimeVal}
-              >
+      <div className="inp-item">
+        <Input
+          name="initTime"
+          changeFn={this.outsideChangeState}
+          norequire
+          value={outTimeVal}
+        >
                 设置日历时间 initTime：
-              </Input>
-              <Button handle={this.outSetTime}>设置</Button>
-            </div>
-            );
+        </Input>
+        <Button handle={this.outSetTime}>设置</Button>
+      </div>
+    );
   }
-  changeTitle = (e:React.ChangeEvent<HTMLInputElement>)=>{
+  changeTitle = (e:React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       title: e.currentTarget.value.trim(),
-    })
+    });
   }
-   getMatchTit(){
-      const {ableMatch} = this.state;
-      const fn = (e:React.ChangeEvent<HTMLInputElement>)=>{
-        const dom = e.currentTarget;
-        const value = dom.value;
-        this.setState({
-          ableMatch: value === "1"
-        })
-      }
-      return (<div className="inp-item">
-                    <span>开启验证 matchValFn：(有验证函数就不会去匹配norequire)</span>
-                    <CheckBox
-                      name="ableMatch"
-                      value="1"
-                      type="radio"
-                      checked={ableMatch}
-                      changeHandle={fn}
-                    >
+  getMatchTit () {
+    const {ableMatch} = this.state;
+    const fn = (e:React.ChangeEvent<HTMLInputElement>) => {
+      const dom = e.currentTarget;
+      const value = dom.value;
+      this.setState({
+        ableMatch: value === "1"
+      });
+    };
+    return (<div className="inp-item">
+      <span>开启验证 matchValFn：(有验证函数就不会去匹配norequire)</span>
+      <CheckBox
+        name="ableMatch"
+        value="1"
+        type="radio"
+        checked={ableMatch}
+        changeHandle={fn}
+      >
                       是
-                    </CheckBox>
-                    <CheckBox
-                      name="ableMatch"
-                      value="2"
-                      type="radio"
-                      checked={!ableMatch}
-                      changeHandle={fn}
-                    >
+      </CheckBox>
+      <CheckBox
+        name="ableMatch"
+        value="2"
+        type="radio"
+        checked={!ableMatch}
+        changeHandle={fn}
+      >
                       否
-                    </CheckBox>
-                  </div>)
-    }
-   matchTimeStr = ( _field: string, timeStr?: string)=>{
-   if(timeStr && timeStr.includes("2022")){
-     return true;
-   }
+      </CheckBox>
+    </div>);
   }
-  render() {
-    const { calendarObj, refreshId, configObj,initTime,title,ableMatch } = this.state;
+  matchTimeStr = (_field: string, timeStr?: string) => {
+    if (timeStr && timeStr.includes("2022")) {
+      return true;
+    }
+  }
+  render () {
+    const { calendarObj, refreshId, configObj, initTime, title, ableMatch } = this.state;
     const rotate = configObj.rotate;
 
     return (
@@ -208,7 +204,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               initTime={initTime}
               clickBack={this.clickBack}
               clickBefore={this.clickBefore}
-              {...(configObj as any)}
+              {...(configObj as  any)}
             >
               {title}
             </Calendar>
@@ -259,17 +255,17 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             </div>
           </div>
           <div className="g-item-show">
-           
+
             <CodeBlock tit={this.getCodeBlockTit1()}>{str1}</CodeBlock>
           </div>
           <div className="g-item-show">
             <CodeBlock tit='点击回调函数'>
-            {str2}
+              {str2}
             </CodeBlock>
           </div>
           <div className="g-item-show">
-              <CodeBlock tit={this.getMatchTit()} >{str3}</CodeBlock>
-            </div>
+            <CodeBlock tit={this.getMatchTit()} >{str3}</CodeBlock>
+          </div>
         </div>
       </div>
     );

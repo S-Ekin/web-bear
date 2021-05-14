@@ -12,23 +12,25 @@ import { Input, CheckBox } from "@component/input/index";
 import { str1 } from "./CodeStr";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 
-type config = {
-  noPageNums?: boolean; //页码
+type Iconfig = {
+  noPageNums?: boolean; // 页码
   multiply?: boolean;
   height?: number;
-  idField: string; //表格的节点标识
-  defaultSel?: string; //默认选中的
-  tabField?: string; //表格标识
-  emptyTxt?: string; //空数据时显示文字
+  idField: string; // 表格的节点标识
+  defaultSel?: string; // 默认选中的
+  tabField?: string; // 表格标识
+  emptyTxt?: string; // 空数据时显示文字
   noOrder?: boolean;
   //   getCheckFn?:(fn:any)=>void;//获取选中的
   //     initSelectVal?:{id:string};//通过外界改变表格的选中
   //     bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<any>>)=>void;//把获取选中的项的函数传递给外部
 };
-type Props = {};
+type Props = {
+
+};
 type States = {
-  immuConfig: IImmutalbeMap<config>;
-  config: config;
+  immuConfig: IImmutalbeMap<Iconfig>;
+  config: Iconfig;
   refreshId: number;
   initSelectVal: undefined | { id: string };
 };
@@ -37,47 +39,43 @@ const initConfig = {
   noPageNums: false,
   height: 0,
   idField: "event_id",
-  defaultSel: "", //默认选中的
-  tabField: "", //表格标识
-  emptyTxt: "", //空数据时显示文字
+  defaultSel: "", // 默认选中的
+  tabField: "", // 表格标识
+  emptyTxt: "", // 空数据时显示文字
   noOrder: false
 };
 
 interface IDemo {
 
-  refesh ():void; 
+  refesh ():void;
 }
 class Demo extends React.PureComponent<Props, States> implements IDemo {
   state: States = {
-    immuConfig: createImmutableMap<config>(initConfig),
+    immuConfig: createImmutableMap<Iconfig>(initConfig),
     config: initConfig,
     refreshId: 0,
     initSelectVal: undefined
   };
   refesh = () => {
-    this.setState(pre => {
-      return {
-        config: pre.immuConfig.toJS(),
-        refreshId: pre.refreshId + 1
-      };
-    });
+    this.setState((pre) => ({
+      config: pre.immuConfig.toJS(),
+      refreshId: pre.refreshId + 1
+    }));
   }
   changeConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
-    const name = dom.name as any;
-    let value: any = dom.value;
+    const name = dom.name as keyof Iconfig;
+    let value: string | number |boolean = dom.value;
 
     if (["height"].includes(name)) {
       value = ~~value;
     } else if (["multiply", "noOrder", "noPageNums"].includes(name)) {
-      value = value === "1" ? true : false;
+      value = value === "1";
     }
 
-    this.setState(pre => {
-      return {
-        immuConfig: pre.immuConfig.set(name, value)
-      };
-    });
+    this.setState((pre) => ({
+      immuConfig: pre.immuConfig.set(name, value)
+    }));
   }
   changeSelect = () => {
     this.setState({
@@ -86,17 +84,17 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       }
     });
   }
-  getCodeBlockTit1(){
+  getCodeBlockTit1 () {
     return (
-    <>
-       <div>
+      <>
+        <div>
          外部控制下拉的选择id:224,229的节点
-                <Button handle={this.changeSelect}>选择</Button>
+          <Button handle={this.changeSelect}>选择</Button>
         </div>
-    </>
+      </>
     );
   }
-  render() {
+  render () {
     const { refreshId, config, immuConfig, initSelectVal } = this.state;
     const {
       height,
@@ -115,14 +113,14 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
           <div className="g-item-show">
             <Button handle={this.refesh}>刷新</Button>
           </div>
-          <div className="g-item-show" style={{height: 400, overflow: "auto",}}>
+          <div className="g-item-show" style={{height: 400, overflow: "auto", }}>
             <TabList
-                key={refreshId}
-                data={data}
-                initSelectVal={initSelectVal}
-                {...config}
+              key={refreshId}
+              data={data}
+              initSelectVal={initSelectVal}
+              {...config}
             >
-              <GroupCols forzen={true}>
+              <GroupCols forzen>
                 <GroupCols.colItem field="eventNo" width={140}>
                   事件编号
                 </GroupCols.colItem>
@@ -142,7 +140,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   事件类型
                 </GroupCols.colItem>
               </GroupCols>
-              <GroupCols forzen={true}>
+              <GroupCols forzen>
                 <GroupCols.colItem field="a_SHANGBAOREN" width={120}>
                   上报人
                 </GroupCols.colItem>
@@ -167,8 +165,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   type="number"
                   changeFn={this.changeConfig}
                   name="height"
-                  norequire={true} 
-                  value={`${height}`}
+                  norequire
+                  value={`${height || ""}`}
                 >
                   高度 height:
                 </Input>
@@ -207,7 +205,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 <Input
                   changeFn={this.changeConfig}
                   name="defaultSel"
-                  norequire={true} 
+                  norequire
                   value={defaultSel!}
                 >
                   默认选中 defaultSel:
@@ -263,7 +261,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 <Input
                   changeFn={this.changeConfig}
                   name="emptyTxt"
-                  norequire={true} 
+                  norequire
                   value={emptyTxt!}
                 >
                   空数据时显示文字 emptyTxt:
@@ -273,7 +271,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 <Input
                   changeFn={this.changeConfig}
                   name="tabField"
-                  norequire={true} 
+                  norequire
                   value={tabField!}
                 >
                   表格标识 tabField:
@@ -281,11 +279,11 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               </div>
             </div>
           </div>
-        <div className="g-item-show">
-              <CodeBlock tit={this.getCodeBlockTit1()}>{str1}</CodeBlock>
-         </div>
+          <div className="g-item-show">
+            <CodeBlock tit={this.getCodeBlockTit1()}>{str1}</CodeBlock>
+          </div>
         </div>
-       
+
       </div>
     );
   }

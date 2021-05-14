@@ -12,21 +12,21 @@ type Props={
 type States={
 
 };
-class AsyncCom extends React.PureComponent<Props,States> {
+class AsyncCom extends React.PureComponent<Props, States> {
 
 
-    state:States={
+  state:States={
 
-    };
-    render(){
-        const {text} = this.props;
+  };
+  render () {
+    const {text} = this.props;
 
-        return (
-            <div className="async-com common">
+    return (
+      <div className="async-com common">
                 异步加载的组件A{text}
-            </div>
-        );
-    }
+      </div>
+    );
+  }
 }
 
 

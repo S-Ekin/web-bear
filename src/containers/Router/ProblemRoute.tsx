@@ -4,7 +4,7 @@
  * @time 2020-03-19
  */
 import * as React from "react";
-import {Switch,Route} from 'react-router-dom';
+import {Switch, Route} from 'react-router-dom';
 import Balance from '../../problem/balance/demo/Demo';
 
 type Props={
@@ -14,20 +14,20 @@ type States={
 
 };
 
-class BlogRoute extends React.PureComponent<Props,States> {
+class BlogRoute extends React.PureComponent<Props, States> {
 
 
-    state:States={
+  state:States={
 
-    };
-     render(){
+  };
+  render () {
 
-        return (
-            <Switch>
-                <Route component={Balance} path="/problem/balence" />
-            </Switch>
-        );
-    }
+    return (
+      <Switch>
+        <Route component={Balance} path="/problem/balence" />
+      </Switch>
+    );
+  }
 }
 
 

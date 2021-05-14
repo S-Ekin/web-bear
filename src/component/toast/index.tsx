@@ -8,171 +8,165 @@ import * as Immutable from "immutable";
 import * as ReactDom from "react-dom";
 import { Animate } from "../animate/index";
 import { SvgIcon} from "../my-icon/index";
-type props = {};
+type props = {
+};
+
 type messageItem = {
-	id: string;
-	text: string;
-	type: "error" | "success" | "warn";
-	timerId?:number;
+  id: string;
+  text: string;
+  type: "error" | "success" | "warn";
+  timerId?:number;
 };
 type states = {
-	messages: IImmutalbeList<messageItem>;
+  messages: IImmutalbeList<messageItem>;
 };
 interface INotice {
-    add(obj: messageItem):void;
-    clickFn(e: React.MouseEvent<HTMLDivElement>):void;
-    clear():void;
+  add(obj: messageItem):void;
+  clickFn(e: React.MouseEvent<HTMLDivElement>):void;
+  clear():void;
 }
 class Notice extends React.PureComponent<props, states> implements INotice {
-	state: states = {
-		messages: Immutable.List([]),
-	};
+  state: states = {
+    messages: Immutable.List([]),
+  };
 
-	add = (obj: messageItem) => {
-		this.setState(pre => {
-			return {
-				messages: pre.messages.push(obj),
-			};
-		});
-	}
+  add = (obj: messageItem) => {
+    this.setState((pre) => ({
+      messages: pre.messages.push(obj),
+    }));
+  }
 
-	clickFn = (e: React.MouseEvent<HTMLDivElement>) => {
-		const dom = e.currentTarget!;
-        const id = dom.dataset.id!;
-        this.remove(id);
-        
-	}
-	remove=(id:string)=>{
-	
-		this.setState(pre=>{
+  clickFn = (e: React.MouseEvent<HTMLDivElement>) => {
+    const dom = e.currentTarget!;
+    const id = dom.dataset.id!;
+    this.remove(id);
 
-            return {
-                messages:pre.messages.filter(val=>{
+  }
+  remove=(id:string) => {
 
-                    return val.id !== id ;
-                })
-            };
-        });
+    this.setState((pre) => ({
+      messages: pre.messages.filter((val) => val.id !== id)
+    }));
 
-	}
-	clear = () => {
-		const {messages} = this.state;
-		if(!messages.size){
-			return ;
-		}
-		this.setState(pre => {
-			// 清除定时器
-			pre.messages.forEach( val => {
-				const {timerId} = val;
-				if(timerId){
-					window.clearTimeout(timerId);
-				}
-			});
-			return {
-				messages: pre.messages.clear(),
-			};
-		});
-	}
-	render() {
-		const { messages } = this.state;
+  }
+  clear = () => {
+    const {messages} = this.state;
+    if (!messages.size) {
+      return;
+    }
+    this.setState((pre) => {
+      // 清除定时器
+      pre.messages.forEach((val) => {
+        const {timerId} = val;
+        if (timerId) {
+          window.clearTimeout(timerId);
+        }
+      });
+      return {
+        messages: pre.messages.clear(),
+      };
+    });
+  }
+  render () {
+    const { messages } = this.state;
 
-		const list = messages.map(val => {
-			const { id, text, type } = val;
-			return (
-				<Animate
-					key={id}
-					animation="bounceRightIn"
-					duration={400}
-					runMount={true}>
-					<span className={`g-alertInfo ${type}`}>
-							<span>
-								<span className={`notice-item`}>
-									<SvgIcon className={type} size="middle"/>
-								</span>
-								<span className="txt">{text}</span>
-							</span>
+    const list = messages.map((val) => {
+      const { id, text, type } = val;
+      return (
+        <Animate
+          key={id}
+          animation="bounceRightIn"
+          duration={400}
+          runMount>
+          <span className={`g-alertInfo ${type}`}>
+            <span>
+              <span className={`notice-item`}>
+                <SvgIcon className={type} size="middle"/>
+              </span>
+              <span className="txt">{text}</span>
+            </span>
 
-							<span
-								className="m-alert-close"
-								data-id={id}
-								onClick={this.clickFn}>
-                                    <SvgIcon className="close" />
-							</span>
-						</span>
-				</Animate>
-			);
+            <span
+              className="m-alert-close"
+              data-id={id}
+              onClick={this.clickFn}>
+              <SvgIcon className="close" />
+            </span>
+          </span>
+        </Animate>
+      );
 
-		});
+    });
 
-		return  (
-				<div className="g-notification">
-					{list}
-				</div>
-			);
-	}
+    return  (
+      <div className="g-notification">
+        {list}
+      </div>
+    );
+  }
 }
 
 // tslint:disable-next-line: no-null-keyword
 let noticeRef: null | Notice = null;
 let noticeCount = 0;
-const createTimekey = function() {
-	return ++noticeCount;
+const createTimekey = function () {
+  return ++noticeCount;
 };
 const fn = (ref:Notice) => {
-	noticeRef = ref;
+  noticeRef = ref;
 };
 
-const createNotice = function(callback?:()=>void) {
-	const wrap = document.getElementById("wrap-notice");
-	if (!wrap) {
-		throw new Error("不存在notice组件的容器，请生成id为 wrap-notice的div");
-	}
+const createNotice = function (callback?:()=>void) {
+  const wrap = document.getElementById("wrap-notice");
+  if (!wrap) {
+    throw new Error("不存在notice组件的容器，请生成id为 wrap-notice的div");
+  }
 
-	ReactDom.render(<Notice ref={fn} />, wrap,function(){
-		if(callback){
-			callback();
-		}
-	});
+  ReactDom.render(<Notice ref={fn} />, wrap, function () {
+    if (callback) {
+      callback();
+    }
+  });
 };
-const addFn = function(messages:messageItem,keep?:boolean){
-	let timerId:number | undefined;
-	if(!keep){
-			timerId = window.setTimeout(function(){
-				noticeRef!.remove(messages.id);
-			},2000);
-			messages.timerId = timerId;
-	}
-	noticeRef!.add(messages);
+const addFn = function (messages:messageItem, keep?:boolean) {
+  let timerId:number | undefined;
+  if (!keep) {
+    timerId = window.setTimeout(function () {
+      noticeRef!.remove(messages.id);
+    }, 2000);
+    messages.timerId = timerId;
+  }
+  noticeRef!.add(messages);
 
 };
 
 const notice = {
-	//添加提示
-	add: function(
-		text: string,
-		type: messageItem["type"] = "success",
-		keep?:boolean//是否保持，true不关闭
-	) {
-		const id = `${createTimekey()}`;
-		const obj:messageItem ={
-			id,
-			type,
-			text,
-		};
-		
-		if (!noticeRef) {
-			createNotice (function(){
-				addFn(obj,keep);
-			});
-		}else{
-			addFn(obj,keep);
-		}
-	},
-	clear: function() {
-		if (noticeRef) {
-			noticeRef.clear();
-		}
-	},
+  // 添加提示
+  add: function (
+    text: string,
+    type: messageItem["type"] = "success",
+    keep?:boolean// 是否保持，true不关闭
+  ) {
+    const id = `${createTimekey()}`;
+    const obj:messageItem = {
+      id,
+      type,
+      text,
+    };
+
+    if (!noticeRef) {
+      createNotice(function () {
+        addFn(obj, keep);
+      });
+    } else {
+      addFn(obj, keep);
+    }
+  },
+  clear: function () {
+    if (noticeRef) {
+      noticeRef.clear();
+    }
+  },
 };
 export {createNotice };
 export default notice;

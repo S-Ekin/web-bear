@@ -15,15 +15,15 @@ type parame = {
   text?:string;
 };
 // tslint:disable-next-line: variable-name
-const PendingCom:React.FunctionComponent = ()=>{
-  return (
-    <div className="pending common">
+const PendingCom:React.FunctionComponent = () => (
+  <div className="pending common">
       待异步加载的组件
-    </div>
-  );
-};
+  </div>
+);
 
-type Props = {};
+type Props = {
+
+};
 type States = {
   LoaderComArr: React.ComponentType<parame>[];
 };
@@ -31,44 +31,42 @@ class Demo extends React.PureComponent<Props, States> {
   state: States = {
     LoaderComArr: []
   };
-  
+
   btnHandle = (e:React.MouseEvent<HTMLButtonElement>) => {
     const dom = e.currentTarget;
     const type = dom.name;
     if (type === "btn1") {
-      this.setState(pre => {
+      this.setState((pre) => {
         const arr = pre.LoaderComArr;
         return {
           LoaderComArr: arr.concat([LoadAble<parame>({
-                           loader:()=>import("./asyncCom")
-                        })])
+            loader: () => import("./asyncCom")
+          })])
         };
       });
     } else if (type === "btn2") {
-      this.setState(pre => {
+      this.setState((pre) => {
         const arr = pre.LoaderComArr;
         return {
           LoaderComArr: arr.concat([LoadAble<parame>({
-                           loader:()=>import("./asyncCom2")
-                        })])
+            loader: () => import("./asyncCom2")
+          })])
         };
       });
-    } else if(type === "btn3"){
+    } else if (type === "btn3") {
       this.setState({
-        LoaderComArr:[]
+        LoaderComArr: []
       });
     }
   }
 
-  getAsyncComList(){
+  getAsyncComList () {
     const { LoaderComArr } = this.state;
     // tslint:disable-next-line: variable-name
-    return LoaderComArr.length ? LoaderComArr.map((Com, index) =>{
-        return <Com key={index} text={`${index + 1}`} />;
-    }) : <PendingCom />;
+    return LoaderComArr.length ? LoaderComArr.map((Com, index) => <Com key={index} text={`${index + 1}`} />) : <PendingCom />;
   }
 
-  render() {
+  render () {
     return (
       <Layout tit="动态路由加载" className="loadable-page">
         <div className="g-item-show ">
@@ -78,34 +76,34 @@ class Demo extends React.PureComponent<Props, States> {
               name="btn1"
             >
               动态加载1
-            </Button>   
+            </Button>
             <Button
               handle={this.btnHandle}
               name="btn2"
             >
               动态加载2
-            </Button> 
-             <Button
+            </Button>
+            <Button
               handle={this.btnHandle}
               name="btn3"
             >
               复位
-            </Button>          
+            </Button>
           </div>
           <div className="box">
-              <div className="com1 common">
+            <div className="com1 common">
                 已经存在的组件
-              </div>
-              <div style={{display: "flex", flexWrap: "wrap",}}>
+            </div>
+            <div style={{display: "flex", flexWrap: "wrap", }}>
               {this.getAsyncComList()}
-              </div>
+            </div>
           </div>
         </div>
         <div className="g-item-show">
-            <CodeBlock tit="动态加载说明" language="html">
-              {str1}
-            </CodeBlock>
-          </div>
+          <CodeBlock tit="动态加载说明" language="html">
+            {str1}
+          </CodeBlock>
+        </div>
       </Layout>
     );
   }

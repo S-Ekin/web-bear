@@ -14,7 +14,8 @@ import { str1 } from "./CodeStr";
 import { Animate } from "@component/animate/index";
 import { AnimateType, domAnimateProp } from "@component/animate/animateType";
 import notice from "@component/toast/index";
-type Props = {};
+type Props = {
+};
 type config = {
   animation: AnimateType | domAnimateProp; // 动画效果过程
   spanWrapEle: boolean;
@@ -30,10 +31,10 @@ type States = {
   key: number;
   animation: AnimateType | "domProps"; // 动画效果过程
   animateObj:{
-        "width": string,
-        "height": string,
-        "transformX": string,
-        "transformY": string
+    "width": string,
+    "height": string,
+    "transformX": string,
+    "transformY": string
   }
   domPropsArr:string[];
 };
@@ -55,18 +56,18 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     preConfig: createImmutableMap(config),
     animation: "fadeIn",
     key: 1,
-    domPropsArr:["width","height","transform"],
-    animateObj:{
-        "width": "500",
-        "height": "250",
-        "transformX": "0",
-        "transformY": "0"
+    domPropsArr: ["width", "height", "transform"],
+    animateObj: {
+      "width": "500",
+      "height": "250",
+      "transformX": "0",
+      "transformY": "0"
     }
   };
-  
-   initStyle = {
-     height: 200
-   }; 
+
+  initStyle = {
+    height: 200
+  };
 
   changeConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
@@ -75,56 +76,50 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       ? dom.value === "1"
       : dom.value.trim();
 
-    this.setState((pre) => {
-      return {
-        immuConfig: pre.immuConfig.set(name, value),
-      };
-    });
+    this.setState((pre) => ({
+      immuConfig: pre.immuConfig.set(name, value),
+    }));
   }
 
   changeAnimation = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
-    const name = dom.name as any;
+    const name = dom.name;
     if (name === "animation") { // chebkbox
       const val = dom.value as States["animation"];
       if (val !== "domProps") { // 动画名
-          this.setState((state)=>{
-            return {
-              animation: val,
-              immuConfig: state.immuConfig.set("animation", val as AnimateType)
-            };
-          });      
-      } 
+        this.setState((state) => ({
+          animation: val,
+          immuConfig: state.immuConfig.set("animation", val as AnimateType)
+        }));
+      }
       this.setState({
         animation: val,
       });
     } else if (name === "domProps") { // 属性复选框
       if (document.querySelectorAll("#propsBox .no-fill").length) {
-        notice.add("填写完整！","warn");
+        notice.add("填写完整！", "warn");
         return;
       }
       const val = dom.value as keyof domAnimateProp;
-      this.setState(pre => {
+      this.setState((pre) => {
         let arr = pre.domPropsArr;
         if (arr.includes(val)) {
-          arr = arr.filter(key => key!== val);
+          arr = arr.filter((key) => key !== val);
         } else {
           arr = arr.concat([val]);
         }
-       
+
         return {
           domPropsArr: arr,
         };
-      }); 
+      });
     } else  {// 输入框
-        const val = dom.value;
-        this.setState(pre =>{
-          return {
-            animateObj:Object.assign({},pre.animateObj,{
-                [name]:val,
-            })
-          };
-        });
+      const val = dom.value;
+      this.setState((pre) => ({
+        animateObj: Object.assign({}, pre.animateObj, {
+          [name]: val,
+        })
+      }));
     }
   }
 
@@ -132,31 +127,29 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     const dom = e.currentTarget;
     const type = dom.name;
     if (type === "btn1") {
+      this.setState((pre) => ({
+        preConfig: pre.immuConfig,
+        key: pre.key + 1,
+      }));
+    } else if (type === "btn2") {
       this.setState((pre) => {
+        const { domPropsArr, animateObj} = pre;
+        const domObj:AnyObj = {};
+        domPropsArr.forEach((k) => {
+          const val = animateObj[k as keyof States["animateObj"]];
+          if (k === "transform") {
+            domObj.transform = `translate(${animateObj["transformX"]}px, ${animateObj["transformY"]}px)`;
+          } else {
+            domObj[k] = val;
+          }
+        });
         return {
-          preConfig: pre.immuConfig,
-          key: pre.key + 1,
+          immuConfig: pre.immuConfig.set("animation", domObj),
         };
       });
-    } else if (type === "btn2") {
-        this.setState(pre =>{
-          const { domPropsArr, animateObj} = pre;
-          const domObj:any = {}; 
-            domPropsArr.forEach(k => {
-              const val = animateObj[k as keyof States["animateObj"]];
-              if (k === "transform") {
-                domObj.transform = `translate(${animateObj["transformX"]}px, ${animateObj["transformY"]}px)`;
-              } else {
-                domObj[k] = val ;
-              }
-          }); 
-          return {
-            immuConfig: pre.immuConfig.set("animation", domObj),
-          };
-        });
     }
   }
-  render() {
+  render () {
     const { preConfig, immuConfig, key, animation, domPropsArr, animateObj} = this.state;
     const {
       className,
@@ -254,7 +247,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   type="text"
                   changeFn={this.changeConfig}
                   name="className"
-                  norequire={true}
+                  norequire
                   value={className}
                 >
                   类名 className:
@@ -265,7 +258,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   type="number"
                   changeFn={this.changeConfig}
                   name="duration"
-                  norequire={true}
+                  norequire
                   value={`${duration}`}
                 >
                   动画时间 duration:

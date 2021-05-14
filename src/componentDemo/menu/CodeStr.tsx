@@ -1,4 +1,4 @@
-export const str1 =`//点击的回调函数
+export const str1 = `//点击的回调函数
 function clickCallBack(node:any){
 //参数是菜单节点
     console.log(node);

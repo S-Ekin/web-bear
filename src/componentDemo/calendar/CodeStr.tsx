@@ -32,10 +32,8 @@ export const str2 = `function clickBack(
       return true;
     }
   }
-  
   `;
-  
-  export const str3 = `function matchTimeStr(
+export const str3 = `function matchTimeStr(
     field: string,
     timeStr?: string
   ){

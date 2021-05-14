@@ -4,22 +4,20 @@
  * @time 2020-03-10
  */
 import * as React from "react";
-import {ICommon,IColumnItem} from "./mytreeTable";
+import {ICommon, IColumnItem} from "./mytreeTable";
 
 type Props=ICommon['groupCol'];
 type States={
-		
+
 };
 
-class GroupCols extends React.PureComponent<Props,States> {
-    static colItem:React.SFC<IColumnItem & {children:string}> = ()=>{
-        return <></>;
-    }
-    state:States={
-    };
-    render(){
-        return '';
-    }
+class GroupCols extends React.PureComponent<Props, States> {
+  static colItem:React.SFC<IColumnItem & {children:string}> = () => <></>
+  state:States={
+  };
+  render () {
+    return '';
+  }
 }
 
 

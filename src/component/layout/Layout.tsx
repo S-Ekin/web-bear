@@ -7,31 +7,31 @@ import * as React from "react";
 
 
 type Props={
-    tit:string;
-    className?:string;
+  tit:string;
+  className?:string;
 };
 type States={
 
 };
 
-class Layout extends React.PureComponent<Props,States> {
+class Layout extends React.PureComponent<Props, States> {
 
-    static defaultProps={
-      className:""
-    }
-    state:States={
+  static defaultProps={
+    className: ""
+  }
+  state:States={
 
-    };
-    render(){
-        const {tit,children,className} = this.props;
+  };
+  render () {
+    const {tit, children, className} = this.props;
 
-        return (
-          <div className={`g-layout ${className}`}>
-            <div className="g-layout-head">{tit}</div>
-            <div className="g-layout-article">{children}</div>
-          </div>
-        );
-    }
+    return (
+      <div className={`g-layout ${className!}`}>
+        <div className="g-layout-head">{tit}</div>
+        <div className="g-layout-article">{children}</div>
+      </div>
+    );
+  }
 }
 
 

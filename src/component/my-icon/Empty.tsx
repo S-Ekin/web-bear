@@ -6,32 +6,32 @@
 import * as React from "react";
 
 type props={
-    txt?:string;
+  txt?:string;
 };
 type states={
 
 };
 
-class Empty extends React.PureComponent<props,states> {
+class Empty extends React.PureComponent<props, states> {
 
-    static defaultProps={
-        txt:"内容为空！"
-    }
-    state:states={
+  static defaultProps={
+    txt: "内容为空！"
+  }
+  state:states={
 
-    };
-    render(){
-        const {txt} = this.props;
+  };
+  render () {
+    const {txt} = this.props;
 
-       return (
-            <div className="m-empty"> 
-               <div className="empty-icon"/>
-                 <p className="txt">
-                     {txt}
-                 </p>
-            </div>
-        );
-    }
+    return (
+      <div className="m-empty">
+        <div className="empty-icon"/>
+        <p className="txt">
+          {txt}
+        </p>
+      </div>
+    );
+  }
 }
 
 

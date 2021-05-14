@@ -13,19 +13,18 @@ type States={
 
 };
 
-class ScrollRouter extends React.PureComponent<Props,States> {
-    state:States={
+class ScrollRouter extends React.PureComponent<Props, States> {
+  state:States={
 
-    };
-    render(){
-        const {} = this.props;
+  };
+  render () {
 
-        return (
-            <Switch>
-                <Route path="/util/routerLoad"  component={LoadRoute}/>
-            </Switch>
-        );
-    }
+    return (
+      <Switch>
+        <Route path="/util/routerLoad"  component={LoadRoute}/>
+      </Switch>
+    );
+  }
 }
 
 

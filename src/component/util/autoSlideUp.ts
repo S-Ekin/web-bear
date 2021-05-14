@@ -5,33 +5,33 @@
  * @Last Modified time: 2020-11-18 16:43:20 ；
  */
 import {closertPar} from "./domUtil";
-type fn = (arg: HTMLElement)=>void;
+type Ifn = (arg: HTMLElement)=>void;
 const eventData:{
-    [key:string]: fn
+  [key:string]: Ifn
 } = {};
 const event = {
-    on: function (k:string, fn: fn):void {
-       eventData[k] = fn;
-    },
-    emit: function (k:string, argObj:HTMLElement):void {
-        const fn = eventData[k];
-        if (!fn) {
-            return;
-        }
-        eventData[k](argObj);
-    },
-    remove: function (k:string):void{
-        if (eventData[k]) {
-            delete eventData[k];
-        }
+  on: function (k:string, fn: Ifn):void {
+    eventData[k] = fn;
+  },
+  emit: function (k:string, argObj:HTMLElement):void {
+    const fn = eventData[k];
+    if (!fn) {
+      return;
     }
+    eventData[k](argObj);
+  },
+  remove: function (k:string):void {
+    if (eventData[k]) {
+      delete eventData[k];
+    }
+  }
 };
-const slideOther = (_e:MouseEvent,excludekey?:string):void => {
+const slideOther = (_e:MouseEvent, excludekey?:string):void => {
   const activeCom = document.querySelector(".autoSlideUp") as HTMLDivElement;
   if (!activeCom) {
     return;
   }
-  
+
   const k = activeCom.dataset.event!;
   if (excludekey && excludekey === k) {
     return;
@@ -42,13 +42,13 @@ const slideOther = (_e:MouseEvent,excludekey?:string):void => {
 
 document.addEventListener("click", function (e:MouseEvent) {
   const target = e.target as HTMLElement;
-  const par = closertPar(target,"autoSlideUp");
+  const par = closertPar(target, "autoSlideUp");
   if (par) { // 模拟事件冒泡
-    return ;
+    return;
   }
   slideOther(e);
 });
 export {
-    slideOther,
-    event
+  slideOther,
+  event
 };

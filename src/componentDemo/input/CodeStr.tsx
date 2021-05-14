@@ -10,7 +10,7 @@ export const str1 = `changeFn=(e:React.ChangeEvent<HTMLInputElement>)=>{
             };
         });
     }`;
-    export const str2 = `changeFn=(e:React.ChangeEvent<HTMLInputElement>)=>{
+export const str2 = `changeFn=(e:React.ChangeEvent<HTMLInputElement>)=>{
         const dom = e.currentTarget!;
         const name = dom.name;
         const value = dom.value;
@@ -21,17 +21,16 @@ export const str1 = `changeFn=(e:React.ChangeEvent<HTMLInputElement>)=>{
             };
         });
     }`;
-    
-    export const str3 = `searchHandle=(keyword:string,field:string)=>{
+
+export const str3 = `searchHandle=(keyword:string,field:string)=>{
     console.log(keyword,field);
   }
   closeHandle=(field:string)=>{
     console.log(field);
     
-  }`
+  }`;
 
-  export const str4 = ` matchValFn=(field:string, value:string)=>{
+export const str4 = ` matchValFn=(field:string, value:string)=>{
         return !value || value.includes("验证");
-    }`
+    }`;
 
-    

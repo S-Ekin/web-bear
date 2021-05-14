@@ -10,7 +10,7 @@ export const str1 = `render(){
     }
     `;
 
-    export const str2 = `//整个右侧的容器
+export const str2 = `//整个右侧的容器
 .g-content {
     flex: 1; // 很重要，为auto的话，即使兄弟元素固定宽度，只要它缩放会影响兄弟元素 
     overflow: auto; //当父节点没有固定的高度和宽度时，子节点要和他一样高和宽时，要用overflow：hidden || auto,生成BFC,
@@ -25,7 +25,7 @@ export const str1 = `render(){
     }
 }
     `;
-     export const str3 = `<div id="app">
+export const str3 = `<div id="app">
         <div className="g-slideMenu"></div>
         <div className="g-content">
             <div className="g-wrap-content">

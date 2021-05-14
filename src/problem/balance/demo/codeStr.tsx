@@ -1,4 +1,4 @@
-const str1 =`
+const str1 = `
 const total= 200;
 const count = 5;
  randomChildContent =() => {
@@ -28,7 +28,7 @@ const count = 5;
     }
 `;
 
-const str2 =`
+const str2 = `
 	
 `;
 

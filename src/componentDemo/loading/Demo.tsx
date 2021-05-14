@@ -10,296 +10,292 @@ import {CheckBox} from "@component/input/index";
 import {Button} from '@component/button/index';
 import Layout from "@component/layout/Layout";
 import CodeBlock from "@container/codeBlock/CodeBlock";
-import {str1,str2,str3} from "./CodeStr";
+import {str1, str2, str3} from "./CodeStr";
 type Props={
 
 };
 type States={
-    closeTime:number;
-    closeComTime:number;
-    closePortalTime:number;
-    wrapDom:"wrap-loading" | "root-loading";
-    shade:boolean;
-    showLoading:boolean;
-    loaingFnshade:boolean;
-    showPortLoading:boolean;
-    portalShade:boolean;
+  closeTime:number;
+  closeComTime:number;
+  closePortalTime:number;
+  wrapDom:"wrap-loading" | "root-loading";
+  shade:boolean;
+  showLoading:boolean;
+  loaingFnshade:boolean;
+  showPortLoading:boolean;
+  portalShade:boolean;
 };
 const innerLoadingWrap = document.getElementById("wrap-loading")!;
 const outLoadingWrap = document.getElementById("out-modal-wrap")!;
 interface IIndex {
-    btnLoadingFn(e:React.MouseEvent<HTMLButtonElement>):void;
+  btnLoadingFn(e:React.MouseEvent<HTMLButtonElement>):void;
 }
-class Demo extends React.PureComponent<Props,States> implements IIndex{
+class Demo extends React.PureComponent<Props, States> implements IIndex {
 
-    timeInterval:number = 0;
-    timeTimeOut:number = 0;
-    loadingRef:React.RefObject<HTMLDivElement> = React.createRef();
-    state:States={
-        closeTime:0,
-        closeComTime:0,
-        closePortalTime:0,
-        wrapDom:"wrap-loading",
-        showLoading:false,
-        showPortLoading:false,
-        loaingFnshade:false,
-        shade:false,
-        portalShade:false,
-    };
-    componentDidMount(){
-        console.log(this.loadingRef);
-    }
-    btnLoadingFn=(e:React.MouseEvent<HTMLButtonElement>)=>{
-        const val = e.currentTarget.value;
-        if(val==="open"){
-          const {loaingFnshade} = this.state;
-            loadFn.open(loaingFnshade);
-            this.setState({
-                closeTime:5
-            });
-            this.timeInterval= window.setInterval(()=>{
-                this.setState(pre=>{
-                    return {
-                        closeTime:pre.closeTime-1
-                    };
-                });
-            },1000);
-            this.timeTimeOut = window.setTimeout(()=>{
-                loadFn.close();
-                window.clearInterval(this.timeInterval);
-                this.setState({
-                    closeTime:0
-                });
-            },5000);
-        }
-    }
-    loadingComOpt=(e:React.MouseEvent<HTMLButtonElement>)=>{
-
-      const dom = e.currentTarget!;
-      const value = dom.value;
-      const name= dom.name; 
-
+  timeInterval = 0;
+  timeTimeOut = 0;
+  loadingRef:React.RefObject<HTMLDivElement> = React.createRef();
+  state:States={
+    closeTime: 0,
+    closeComTime: 0,
+    closePortalTime: 0,
+    wrapDom: "wrap-loading",
+    showLoading: false,
+    showPortLoading: false,
+    loaingFnshade: false,
+    shade: false,
+    portalShade: false,
+  };
+  componentDidMount () {
+    console.log(this.loadingRef);
+  }
+  btnLoadingFn=(e:React.MouseEvent<HTMLButtonElement>) => {
+    const val = e.currentTarget.value;
+    if (val === "open") {
+      const {loaingFnshade} = this.state;
+      loadFn.open(loaingFnshade);
       this.setState({
-        [name as "showLoading"]:value==="show"
+        closeTime: 5
       });
-      
-      if(value==="show"){
-          window.clearInterval(this.timeInterval);
-          window.clearTimeout(this.timeTimeOut);
+      this.timeInterval = window.setInterval(() => {
+        this.setState((pre) => ({
+          closeTime: pre.closeTime - 1
+        }));
+      }, 1000);
+      this.timeTimeOut = window.setTimeout(() => {
+        loadFn.close();
+        window.clearInterval(this.timeInterval);
+        this.setState({
+          closeTime: 0
+        });
+      }, 5000);
+    }
+  }
+  loadingComOpt=(e:React.MouseEvent<HTMLButtonElement>) => {
 
-          const closeField = name === "showLoading" ?"closeComTime" :"closePortalTime";
-            this.setState({
-                [closeField as "closeComTime"]:5
-            });
-            this.timeInterval = window.setInterval(()=>{
-                this.setState(pre=>{
-                    return {
-                      [closeField as "closeComTime"]:pre[closeField]-1
-                    };
-                });
-            },1000);
-            this.timeTimeOut = window.setTimeout(()=>{
-                window.clearInterval(this.timeInterval);
-                this.setState({
-                      [closeField as "closeComTime"]:0,
-                    [name as "showLoading"]:false
-                });
-            },5000);
-        }
-    }
-    changeWrap=(e:React.ChangeEvent<HTMLInputElement>)=>{
-      const dom = e.currentTarget!;
-      const val = dom.value ;
-      const name= dom.name;
-      if(name === "wrapDom"){
-        this.setState({
-          wrapDom:val as States['wrapDom']
-        });
-      }else if(name === "shade" || name ==="loaingFnshade" || name === "portalShade"){
-        this.setState({
-          [name as "shade"]: val === "2"
-        });
-      }
-     
-    }
-    componentWillUnmount(){
+    const dom = e.currentTarget!;
+    const value = dom.value;
+    const name = dom.name;
+
+    this.setState({
+      [name as "showLoading"]: value === "show"
+    });
+
+    if (value === "show") {
       window.clearInterval(this.timeInterval);
-      window.clearInterval(this.timeTimeOut);
-    }
-    render(){
-        const {closeTime,wrapDom,showLoading,closeComTime,
-          showPortLoading,closePortalTime,shade,loaingFnshade,portalShade} = this.state;
-        const portalLoadCom = showPortLoading  ? (
-           <Loading shade={portalShade} container={wrapDom === "wrap-loading" ?innerLoadingWrap :outLoadingWrap} />
-        ) :undefined;
-        const loadingCom = showLoading? (
-           <Loading.LoadingCom shade={shade} />
-        ) :undefined;
-        return (
-          <Layout tit="数据加载">
-            <div className="g-item-show ">
-              <div className="flex-between">
-                <p className="title">通过组件，指定容器的加载</p>
-                <div className="m-optBtn">
-                  <Button
-                    val="show"
-                    handle={this.loadingComOpt}
-                    name="showPortLoading"
-                  >
-                    打开
-                  </Button>
-                  <Button
-                    colorType="success"
-                    styleType="line-btn"
-                    name="showPortLoading"
-                    val="close"
-                    handle={this.loadingComOpt}
-                  >
-                    <span>{closePortalTime ? closePortalTime : ""}</span>
-                    <span>关闭</span>
-                  </Button>
-                </div>
-              </div>
-              <div ref={this.loadingRef}>{portalLoadCom}</div>
-              <div className="inp-item">
-                <span>指定加载的容器：</span>
-                <CheckBox
-                  name="wrapDom"
-                  value="wrap-loading"
-                  changeHandle={this.changeWrap}
-                  checked={wrapDom === "wrap-loading"}
-                >
-                  wrap-loading
-                </CheckBox>
-                <CheckBox
-                  name="wrapDom"
-                  value="root-loading"
-                  changeHandle={this.changeWrap}
-                  checked={wrapDom === "root-loading"}
-                >
-                  root-loading
-                </CheckBox>
-              </div>
-               <div className="inp-item">
-                <span>有蒙层：</span>
-                <CheckBox
-                  name="portalShade"
-                  value="1"
-                  changeHandle={this.changeWrap}
-                  checked={!portalShade}
-                >
-                  无
-                </CheckBox>
-                <CheckBox
-                  name="portalShade"
-                  value="2"
-                  changeHandle={this.changeWrap}
-                  checked={portalShade}
-                >
-                  有
-                </CheckBox>
-              </div>
-            </div>
-            <div className="g-item-show">
-              <CodeBlock tit="通过组件，再用react Portal 指定渲染的容器">
-                {str1}
-              </CodeBlock>
-            </div>
-            <div className="g-item-show ">
-              <div className="flex-between">
-                <p>直接在所在的父容器渲染</p>
-                <div>
-                  <div className="m-optBtn">
-                    <Button
-                      val="show"
-                      name="showLoading"
-                      handle={this.loadingComOpt}
-                    >
-                      打开
-                    </Button>
-                    <Button
-                      colorType="success"
-                      name="showLoading"
-                      styleType="line-btn"
-                      val="close"
-                      handle={this.loadingComOpt}
-                    >
-                      <span>{closeComTime ? closeComTime : ""}</span>
-                      <span>关闭</span>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-             
-              <div className="inp-item">
-                <span>有蒙层：</span>
-                <CheckBox
-                  name="shade"
-                  value="1"
-                  changeHandle={this.changeWrap}
-                  checked={!shade}
-                >
-                  无
-                </CheckBox>
-                <CheckBox
-                  name="shade"
-                  value="2"
-                  changeHandle={this.changeWrap}
-                  checked={shade}
-                >
-                  有
-                </CheckBox>
-              </div>
-              <div className="relative-box" style={{border: "1px solid",}}>{loadingCom}</div>
-            </div>
-            <div className="g-item-show">
-              <CodeBlock tit="直接在所在的父容器渲染">{str2}</CodeBlock>
-            </div>
+      window.clearTimeout(this.timeTimeOut);
 
-            <div className="g-item-show ">
-              <div className="flex-between">
-                <p className="title">通过调用loading方法,3s后调用关闭方法</p>
-                <div className="m-optBtn">
-                  <Button val="open" handle={this.btnLoadingFn}>
-                    打开
-                  </Button>
-                  <Button
-                    colorType="success"
-                    styleType="line-btn"
-                    val="close"
-                    handle={this.btnLoadingFn}
-                  >
-                    <span>{closeTime ? closeTime : undefined}</span>
-                    <span>关闭</span>
-                  </Button>
-                </div>
-              </div>
-              <div className="inp-item">
-                <span>有蒙层：</span>
-                <CheckBox
-                  name="loaingFnshade"
-                  value="1"
-                  changeHandle={this.changeWrap}
-                  checked={!loaingFnshade}
-                >
-                  无
-                </CheckBox>
-                <CheckBox
-                  name="loaingFnshade"
-                  value="2"
-                  changeHandle={this.changeWrap}
-                  checked={loaingFnshade}
-                >
-                  有
-                </CheckBox>
-              </div>
-            </div>
-            <div className="g-item-show">
-              <CodeBlock tit="通过调用loading方法">{str3}</CodeBlock>
-            </div>
-          </Layout>
-        );
+      const closeField = name === "showLoading" ? "closeComTime" : "closePortalTime";
+      this.setState({
+        [closeField as "closeComTime"]: 5
+      });
+      this.timeInterval = window.setInterval(() => {
+        this.setState((pre) => ({
+          [closeField as "closeComTime"]: pre[closeField] - 1
+        }));
+      }, 1000);
+      this.timeTimeOut = window.setTimeout(() => {
+        window.clearInterval(this.timeInterval);
+        this.setState({
+          [closeField as "closeComTime"]: 0,
+          [name as "showLoading"]: false
+        });
+      }, 5000);
     }
+  }
+  changeWrap=(e:React.ChangeEvent<HTMLInputElement>) => {
+    const dom = e.currentTarget!;
+    const val = dom.value;
+    const name = dom.name;
+    if (name === "wrapDom") {
+      this.setState({
+        wrapDom: val as States['wrapDom']
+      });
+    } else if (name === "shade" || name === "loaingFnshade" || name === "portalShade") {
+      this.setState({
+        [name as "shade"]: val === "2"
+      });
+    }
+
+  }
+  componentWillUnmount () {
+    window.clearInterval(this.timeInterval);
+    window.clearInterval(this.timeTimeOut);
+  }
+  render () {
+    const {closeTime, wrapDom, showLoading, closeComTime,
+      showPortLoading, closePortalTime, shade, loaingFnshade, portalShade} = this.state;
+    const portalLoadCom = showPortLoading  ? (
+      <Loading shade={portalShade} container={wrapDom === "wrap-loading" ? innerLoadingWrap : outLoadingWrap} />
+    ) : undefined;
+    const loadingCom = showLoading ? (
+      <Loading.LoadingCom shade={shade} />
+    ) : undefined;
+    return (
+      <Layout tit="数据加载">
+        <div className="g-item-show ">
+          <div className="flex-between">
+            <p className="title">通过组件，指定容器的加载</p>
+            <div className="m-optBtn">
+              <Button
+                val="show"
+                handle={this.loadingComOpt}
+                name="showPortLoading"
+              >
+                    打开
+              </Button>
+              <Button
+                colorType="success"
+                styleType="line-btn"
+                name="showPortLoading"
+                val="close"
+                handle={this.loadingComOpt}
+              >
+                <span>{closePortalTime ? closePortalTime : ""}</span>
+                <span>关闭</span>
+              </Button>
+            </div>
+          </div>
+          <div ref={this.loadingRef}>{portalLoadCom}</div>
+          <div className="inp-item">
+            <span>指定加载的容器：</span>
+            <CheckBox
+              name="wrapDom"
+              value="wrap-loading"
+              changeHandle={this.changeWrap}
+              checked={wrapDom === "wrap-loading"}
+            >
+                  wrap-loading
+            </CheckBox>
+            <CheckBox
+              name="wrapDom"
+              value="root-loading"
+              changeHandle={this.changeWrap}
+              checked={wrapDom === "root-loading"}
+            >
+                  root-loading
+            </CheckBox>
+          </div>
+          <div className="inp-item">
+            <span>有蒙层：</span>
+            <CheckBox
+              name="portalShade"
+              value="1"
+              changeHandle={this.changeWrap}
+              checked={!portalShade}
+            >
+                  无
+            </CheckBox>
+            <CheckBox
+              name="portalShade"
+              value="2"
+              changeHandle={this.changeWrap}
+              checked={portalShade}
+            >
+                  有
+            </CheckBox>
+          </div>
+        </div>
+        <div className="g-item-show">
+          <CodeBlock tit="通过组件，再用react Portal 指定渲染的容器">
+            {str1}
+          </CodeBlock>
+        </div>
+        <div className="g-item-show ">
+          <div className="flex-between">
+            <p>直接在所在的父容器渲染</p>
+            <div>
+              <div className="m-optBtn">
+                <Button
+                  val="show"
+                  name="showLoading"
+                  handle={this.loadingComOpt}
+                >
+                      打开
+                </Button>
+                <Button
+                  colorType="success"
+                  name="showLoading"
+                  styleType="line-btn"
+                  val="close"
+                  handle={this.loadingComOpt}
+                >
+                  <span>{closeComTime ? closeComTime : ""}</span>
+                  <span>关闭</span>
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="inp-item">
+            <span>有蒙层：</span>
+            <CheckBox
+              name="shade"
+              value="1"
+              changeHandle={this.changeWrap}
+              checked={!shade}
+            >
+                  无
+            </CheckBox>
+            <CheckBox
+              name="shade"
+              value="2"
+              changeHandle={this.changeWrap}
+              checked={shade}
+            >
+                  有
+            </CheckBox>
+          </div>
+          <div className="relative-box" style={{border: "1px solid", }}>{loadingCom}</div>
+        </div>
+        <div className="g-item-show">
+          <CodeBlock tit="直接在所在的父容器渲染">{str2}</CodeBlock>
+        </div>
+
+        <div className="g-item-show ">
+          <div className="flex-between">
+            <p className="title">通过调用loading方法,3s后调用关闭方法</p>
+            <div className="m-optBtn">
+              <Button val="open" handle={this.btnLoadingFn}>
+                    打开
+              </Button>
+              <Button
+                colorType="success"
+                styleType="line-btn"
+                val="close"
+                handle={this.btnLoadingFn}
+              >
+                <span>{closeTime ? closeTime : undefined}</span>
+                <span>关闭</span>
+              </Button>
+            </div>
+          </div>
+          <div className="inp-item">
+            <span>有蒙层：</span>
+            <CheckBox
+              name="loaingFnshade"
+              value="1"
+              changeHandle={this.changeWrap}
+              checked={!loaingFnshade}
+            >
+                  无
+            </CheckBox>
+            <CheckBox
+              name="loaingFnshade"
+              value="2"
+              changeHandle={this.changeWrap}
+              checked={loaingFnshade}
+            >
+                  有
+            </CheckBox>
+          </div>
+        </div>
+        <div className="g-item-show">
+          <CodeBlock tit="通过调用loading方法">{str3}</CodeBlock>
+        </div>
+      </Layout>
+    );
+  }
 }
 
 

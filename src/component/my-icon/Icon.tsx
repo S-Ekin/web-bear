@@ -6,22 +6,22 @@ import * as React from "react";
 
 
 type props={
-    className:string;
+  className:string;
 };
 type states={
 
 };
-class Icon extends React.PureComponent<props,states>{
+class Icon extends React.PureComponent<props, states> {
 
-    state:states={
+  state:states={
 
-    };
-    render(){
-        const {className} = this.props;
-        return (
-            <i className={`${className}`}/>
-        );
-    }
+  };
+  render () {
+    const {className} = this.props;
+    return (
+      <i className={`${className}`}/>
+    );
+  }
 }
 
 

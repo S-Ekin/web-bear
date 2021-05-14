@@ -14,7 +14,8 @@ type config = {
   type: "error" | "success" | "warn";
   keep: boolean;
 };
-type Props = {};
+type Props = {
+};
 type States = {
   immuConfig: IImmutalbeMap<config>;
 };
@@ -53,26 +54,21 @@ class Demo extends React.PureComponent<Props, States> implements IIndex {
 
   openToast = () => {
     const { immuConfig } = this.state;
-    const { type, text ,keep} = immuConfig.toJS();
-    notice.add(text, type,keep);
+    const { type, text, keep} = immuConfig.toJS();
+    notice.add(text, type, keep);
   }
   changeConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
-    const name = dom.name as any;
-    let value: any = dom.value;
-    if(name === "keep"){
-
-      value = value === "1" ;
-
+    const name = dom.name as keyof config;
+    let value: string | boolean = dom.value;
+    if (name === "keep") {
+      value = value === "1";
     }
-    this.setState((pre) => {
-      return {
-        immuConfig: pre.immuConfig.set(name, value),
-      };
-    });
+    this.setState((pre) => ({
+      immuConfig: pre.immuConfig.set(name, value),
+    }));
   }
-  render() {
-    const {} = this.props;
+  render () {
     const { immuConfig } = this.state;
     const type = immuConfig.get("type");
     const keep = immuConfig.get('keep');
@@ -127,7 +123,7 @@ class Demo extends React.PureComponent<Props, States> implements IIndex {
                 >
                   success
                 </CheckBox>
-              </div> 
+              </div>
               <div className="inp-item">
                 <span>自动关闭 keep:</span>
                 <CheckBox

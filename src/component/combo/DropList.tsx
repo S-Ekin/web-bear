@@ -7,33 +7,30 @@ import * as React from "react";
 import wrapComboHQC from "./ComboBasic";
 import * as Immutable from "immutable";
 import { DropItem, activeStatus } from "./DropItem";
-import { drop, ISelected } from "./combo";
+import { Idrop, ISelected, Inode } from "./combo";
 import { Search } from "../input/index";
 
-type props = drop<"list">;
+type Iprops = Idrop<"list">;
 type states = {
-  immutableData: Immutable.List<IImmutalbeMap<node>>;
-  singleClickPre: string; //单选时，记录上一次选择的
-  preData: any[];
+  immutableData: Immutable.List<IImmutalbeMap<Inode>>;
+  singleClickPre: string; // 单选时，记录上一次选择的
+  preData: AnyObj[];
   preInitComboVal?: { id: string };
   asyncDefaultVal: boolean; // 用来识别异步请求下拉框数据时，第一次是空[],虽然给了默认值，但是不会选中什么，但是当第二次有了数据后，再用这个默认值去选中，但是之后就不再使用这个。
 };
-type node = {
-  [key: string]: any;
-  active: activeStatus;
-};
+
 
 interface IDropList {
-  initState(props: props): states;
+  initState(props: Iprops): states;
 }
 
 type formatterObj = {
-  filedObj: props["filedObj"];
-  data: props["data"];
-  initSelect?: props["initSelect"];
+  filedObj: Iprops["filedObj"];
+  data: Iprops["data"];
+  initSelect?: Iprops["initSelect"];
 };
 
-//格式化数据，添加选中的字段 active ;
+// 格式化数据，添加选中的字段 active ;
 const formatterData = function (props: formatterObj, defaultVal: string) {
   const { filedObj, data, initSelect } = props;
   const id = filedObj.get("idField");
@@ -43,18 +40,18 @@ const formatterData = function (props: formatterObj, defaultVal: string) {
   if (!multiply && defaultValArr.length > 1) {
     defaultValArr.length = 1;
   }
-  //避免改变props里的data
+  // 避免改变props里的data
   const copyData = JSON.parse(JSON.stringify(data));
   let listSelect: ISelected[] = [];
   let oldSelected = "";
-  const _data = copyData.map((val: node, index: number) => {
-    const isDefault = defaultValArr.includes(`${val[id]}`);
+  const _data = copyData.map((val: Inode, index: number) => {
+    const isDefault = defaultValArr.includes(`${val[id] as string}`);
     val.active = isDefault ? activeStatus.select : activeStatus.noSelect;
-    //初始化默认选中的
+    // 初始化默认选中的
     if (isDefault) {
       listSelect.push({ id: val[id], text: val[text] });
       if (!multiply) {
-        //单选的时候，才会有上一次保留的节点的索引
+        // 单选的时候，才会有上一次保留的节点的索引
         oldSelected = `${index}`;
       }
     }
@@ -64,15 +61,15 @@ const formatterData = function (props: formatterObj, defaultVal: string) {
   if (initSelect) {
     initSelect(Immutable.List(listSelect));
   }
-  //重置上一次选择的索引
-  //this.singleClickPre = oldSelected;
+  // 重置上一次选择的索引
+  // this.singleClickPre = oldSelected;
   return {
     data: Immutable.fromJS(_data),
     singleClickPre: oldSelected,
   };
 };
 
-const clickFn = function (index: string, props: props, state: states) {
+const clickFn = (index: string, props: Iprops, state: states) => {
   const { filedObj, selected, changeSelect } = props;
   const multipy = filedObj.get("multiply");
   const idField = filedObj.get("idField");
@@ -85,31 +82,29 @@ const clickFn = function (index: string, props: props, state: states) {
 
   let _data = data;
   let _select = selected;
-  let newNode: IImmutalbeMap<node> = _data.getIn([index]);
+  let newNode: IImmutalbeMap<Inode> = _data.getIn([index]);
   if (!newNode) {
     return undefined;
   }
-  //判断是否禁止编辑
+  // 判断是否禁止编辑
   if (clickForbid(newNode, comField)) {
     return undefined;
   }
 
-  //单选清除以前选中的
+  // 单选清除以前选中的
   if (!multipy) {
     if (oldSelectedIndex === index) {
-      //点击的是同一个
+      // 点击的是同一个
       return undefined;
     }
     if (oldSelectedIndex) {
-      _data = _data.updateIn([oldSelectedIndex], (val: IImmutalbeMap<node>) => {
-        return val && val.set("active", activeStatus.noSelect);
-      });
+      _data = _data.updateIn([oldSelectedIndex], (val: IImmutalbeMap<Inode>) => val && val.set("active", activeStatus.noSelect));
     }
 
     _select = _select.clear();
   }
-  _data = _data.updateIn([index], (val: IImmutalbeMap<node>) => {
-    //判断这个node有没有被选中
+  _data = _data.updateIn([index], (val: IImmutalbeMap<Inode>) => {
+    // 判断这个node有没有被选中
     const active =
       val.get("active") === activeStatus.select
         ? activeStatus.noSelect
@@ -122,9 +117,7 @@ const clickFn = function (index: string, props: props, state: states) {
       });
     } else {
       if (multipy) {
-        _select = _select.filter((_val) => {
-          return _val.id !== val.get(idField);
-        });
+        _select = _select.filter((_val) => _val.id !== val.get(idField));
       }
     }
     const node = val.set("active", active);
@@ -142,9 +135,9 @@ const clickFn = function (index: string, props: props, state: states) {
   };
 };
 
-class DropList extends React.PureComponent<props, states> implements IDropList {
-  static getDerivedStateFromProps(
-    nextProps: props,
+class DropList extends React.PureComponent<Iprops, states> implements IDropList {
+  static getDerivedStateFromProps (
+    nextProps: Iprops,
     preState: states
   ): null | Partial<states> {
     const { preData, preInitComboVal, asyncDefaultVal } = preState;
@@ -190,14 +183,14 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
   }
   state: states = this.initState(this.props);
   asyncDefaultVal = !!this.props.data.length;
-  constructor(props: props) {
+  constructor (props: Iprops) {
     super(props);
     this.state = this.initState(props);
-    //暴露点击方法
+    // 暴露点击方法
     const { clickMethod } = props;
     clickMethod(this.clikItem);
   }
-  initState(props: props) {
+  initState (props: Iprops) {
     const { filedObj, data, initComboVal, initSelect } = props;
     const defaultVal = filedObj.get("defaultVal")!;
     const obj = formatterData(
@@ -216,7 +209,7 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
       asyncDefaultVal: data.length === 0,
     };
   }
-  clear() {
+  clear () {
     const { changeSelect, selected, filedObj } = this.props;
     let _selected = selected;
     const idField = filedObj.get("idField");
@@ -224,19 +217,17 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
     this.setState((pre) => {
       let _data = pre.immutableData;
 
-      _data = _data.withMutations((list) => {
-        return list.map((val) => {
-          const has = _selected.find(
-            (select) => `${select.id}` === `${val.get(idField)}`
-          );
+      _data = _data.withMutations((list) => list.map((val) => {
+        const has = _selected.find(
+          (select) => `${select.id}` === `${val.get(idField) as string}`
+        );
 
-          if (has) {
-            return val.set("active", activeStatus.noSelect);
-          } else {
-            return val;
-          }
-        });
-      });
+        if (has) {
+          return val.set("active", activeStatus.noSelect);
+        } else {
+          return val;
+        }
+      }));
 
       return {
         immutableData: _data,
@@ -254,7 +245,7 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
     const { filedObj } = this.props;
     const idField = filedObj.get("idField");
     const index = immutableData.findIndex(
-      (val) => `${val.get(idField)}` === `${id}`
+      (val) => `${val.get(idField) as string}` === `${id}`
     );
     if (index !== -1) {
       this.clickFnForListMethod(`${index}`);
@@ -307,23 +298,21 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
       singleClickPre,
     });
   }
-  main() {
+  main () {
     const { immutableData } = this.state;
     const { filedObj, dropStyle, formatterDropItem } = this.props;
     const idField = filedObj.get("idField");
     const noSearch = filedObj.get("noSearch");
-    const com = immutableData.map((node, index) => {
-      return (
-        <DropItem
-          key={node.get(idField)}
-          clickFn={this.clickFnForListMethod}
-          node={node}
-          formatterDropItem={formatterDropItem}
-          fieldObj={filedObj}
-          index={`${index}`}
-        />
-      );
-    });
+    const com = immutableData.map((node, index) => (
+      <DropItem
+        key={node.get(idField)}
+        clickFn={this.clickFnForListMethod}
+        node={node}
+        formatterDropItem={formatterDropItem}
+        fieldObj={filedObj}
+        index={`${index}`}
+      />
+    ));
     const searchCom = !noSearch ? (
       <div style={{ paddingBottom: "0.5em", }}>
         <Search
@@ -342,7 +331,7 @@ class DropList extends React.PureComponent<props, states> implements IDropList {
       </div>
     );
   }
-  render(){
+  render () {
     return this.props.disabled ? null : this.main();
   }
 }

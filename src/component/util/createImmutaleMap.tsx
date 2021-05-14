@@ -7,17 +7,17 @@ type AllowedValue =
 	| boolean
 	| IAllowedMap
 	| IAllowedList
-	| IImmutalbeMap<any>
-	| { [key: string]: any };
+	| IImmutalbeMap<AnyObj>
+	| AnyObj;
 
 
-interface IAllowedMap extends Immutable.Map<string, AllowedValue> {}
-interface IAllowedList extends Immutable.List<AllowedValue> {}
+type IAllowedMap = Immutable.Map<string, AllowedValue>
+type IAllowedList = Immutable.List<AllowedValue>
 
 type MapTypeAllowedData<DataType> = { [K in keyof DataType]: DataType[K] };
 
 declare global {
-	interface IImmutalbeMap<DataType extends MapTypeAllowedData<DataType>>
+  interface IImmutalbeMap<DataType extends MapTypeAllowedData<DataType>>
     extends Immutable.Map<keyof DataType, AllowedValue> {
     toJS(): DataType;
     get<K extends keyof DataType>(
@@ -36,14 +36,12 @@ declare global {
     ): this;
     update<R>(updater: (value: this) => R): R;
   }
-	interface IImmutalbeList<DataType extends AllowedValue>
-		extends Immutable.List<DataType> {
-	}
-    
+  type IImmutalbeList<DataType extends AllowedValue> = Immutable.List<DataType>
+
 }
 
 const createImmutableMap = <DataType extends MapTypeAllowedData<DataType>>(
-	data: DataType
-): IImmutalbeMap<DataType> => Immutable.Map(data) as any;
+  data: DataType
+): IImmutalbeMap<DataType> => Immutable.Map(data) as IImmutalbeMap<DataType>;
 
 export { createImmutableMap  };

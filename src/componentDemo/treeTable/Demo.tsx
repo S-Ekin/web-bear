@@ -9,23 +9,24 @@ import data from "./data";
 import { createImmutableMap } from "@component/util/createImmutaleMap";
 import { Button } from "@component/button/index";
 import { Input, CheckBox } from "@component/input/index";
-import {str1,str4,str2,str3,str5,str6} from './CodeStr';
+import {str1, str4, str2, str3, str5, str6} from './CodeStr';
 import CodeBlock from "@container/codeBlock/CodeBlock";
-type config = {
+type Iconfig = {
   multiply?: boolean;
   itemIcon?: string;
   height?: number;
   childField?: string;
-  idField: string; //表格的节点标识
-  defaultSel?: string; //默认选中的
-  tabField?: string; //表格标识
-  emptyTxt?: string; //空数据时显示文字
+  idField: string; // 表格的节点标识
+  defaultSel?: string; // 默认选中的
+  tabField?: string; // 表格标识
+  emptyTxt?: string; // 空数据时显示文字
   noOrder?:boolean;
 };
-type Props = {};
+type Props = {
+};
 type States = {
-  immuConfig: IImmutalbeMap<config>;
-  config: config;
+  immuConfig: IImmutalbeMap<Iconfig>;
+  config: Iconfig;
   refreshId: number;
   initSelectVal: undefined | { id: string };
 };
@@ -35,42 +36,38 @@ const initConfig = {
   itemIcon: "file",
   childField: "children",
   idField: "id",
-  defaultSel: "", //默认选中的
-  tabField: "", //表格标识
-  emptyTxt: "", //空数据时显示文字
-  noOrder:false,
+  defaultSel: "", // 默认选中的
+  tabField: "", // 表格标识
+  emptyTxt: "", // 空数据时显示文字
+  noOrder: false,
 };
 class Demo extends React.PureComponent<Props, States> {
   state: States = {
-    immuConfig: createImmutableMap<config>(initConfig),
+    immuConfig: createImmutableMap<Iconfig>(initConfig),
     config: initConfig,
     refreshId: 0,
     initSelectVal: undefined
   };
   refesh = () => {
-    this.setState(pre => {
-      return {
-        config: pre.immuConfig.toJS(),
-        refreshId: pre.refreshId + 1
-      };
-    });
+    this.setState((pre) => ({
+      config: pre.immuConfig.toJS(),
+      refreshId: pre.refreshId + 1
+    }));
   }
   changeConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
-    const name = dom.name as any;
-    let value: any = dom.value;
+    const name = dom.name as keyof Iconfig;
+    let value: string | number | boolean = dom.value;
 
     if (["height"].includes(name)) {
       value = ~~value;
-    } else if (["multiply",'noOrder'].includes(name)) {
-      value = value === "1" ? true : false;
+    } else if (["multiply", 'noOrder'].includes(name)) {
+      value = value === "1";
     }
 
-    this.setState(pre => {
-      return {
-        immuConfig: pre.immuConfig.set(name, value)
-      };
-    });
+    this.setState((pre) => ({
+      immuConfig: pre.immuConfig.set(name, value)
+    }));
   }
   changeSelect = () => {
     this.setState({
@@ -79,17 +76,17 @@ class Demo extends React.PureComponent<Props, States> {
       }
     });
   }
-  getCodeBlockTit1(){
+  getCodeBlockTit1 () {
     return (
-    <>
-       <div>
+      <>
+        <div>
          外部控制下拉的选择id:21,22的节点
-                <Button handle={this.changeSelect}>选择</Button>
+          <Button handle={this.changeSelect}>选择</Button>
         </div>
-    </>
+      </>
     );
   }
-  render() {
+  render () {
     const { refreshId, config, immuConfig, initSelectVal } = this.state;
     const {
       height,
@@ -102,7 +99,7 @@ class Demo extends React.PureComponent<Props, States> {
       defaultSel,
       noOrder
     } = immuConfig.toJS();
-  
+
     return (
       <div className="g-layout">
         <div className="g-layout-head">
@@ -112,14 +109,14 @@ class Demo extends React.PureComponent<Props, States> {
           <div className="g-item-show">
             <Button handle={this.refesh}>刷新</Button>
           </div>
-          <div className="g-item-show" style={{height: 400, overflow: "auto",}}>
+          <div className="g-item-show" style={{height: 400, overflow: "auto", }}>
             <TreeTable
               key={refreshId}
               data={data}
               initSelectVal={initSelectVal}
               {...config}
             >
-              <GroupCols forzen={true}>
+              <GroupCols forzen>
                 <GroupCols.colItem width={180} field="name">
                   列1
                 </GroupCols.colItem>
@@ -142,7 +139,7 @@ class Demo extends React.PureComponent<Props, States> {
                   列6
                 </GroupCols.colItem>
               </GroupCols>
-              <GroupCols forzen={true} >
+              <GroupCols forzen >
                 <GroupCols.colItem width={140} field="name">列7</GroupCols.colItem>
               </GroupCols>
               <GroupCols  >
@@ -158,8 +155,8 @@ class Demo extends React.PureComponent<Props, States> {
                   type="number"
                   changeFn={this.changeConfig}
                   name="height"
-                  norequire={true} 
-                  value={`${height}`}
+                  norequire
+                  value={`${height || ""}`}
                 >
                   高度 height:
                 </Input>
@@ -169,7 +166,7 @@ class Demo extends React.PureComponent<Props, States> {
                   changeFn={this.changeConfig}
                   name="itemIcon"
                   value={itemIcon!}
-                  norequire={true} 
+                  norequire
                 >
                   文件图标 itemIcon:
                 </Input>
@@ -236,12 +233,12 @@ class Demo extends React.PureComponent<Props, States> {
                   否
                 </CheckBox>
               </div>
-           
+
               <div className="inp-item">
                 <Input
                   changeFn={this.changeConfig}
                   name="emptyTxt"
-                  norequire={true} 
+                  norequire
                   value={emptyTxt!}
                 >
                   空数据时显示文字 emptyTxt:
@@ -251,7 +248,7 @@ class Demo extends React.PureComponent<Props, States> {
                 <Input
                   changeFn={this.changeConfig}
                   name="tabField"
-                  norequire={true} 
+                  norequire
                   value={tabField!}
                 >
                   表格标识 tabField:
@@ -261,7 +258,7 @@ class Demo extends React.PureComponent<Props, States> {
                 <Input
                   changeFn={this.changeConfig}
                   name="defaultSel"
-                  norequire={true} 
+                  norequire
                   value={defaultSel!}
                 >
                   默认选中 defaultSel:
@@ -271,14 +268,14 @@ class Demo extends React.PureComponent<Props, States> {
           </div>
 
           <div className="g-item-show">
-             
-              <CodeBlock tit={this.getCodeBlockTit1()}>{str1}</CodeBlock>
+
+            <CodeBlock tit={this.getCodeBlockTit1()}>{str1}</CodeBlock>
           </div>
           <div className="g-item-show">
-              <CodeBlock language="scss" tit="表格高度和宽度能自适应和有滚动条的关键css">{str2}</CodeBlock>
+            <CodeBlock language="scss" tit="表格高度和宽度能自适应和有滚动条的关键css">{str2}</CodeBlock>
           </div>
           <div className="g-item-show">
-              <CodeBlock tit="递归比较dom">{str3 + str4}</CodeBlock>
+            <CodeBlock tit="递归比较dom">{str3 + str4}</CodeBlock>
           </div>
           <div className="g-item-show">
             <CodeBlock tit="递归组件ParTree来表示每个节点的序号，层级，路径,关于序号，明白Tritem才是真正渲染的地方，ParTree只是运输过程，在其他地方++order都不行,order要做成对象{order：number}来传递和递增">
@@ -289,7 +286,7 @@ class Demo extends React.PureComponent<Props, States> {
             <CodeBlock tit='Immutable.fromJS()格式化json时，也就是用函数来得到节点的层级，路径，序号'>
               {str6}
             </CodeBlock>
-            
+
           </div>
         </div>
       </div>

@@ -40,7 +40,7 @@ class ScrollBox
   scrollMethods: IScrollMethods;
   timer = 0;
   upTimer = 0;
-  constructor(props: Props) {
+  constructor (props: Props) {
     super(props);
     this.scrollMethods = {
       initScroll: this.upDateInit,
@@ -82,7 +82,7 @@ class ScrollBox
   // tslint:disable-next-line: member-ordering
   barMoveEven = fnUtil.throttle(this.barMove, 100);
 
-  componentDidMount(): void {
+  componentDidMount (): void {
     this.upDateInit(this.props.height);
     if (!this.props.noStopPageScroll) {
       this.moveBar.current!.parentElement!.parentElement!.addEventListener(
@@ -93,7 +93,7 @@ class ScrollBox
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     window.cancelAnimationFrame(this.timer);
     window.cancelAnimationFrame(this.upTimer);
     if (!this.props.noStopPageScroll) {
@@ -150,7 +150,7 @@ class ScrollBox
     });
   }
 
-  animateScroll(start: number, end: number, callback: () => void) {
+  animateScroll (start: number, end: number, callback: () => void) {
     if (this.timer) {
       // 立马取消上一次的定时器事件
       window.cancelAnimationFrame(this.timer);
@@ -174,22 +174,22 @@ class ScrollBox
     fn();
   }
 
-  componentDidUpdate(prevProps: Props, prevState: States) {
+  componentDidUpdate (prevProps: Props, prevState: States) {
     // todo:这里其实不应该在这在使用 setState，会导致某一次变动，更新两次。在  【getDerivedStateFromProps】里可以让变动更新一次，但是在它里面没法使用 refs来引用dom。
     if (prevProps.height !== this.props.height) {
       this.upDateInit(this.props.height);
-    } else if (this.state.showBar === prevState.showBar) { 
+    } else if (this.state.showBar === prevState.showBar) {
       // 利用相等的情况，是因为当调用更新的生命周清泉时，证明这个 Scrooll组件所包裹的【滚动主体】肯定有更新，即高度发生变化
       const { time } = this.props;
       const scrollMain = this.moveBar.current!.parentElement!
         .previousElementSibling! as HTMLDivElement;
-      if(this.upTimer){
+      if (this.upTimer) {
         window.cancelAnimationFrame(this.upTimer);
         this.upTimer = 0;
       }
-      //注意有两级定时器, 当滚动主体是在动画过程中改变高度时，要在动画完成后再来获取滚动主体的高度，否则获取的高度不准确，
+      // 注意有两级定时器, 当滚动主体是在动画过程中改变高度时，要在动画完成后再来获取滚动主体的高度，否则获取的高度不准确，
       // 但是当动画主体不停改变高度时，所以得让动画主体在不停的点击改变时，应该立马完成上一次的动画。不然在滚动主体还在不停动画时，下面的time时间已经到了，于是获取的高度不准确。
-     this.upTimer = window.setTimeout(() => {
+      this.upTimer = window.setTimeout(() => {
         const curScrollMainH = scrollMain.clientHeight;
         if (curScrollMainH !== this.scrollMainH) {
           this.upDateInit(this.props.height);
@@ -198,7 +198,6 @@ class ScrollBox
       }, time);
     }
   }
-
 
 
   barClick = (e: React.MouseEvent<HTMLDivElement>): void => {
@@ -267,19 +266,19 @@ class ScrollBox
     dom.style.top = `${h}px`;
     scrollMain.style.top = `${-h * factor}px`;
   }
-  stopProp<k extends Event>(e: k) {
+  stopProp =  (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   }
-  stopWhell<k extends Event>(e: k) {
+  stopWhell= <k extends Event> (e: k) => {
     e.preventDefault();
   }
-  render() {
+  render () {
     const { className, height, children, keepBarShow } = this.props;
     const { showBar, moveBarH } = this.state;
     const style = height ? { height: `${height}px` } : undefined;
     return (
       <div
-        className={`g-scrollBox ${className}`}
+        className={`g-scrollBox ${className!}`}
         style={style}
         onMouseEnter={keepBarShow ? undefined : this.mouseOver}
         onMouseLeave={this.mouseLeave}
@@ -296,7 +295,7 @@ class ScrollBox
             ref={this.moveBar}
             className="m-moveBar"
             style={{ height: `${moveBarH}px`, top: "0px", }}
-            onClick={this.stopProp as any}
+            onClick={this.stopProp}
             onMouseDown={this.barClick}
           />
         </div>

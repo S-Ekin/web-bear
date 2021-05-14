@@ -4,36 +4,36 @@
  * 影响其他的无相关的组件更新，采取的发布订阅方法
  * @time 2020-04-17
  */
-type eventType = "menuClick" | "menuExpand" | "expandIcon";
-
+type IeventType = "menuClick" | "menuExpand" | "expandIcon";
+type Fn = (...args:unknown[])=>void;
 class Event {
 
-    private eventObj:{[k:string]:Function[] | null} = {};
-    //订阅
-    on(eventType:eventType,fn:Function){
-        let eventList =  this.eventObj[eventType];
-        if(!eventList){
-            eventList = [];
-            this.eventObj[eventType] = eventList;
-        }
-        eventList.push(fn);
+  private eventObj:{[k:string]:Fn[] | null} = {};
+  // 订阅
+  on (eventType:IeventType, fn:Fn) {
+    let eventList =  this.eventObj[eventType];
+    if (!eventList) {
+      eventList = [];
+      this.eventObj[eventType] = eventList;
     }
-    // 发布
-    emit(eventType:eventType,...other:any[]){
-        let eventList =  this.eventObj[eventType];
+    eventList.push(fn);
+  }
+  // 发布
+  emit (eventType:IeventType, ...other:unknown[]) {
+    let eventList =  this.eventObj[eventType];
 
-        if(!eventList || !eventList.length){
-            return ;
-        }
-        eventList.forEach(fn=>{
-            fn(...other);
-        });
+    if (!eventList || !eventList.length) {
+      return;
     }
+    eventList.forEach((fn) => {
+      fn(...other);
+    });
+  }
 
-    remove(eventType:eventType){
-        this.eventObj[eventType] = null;
-        delete this.eventObj[eventType];
-    }
+  remove (eventType:IeventType) {
+    this.eventObj[eventType] = null;
+    delete this.eventObj[eventType];
+  }
 }
 
 

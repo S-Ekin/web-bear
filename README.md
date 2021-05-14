@@ -17,10 +17,14 @@
       - 使用 npx sass main.scss ../../../../lib/index.css -s compressed --no-source-map 
       - 具体命令看sass 官网
    - 样式文件也可以不编译，直接把**src/component/my-css**放到lib下。
+   - 最后使用 npm publish
 #### 发布到本地库
    - 全局安装 yalc
    - 在组件库 yalc publish 发布到本地
    - 在其他项目里，使用 yalc add @s-ekin/web 来使用这个库。（效果和从npm 里 install 一样）
    - 当修改组件库时，使用yalc push 可以同步所有使用这个组件库的项目。
    - 避免使用npm link 来软链 ，导致组件库和项目库同时保存两份 react实例，导致react-router 和 react hook 报错。，同时ts类型也报错。 
-
+#### 切换代理
+   - **nrm ls** 查看代理列表
+   - **nrm use npm | cnpm | yarn | taobao** 使用npm作为代理
+   - 发布到npm时，要使用npm作为代理，也就是npm本身，否则不能发布上去

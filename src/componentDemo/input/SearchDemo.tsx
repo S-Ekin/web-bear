@@ -6,35 +6,35 @@
 import * as React from "react";
 import Layout from "@component/layout/Layout";
 import {createImmutableMap} from "@component/util/createImmutaleMap";
-import {Input,Search} from "@component/input/index";
+import {Input, Search} from "@component/input/index";
 import {str3} from "./CodeStr";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 
 type config = {
-   // searchHandle: (keyword: string,field:string) => void;
-	//closeHandle?: (field?:string) => void;
-	tip: string;
-	width:number;
-	field:string;
+  // searchHandle: (keyword: string,field:string) => void;
+  // closeHandle?: (field?:string) => void;
+  tip: string;
+  width:number;
+  field:string;
   tit: string;
 };
 const config:config = {
-	tip:"",
-	width:0,
-	field:"",
+  tip: "",
+  width: 0,
+  field: "",
   tit: "",
-}
+};
 
 type Props={
 
 };
 type States={
 
-    immuConfig:IImmutalbeMap<config>;
+  immuConfig:IImmutalbeMap<config>;
 };
 interface ISearchDemo {
 
-    changeConfig(e: React.ChangeEvent<HTMLInputElement>):void;
+  changeConfig(e: React.ChangeEvent<HTMLInputElement>):void;
 }
 class SearchDemo extends React.PureComponent<Props, States>
   implements ISearchDemo {
@@ -43,27 +43,25 @@ class SearchDemo extends React.PureComponent<Props, States>
   };
   changeConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
-    const name = dom.name as any;
-    let value: any = dom.value;
+    const name = dom.name as keyof config;
+    let value: string | number = dom.value;
     if (["width"].includes(name)) {
       value = ~~value;
     }
-    this.setState((pre) => {
-      return {
-        immuConfig: pre.immuConfig.set(name, value),
-      };
-    });
+    this.setState((pre) => ({
+      immuConfig: pre.immuConfig.set(name, value),
+    }));
   }
-  searchHandle=(keyword:string,field:string)=>{
-    console.log(keyword,field);
+  searchHandle=(keyword:string, field:string) => {
+    console.log(keyword, field);
   }
-  closeHandle=(field:string)=>{
+  closeHandle=(field:string) => {
     console.log(field);
-    
+
   }
-  render() {
+  render () {
     const {immuConfig} = this.state;
-    const {tip,field,width, tit} = immuConfig.toJS();
+    const {tip, field, width, tit} = immuConfig.toJS();
 
     return (
       <Layout tit="搜索框">
@@ -71,43 +69,43 @@ class SearchDemo extends React.PureComponent<Props, States>
           <div className="inp-item">
             <span>搜索框：</span>
             <Search
-             tip={tip}
-             field={field}
-             width={width}
-             searchHandle={this.searchHandle}
-             closeHandle={this.closeHandle}
+              tip={tip}
+              field={field}
+              width={width}
+              searchHandle={this.searchHandle}
+              closeHandle={this.closeHandle}
             >
-              { tit }
+              {tit}
             </Search>
           </div>
           <div >
-              <div className="inp-item">
-                <Input value={field} name="field" changeFn={this.changeConfig} >
+            <div className="inp-item">
+              <Input value={field} name="field" changeFn={this.changeConfig} >
                   字段 field :
-                </Input>
-              </div>
-               <div className="inp-item">
-                <Input value={tip} name="tip" changeFn={this.changeConfig}
-                  norequire={true}
-                >
-                 提示语 tip：
-                </Input>
-              </div> 
-              <div className="inp-item">
-                <Input value={`${width}`} name="width" changeFn={this.changeConfig}
-                  norequire={true}
-                >
-                宽度  width：
-                </Input>
-              </div>
-              <div className="inp-item">
-                <Input value={`${tit}`} name="tit" changeFn={this.changeConfig}
-                  norequire={true}
-                >
-                 搜索按钮 tit：
-                </Input>
-              </div>
+              </Input>
             </div>
+            <div className="inp-item">
+              <Input value={tip} name="tip" changeFn={this.changeConfig}
+                norequire
+              >
+                 提示语 tip：
+              </Input>
+            </div>
+            <div className="inp-item">
+              <Input value={`${width}`} name="width" changeFn={this.changeConfig}
+                norequire
+              >
+                宽度  width：
+              </Input>
+            </div>
+            <div className="inp-item">
+              <Input value={`${tit}`} name="tit" changeFn={this.changeConfig}
+                norequire
+              >
+                 搜索按钮 tit：
+              </Input>
+            </div>
+          </div>
         </div>
         <div className="g-item-show">
           <CodeBlock tit="搜索函数">{str3}</CodeBlock>
