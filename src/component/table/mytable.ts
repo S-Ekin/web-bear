@@ -1,10 +1,14 @@
+export interface Inode extends AnyObj {
+  checked:boolean;
+  selected:boolean;
+}
 export interface IColumnItem {
   field:string;
   width?:number | string;
   isRowSpanField?:boolean;// 是否为合并字段
   align?: string;
   formatter?:(
-    node: IImmutalbeMap<AnyObj>, // 节点
+    node: IImmutalbeMap<Inode>, // 节点
     index: string, // 节点索引
     tabField?: string // 表格标识
   ) => React.ReactChild;
@@ -22,7 +26,7 @@ export type fieldObj = {
 export interface ITableStates {
   perNums: number; // 每页条数
   curPage: number; // 当前页数
-  tableData: IImmutalbeList<IImmutalbeMap<AnyObj>>;
+  tableData: IImmutalbeList<IImmutalbeMap<Inode>>;
   preData:AnyObj[];
   preInitSelectVal?:{id:string};
   curOptId:string;

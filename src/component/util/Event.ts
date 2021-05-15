@@ -5,12 +5,13 @@
  * @time 2020-04-17
  */
 type IeventType = "menuClick" | "menuExpand" | "expandIcon";
-type Fn = (...args:unknown[])=>void;
+type Fn<T extends MyAny> = (...args:T[])=>void;
 class Event {
 
-  private eventObj:{[k:string]:Fn[] | null} = {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private eventObj: {[k:string]:Fn<any>[] | null} = {};
   // 订阅
-  on (eventType:IeventType, fn:Fn) {
+  on <T> (eventType:IeventType, fn:Fn<T>) {
     let eventList =  this.eventObj[eventType];
     if (!eventList) {
       eventList = [];
@@ -19,7 +20,7 @@ class Event {
     eventList.push(fn);
   }
   // 发布
-  emit (eventType:IeventType, ...other:unknown[]) {
+  emit (eventType:IeventType, ...other: MyAny[]) {
     let eventList =  this.eventObj[eventType];
 
     if (!eventList || !eventList.length) {

@@ -5,67 +5,72 @@ import {event} from "@component/util/Event";
 import notice from "@component/toast/index";
 import loadable from "@component/util/routerLoad";
 import DefaultPage from "@component/crashPage/defaultPage";
-const routerConfig = {
+type IMyLoderRouter = Promise<{default: React.ComponentType<AnyObj>} | React.ComponentType<AnyObj>>
+const routerConfig:{
+  [k:string]:{
+    loader: () => IMyLoderRouter ;
+  }
+} = {
   buttonRouter: {
     loader: () =>
       import(
         /* webpackChunkName: "input" */ "./Router/InpRoute"
-      ),
+      ) as IMyLoderRouter,
   },
   tableRouter: {
     loader: () =>
       import(
         /* webpackChunkName: "table" */ "./Router/TableRouter"
-      ),
+      ) as IMyLoderRouter,
   },
 
   loadingRouter: {
     loader: () =>
       import(
         /* webpackChunkName: "loading" */ "./Router/LoadingRouter"
-      ),
+      ) as IMyLoderRouter,
   },
   comboRouter: {
     loader: () =>
       import(
         /* webpackChunkName: "combo" */ "./Router/ComboRouter"
-      ),
+      ) as IMyLoderRouter,
   },
   blog: {
     loader: () =>
       import(
         /* webpackChunkName: "blog" */ "./Router/BlogRoute"
-      ),
+      ) as IMyLoderRouter,
   },
   problem: {
     loader: () =>
       import(
         /* webpackChunkName: "problem" */ "./Router/ProblemRoute"
-      ),
+      ) as IMyLoderRouter,
   },
   modal: {
     loader: () =>
       import(
         /* webpackChunkName: "modal" */ "./Router/ModalRoute"
-      ),
+      ) as IMyLoderRouter,
   },
   menu: {
     loader: () =>
       import(
         /* webpackChunkName: "menu" */ "./Router/MenuRouter"
-      ),
+      ) as IMyLoderRouter,
   },
   util: {
     loader: () =>
       import(
         /* webpackChunkName: "util" */ "./Router/UtilRouter"
-      ),
+      ) as IMyLoderRouter,
   },
   animate: {
     loader: () =>
       import(
         /* webpackChunkName: "animate" */ "./Router/AnimateRoute"
-      ),
+      ) as IMyLoderRouter,
   },
 };
 
@@ -130,5 +135,5 @@ class MainRouter extends React.PureComponent<props, state> {
 
   }
 }
-
 export default MainRouter;
+

@@ -3,14 +3,14 @@
  * @description description
  * @time 2019-09-19
  */
-import {fieldObj, ITableFn} from "./mytable";
+import {fieldObj, ITableFn, Inode} from "./mytable";
 import * as React from "react";
 import { CheckBox } from "../input/index";
 
 type Props = {
   curPage:number;// 当前页码
   perNums:number;// 当前每页显示的条数
-  tableData: IImmutalbeList<IImmutalbeMap<AnyObj>>; // 当前页的数据
+  tableData: IImmutalbeList<IImmutalbeMap<Inode>>; // 当前页的数据
   fileObj:fieldObj;
   changeHandle: ITableFn["changeState"];
   selectfn:(e:React.MouseEvent<HTMLTableCellElement>)=>void;
@@ -20,7 +20,7 @@ interface ITBody {
   isSame: string; // 中间变量用于保存要合并的行的某个列的名称
 }
 // tslint:disable-next-line: variable-name
-const TdCheckBox:React.SFC<{
+const TdCheckBox:React.FunctionComponent<{
   checked:boolean;
   index:string;
   changeFn:(e:React.ChangeEvent<HTMLInputElement>)=>void;
@@ -50,7 +50,7 @@ class TBody extends React.PureComponent<Props, TbodyState> implements ITBody {
     changeHandle<"tableData">("tableData", newData);
 
   }
-  getTrCom (dataItem:IImmutalbeMap<AnyObj>, startIndex:number, index:number, curData:IImmutalbeList<IImmutalbeMap<AnyObj>>) {
+  getTrCom (dataItem:IImmutalbeMap<Inode>, startIndex:number, index:number, curData:IImmutalbeList<IImmutalbeMap<Inode>>) {
 
     const order = `${startIndex + 1 + index}`;
     const {fileObj, selectfn} = this.props;

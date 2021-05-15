@@ -8,18 +8,18 @@ import BinTree from "../BinTree";
 import CodeBlock from '@container/codeBlock/CodeBlock';
 
 const data = [
-    {val:1,jk:3},
-    {val:2,jk:3},
-    {val:3,jk:3},
-    {val:4,jk:3},
-    {val:5,jk:3},
-    {val:6,jk:3},
-    {val:7,jk:3},
-    {val:8,jk:3},
-    {val:9,jk:3},
-    {val:10,jk:3},
-    {val:11,jk:3},
-    {val:12,jk:3},
+  {val: 1, jk: 3},
+  {val: 2, jk: 3},
+  {val: 3, jk: 3},
+  {val: 4, jk: 3},
+  {val: 5, jk: 3},
+  {val: 6, jk: 3},
+  {val: 7, jk: 3},
+  {val: 8, jk: 3},
+  {val: 9, jk: 3},
+  {val: 10, jk: 3},
+  {val: 11, jk: 3},
+  {val: 12, jk: 3},
 ];
 type treeVal = {val:number;jk:number};
 const tree = new BinTree<treeVal>(data);
@@ -27,8 +27,8 @@ const tree = new BinTree<treeVal>(data);
 console.log(tree);
 let arrContainer:treeVal[] = [];
 let arrContainer1:treeVal[] = [];
-console.log(tree.preOrderTraversal(tree.root,arrContainer));
-console.log(tree.inOrderTraversal(tree.root,arrContainer1));
+console.log(tree.preOrderTraversal(tree.root, arrContainer));
+console.log(tree.inOrderTraversal(tree.root, arrContainer1));
 
 type Props={
 
@@ -113,27 +113,25 @@ class BinTree<T>  implements IBinTree<T>{
     }
 }`;
 
-class Demo extends React.PureComponent<Props,States> {
-    state:States={
+class Demo extends React.PureComponent<Props, States> {
+  state:States={
 
-    };
-    render(){
-        const {} = this.props;
-
-        return (
-            <div className="g-layout">
-                <div className="g-layout-head">
+  };
+  render () {
+    return (
+      <div className="g-layout">
+        <div className="g-layout-head">
                     二叉树
-                </div>
-                <div className="g-layout-article">
-                     <div className="g-item-show">
-                        <CodeBlock tit='二叉树遍历'>
-                            {str1}
-                        </CodeBlock>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+        </div>
+        <div className="g-layout-article">
+          <div className="g-item-show">
+            <CodeBlock tit='二叉树遍历'>
+              {str1}
+            </CodeBlock>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 export default Demo;

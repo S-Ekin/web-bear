@@ -10,7 +10,7 @@ import {CheckBox} from "../input/index";
 import {ScrollBox} from "../scroll/index";
 import PageSize from "./PageSize";
 import TabBody from "./TBody";
-import {IColumnItem, ITableStates, fieldObj} from "./mytable";
+import {IColumnItem, ITableStates, fieldObj, Inode} from "./mytable";
 
 type Props={
   data: AnyObj[];
@@ -24,7 +24,7 @@ type Props={
   tabField?: string;// 表格标识
   emptyTxt?: string;// 空数据时显示文字
   initSelectVal?:{id:string};// 通过外界改变表格的选中
-  bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<AnyObj>>)=>void;// 把获取选中的项的函数传递给外部
+  bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<Inode>>)=>void;// 把获取选中的项的函数传递给外部
 };
 type States= ITableStates ;
 interface ITable {

@@ -18,7 +18,7 @@ type states = {
 };
 
 // 当由外部控制选什么的时候，defaultVal,是又外部输入的,data:可以传入
-const formatterTreeData = function (fixObj: filedObj, defaultVal:string, data:any[]) {
+const formatterTreeData = function (fixObj: filedObj, defaultVal:string, data:AnyObj[]) {
   const { idField: id, childField, multiply } = fixObj;
   let defaultValArr = defaultVal.split(",");
   // 单选保证只用一个默认值
@@ -32,13 +32,10 @@ const formatterTreeData = function (fixObj: filedObj, defaultVal:string, data:an
   // let prePath:any = [];
   const immutableData: states["immutableData"] = Immutable.fromJS(
     data as Inode[],
-    function (_key, val, path:any) {
+    function (_key, val, path) {
       if (Immutable.isKeyed(val)) {
-        let node = (val as Immutable.Collection.Keyed<
-        string,
-        any
-        >).toOrderedMap();
-        let children = node.get(childField!) as Immutable.List<any>;
+        let node = (val as IImmutalbeMap<Inode>).toOrderedMap();
+        let children = node.get(childField!) as IImmutalbeList<IImmutalbeMap<Inode>>;
         if (!children) {
           children = Immutable.List([]);
           node = node.set(childField!, children);
@@ -48,7 +45,7 @@ const formatterTreeData = function (fixObj: filedObj, defaultVal:string, data:an
         if (children.size) {
           if (multiply) {
             const hasSelected = children.some(
-              (vals: IImmutalbeMap<AnyObj>) => (
+              (vals: IImmutalbeMap<Inode>) => (
                 vals.get("active") === activeStatus.hasSelect
               )
             );
@@ -58,7 +55,7 @@ const formatterTreeData = function (fixObj: filedObj, defaultVal:string, data:an
             } else {
               // 根据子文件的选择情况来做对应的选中状态
               let selectCount = children.reduce(
-                (cur, vals: IImmutalbeMap<AnyObj>) => {
+                (cur, vals: IImmutalbeMap<Inode>) => {
                   let total = cur;
                   if (
                     vals.get("active") === activeStatus.select
@@ -86,7 +83,7 @@ const formatterTreeData = function (fixObj: filedObj, defaultVal:string, data:an
         } else {
           // 文件
           const isDefault = defaultValArr.includes(
-            `${node.get(id)}`
+            `${node.get(id) as string}`
           );
           active = isDefault
             ? activeStatus.select
@@ -142,12 +139,12 @@ const formatterTreeData = function (fixObj: filedObj, defaultVal:string, data:an
 
 // 级联选中
 const cascade = function (
-  path: string,
+  paths: string,
   data: states["immutableData"],
   childField: string
 ) {
   let _data = data;
-  const pathArr = path.split(',');
+  const pathArr = paths.split(',');
   pathArr.pop();
 
   _data = _data.withMutations((list) => {

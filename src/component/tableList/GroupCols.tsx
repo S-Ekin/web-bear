@@ -11,7 +11,7 @@ type States={
 };
 
 class GroupCols extends React.PureComponent<Props, States> {
-  static colItem:React.SFC<IColumnItem & {children:string}> = () => <></>
+  static colItem:React.FunctionComponent<IColumnItem & {children:string}> = () => <></>
   state:States={
   };
   render () {

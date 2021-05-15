@@ -5,8 +5,7 @@
  */
 import MarkDown from 'react-markdown';
 import * as React from "react";
-import CodeBlock from '../codeBlock/CodeBlock';
-
+// import CodeBlock from '../codeBlock/CodeBlock';
 type Props={
 
 };
@@ -28,12 +27,12 @@ class EditCode extends React.PureComponent<Props, States> implements IEditCode {
     });
   }
   render () {
-    const {} = this.props;
-
     return (
       <div>
         <textarea onChange={this.onChange}/>
-        <MarkDown className="result" source={this.state.content} renderers={{code: CodeBlock}}/>
+        <MarkDown className="result">
+          {this.state.content}
+        </MarkDown>
       </div>
     );
   }

@@ -251,10 +251,11 @@ class Calendar extends React.PureComponent<Props, States>
     this.setState((pre) => {
       const val = callback(pre);
       const {time} = this.props;
+      let objState: (Partial<States>| null) = null;
       if (key === "selTimeArr") {
         const rotate = pre.rotate;
         const calendarVal = getInpTimeStrArr(val as States["selTimeArr"], rotate, time!).join(" 至 ");
-        return {
+        objState = {
           selTimeArr: val as States["selTimeArr"],
           calendarVal,
         };
@@ -262,16 +263,17 @@ class Calendar extends React.PureComponent<Props, States>
         const selTimeArr = pre.selTimeArr;
         const calendarVal = getInpTimeStrArr(selTimeArr, val as States["rotate"], time!).join(" 至 ");
         const showViewArr = this.getShowViewArr(val as States["rotate"]);
-        return {
+        objState = {
           calendarVal: calendarVal,
           showViewArr: showViewArr,
           rotate: val as States["rotate"],
         };
       } else {
-        return  {
+        objState = {
           [key as "rotate"]: val as States["rotate"],
         };
       }
+      return objState as Pick<States, keyof States>;
     }, () => {
       if (["rotate", "selTimeArr"].includes(key)) {
         const {field, clickBack, valFormatt} = this.props;

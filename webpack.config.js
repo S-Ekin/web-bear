@@ -23,7 +23,7 @@ module.exports = (env) => {
     output: {
       path: path.join(__dirname, "./static"),
       filename: "[name].[contenthash:5].js",
-      publicPath: "", 
+      publicPath: "/", 
       chunkFilename: "js/[name].[chunkhash:5].js",
       clean: true,
     },
@@ -48,7 +48,10 @@ module.exports = (env) => {
       syncWebAssembly: true
     },
     stats: {
-       children: true
+       children: true,
+       errors: true,
+       errorDetails: true,
+       warnings: true,
     }
   };
 };

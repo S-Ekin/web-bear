@@ -3,7 +3,7 @@
  * @description ...
  */
 
- const str1 =`class CreateTree {
+const str1 = `class CreateTree {
 
     // 递归
     mapTreeFn(data: any[], childId: number) {
@@ -90,7 +90,7 @@
 }
 `;
 
-const str2 =`
+const str2 = `
 	// 找到某个节点拥有的总的最底层的子节点数（即所有的叶子节点不包括目录）
     mapFindNodeChildTotal (total, arr) {
         let leg = total;

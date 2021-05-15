@@ -1,4 +1,4 @@
-export const str1 =`sureFn(field:string){
+export const str1 = `sureFn(field:string){
       console.log(field);
       
     }`;
@@ -14,7 +14,7 @@ export const str2 = `modalCustomFoot=()=>{
       );
     }`;
 
-  export  const str3 =`//里层的modal容器 Router.tsx
+export  const str3 = `//里层的modal容器 Router.tsx
 <div className="g-main">
   <ErrorBoundary init={initRouter} bindGetHasError={this.bindGetHasError}>
     <Switch>

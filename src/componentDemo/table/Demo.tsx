@@ -15,6 +15,7 @@ import {str1} from "./CodeStr";
 import {CheckBox, Input, Search} from "@component/input/index";
 import  loadFn  from "@component/loading/loadMethod";
 import "./index.scss";
+import { Inode } from "@component/table/mytable";
 type Props={
 
 };
@@ -26,26 +27,27 @@ type States={
   refreshId:number;
 };
 interface IDemo {
-  tableGetCheckedFn:()=>IImmutalbeList<IImmutalbeMap<report>>;
+  tableGetCheckedFn:()=>IImmutalbeList<IImmutalbeMap<Inode>>;
 }
-type report ={
-  a_FASHENGSHIJIAN: string
-  a_SHANGBAOREN: string
-  a_SHANGBAOSHIJIAN: string
-  b_SHIJIANLEIBIE1: string
-  category_name: string
-  eventNo: string
-  event_id: string;
-  function_reject: string;
-  orgList: AnyObj[]
-  org_id: string;
-  org_name: string
-  qc_reject: string
-  shijianleixing: string
-  status: string;
-  status_name: string
-  type_id: string;
-};
+// interface report  {
+//   a_FASHENGSHIJIAN: string
+//   a_SHANGBAOREN: string
+//   a_SHANGBAOSHIJIAN: string
+//   b_SHIJIANLEIBIE1: string
+//   category_name: string
+//   eventNo: string
+//   event_id: string;
+//   function_reject: string;
+//   orgList: AnyObj[]
+//   org_id: string;
+//   org_name: string
+//   qc_reject: string
+//   shijianleixing: string
+//   status: string;
+//   status_name: string
+//   type_id: string;
+// }
+
 type Iconfig = {
   noPageNums:boolean;
   idField: string;
@@ -70,15 +72,15 @@ const initConfig:Iconfig = {
 class Demo extends React.PureComponent<Props, States> implements IDemo {
 
   formatterObj ={
-    eventType: function (node:IImmutalbeMap<report>) {
+    eventType: function (node:IImmutalbeMap<Inode>) {
       return node.get("category_name") || "--";
     },
-    date: function (node: IImmutalbeMap<report>) {
-      let time = node.get("a_SHANGBAOSHIJIAN") || "";
+    date: function (node: IImmutalbeMap<Inode>) {
+      let time = node.get("a_SHANGBAOSHIJIAN") as "string" || "";
       return `${time.substr(0, 4)}-${time.substr(4, 2)}-${time.substr(6, 2)}`;
     },
-    reporter: (node: IImmutalbeMap<report>) => <span>{node.get("a_SHANGBAOREN") || "匿名"}</span>,
-    opt: (node: IImmutalbeMap<report>) => (
+    reporter: (node: IImmutalbeMap<Inode>) => <span>{node.get("a_SHANGBAOREN") || "匿名"}</span>,
+    opt: (node: IImmutalbeMap<Inode>) => (
       <span
         className="m-optBtn"
         data-event_id={node.get("event_id")}

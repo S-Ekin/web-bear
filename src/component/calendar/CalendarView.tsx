@@ -317,7 +317,6 @@ export default class CalendarView
       this.props.selTimeObj.toJS(),
       flag
     );
-    console.log(flag, _showTimeobj);
     // 比较开始和结束的大小
     const startGtEnd = changeBasicState<"selTimeArr">("selTimeArr", (state) => state.selTimeArr, {
       viewIndex,
@@ -337,9 +336,6 @@ export default class CalendarView
       }
 
       selTimeArr = selTimeArr.update(viewIndex, (map) => map.withMutations((node) => node.set(name, value)));
-
-      console.log(selTimeArr.toJS(), "更新");
-
       return selTimeArr;
 
     });

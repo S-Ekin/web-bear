@@ -10,7 +10,7 @@ import Layout from "@component/layout/Layout";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import {str1 } from "./CodeStr";
 import LoadAble from "@component/util/routerLoad";
-
+// type IMyLoadeRouteCom<p> = React.ComponentType<p & RouteComponentProps>;
 type parame = {
   text?:string;
 };
@@ -39,18 +39,20 @@ class Demo extends React.PureComponent<Props, States> {
       this.setState((pre) => {
         const arr = pre.LoaderComArr;
         return {
-          LoaderComArr: arr.concat([LoadAble<parame>({
-            loader: () => import("./asyncCom")
-          })])
+          LoaderComArr: arr.concat([
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            LoadAble<parame>({ loader: () => import("./asyncCom") as any})
+          ])
         };
       });
     } else if (type === "btn2") {
       this.setState((pre) => {
         const arr = pre.LoaderComArr;
         return {
-          LoaderComArr: arr.concat([LoadAble<parame>({
-            loader: () => import("./asyncCom2")
-          })])
+          LoaderComArr: arr.concat([
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            LoadAble<parame>({ loader: () => (import("./asyncCom2") as any)})
+          ])
         };
       });
     } else if (type === "btn3") {
@@ -62,7 +64,6 @@ class Demo extends React.PureComponent<Props, States> {
 
   getAsyncComList () {
     const { LoaderComArr } = this.state;
-    // tslint:disable-next-line: variable-name
     return LoaderComArr.length ? LoaderComArr.map((Com, index) => <Com key={index} text={`${index + 1}`} />) : <PendingCom />;
   }
 

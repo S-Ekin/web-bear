@@ -1,19 +1,18 @@
-
 export interface IColumnItem {
   field:string;
   children:string;
   width:number;
   align?:"center" | "left" | 'right';
   formatter?:(
-    node: IImmutalbeMap<AnyObj>, // 节点
+    node: IImmutalbeMap<Inode>, // 节点
     index: number, // 列的索引
     tabField?: string // 表格标识
   ) => React.ReactChild;
 }
 
-	type group = React.ComponentElement<IColumnItem, any>;
+type group = React.ComponentElement<IColumnItem,  React.ComponentState>;
 
-interface Inode extends AnyObj {
+export interface Inode extends AnyObj {
   checked: boolean;
 }
 

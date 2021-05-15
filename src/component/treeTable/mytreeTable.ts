@@ -4,15 +4,15 @@ export interface IColumnItem {
   align?:"center" | "left" | 'right';
   width:number;// 必须给个值，号计算不同区域的表格宽度，这样才可以让可以滚动的区域自适应宽度。
   formatter?:(
-    node: IImmutalbeMap<AnyObj>, // 节点
+    node: IImmutalbeMap<Inode>, // 节点
     index: number, // 列的索引
     tabField?: string // 表格标识
   ) => React.ReactChild;
 }
 
-type group = React.ComponentElement<IColumnItem, any>;
+type group = React.ComponentElement<IColumnItem, React.ComponentState>;
 
-interface Inode extends AnyObj {
+export interface Inode extends AnyObj {
   active: 'selected' | 'hasSelect' | 'noSelect';
   expand: boolean;
 }

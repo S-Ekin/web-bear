@@ -8,7 +8,7 @@ import {GroupCols} from './GroupCols';
 import TabView from './TabView';
 import {formatterTreeData, activeStatus, cascade} from './formatterTreeData';
 import {ICommon} from "./mytreeTable";
-type childType =React.ComponentElement<ICommon['groupCol'], any> ;
+type childType =React.ComponentElement<ICommon['groupCol'], React.ComponentState> ;
 
 type Props={
   data: AnyObj[];
@@ -22,7 +22,7 @@ type Props={
   defaultSel?: string;// 默认选中的
   tabField?: string;// 表格标识
   emptyTxt?: string;// 空数据时显示文字
-  getCheckFn?:(fn:any)=>void;// 获取选中的
+  // getCheckFn?:(fn:any)=>void;// 获取选中的
   initSelectVal?:{id:string};// 通过外界改变表格的选中
   clickOrCheckForbid?:(node:IImmutalbeMap<AnyObj>, field?:string)=>boolean;
   bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<AnyObj>>)=>void;// 把获取选中的项的函数传递给外部
@@ -93,7 +93,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
       const {children: childArr, forzen} = val.props;
       let widTotal = 0;
 
-      const child = React.Children.map(childArr, function (node) {
+      const child:ICommon["col"][] = React.Children.map(childArr, function (node) {
         const {children, width, field, formatter, align} = node.props;
         widTotal += width;
         return {
@@ -101,7 +101,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
         };
       });
       if (index === 0 && !noOrder) {
-        const orderGroup:any = {
+        const orderGroup:ICommon["col"] = {
           width: 60,
           field: "order",
           text: '序号',
@@ -122,7 +122,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
   }
   expand (path:string) {
     const {childField} = this.props;
-    const arr = path.split(',').join(`,${childField},`)
+    const arr = path.split(',').join(`,${childField!},`)
       .split(',');
     const {immutabData} = this.state;
     let newNode = immutabData.getIn(arr);
@@ -141,7 +141,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
   checkChild (path:string) {
     const {childField, idField, clickOrCheckForbid, tabField} = this.props;
     const {selectArr, immutabData} = this.state;
-    const arr = path.split(',').join(`,${childField},`)
+    const arr = path.split(',').join(`,${childField!},`)
       .split(',');
     let _select = selectArr;
 
@@ -220,7 +220,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
     const {selectArr, immutabData} = this.state;
     const indexArr = path
       .split(",")
-      .join(`,${childField},`)
+      .join(`,${childField!},`)
       .split(",");
     let _select = selectArr;
     let newNode = immutabData.getIn(indexArr);
@@ -294,7 +294,6 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
     });
   }
   viewMap () {
-    const {} = this.props;
     const {immutabData} = this.state;
     return this.fieldArr.map((group, index) => (
       <TabView
@@ -373,13 +372,13 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
       [...viewTrArr[0]].map((val, index) => {
 
         const trHdom = viewTrArr.map((trArr) => trArr[index]);
-        const trH = trHdom.map((val) => val.clientHeight).sort(compareFn);
+        const trH = trHdom.map((vals) => vals.clientHeight).sort(compareFn);
         const trHMax = trH[trH.length - 1];
 
         if (trH[0] !== trHMax) { // 高度不同
           if (val.classList.contains('tree-td')) {
-            const domArr = trHdom.map((val) => val.firstChild!.firstChild! as HTMLDivElement);
-            this.mapDom(domArr);
+            const domArrs = trHdom.map((vals) => vals.firstChild!.firstChild! as HTMLDivElement);
+            this.mapDom(domArrs);
 
           } else {
             // 设置高度
@@ -401,7 +400,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
 
     while (domArr.length) {
 
-      const contains:AnyObj[] = [];
+      const contains:HTMLDivElement[][] = [];
       domArr.forEach((arr) => {
 
         const tabDomArr =  arr.map((val) => val.firstElementChild!);
@@ -421,7 +420,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
 
             const trHMax = trHArr[trHArr.length - 1];
             if (tr.classList.contains('tree-td')) {
-              const childDomArr = trDomArr.map((val) => val.firstChild!.firstChild!);
+              const childDomArr = trDomArr.map((val) => val.firstChild!.firstChild!) as HTMLDivElement[];
               contains.push(childDomArr);
             } else {
               trDomArr.forEach((val) => {

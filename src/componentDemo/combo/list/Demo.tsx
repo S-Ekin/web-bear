@@ -157,7 +157,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   clickCallback = (
     selecte: ComboSpace.ISelected[],
     field: string,
-    node?: IImmutalbeMap<AnyObj>
+    node?: IImmutalbeMap<ComboSpace.Inode>
   ) => {
     console.log("-----clickCallback ---");
     console.log(selecte, field, node);
@@ -169,7 +169,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     console.log("----clickOrCheckForbid-----");
     return true;
   }
-  formatterDropItem = (node: IImmutalbeMap<{text:string}>) => `自定义${node.get("text")}`
+  formatterDropItem = (node: IImmutalbeMap<ComboSpace.Inode>) => `自定义${node.get("text") as string}`
   formatterVal = (selecteArr: IImmutalbeList<ComboSpace.ISelected>) => {
     console.log(selecteArr);
 

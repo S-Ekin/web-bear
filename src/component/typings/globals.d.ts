@@ -7,3 +7,4 @@ interface AnyObj{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [k:string]:any;
 }
+type MyAny = AnyObj | string | boolean | number;
