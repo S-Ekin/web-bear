@@ -11,20 +11,20 @@ import wrapComboHQC from "./ComboBasic";
 import { CheckBox, Search } from "../input/index";
 import {formatterTreeData, cascade} from './formatterTreeData';
 import {Idrop, ISelected, Inode} from "./combo";
-type props = Idrop<"tree">;
-type states = {
-  immutableData: Immutable.List<IImmutalbeMap<Inode>>;
-  preData: AnyObj[];
-  preInitComboVal:props['initComboVal'] ;
+type props<T> = Idrop<"tree", T>;
+type states<T> = {
+  immutableData: Immutable.List<IImmutalbeMap<Inode & T>>;
+  preData: T[];
+  preInitComboVal:props<T>['initComboVal'] ;
   oldSelectedIndex:string;
   asyncDefaultVal:boolean;// 用来识别异步请求下拉框数据时，第一次是空[],虽然给了默认值，但是不会选中什么，但是当第二次有了数据后，再用这个默认值去选中，但是之后就不再使用这个。
 };
-interface IDropTree {
-  initState(prop: props): states;
+interface IDropTree<T> {
+  initState(prop: props<T>): states<T>;
 }
-class DropTree extends React.PureComponent<props, states> implements IDropTree {
+class DropTree<T extends AnyObj> extends React.PureComponent<props<T>, states<T>> implements IDropTree<T> {
 
-  static  getDerivedStateFromProps (nextProps:props, preState:states):Partial<states> | null {
+  static  getDerivedStateFromProps (nextProps:props<AnyObj>, preState:states<AnyObj>):Partial<states<AnyObj>> | null {
 
     if (nextProps.data !== preState.preData) {
 
@@ -62,13 +62,13 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
       return null;
     }
   }
-  constructor (prop:props) {
+  constructor (prop:props<T>) {
     super(prop);
     this.state = this.initState(prop);
     const { clickMethod } = prop;
     clickMethod(this.clickItem);
   }
-  initState (prop: props):states {
+  initState (prop: props<T>):states<T> {
     const defaultVal = prop.filedObj.get("defaultVal") || "";
     const obj = formatterTreeData(prop, defaultVal, prop.data);
     return {
@@ -103,16 +103,16 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
 
   }
   searchMap (
-    data: AnyObj[],
+    data: T[],
     childField: string,
     key: string,
     textField: string
-  ):AnyObj[] {
+  ):T[] {
     return data.filter((val) => {
 
       const itemText = val[textField] as string || "";
       const isContainer = itemText.includes(key);
-      const child  = val[childField] as AnyObj[];
+      const child  = val[childField];
 
       if (child && child.length) {
 
@@ -120,7 +120,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
           return true;
         } else {
           const arr = this.searchMap(child, childField, key, textField);
-          val[childField] = arr;
+          (val as AnyObj)[childField] = arr;
           return arr.length;
         }
       } else {
@@ -131,14 +131,14 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
   }
   searchFn = (key: string) => {
 
-    const { filedObj, data, selected } = this.props;
+    const { filedObj, data, selected, initSelect} = this.props;
     const childField = filedObj.get("childField")!;
     const textField = filedObj.get("textField");
     const copyData = JSON.parse(JSON.stringify(data));
     let searchReswult = this.searchMap(copyData, childField, key, textField);
 
     const defaultVal = selected.map((val) => val.id).join(",");
-    const {data: immutableData, oldSelectedIndex} = formatterTreeData(this.props, defaultVal, searchReswult, true);
+    const {data: immutableData, oldSelectedIndex} = formatterTreeData({filedObj, initSelect}, defaultVal, searchReswult, true);
 		 this.setState({
       immutableData,
       oldSelectedIndex,
@@ -150,7 +150,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
   }
 
   clickFn (index: string) {
-    const { filedObj, selected, changeSelect } = this.props as props;
+    const { filedObj, selected, changeSelect } = this.props;
     const multipy = filedObj.get("multiply");
     const idField = filedObj.get("idField");
     const textField = filedObj.get("textField");
@@ -169,7 +169,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
         let oldSelectedIndex = pre.oldSelectedIndex;
         let _data = data;
         let _select = selected;
-        let newNode: IImmutalbeMap<Inode> = _data.getIn(indexArr);
+        let newNode: IImmutalbeMap<Inode & T> = _data.getIn(indexArr);
         if (!newNode) {
           return null;
         }
@@ -189,7 +189,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
           );
         }
         _select = _select.clear();
-        _data = _data.updateIn(indexArr, (val: IImmutalbeMap<Inode>) => {
+        _data = _data.updateIn(indexArr, (val: IImmutalbeMap<Inode & T>) => {
           // 判断这个node有没有被选中
           const active =
 						val.get("active") === activeStatus.select
@@ -206,7 +206,8 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
               _select = _select.filter((_val) => _val.id !== val.get(idField));
             }
           }
-          const node = val.set("active", active);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const node = val.set("active", active as any);
           newNode = node;
           return node;
         });
@@ -249,7 +250,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
         return null;
       }
 
-      _data = _data.updateIn(indexArr, (val: IImmutalbeMap<Inode>) => {
+      _data = _data.updateIn(indexArr, (val: IImmutalbeMap<Inode & T>) => {
         // 判断这个node有没有被选中
         const active =
 					val.get("active") === activeStatus.select
@@ -264,7 +265,8 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
         } else {
           _select = _select.filter((_val) => _val.id !== val.get(idField));
         }
-        const node = val.set("active", active);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const node = val.set("active", active as any);
         newNode = node;
         return node;
       });
@@ -277,7 +279,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
     });
   }
   mapFn (
-    list: IImmutalbeList<IImmutalbeMap<AnyObj>>,
+    list: IImmutalbeList<IImmutalbeMap<Inode & T>>,
     active: activeStatus,
     select: IImmutalbeList<ISelected>,
     filedObj: {
@@ -290,12 +292,13 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
     const { idField, childField, textField } = filedObj;
     const arr = list.map((val) => {
       let _child = val.get(childField) as IImmutalbeList<
-      IImmutalbeMap<AnyObj>
+      IImmutalbeMap<Inode & T>
       >;
       let _node = val;
       if (_child.size) {
         const result = this.mapFn(_child, active, _select, filedObj);
-        _node = _node.set(childField, result.arr);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        _node = _node.set(childField, result.arr as any);
         // 改变select
         _select = result.selecte;
       } else {
@@ -313,7 +316,8 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
           _select = _select.filter((_val) => _val.id !== _node.get(idField));
         }
       }
-      return _node.set("active", active);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return _node.set("active", active as any);
     });
 
     return {
@@ -350,7 +354,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
       if (clickForbid(newNode, comField, selected)) {
         return null;
       }
-      _data = _data.updateIn(indexArr, (val: IImmutalbeMap<Inode>) => {
+      _data = _data.updateIn(indexArr, (val: IImmutalbeMap<Inode & T>) => {
         // 判断这个node有没有被选中
         let node = val;
         const active =
@@ -361,7 +365,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
         // 选中所有的子文件
         node = node.withMutations((map) => {
           let _child = map.get(childField) as IImmutalbeList<
-          IImmutalbeMap<AnyObj>
+          IImmutalbeMap<Inode & T>
           >;
           let _map = map;
 
@@ -370,9 +374,11 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
             childField,
             textField,
           });
-          _map = _map.set(childField, result.arr);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          _map = _map.set(childField, result.arr as any);
 
-          _map = _map.set("active", active);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          _map = _map.set("active", active as any);
 
           // 改变selecte
           _select = result.selecte;
@@ -435,7 +441,7 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
     const multiply = filedObj.get("multiply");
     const noSearch = filedObj.get("noSearch");
     const com = immutableData.map((node, index) => {
-      const child = node.get(childField!) as states["immutableData"];
+      const child = node.get(childField!) as states<T>["immutableData"];
       const id = node.get(idField);
       return child.size ? (
         <ParTreeItem
@@ -488,4 +494,4 @@ class DropTree extends React.PureComponent<props, states> implements IDropTree {
   }
 }
 export {DropTree};
-export default wrapComboHQC<"tree">(DropTree, "tree");
+export default wrapComboHQC(DropTree, "tree");

@@ -15,14 +15,14 @@ enum activeStatus {
 
 
 type comboType = keyof IDropObj;
-type props<P extends comboType> = {
-  node: IImmutalbeMap<Inode>;
-  fieldObj: Idrop<P>["filedObj"];
+type props<P extends comboType, K> = {
+  node: IImmutalbeMap<Inode & K>;
+  fieldObj: Idrop<P, K>["filedObj"];
   index: string; // 节点索引
   lev?: number; // 树形节点的层级
   CheckBox?: React.ComponentType<ICheckboxCom>;
   checkMethod?:(value:string)=>void;
-  formatterDropItem?: (node: IImmutalbeMap<Inode>) => React.ReactNode;
+  formatterDropItem?: (node: IImmutalbeMap<Inode & K>) => React.ReactNode;
   clickFn(index:string):void;
 };
 type states = {
@@ -32,8 +32,8 @@ interface IDropItem {
   getCheckbox(text:string, icon:JSX.Element|undefined): JSX.Element;
 }
 
-class DropItem<P extends comboType>
-  extends React.PureComponent<props<P>, states>
+class DropItem<P extends comboType, T extends AnyObj>
+  extends React.PureComponent<props<P, T>, states>
   implements IDropItem {
   state: states = {};
   checkFn = (e: React.ChangeEvent<HTMLInputElement>) => {

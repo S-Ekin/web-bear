@@ -6,7 +6,7 @@
   "typings": "lib/index.d.ts",
   "scripts": {
     "build": "webpack --env=pro --profile",
-    "dev": "webpack server --env=dev --open=chrome"
+    "dev": "webpack server --env=dev"
   },
   "keywords": [],
   "author": "SEkin",

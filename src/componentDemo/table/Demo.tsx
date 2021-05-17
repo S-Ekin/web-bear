@@ -20,33 +20,33 @@ type Props={
 
 };
 type States={
-  tableData:AnyObj[];
+  tableData: report[];
   selectTableVal:{id:string};
   immuConfig:IImmutalbeMap<Iconfig>;
   config:Iconfig;
   refreshId:number;
 };
 interface IDemo {
-  tableGetCheckedFn:()=>IImmutalbeList<IImmutalbeMap<Inode>>;
+  tableGetCheckedFn:()=>IImmutalbeList<IImmutalbeMap<report & Inode>>;
 }
-// interface report  {
-//   a_FASHENGSHIJIAN: string
-//   a_SHANGBAOREN: string
-//   a_SHANGBAOSHIJIAN: string
-//   b_SHIJIANLEIBIE1: string
-//   category_name: string
-//   eventNo: string
-//   event_id: string;
-//   function_reject: string;
-//   orgList: AnyObj[]
-//   org_id: string;
-//   org_name: string
-//   qc_reject: string
-//   shijianleixing: string
-//   status: string;
-//   status_name: string
-//   type_id: string;
-// }
+interface report  {
+  a_FASHENGSHIJIAN: string
+  a_SHANGBAOREN: string
+  a_SHANGBAOSHIJIAN: string
+  b_SHIJIANLEIBIE1: string
+  category_name: string
+  eventNo: string
+  event_id: number;
+  function_reject: string;
+  orgList: AnyObj[]
+  org_id: number;
+  org_name: string
+  qc_reject: string
+  shijianleixing: string
+  status: number;
+  status_name: string
+  type_id: number;
+}
 
 type Iconfig = {
   noPageNums:boolean;
@@ -72,15 +72,15 @@ const initConfig:Iconfig = {
 class Demo extends React.PureComponent<Props, States> implements IDemo {
 
   formatterObj ={
-    eventType: function (node:IImmutalbeMap<Inode>) {
+    eventType: function (node:IImmutalbeMap<report & Inode>) {
       return node.get("category_name") || "--";
     },
-    date: function (node: IImmutalbeMap<Inode>) {
-      let time = node.get("a_SHANGBAOSHIJIAN") as "string" || "";
+    date: function (node: IImmutalbeMap<report & Inode>) {
+      let time = node.get("a_SHANGBAOSHIJIAN") || "";
       return `${time.substr(0, 4)}-${time.substr(4, 2)}-${time.substr(6, 2)}`;
     },
-    reporter: (node: IImmutalbeMap<Inode>) => <span>{node.get("a_SHANGBAOREN") || "匿名"}</span>,
-    opt: (node: IImmutalbeMap<Inode>) => (
+    reporter: (node: IImmutalbeMap<report & Inode>) => <span>{node.get("a_SHANGBAOREN") || "匿名"}</span>,
+    opt: (node: IImmutalbeMap<report & Inode>) => (
       <span
         className="m-optBtn"
         data-event_id={node.get("event_id")}
@@ -92,7 +92,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   };
 
   state:States={
-    tableData: data,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    tableData: data as report[],
     selectTableVal: {id: ""},
     immuConfig: createImmutableMap(initConfig),
     refreshId: 0,

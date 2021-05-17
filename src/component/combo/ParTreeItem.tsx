@@ -11,14 +11,14 @@ import { SlideBox } from "../animate/index";
 import {CheckBox} from "../input/index";
 import {Idrop, Inode} from "./combo";
 
-type immutableData = Immutable.List<IImmutalbeMap<Inode>>;
+type immutableData<T> = Immutable.List<IImmutalbeMap<Inode & T>>;
 
-type props = {
-  node: IImmutalbeMap<Inode>;
-  fieldObj: Idrop<"tree">["filedObj"];
+type props<T> = {
+  node: IImmutalbeMap<Inode & T>;
+  fieldObj: Idrop<"tree", T>["filedObj"];
   index: string;// 节点索引
   lev: number// 树形节点的层级
-  formatterDropItem?: (node: IImmutalbeMap<Inode>) => React.ReactNode;
+  formatterDropItem?: (node: IImmutalbeMap<Inode & T>) => React.ReactNode;
   checkMethod(value:string):void;
   checkForPar(value:string):void;
   clickFn(index:string):void;
@@ -31,7 +31,7 @@ type states={
 interface IParTreeItem {
   toggleExpandFn(e:React.MouseEvent<HTMLDivElement>):void;
 }
-class ParTreeItem extends React.PureComponent<props, states> implements IParTreeItem {
+class ParTreeItem<T extends AnyObj> extends React.PureComponent<props<T>, states> implements IParTreeItem {
 
   static defaultProps={
     childField: "children",
@@ -72,13 +72,13 @@ class ParTreeItem extends React.PureComponent<props, states> implements IParTree
     );
   }
 
-  getSubCom (childArr:immutableData, lev:number, oindex:string) {
+  getSubCom (childArr:immutableData<T>, lev:number, oindex:string) {
     const {fieldObj, clickFn, checkForPar, checkMethod, toggleExpand, formatterDropItem} = this.props;
     const idField = fieldObj.get("idField");
     const multiply = fieldObj.get("multiply");
-    return childArr.map((val:IImmutalbeMap<Inode>, index:number) => {
+    return childArr.map((val:IImmutalbeMap<Inode & T>, index:number) => {
 
-      const child = val.get(fieldObj.get("childField")!) as immutableData;
+      const child = val.get(fieldObj.get("childField")!) as immutableData<T>;
 
       return !child.size ? (
         <DropItem
@@ -122,7 +122,7 @@ class ParTreeItem extends React.PureComponent<props, states> implements IParTree
       ? formatterDropItem(node)
       : node.get(fieldObj.get("textField"));
     const expand = node.get("expand");
-    const child = node.get(fieldObj.get("childField")!) as immutableData;
+    const child = node.get(fieldObj.get("childField")!) as immutableData<T>;
     return (
       <li className="combo-par-item">
         <div
@@ -133,7 +133,7 @@ class ParTreeItem extends React.PureComponent<props, states> implements IParTree
             className="g-item-text"
             style={levSpaceStyle}
           >
-            {this.getCheckbox(text, expand)}
+            {this.getCheckbox(text as string, expand)}
           </span>
           <SvgIcon className={`arrow-${expand ? "up" : "down"}`} />
         </div>

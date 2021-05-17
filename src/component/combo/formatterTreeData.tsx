@@ -6,16 +6,16 @@ enum activeStatus {
   hasSelect = "hasSelect",
   noSelect = "noSelect",
 }
-type Iprops = {
-  filedObj:Idrop<"tree">['filedObj'];
-  initSelect:Idrop<'tree'>['initSelect'];
+type Iprops<T> = {
+  filedObj:Idrop<"tree", T>['filedObj'];
+  initSelect:Idrop<'tree', T>['initSelect'];
 } ;
 
-type states = {
-  immutableData: Immutable.List<IImmutalbeMap<Inode>>;
+type states<T> = {
+  immutableData: Immutable.List<IImmutalbeMap<Inode & T>>;
 };
 // 当由外部控制选什么的时候，defaultVal,是又外部输入的,data:可以传入
-const formatterTreeData = function (props: Iprops, defaultVal:string, data:AnyObj[], noInitState?:boolean) {
+const formatterTreeData = function <K extends AnyObj> (props: Iprops<K>, defaultVal:string, data:K[], noInitState?:boolean) {
   const { filedObj, initSelect } = props;
   const id = filedObj.get("idField");
   const text = filedObj.get("textField");
@@ -29,20 +29,21 @@ const formatterTreeData = function (props: Iprops, defaultVal:string, data:AnyOb
   let oldSelectedIndex = "";
   let listSelected: ISelected[] = [];
 
-  const immutableData: states["immutableData"] = Immutable.fromJS(data as AnyObj[], function (_key, val, path) {
+  const immutableData: states<K>["immutableData"] = Immutable.fromJS(data as AnyObj[], function (_key, val, path) {
     if (Immutable.isKeyed(val)) {
-      let node = (val as IImmutalbeMap<Inode>).toOrderedMap() as IImmutalbeMap<Inode>;
-      let children = node.get(childField!) as IImmutalbeList<IImmutalbeMap<Inode>>;
+      let node = (val as IImmutalbeMap<Inode>).toOrderedMap() as IImmutalbeMap<Inode & K>;
+      let children = node.get(childField!) as IImmutalbeList<IImmutalbeMap<Inode & K>>;
       if (!children) {
         children = Immutable.List([]);
-        node = node.set(childField!, children);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        node = node.set(childField!, children as any);
       }
       // 执行目录和文件两种情况 ,添加,是否展开:expand和是否选中：active的状态
       let active: activeStatus;
       if (children.size) {
         if (multiply) {
           const hasSelected = children.some(
-            (child: IImmutalbeMap<Inode>) => (
+            (child: IImmutalbeMap<Inode & K>) => (
               child.get("active") === activeStatus.hasSelect
             )
           );
@@ -93,7 +94,8 @@ const formatterTreeData = function (props: Iprops, defaultVal:string, data:AnyOb
         }
       }
       // 添加字段
-      node = node.withMutations((map) => map.set("active", active).set("expand", true));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      node = node.withMutations((map) => map.set("active", active as any).set("expand", true as any));
       return node;
     } else {
       return val.toList();
@@ -125,9 +127,9 @@ const formatterTreeData = function (props: Iprops, defaultVal:string, data:AnyOb
 };
 
 // 级联选中
-const cascade = function (
+const cascade = function<T extends AnyObj> (
   pathIndex: string,
-  data: states["immutableData"],
+  data: states<T>["immutableData"],
   childField: string
 ) {
   let _data = data;
@@ -145,7 +147,7 @@ const cascade = function (
         let _node = node;
         const child = _node.get(
           childField
-        ) as states["immutableData"];
+        ) as states<T>["immutableData"];
 
         const hasSelect = child.some(
           (val) => val.get("active") === activeStatus.hasSelect

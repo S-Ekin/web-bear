@@ -3,17 +3,17 @@
  * @description description
  * @time 2019-09-19
  */
-import {ITableFn} from "./mytable";
+import {ITableFn, Inode} from "./mytable";
 import * as React from "react";
 import { Combobox } from "../combo/index";
 import { SvgIcon } from "../my-icon/index";
 
-type Props = {
+type Props<T> = {
   perNums: number; // 每页条数
   curPage: number; // 当前的页码
   totalPages: number; // 总页数
-  totalNums: number; // 总条数
-  changeHandle: ITableFn["changeState"];
+  tableData: IImmutalbeList<IImmutalbeMap<Inode & T>>; // 当前页的数据
+  changeHandle: ITableFn<T>["changeState"];
 };
 
 type States = {
@@ -30,7 +30,7 @@ const pageNumsArr = [
   { id: "5", text: "100" },
 ];
 
-class PageSize extends React.PureComponent<Props, States> implements IPageSize {
+class PageSize<T extends AnyObj> extends React.PureComponent<Props<T>, States> implements IPageSize {
   pageCodeHandle = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget!;
     if (target.classList.contains("active")) {
@@ -184,9 +184,9 @@ class PageSize extends React.PureComponent<Props, States> implements IPageSize {
     this.props.changeHandle<"curPage">("curPage", 1);
   }
   render () {
-    const { totalPages, curPage, totalNums, perNums} = this.props;
+    const { totalPages, curPage, perNums, tableData} = this.props;
     let navigatepageCom;
-
+    const totalNums = tableData.size;
     if (totalPages < 11) {
       navigatepageCom = this.normalPage();
     } else if (curPage - 1 < 4) {

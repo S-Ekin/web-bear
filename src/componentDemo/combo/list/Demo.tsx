@@ -46,8 +46,13 @@ type States = {
   refreshId: number;
   title:string;// 模态框标题
   outControlSelecte: undefined | { id: string };
-  asyncData:AnyObj[];
+  asyncData: MyNode[];
 };
+
+interface MyNode {
+  text: string;
+  id: number;
+}
 interface IDemo {
   selectFn: undefined | ((path: string) => void);
 }
@@ -143,7 +148,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
 
   changeData =(e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
-    let _data:AnyObj[] = [];
+    let _data:MyNode[] = [];
     if (dom.value === "1") {
       _data = data;
     } else {
@@ -157,7 +162,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   clickCallback = (
     selecte: ComboSpace.ISelected[],
     field: string,
-    node?: IImmutalbeMap<ComboSpace.Inode>
+    node?: IImmutalbeMap<ComboSpace.Inode & MyNode>
   ) => {
     console.log("-----clickCallback ---");
     console.log(selecte, field, node);
@@ -169,7 +174,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     console.log("----clickOrCheckForbid-----");
     return true;
   }
-  formatterDropItem = (node: IImmutalbeMap<ComboSpace.Inode>) => `自定义${node.get("text") as string}`
+  formatterDropItem = (node: IImmutalbeMap<ComboSpace.Inode & MyNode>) => `自定义${node.get("text") as string}`
   formatterVal = (selecteArr: IImmutalbeList<ComboSpace.ISelected>) => {
     console.log(selecteArr);
 

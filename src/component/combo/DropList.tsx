@@ -10,9 +10,9 @@ import { DropItem, activeStatus } from "./DropItem";
 import { Idrop, ISelected, Inode } from "./combo";
 import { Search } from "../input/index";
 
-type Iprops = Idrop<"list">;
-type states = {
-  immutableData: Immutable.List<IImmutalbeMap<Inode>>;
+type Iprops<T> = Idrop<"list", T>;
+type states<T> = {
+  immutableData: Immutable.List<IImmutalbeMap<Inode & T>>;
   singleClickPre: string; // 单选时，记录上一次选择的
   preData: AnyObj[];
   preInitComboVal?: { id: string };
@@ -20,18 +20,18 @@ type states = {
 };
 
 
-interface IDropList {
-  initState(props: Iprops): states;
+interface IDropList<T> {
+  initState(props: Iprops<T>): states<T>;
 }
 
-type formatterObj = {
-  filedObj: Iprops["filedObj"];
-  data: Iprops["data"];
-  initSelect?: Iprops["initSelect"];
+type formatterObj<T> = {
+  filedObj: Iprops<T>["filedObj"];
+  data: Iprops<T>["data"];
+  initSelect?: Iprops<T>["initSelect"];
 };
 
 // 格式化数据，添加选中的字段 active ;
-const formatterData = function (props: formatterObj, defaultVal: string) {
+const formatterData = function <T extends AnyObj> (props: formatterObj<T>, defaultVal: string) {
   const { filedObj, data, initSelect } = props;
   const id = filedObj.get("idField");
   const text = filedObj.get("textField");
@@ -44,7 +44,7 @@ const formatterData = function (props: formatterObj, defaultVal: string) {
   const copyData = JSON.parse(JSON.stringify(data));
   let listSelect: ISelected[] = [];
   let oldSelected = "";
-  const _data = copyData.map((val: Inode, index: number) => {
+  const _data = copyData.map((val: Inode & T, index: number) => {
     const isDefault = defaultValArr.includes(`${val[id] as string}`);
     val.active = isDefault ? activeStatus.select : activeStatus.noSelect;
     // 初始化默认选中的
@@ -69,7 +69,7 @@ const formatterData = function (props: formatterObj, defaultVal: string) {
   };
 };
 
-const clickFn = (index: string, props: Iprops, state: states) => {
+const clickFn = <T extends AnyObj>(index: string, props: Iprops<T>, state: states<T>) => {
   const { filedObj, selected, changeSelect } = props;
   const multipy = filedObj.get("multiply");
   const idField = filedObj.get("idField");
@@ -82,7 +82,7 @@ const clickFn = (index: string, props: Iprops, state: states) => {
 
   let _data = data;
   let _select = selected;
-  let newNode: IImmutalbeMap<Inode> = _data.getIn([index]);
+  let newNode: IImmutalbeMap<Inode & T> = _data.getIn([index]);
   if (!newNode) {
     return undefined;
   }
@@ -98,12 +98,12 @@ const clickFn = (index: string, props: Iprops, state: states) => {
       return undefined;
     }
     if (oldSelectedIndex) {
-      _data = _data.updateIn([oldSelectedIndex], (val: IImmutalbeMap<Inode>) => val && val.set("active", activeStatus.noSelect));
+      _data = _data.updateIn([oldSelectedIndex], (val: IImmutalbeMap<Inode >) => val && val.set("active", activeStatus.noSelect));
     }
 
     _select = _select.clear();
   }
-  _data = _data.updateIn([index], (val: IImmutalbeMap<Inode>) => {
+  _data = _data.updateIn([index], (val: IImmutalbeMap<Inode & T>) => {
     // 判断这个node有没有被选中
     const active =
       val.get("active") === activeStatus.select
@@ -120,7 +120,8 @@ const clickFn = (index: string, props: Iprops, state: states) => {
         _select = _select.filter((_val) => _val.id !== val.get(idField));
       }
     }
-    const node = val.set("active", active);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const node = val.set("active", active as any);
     newNode = node;
     return node;
   });
@@ -135,11 +136,11 @@ const clickFn = (index: string, props: Iprops, state: states) => {
   };
 };
 
-class DropList extends React.PureComponent<Iprops, states> implements IDropList {
+class DropList<T extends AnyObj> extends React.PureComponent<Iprops<T>, states<T>> implements IDropList<T> {
   static getDerivedStateFromProps (
-    nextProps: Iprops,
-    preState: states
-  ): null | Partial<states> {
+    nextProps: Iprops<AnyObj>,
+    preState: states<AnyObj>
+  ): null | Partial<states<AnyObj>> {
     const { preData, preInitComboVal, asyncDefaultVal } = preState;
     if (nextProps.data !== preData) {
       let defaultVal = "";
@@ -181,16 +182,16 @@ class DropList extends React.PureComponent<Iprops, states> implements IDropList 
     // tslint:disable-next-line: no-null-keyword
     return null;
   }
-  state: states = this.initState(this.props);
+  state: states<T> = this.initState(this.props);
   asyncDefaultVal = !!this.props.data.length;
-  constructor (props: Iprops) {
+  constructor (props: Iprops<T>) {
     super(props);
     this.state = this.initState(props);
     // 暴露点击方法
     const { clickMethod } = props;
     clickMethod(this.clikItem);
   }
-  initState (props: Iprops) {
+  initState (props: Iprops<T>) {
     const { filedObj, data, initComboVal, initSelect } = props;
     const defaultVal = filedObj.get("defaultVal")!;
     const obj = formatterData(
@@ -223,7 +224,8 @@ class DropList extends React.PureComponent<Iprops, states> implements IDropList 
         );
 
         if (has) {
-          return val.set("active", activeStatus.noSelect);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          return val.set("active", activeStatus.noSelect as any);
         } else {
           return val;
         }
@@ -336,4 +338,4 @@ class DropList extends React.PureComponent<Iprops, states> implements IDropList 
   }
 }
 
-export default wrapComboHQC<"list">(DropList, "list");
+export default wrapComboHQC(DropList, "list");

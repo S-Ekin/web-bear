@@ -1,4 +1,4 @@
-export interface Inode extends AnyObj{
+export interface Inode {
   active: string;
   expand: boolean;
 }
@@ -18,7 +18,7 @@ export interface IDropObj {
   };
 }
 
-export type filedObj<P extends keyof IDropObj> = {
+export type filedObj<P extends keyof IDropObj, T> = {
   idField: string;
   textField: string;
   multiply?: boolean;
@@ -26,19 +26,19 @@ export type filedObj<P extends keyof IDropObj> = {
   itemIcon?: string;
   defaultVal?: string;
   field:string;
-  clickOrCheckForbid:(node:IImmutalbeMap<Inode>, field:string, selectedArr?:IImmutalbeList<ISelected>)=>boolean;
+  clickOrCheckForbid:(node:IImmutalbeMap<Inode & T>, field:string, selectedArr?:IImmutalbeList<ISelected>)=>boolean;
 } & IDropObj[P];
 
-export interface Idrop<P extends keyof IDropObj>  {
-  filedObj: IImmutalbeMap<filedObj<P>>;
+export interface Idrop<P extends keyof IDropObj, K>  {
+  filedObj: IImmutalbeMap<filedObj<P, K>>;
   initComboVal?:{id:string};
   disabled?:boolean;
-  data:AnyObj[];
+  data:K[];
   selected:IImmutalbeList<ISelected>;
   dropStyle:{maxHeight:number};
-  formatterDropItem?:(node:IImmutalbeMap<Inode>)=>React.ReactNode;
+  formatterDropItem?:(node:IImmutalbeMap<Inode & K>)=>React.ReactNode;
   clickMethod:(clickFn:(path?:string)=>void)=>void;// 暴露点击方法，用于清除所选
-  changeSelect:(iselected:IImmutalbeList<ISelected>, node?:IImmutalbeMap<Inode>)=>void;
+  changeSelect:(iselected:IImmutalbeList<ISelected>, node?:IImmutalbeMap<Inode & K>)=>void;
   initSelect:(iselected:IImmutalbeList<ISelected>)=>void;
 }
 

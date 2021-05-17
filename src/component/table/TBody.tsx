@@ -7,12 +7,12 @@ import {fieldObj, ITableFn, Inode} from "./mytable";
 import * as React from "react";
 import { CheckBox } from "../input/index";
 
-type Props = {
+type Props<T> = {
   curPage:number;// 当前页码
   perNums:number;// 当前每页显示的条数
-  tableData: IImmutalbeList<IImmutalbeMap<Inode>>; // 当前页的数据
-  fileObj:fieldObj;
-  changeHandle: ITableFn["changeState"];
+  tableData: IImmutalbeList<IImmutalbeMap<Inode & T>>; // 当前页的数据
+  fileObj:fieldObj<T>;
+  changeHandle: ITableFn<T>["changeState"];
   selectfn:(e:React.MouseEvent<HTMLTableCellElement>)=>void;
 };
 interface ITBody {
@@ -35,7 +35,7 @@ const TdCheckBox:React.FunctionComponent<{
 type TbodyState = {
   preTableData:IImmutalbeList<IImmutalbeMap<AnyObj>>;
 };
-class TBody extends React.PureComponent<Props, TbodyState> implements ITBody {
+class TBody<T extends AnyObj> extends React.PureComponent<Props<T>, TbodyState> implements ITBody {
   isSame=""; // 比较第一个要合并的列的内容是否相同
   rowSpanNum = 0; // 每次要合并的行
   getCheckCom (checkbox?:boolean) {
@@ -50,7 +50,7 @@ class TBody extends React.PureComponent<Props, TbodyState> implements ITBody {
     changeHandle<"tableData">("tableData", newData);
 
   }
-  getTrCom (dataItem:IImmutalbeMap<Inode>, startIndex:number, index:number, curData:IImmutalbeList<IImmutalbeMap<Inode>>) {
+  getTrCom (dataItem:IImmutalbeMap<Inode & T>, startIndex:number, index:number, curData:IImmutalbeList<IImmutalbeMap<Inode & T>>) {
 
     const order = `${startIndex + 1 + index}`;
     const {fileObj, selectfn} = this.props;

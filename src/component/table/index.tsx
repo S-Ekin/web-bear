@@ -12,9 +12,9 @@ import PageSize from "./PageSize";
 import TabBody from "./TBody";
 import {IColumnItem, ITableStates, fieldObj, Inode} from "./mytable";
 
-type Props={
-  data: AnyObj[];
-  children:(React.ReactElement<IColumnItem> | undefined)[];
+type Props<T>={
+  data: T[];
+  children:(React.ReactElement<IColumnItem<T>> | undefined)[];
   hasBorder?:boolean;
   height?:number;
   noPageNums?: boolean;// 页码
@@ -24,11 +24,11 @@ type Props={
   tabField?: string;// 表格标识
   emptyTxt?: string;// 空数据时显示文字
   initSelectVal?:{id:string};// 通过外界改变表格的选中
-  bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<Inode>>)=>void;// 把获取选中的项的函数传递给外部
+  bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<Inode & T>>)=>void;// 把获取选中的项的函数传递给外部
 };
-type States= ITableStates ;
-interface ITable {
-  fieldObj:fieldObj;// 一些固定不变的属性，用于传给子组件
+type States<T>= ITableStates<T> ;
+interface ITable<T> {
+  fieldObj:fieldObj<T>;// 一些固定不变的属性，用于传给子组件
 }
 // eslint-disable-next-line no-shadow
 enum checkAllStataus {
@@ -38,7 +38,7 @@ enum checkAllStataus {
 }
 
 
-const tableInitData = (data:Props["data"], defaulSel:string, idField:string) => {
+const tableInitData = <T extends AnyObj>(data:Props<T>["data"], defaulSel:string, idField:string) => {
   const defaulSelArr = `${defaulSel}`.split(",");
   return  Immutable.fromJS(data, (_key, val) => {
     if (Immutable.isKeyed(val)) {
@@ -56,7 +56,7 @@ const tableInitData = (data:Props["data"], defaulSel:string, idField:string) => 
   });
 };
 
-const initCurPage = (props: Props, perNums:number, curOptId?:string) => {
+const initCurPage = <T extends AnyObj>(props: Props<T>, perNums:number, curOptId?:string) => {
   const {data, idField} = props;
   if (!curOptId) {
     return 1;
@@ -67,20 +67,19 @@ const initCurPage = (props: Props, perNums:number, curOptId?:string) => {
     return pages;
   }
 };
-
-class Table extends React.PureComponent<Props, States> implements ITable {
+class Table<T extends AnyObj> extends React.PureComponent<Props<T>, States<T>> implements ITable<T> {
 
   static defaultProps={
     defaultSel: "",
     emptyTxt: "当前没有数据！",
   };
 
-  static colItem:React.FunctionComponent<IColumnItem> = ({width, children, align = "td-left"}) => (
+  static colItem = <K extends AnyObj>({width, children, align = "td-left"}: React.PropsWithChildren<IColumnItem<K>>) => (
     <th  style={{width: width, }} className={`${align}`}>{children}</th>
   )
 
 
-  static getDerivedStateFromProps (nextProps:Props, preState:States):null | Partial<States> {
+  static getDerivedStateFromProps (nextProps:Props<AnyObj>, preState:States<AnyObj>):null | Partial<States<AnyObj>> {
 
     if (nextProps.data !== preState.preData) {
       const {defaultSel, data, idField} = nextProps;
@@ -113,7 +112,7 @@ class Table extends React.PureComponent<Props, States> implements ITable {
   tableContainer: React.RefObject<HTMLDivElement> = React.createRef();
   scrollRef: React.RefObject<ScrollBox> = React.createRef();
 
-  constructor (props:Props) {
+  constructor (props:Props<T>) {
     super(props);
     const {data, defaultSel, idField, initSelectVal, bindGetSelectedFn} = props;
     this.state = {
@@ -139,7 +138,7 @@ class Table extends React.PureComponent<Props, States> implements ITable {
       this.scrollToSeletItem();
     }
   }
-  getSnapshotBeforeUpdate (preProps:Props) {
+  getSnapshotBeforeUpdate (preProps:Props<T>) {
     const {data, initSelectVal} = this.props;
     if (preProps.data !== data || initSelectVal !== preProps.initSelectVal) {
       return true;
@@ -149,7 +148,7 @@ class Table extends React.PureComponent<Props, States> implements ITable {
     }
 
   }
-  componentDidUpdate (_preProps:Props, _preState:States, snapshot:AnyObj) {
+  componentDidUpdate (_preProps:Props<T>, _preState:States<T>, snapshot:AnyObj) {
 
     if (snapshot) {
       const {defaultSel, initSelectVal} = this.props;
@@ -163,9 +162,9 @@ class Table extends React.PureComponent<Props, States> implements ITable {
   initFixObj () {
     const {idField, checkbox, children: arr, tabField, noPageNums} = this.props;
 
-    const column:IColumnItem[] = arr.filter((val) => val).map((val) => {
+    const column:IColumnItem<T>[] = arr.filter((val) => val).map((val) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const {children, ...obj} = val!.props as {children:React.ReactChildren} & IColumnItem;
+      const {children, ...obj} = val!.props as {children:React.ReactChildren} & IColumnItem<T>;
       return obj;
     });
 
@@ -294,7 +293,7 @@ class Table extends React.PureComponent<Props, States> implements ITable {
     );
   }
 
-  changeState=<P extends keyof States>(field:P, data:States[P]) => {
+  changeState=<P extends keyof ITableStates<T>>(field:P, data:States<T>[P]) => {
     this.setState({
       [field as "curPage"]: data as number
     });
@@ -365,8 +364,8 @@ class Table extends React.PureComponent<Props, States> implements ITable {
     const pageSize = !noPageNums && tableData.size ? (
       <PageSize
         changeHandle={this.changeState}
-        totalNums={tableData.size}
         curPage={curPage}
+        tableData={tableData}
         totalPages={totalPages}
         perNums={perNums}
       />

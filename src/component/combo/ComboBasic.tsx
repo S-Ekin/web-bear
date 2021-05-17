@@ -8,8 +8,8 @@ import * as Immutable from "immutable";
 import { SlideBox } from "../animate/index";
 import {ISelected, IDropObj, Idrop, filedObj, Inode} from "./combo";
 import {slideOther, event} from "../util/autoSlideUp";
-type props = {
-  data: AnyObj[];
+type props<T> = {
+  data: T[];
   idField?: string;
   textField?: string;
   noIcon?: boolean;// 下拉图标
@@ -34,9 +34,9 @@ type props = {
   // 自定义显示框的文字内容，selected所选择的内容
   formatterVal?: (selected: states["selected"]) => React.ReactChild;
   // 自定义下拉框的文字内容
-  formatterDropItem?: (node:IImmutalbeMap<Inode>) => React.ReactChild;
+  formatterDropItem?: (node:IImmutalbeMap<Inode & T>) => React.ReactChild;
   // 点击每行的回调函数
-  clickCallback(selected: ISelected[], field: string, node?:IImmutalbeMap<Inode>): void;
+  clickCallback(selected: ISelected[], field: string, node?:IImmutalbeMap<Inode & T>): void;
 
 };
 
@@ -45,23 +45,22 @@ type states = {
   drop: boolean;
 };
 
-interface ICombo {
+interface ICombo<T> {
   eventId: string;
   dropStyle:{maxHeight:number};
   selectFn(path?:string):void;
   dropToggle(e:React.MouseEvent): void;
-  changeSelect(selected:states["selected"], node?:IImmutalbeMap<Inode>):void;
+  changeSelect(selected:states["selected"], node?:IImmutalbeMap<Inode & T>):void;
 }
 type IcomboType = keyof IDropObj;
 
 
 const wrapComboHC = <P extends IcomboType>(
-// tslint:disable-next-line: variable-name
-  Drop: React.ComponentType<Idrop<P>>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Drop: React.ComponentType<Idrop<P, any>>,
   comboType: IcomboType
-) => class
-  extends React.PureComponent<props & IDropObj[P], states>
-  implements ICombo {
+) => class ComBo<T> extends React.PureComponent<props<T> & IDropObj[P], states>
+  implements ICombo<T> {
   static defaultProps = {
     idField: "id",
     textField: "text",
@@ -75,10 +74,10 @@ const wrapComboHC = <P extends IcomboType>(
   };
   eventId = `${new Date().getTime()
     .toString()}-${this.props.field}`;
-  filedObj!: IImmutalbeMap<filedObj<P>>;
-  dropStyle:ICombo["dropStyle"];
-  selectFn!:ICombo["selectFn"];
-  constructor (prop: props & IDropObj[P]) {
+  filedObj!: IImmutalbeMap<filedObj<P, T>>;
+  dropStyle:ICombo<T>["dropStyle"];
+  selectFn!:ICombo<T>["selectFn"];
+  constructor (prop: props<T> & IDropObj[P]) {
     super(prop);
     this.state = this.initState();
     this.initFieldObj(prop);
@@ -89,7 +88,7 @@ const wrapComboHC = <P extends IcomboType>(
     this.selectFn = fn;
   }
   // 把一些固定的字段整合在immutable对象里，传参的时候只用传一个
-  initFieldObj (prop: props & IDropObj[P]) {
+  initFieldObj (prop: props<T> & IDropObj[P]) {
     const {
       idField,
       textField,
@@ -99,7 +98,7 @@ const wrapComboHC = <P extends IcomboType>(
       noSearch,
       field,
       clickOrCheckForbid,
-    } = prop as props;
+    } = prop;
     const common = {
       idField: idField!,
       textField: textField!,
@@ -159,7 +158,7 @@ const wrapComboHC = <P extends IcomboType>(
     });
 
   }
-  changeSelect=(selecteds:states["selected"], node?:IImmutalbeMap<Inode>) => {
+  changeSelect=(selecteds:states["selected"], node?:IImmutalbeMap<Inode & T>) => {
     const {clickCallback, field, multiply} = this.props;
     this.setState((pre) => ({
       selected: selecteds,
