@@ -1,3 +1,5 @@
+import "core-js";
+import "regenerator-runtime";
 import "./component/my-css/main.scss";
 import App from "./containers/index";
 import * as React from "react";

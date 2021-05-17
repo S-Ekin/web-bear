@@ -17,14 +17,6 @@ module.exports = function (isDev) {
             //开发模式用ts编译器方便检查代码错误
             loader: isDev ? "ts-loader" : "babel-loader",
           },
-          {
-            loader: "eslint-loader",
-            options: {
-              emitError: true,
-              emitWarning: true,
-              quiet: true,
-            },
-          },
         ],
       },
       {

@@ -48,10 +48,11 @@ module.exports = (env) => {
       syncWebAssembly: true
     },
     stats: {
-       children: true,
-       errors: true,
        errorDetails: true,
-       warnings: true,
-    }
+       cachedModules: false
+    },
+     infrastructureLogging: {
+    level: 'log',
+  },
   };
 };

@@ -11,6 +11,8 @@ const CopyWebpackPlugin = require("copy-webpack-plugin"); // 复制静态文件
 const ProgressBarPlugin = require("progress-bar-webpack-plugin"); // 查看打包进度
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 module.exports = function (isDev) {
   return [
     isDev
@@ -19,6 +21,14 @@ module.exports = function (isDev) {
       // both options are optional
       filename: "css/[name].[contenthash:5].css",
       chunkFilename: "css/[id].[contenthash:5].css",
+    }),
+    new FriendlyErrorsWebpackPlugin(),
+    new ESLintPlugin({
+       emitError: true,
+       emitWarning: true,
+       quiet: false,
+       extensions: ["tsx","ts"],
+       outputReport: true,
     }),
     new ProgressBarPlugin(),
     new htmlWebpackPlugin({
