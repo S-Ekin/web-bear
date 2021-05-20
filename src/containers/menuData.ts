@@ -47,6 +47,13 @@ export  const menuList:AnyObj[] = [
         icon: "",
         children: [],
       },
+      {
+        id: "17",
+        name: "文件上传",
+        url: "/inp/fileInp",
+        icon: "",
+        children: [],
+      },
     ],
   },
   {

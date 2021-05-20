@@ -177,7 +177,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     console.log(selecte, field, node);
     console.log("-----clickCallback ---");
   };
-  clickOrCheckForbid = (node: IImmutalbeMap<AnyObj>, field: string) => {
+  clickOrCheckForbid = (node: IImmutalbeMap<ComboSpace.Inode & MyNode>, field: string) => {
     console.log("----clickOrCheckForbid-----");
     console.log(node, field);
     console.log("----clickOrCheckForbid-----");

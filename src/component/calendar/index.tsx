@@ -17,6 +17,7 @@ import { event } from "../util/autoSlideUp";
 
 type Props = {
   field: string;
+  excludeRotate?: string, // 1,2,3,4 ,排除的频率类型
   disabled?:boolean;
   require?: boolean;
   rotate?: ICommonInterface["rotate"]; // 日历类型
@@ -71,6 +72,7 @@ class Calendar extends React.PureComponent<Props, States>
     style: 1,
     defaultTime: "",
     width: 280,
+    excludeRotate: "",
     placeholder: "",
     valFormatt: "number",
   };
@@ -312,7 +314,7 @@ class Calendar extends React.PureComponent<Props, States>
 
   drop () {
     const {
-      style,
+      style, excludeRotate
     } = this.props;
     const { expand, selTimeArr, rotate, showViewArr, showTimeArr, pannelLastYear} = this.state;
 
@@ -320,6 +322,7 @@ class Calendar extends React.PureComponent<Props, States>
 			selTimeArr.size === 2 ? (
 			  <CalendarView
 			    fixProps={this.fixProps}
+			    excludeRotate={excludeRotate!}
 			    selTimeObj={selTimeArr.get(1)!}
 			    showTimeObj={showTimeArr.get(1)!}
 			    curTime={this.curTime}
@@ -342,6 +345,7 @@ class Calendar extends React.PureComponent<Props, States>
           <div style={{ display: "flex", }} >
             <CalendarView
               fixProps={this.fixProps}
+              excludeRotate={excludeRotate!}
               selTimeObj={selTimeArr.get(0)!}
               showViewArr={showViewArr}
               curTime={this.curTime}

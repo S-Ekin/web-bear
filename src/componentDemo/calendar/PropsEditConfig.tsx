@@ -13,6 +13,7 @@ type obj = {
   time: boolean; // 可选择时间
   noInp: boolean;
   require: boolean;
+  excludeRotate: string;
   disabled: boolean;
   valFormatt: "number" | "string",
   defaultTime: string; // 最终显示的时间字符串
@@ -68,6 +69,7 @@ class PropsEditConfig extends React.PureComponent<Props, States> implements IPro
       disabled,
       valFormatt,
       require,
+      excludeRotate,
       noChangeRotate,
     } = this.props.obj.toJS();
 
@@ -88,6 +90,16 @@ class PropsEditConfig extends React.PureComponent<Props, States> implements IPro
               value={`${width}`}
             >
                   宽度 width：
+            </Input>
+          </div>
+          <div className="inp-item">
+            <Input
+              name="excludeRotate"
+              norequire
+              changeFn={this.inpChangeFn}
+              value={excludeRotate}
+            >
+                  排除的频率类型 excludeRotate：
             </Input>
           </div>
           <div className="inp-item">

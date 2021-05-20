@@ -27,6 +27,7 @@ type Props = {
   showTimeObj: ICommonInterface["showTimeObj"];
   showViewArr: ("fadeIn" | "fadeOut")[];
   viewIndex: 0 | 1;
+  excludeRotate: string, // 1,2,3,4 ,排除的频率类型
   rotate:ICommonInterface["rotate"],
   curTime: ICommonInterface["curTime"];
   lastYear: number;
@@ -250,11 +251,12 @@ export default class CalendarView
       : this.updatePanelYears(type);
   }
   getRotateCombo (arr:string[]) {
-    const {rotate}  = this.props;
+    const {rotate, excludeRotate}  = this.props;
+    const excludeArr = excludeRotate.split(",");
     return arr.map((val, index) => {
       const active = index === rotate - 1;
       const id = index + 1;
-      return (
+      return !excludeArr.includes(String(id)) ? (
         <li
           className={(active && "active") || ""}
           data-id={id}
@@ -262,7 +264,7 @@ export default class CalendarView
           key={index}>
           {val}
         </li>
-      );
+      ) : null;
     });
   }
   getSelTime () {
@@ -388,7 +390,6 @@ export default class CalendarView
               data-sign="back"
               data-curviewindex={curViewInde}>
               <SvgIcon className="arrow-pre"/>
-              <i className="fa fa-backward" />
             </button>
             <button
               className="s-btn"

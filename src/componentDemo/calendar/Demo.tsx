@@ -23,6 +23,7 @@ type IcalendarObj = {
   valFormatt: "number" | "string"; // 输出的时间格式 normal 是字符串
   disabled:boolean;
   require:boolean;
+  excludeRotate: string, // 1,2,3,4 ,排除的频率类型
   defaultTime: string; // 最终显示的时间字符串
   width: number;
   placeholder: string;
@@ -52,6 +53,7 @@ const initObj:IcalendarObj = {
   style: 1,
   time: false,
   require: false,
+  excludeRotate: "",
   noInp: false,
   valFormatt: "number",
   disabled: false,
