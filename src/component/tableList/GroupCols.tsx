@@ -5,13 +5,15 @@
  */
 import * as React from "react";
 import {ICommon, IColumnItem} from "./mytablist";
-type Props=ICommon['groupCol'];
+type Props<T>=ICommon<T>['groupCol'];
 type States={
 
 };
 
-class GroupCols extends React.PureComponent<Props, States> {
-  static colItem:React.FunctionComponent<IColumnItem & {children:string}> = () => <></>
+
+class GroupCols<T extends AnyObj> extends React.PureComponent<Props<T>, States> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  static colItem = <K extends AnyObj>(_prop:React.PropsWithChildren<IColumnItem<K> & {children:string}>) => <></>
   state:States={
   };
   render () {

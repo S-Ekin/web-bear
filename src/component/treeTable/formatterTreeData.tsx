@@ -12,13 +12,13 @@ type filedObj = {
   childField:string;
 };
 
-type Inode = ICommon['node'];
-type states = {
-  immutableData: Immutable.List<IImmutalbeMap<Inode>>;
+type ItabNode<T> = ICommon<T>['node'];
+type states<T> = {
+  immutableData: Immutable.List<IImmutalbeMap<ItabNode<T>>>;
 };
 
 // 当由外部控制选什么的时候，defaultVal,是又外部输入的,data:可以传入
-const formatterTreeData = function (fixObj: filedObj, defaultVal:string, data:AnyObj[]) {
+const formatterTreeData =  function <T extends AnyObj> (fixObj: filedObj, defaultVal:string, data:T[]) {
   const { idField: id, childField, multiply } = fixObj;
   let defaultValArr = defaultVal.split(",");
   // 单选保证只用一个默认值
@@ -30,12 +30,12 @@ const formatterTreeData = function (fixObj: filedObj, defaultVal:string, data:An
   let listSelected:IImmutalbeList<string> = Immutable.List([]);
   // let oindex = 0 ;
   // let prePath:any = [];
-  const immutableData: states["immutableData"] = Immutable.fromJS(
-    data as Inode[],
+  const immutableData: states<T>["immutableData"] = Immutable.fromJS(
+    data as ItabNode<T>[],
     function (_key, val, path) {
       if (Immutable.isKeyed(val)) {
-        let node = (val as IImmutalbeMap<Inode>).toOrderedMap();
-        let children = node.get(childField!) as IImmutalbeList<IImmutalbeMap<Inode>>;
+        let node = (val as IImmutalbeMap<ItabNode<T>>).toOrderedMap();
+        let children = node.get(childField!) as IImmutalbeList<IImmutalbeMap<ItabNode<T>>>;
         if (!children) {
           children = Immutable.List([]);
           node = node.set(childField!, children);
@@ -45,7 +45,7 @@ const formatterTreeData = function (fixObj: filedObj, defaultVal:string, data:An
         if (children.size) {
           if (multiply) {
             const hasSelected = children.some(
-              (vals: IImmutalbeMap<Inode>) => (
+              (vals: IImmutalbeMap<ItabNode<T>>) => (
                 vals.get("active") === activeStatus.hasSelect
               )
             );
@@ -55,7 +55,7 @@ const formatterTreeData = function (fixObj: filedObj, defaultVal:string, data:An
             } else {
               // 根据子文件的选择情况来做对应的选中状态
               let selectCount = children.reduce(
-                (cur, vals: IImmutalbeMap<Inode>) => {
+                (cur, vals: IImmutalbeMap<ItabNode<T>>) => {
                   let total = cur;
                   if (
                     vals.get("active") === activeStatus.select
@@ -138,9 +138,9 @@ const formatterTreeData = function (fixObj: filedObj, defaultVal:string, data:An
 };
 
 // 级联选中
-const cascade = function (
+const cascade = function<T extends AnyObj> (
   paths: string,
-  data: states["immutableData"],
+  data: states<T>["immutableData"],
   childField: string
 ) {
   let _data = data;
@@ -158,7 +158,7 @@ const cascade = function (
         let _node = nodes;
         const child = _node.get(
           childField
-        ) as states["immutableData"];
+        ) as states<T>["immutableData"];
 
         const hasSelect = child.some(
           (val) => val.get("active") === activeStatus.hasSelect

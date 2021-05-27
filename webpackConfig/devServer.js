@@ -23,7 +23,7 @@ module.exports = function () {
           warnings: true,
         },
       },
-      hot:"only",
+      //hot:"only",
    //   quiet: false, // 控制台中不输出打包的信息
     //  inline: true, // 开启页面自动刷新,
     //  lazy: false,

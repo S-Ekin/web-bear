@@ -7,12 +7,12 @@ import * as React from "react";
 import ParTree from './ParTree';
 import TrItem from './TrItem';
 import {ICommon} from "./mytreeTable";
-type Props={
-  data:ICommon['data'];
-  config:ICommon['config'];
-  fixObj:ICommon['fixObj'];
+type Props<T>={
+  data:ICommon<T>['data'];
+  config:ICommon<T>['config'];
+  fixObj:ICommon<T>['fixObj'];
   viewIndex:number;
-  changeState:ICommon['changeState'];
+  changeState:ICommon<T>['changeState'];
   setTabBodyDom(dom:HTMLDivElement, index:number):void;
   changeScrollTop(top:number, viewIndex:number):void;
 };
@@ -22,7 +22,7 @@ type States={
 interface ITabView {
   getBody():JSX.Element;
 }
-class TabView extends React.PureComponent<Props, States> implements ITabView {
+class TabView<T extends AnyObj> extends React.PureComponent<Props<T>, States> implements ITabView {
 
   colHeadRef:React.RefObject<HTMLDivElement> = React.createRef();
   tabBodyRef:React.RefObject<HTMLDivElement> = React.createRef();

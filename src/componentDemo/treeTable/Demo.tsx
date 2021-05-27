@@ -11,6 +11,7 @@ import { Button } from "@component/button/index";
 import { Input, CheckBox } from "@component/input/index";
 import {str1, str4, str2, str3, str5, str6} from './CodeStr';
 import CodeBlock from "@container/codeBlock/CodeBlock";
+import { Inode } from "@component/treeTable/mytreeTable";
 type Iconfig = {
   multiply?: boolean;
   itemIcon?: string;
@@ -86,6 +87,10 @@ class Demo extends React.PureComponent<Props, States> {
       </>
     );
   }
+  formatterFn=(node:IImmutalbeMap<Inode & (typeof data)[0]>) => {
+    const txt = node.get("name") + "自定义";
+    return txt;
+  }
   render () {
     const { refreshId, config, immuConfig, initSelectVal } = this.state;
     const {
@@ -140,7 +145,7 @@ class Demo extends React.PureComponent<Props, States> {
                 </GroupCols.colItem>
               </GroupCols>
               <GroupCols forzen >
-                <GroupCols.colItem width={140} field="name">列7</GroupCols.colItem>
+                <GroupCols.colItem width={140} field="name" formatter={this.formatterFn}>列7</GroupCols.colItem>
               </GroupCols>
               <GroupCols  >
                 <GroupCols.colItem width={140} field="name">列8</GroupCols.colItem>

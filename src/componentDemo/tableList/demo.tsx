@@ -11,6 +11,7 @@ import { Button } from "@component/button/index";
 import { Input, CheckBox } from "@component/input/index";
 import { str1 } from "./CodeStr";
 import CodeBlock from "@container/codeBlock/CodeBlock";
+import { Inode } from "@component/tableList/mytablist";
 
 type Iconfig = {
   noPageNums?: boolean; // 页码
@@ -94,6 +95,10 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       </>
     );
   }
+  formatterFn =(node:IImmutalbeMap<Inode & (typeof data)[0]>) => {
+    const txt = node.get("status_name");
+    return <div>{txt}</div>;
+  }
   render () {
     const { refreshId, config, immuConfig, initSelectVal } = this.state;
     const {
@@ -152,7 +157,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 <GroupCols.colItem field="category_name" width={120}>
                   事件类型
                 </GroupCols.colItem>
-                <GroupCols.colItem field="status_name" width={120}>
+                <GroupCols.colItem field="status_name" width={120} formatter={this.formatterFn}>
                   处理状态
                 </GroupCols.colItem>
               </GroupCols>

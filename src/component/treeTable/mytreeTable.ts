@@ -1,32 +1,32 @@
-export interface IColumnItem {
+export interface IColumnItem<T> {
   field:string;
   children:string;
   align?:"center" | "left" | 'right';
   width:number;// 必须给个值，号计算不同区域的表格宽度，这样才可以让可以滚动的区域自适应宽度。
   formatter?:(
-    node: IImmutalbeMap<Inode>, // 节点
+    node: IImmutalbeMap<Inode & T>, // 节点
     index: number, // 列的索引
     tabField?: string // 表格标识
   ) => React.ReactChild;
 }
 
-type group = React.ComponentElement<IColumnItem, React.ComponentState>;
+type group<T> = React.ComponentElement<IColumnItem<T>, React.ComponentState>;
 
-export interface Inode extends AnyObj {
+export interface Inode {
   active: 'selected' | 'hasSelect' | 'noSelect';
   expand: boolean;
 }
 
-export interface ICommon {
-  node: Inode;
-  data:IImmutalbeList<IImmutalbeMap<ICommon['node']>>;
-  col :(Omit<IColumnItem, 'children'> & {text:string});
+export interface ICommon<T> {
+  node: Inode & T;
+  data:IImmutalbeList<IImmutalbeMap<ICommon<T>['node']>>;
+  col :(Omit<IColumnItem<T>, 'children'> & {text:string});
   groupCol :{
-    children:group[] | group;
+    children:group<T>[] | group<T>;
     forzen?:boolean;
   };
-  config:Omit<ICommon['groupCol'], 'children'> & {
-    child:ICommon['col'][];
+  config:Omit<ICommon<T>['groupCol'], 'children'> & {
+    child:ICommon<T>['col'][];
     width:number;
   };
   fixObj: {
@@ -44,8 +44,8 @@ export interface ICommon {
 
 }
 
-export type fieldObj = {
-  column: IColumnItem[]; // 列头定义
+export type fieldObj<T> = {
+  column: IColumnItem<T>[]; // 列头定义
   idField: string; // 表格的节点标识
   noOrder?: boolean; // 序号
   checkbox?: boolean; // 多选

@@ -7,16 +7,16 @@ import * as React from "react";
 import { SvgIcon } from "../my-icon/index";
 import {activeStatus} from './formatterTreeData';
 import {ICommon} from "./mytreeTable";
-type Props={
-  cols:ICommon['col'][];
-  node:IImmutalbeMap<ICommon['node']>;
-  fixObj:ICommon['fixObj'];
+type Props<T>={
+  cols:ICommon<T>['col'][];
+  node:IImmutalbeMap<ICommon<T>['node']>;
+  fixObj:ICommon<T>['fixObj'];
   lev:number;// 层级
   index:string; // 节点的索引
   isPar?:boolean;
   order:{order:number};
   isMainView?:boolean;
-  changeState:ICommon['changeState'];
+  changeState:ICommon<T>['changeState'];
 };
 type States={
 
@@ -24,7 +24,7 @@ type States={
 interface IItem {
   getFirstText(text:string):JSX.Element;
 }
-class Item extends React.PureComponent<Props, States> implements IItem {
+class Item<T extends AnyObj> extends React.PureComponent<Props<T>, States> implements IItem {
 
   state:States={
 
@@ -111,9 +111,9 @@ class Item extends React.PureComponent<Props, States> implements IItem {
       let alignName = align ? `td-${align}` : '';
       if (isMainView) {
         if (noOrder) {
-          str = index === 0 ? this.getFirstText(text) : text;
+          str = index === 0 ? this.getFirstText(text as string) : text;
         } else {
-          str = index === 0 ? this.getOrder() : index === 1 ? this.getFirstText(text) : text;
+          str = index === 0 ? this.getOrder() : index === 1 ? this.getFirstText(text as string) : text;
           alignName = index === 1 ? "" : alignName;
         }
       } else {

@@ -6,13 +6,14 @@
 import * as React from "react";
 import {ICommon, IColumnItem} from "./mytreeTable";
 
-type Props=ICommon['groupCol'];
+type Props<T>=ICommon<T>['groupCol'];
 type States={
 
 };
 
-class GroupCols extends React.PureComponent<Props, States> {
-  static colItem:React.SFC<IColumnItem & {children:string}> = () => <></>
+class GroupCols<K extends AnyObj> extends React.PureComponent<Props<K>, States> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  static colItem= <T extends AnyObj>(_props:React.PropsWithChildren<IColumnItem<T> & {children:string}>) => <></>
   state:States={
   };
   render () {

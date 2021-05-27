@@ -7,12 +7,12 @@ import * as React from "react";
 import {GroupCols} from './GroupCols';
 import TabView from './TabView';
 import {formatterTreeData, activeStatus, cascade} from './formatterTreeData';
-import {ICommon} from "./mytreeTable";
-type childType =React.ComponentElement<ICommon['groupCol'], React.ComponentState> ;
+import {ICommon, Inode} from "./mytreeTable";
+type childType<T> =React.ComponentElement<ICommon<T>['groupCol'], React.ComponentState> ;
 
-type Props={
-  data: AnyObj[];
-  children: childType[] | childType;
+type Props<T>={
+  data: T[];
+  children: childType<T>[] | childType<T>;
   noOrder?:boolean;
   height?:number;
   multiply?: boolean;
@@ -24,29 +24,29 @@ type Props={
   emptyTxt?: string;// 空数据时显示文字
   // getCheckFn?:(fn:any)=>void;// 获取选中的
   initSelectVal?:{id:string};// 通过外界改变表格的选中
-  clickOrCheckForbid?:(node:IImmutalbeMap<AnyObj>, field?:string)=>boolean;
-  bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<AnyObj>>)=>void;// 把获取选中的项的函数传递给外部
+  clickOrCheckForbid?:(node:IImmutalbeMap<T & Inode>, field?:string)=>boolean;
+  bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<T & Inode>>)=>void;// 把获取选中的项的函数传递给外部
 };
-type States={
-  immutabData:IImmutalbeList<IImmutalbeMap<ICommon['node']>>;
+type States<T>={
+  immutabData:IImmutalbeList<IImmutalbeMap<ICommon<T>['node']>>;
   selectArr:IImmutalbeList<string>;
-  preData:AnyObj[];
+  preData:T[];
   preInitSelect?:{id:string}
 };
 
-type config = ICommon['config'];
-interface ITreeTable {
-  fieldArr:config[];
-  fixObj:ICommon['fixObj'];
+type config<T> = ICommon<T>['config'];
+interface ITreeTable<T> {
+  fieldArr:config<T>[];
+  fixObj:ICommon<T>['fixObj'];
 }
 const compareFn = (a:number, b:number) => a - b;
-class TreeTable extends React.PureComponent<Props, States> implements ITreeTable {
+class TreeTable<T extends AnyObj> extends React.PureComponent<Props<T>, States<T>> implements ITreeTable<T> {
   static defaultProps={
     idField: 'id',
     childField: "children",
     defaultSel: '',
   };
-  static  getDerivedStateFromProps (nextProps:Props, preState:States):Partial<States> | null {
+  static  getDerivedStateFromProps (nextProps:Props<AnyObj>, preState:States<AnyObj>):Partial<States<AnyObj>> | null {
     if (nextProps.data !== preState.preData || nextProps.initSelectVal !== preState.preInitSelect) {
       const newData = nextProps.data;
       const {idField, childField, multiply} = nextProps;
@@ -66,10 +66,10 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
     }
   }
 
-  fixObj:ITreeTable['fixObj'];
+  fixObj:ITreeTable<T>['fixObj'];
   tabMainTabBodyDomArr:HTMLDivElement[] = [];
-  fieldArr:ITreeTable['fieldArr'];
-  constructor (props:Props) {
+  fieldArr:ITreeTable<T>['fieldArr'];
+  constructor (props:Props<T>) {
     super(props);
     const {children, data, childField, idField, multiply, defaultSel, initSelectVal} = this.props;
     this.fieldArr = this.getFieldArr(children);
@@ -84,7 +84,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
     };
 
   }
-  getFieldArr (arr:Props['children']) {
+  getFieldArr (arr:Props<T>['children']) {
 
     const {noOrder} = this.props;
 
@@ -93,7 +93,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
       const {children: childArr, forzen} = val.props;
       let widTotal = 0;
 
-      const child:ICommon["col"][] = React.Children.map(childArr, function (node) {
+      const child:ICommon<T>["col"][] = React.Children.map(childArr, function (node) {
         const {children, width, field, formatter, align} = node.props;
         widTotal += width;
         return {
@@ -101,7 +101,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
         };
       });
       if (index === 0 && !noOrder) {
-        const orderGroup:ICommon["col"] = {
+        const orderGroup:ICommon<T>["col"] = {
           width: 60,
           field: "order",
           text: '序号',
@@ -130,11 +130,11 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
     if (!newNode) {
       return;
     }
-
     this.setState((pre) => ({
-      immutabData: pre.immutabData.updateIn(arr, (val:IImmutalbeMap<ICommon['node']>) => {
+      immutabData: pre.immutabData.updateIn(arr, (val:IImmutalbeMap<ICommon<T>['node']>) => {
         const expand = val.get('expand');
-        return val.set('expand', !expand);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return val.set('expand', !expand as any);
       })
     }));
   }
@@ -179,7 +179,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
 
   }
   mapFn (
-    list: IImmutalbeList<IImmutalbeMap<AnyObj>>,
+    list: IImmutalbeList<IImmutalbeMap<Inode & T>>,
     active: activeStatus,
     select: IImmutalbeList<string>,
   ) {
@@ -187,12 +187,13 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
     const { idField, childField } = this.props;
     const arr = list.map((val) => {
       let _child = val.get(childField!) as IImmutalbeList<
-      IImmutalbeMap<AnyObj>
+      IImmutalbeMap<Inode & T>
       >;
       let _node = val;
       if (_child.size) {
         const result = this.mapFn(_child, active, _select);
-        _node = _node.set(childField!, result.arr);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        _node = _node.set(childField!, result.arr as any);
         // 改变select
         _select = result.selecte;
       } else {
@@ -207,7 +208,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
           _select = _select.filter((_val) => _val !== _node.get(idField));
         }
       }
-      return _node.set("active", active);
+      return _node.set("active", active as (activeStatus & T)["active"]);
     });
 
     return {
@@ -235,7 +236,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
       const data = pre.immutabData;
 
       let _data = data;
-      _data = _data.updateIn(indexArr, (val: IImmutalbeMap<ICommon['node']>) => {
+      _data = _data.updateIn(indexArr, (val: IImmutalbeMap<ICommon<T>['node']>) => {
         // 判断这个node有没有被选中
         let node = val;
         const active =
@@ -246,15 +247,17 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
         // 选中所有的子文件
         node = node.withMutations((map) => {
           let _child = map.get(childField!) as IImmutalbeList<
-          IImmutalbeMap<AnyObj>
+          IImmutalbeMap<T & Inode>
           >;
           let _map = map;
 
           const result = this.mapFn(_child, active, selectArr);
-          _map = _map.set(childField!, result.arr);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          _map = _map.set(childField!, result.arr as any);
 	                // 改变selecte
           _select = result.selecte;
-          _map = _map.set("active", active);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          _map = _map.set("active", active as any);
 
           return _map;
         });
@@ -269,7 +272,7 @@ class TreeTable extends React.PureComponent<Props, States> implements ITreeTable
       };
     });
   }
-  changeState:ICommon['changeState']=(path, key) => {
+  changeState:ICommon<T>['changeState']=(path, key) => {
     if (key === "expand") {
       this.expand(path);
     } else if (key === "active") {

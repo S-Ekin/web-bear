@@ -7,13 +7,13 @@ import * as React from "react";
 import {SvgIcon} from '../my-icon/index';
 import {ICommon} from "./mytablist";
 
-type Props={
-  cols:ICommon['col'][];
-  node:IImmutalbeMap<ICommon['node']>;
-  fixObj:ICommon['fixObj'];
+type Props<T>={
+  cols:ICommon<T>['col'][];
+  node:IImmutalbeMap<ICommon<T>['node']>;
+  fixObj:ICommon<T>['fixObj'];
   index:string; // 节点的索引
   isMainView?:boolean;
-  changeState:ICommon['changeState'];
+  changeState:ICommon<T>['changeState'];
 };
 type States={
 
@@ -23,7 +23,7 @@ interface ITrItem {
   getCheck():JSX.Element | undefined;
 
 }
-class TrItem extends React.PureComponent<Props, States> implements ITrItem {
+class TrItem<T extends AnyObj> extends React.PureComponent<Props<T>, States> implements ITrItem {
 
 
   state:States={

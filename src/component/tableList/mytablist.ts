@@ -1,31 +1,32 @@
-export interface IColumnItem {
+export interface IColumnItem<T> {
   field:string;
   children:string;
   width:number;
   align?:"center" | "left" | 'right';
   formatter?:(
-    node: IImmutalbeMap<Inode>, // 节点
+    node: IImmutalbeMap<Inode & T>, // 节点
     index: number, // 列的索引
     tabField?: string // 表格标识
   ) => React.ReactChild;
 }
 
-type group = React.ComponentElement<IColumnItem,  React.ComponentState>;
+type group<T> = React.ComponentElement<IColumnItem<T>,  React.ComponentState>;
 
-export interface Inode extends AnyObj {
+
+export interface Inode {
   checked: boolean;
 }
 
-export interface ICommon {
-  node: Inode;
-  col :(Omit<IColumnItem, 'children'> & {text:string});
-  data:IImmutalbeList<IImmutalbeMap<ICommon['node']>>;
+export interface ICommon<T> {
+  node: Inode & T;
+  col :(Omit<IColumnItem<T>, 'children'> & {text:string});
+  data:IImmutalbeList<IImmutalbeMap<ICommon<T>['node']>>;
   groupCol :{
-    children:group[] | group;
+    children:group<T>[] | group<T>;
     forzen?:boolean;
   };
   config:{
-    child:ICommon['col'][];
+    child:ICommon<T>['col'][];
     width:number;
     forzen?:boolean;
   };
@@ -41,8 +42,8 @@ export interface ICommon {
 
 }
 
-export type fieldObj = {
-  column:IColumnItem[]; // 列头定义
+export type fieldObj<T> = {
+  column:IColumnItem<T>[]; // 列头定义
   idField: string; // 表格的节点标识
   noOrder?: boolean; // 序号
   checkbox?: boolean; // 多选

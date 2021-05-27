@@ -7,13 +7,13 @@ import * as React from "react";
 import TrItem from './TrItem';
 import {ICommon} from "./mytablist";
 import {SvgIcon} from '../my-icon/index';
-type Props={
-  data:ICommon['data'];
-  config:ICommon['config'];
-  fixObj:ICommon['fixObj'];
+type Props<T>={
+  data:ICommon<T>['data'];
+  config:ICommon<T>['config'];
+  fixObj:ICommon<T>['fixObj'];
   viewIndex:number;
   startIndex:number;
-  changeState:ICommon['changeState'];
+  changeState:ICommon<T>['changeState'];
   changeScrollTop(top:number, viewIndex:number):void;
   setTabBodyDom(dom:HTMLElement, viewIndex:number):void;
 };
@@ -26,7 +26,7 @@ interface ITabView {
   wheelFn(e:WheelEvent):void;
   makeSign(e:React.MouseEvent<HTMLDivElement>):void;
 }
-class TabView extends React.PureComponent<Props, States> implements ITabView {
+class TabView<T extends AnyObj> extends React.PureComponent<Props<T>, States> implements ITabView {
 
   state:States={
 

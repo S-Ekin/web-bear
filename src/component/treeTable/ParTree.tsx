@@ -7,15 +7,15 @@ import * as React from "react";
 import TrItem from './TrItem';
 import { SlideBox } from "../animate/index";
 import {ICommon} from "./mytreeTable";
-type Props={
-  cols:ICommon['col'][];
-  node:IImmutalbeMap<ICommon['node']>;
-  fixObj:ICommon['fixObj'];
+type Props<T>={
+  cols:ICommon<T>['col'][];
+  node:IImmutalbeMap<ICommon<T>['node']>;
+  fixObj:ICommon<T>['fixObj'];
   lev:number;
   order:{order:number};
   index:string; // 节点的索引
   isMainView?:boolean;
-  changeState:ICommon['changeState'];
+  changeState:ICommon<T>['changeState'];
 };
 type States={
 
@@ -23,7 +23,7 @@ type States={
 interface IParTree {
   getSubBody():IImmutalbeList<JSX.Element>;
 }
-class ParTree extends React.PureComponent<Props, States> implements IParTree {
+class ParTree<T extends AnyObj> extends React.PureComponent<Props<T>, States> implements IParTree {
 
 
   state:States={
@@ -48,7 +48,7 @@ class ParTree extends React.PureComponent<Props, States> implements IParTree {
   getSubBody () {
 
     const {node, fixObj, fixObj: {childField, idField}, cols, lev, isMainView, index, changeState, order}  = this.props;
-    const arr:ICommon['data'] = node.get(childField);
+    const arr:ICommon<T>['data'] = node.get(childField);
     return arr.map((val, oindex) => {
       const children = val.get(childField);
       const id = val.get(idField);
