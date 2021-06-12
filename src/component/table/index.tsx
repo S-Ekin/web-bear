@@ -17,6 +17,7 @@ type Props<T>={
   children:(React.ReactElement<IColumnItem<T>> | undefined)[];
   hasBorder?:boolean;
   height?:number;
+  noStopPageScroll?:boolean;
   noPageNums?: boolean;// 页码
   idField: string;// 表格的节点标识
   checkbox?: boolean;// 多选
@@ -300,10 +301,10 @@ class Table<T extends AnyObj> extends React.PureComponent<Props<T>, States<T>> i
   }
 
   getTableBody () {
-
+    const {noStopPageScroll} = this.props;
     const {curPage, tableData, perNums} = this.state;
     return (
-      <ScrollBox ref={this.scrollRef} className="m-fixTabBody">
+      <ScrollBox ref={this.scrollRef} noStopPageScroll={noStopPageScroll} className="m-fixTabBody">
         <table >
           {this.getColGroupCom()}
           <tbody>

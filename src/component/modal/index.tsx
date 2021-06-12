@@ -15,6 +15,7 @@ type ModalProps = {
   noshade?:boolean; // 遮罩层透明
   wrap?:HTMLElement;
   tit:string;
+  btnTxt?:string;
   className?:string;
   field:string;// 标识字段
   toggleFn:(field:string, show:boolean)=>void;
@@ -39,7 +40,8 @@ interface IModal{
 }
 export default class Modal extends React.PureComponent<ModalProps, ModalState> implements IModal {
   static defaultProps={
-    className: ""
+    className: "",
+    btnTxt: "确定"
   }
   static getDerivedStateFromProps (nextProps:ModalProps, preState:ModalState) {
     if (nextProps.show !== preState.preShow) {
@@ -54,7 +56,7 @@ export default class Modal extends React.PureComponent<ModalProps, ModalState> i
   modalDom:React.RefObject<HTMLDivElement> = React.createRef();
   state={
     pointX: 0,
-    pointY: -70,
+    pointY: -30,
     preShow: this.props.show,
     init: false
   };
@@ -99,10 +101,10 @@ export default class Modal extends React.PureComponent<ModalProps, ModalState> i
   }
 
   getModalFoot () {
-    const {sureFn, customFootFn} = this.props;
+    const {sureFn, customFootFn, btnTxt} = this.props;
     const content = sureFn ? (
       <>
-        <Button handle={this.sureFn}>确定</Button>
+        <Button handle={this.sureFn}>{btnTxt}</Button>
         <Button styleType="line-btn" handle={this.close}>关闭</Button>
       </>
     ) : customFootFn ? customFootFn() : undefined;

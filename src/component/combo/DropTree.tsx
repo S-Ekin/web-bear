@@ -174,7 +174,7 @@ class DropTree<T extends AnyObj> extends React.PureComponent<props<T>, states<T>
           return null;
         }
         // 判断是否禁止点击
-        if (clickForbid(newNode, comField)) {
+        if (clickForbid(newNode, comField, selected)) {
           return null;
         }
         // 单选清除以前选中的
@@ -246,7 +246,7 @@ class DropTree<T extends AnyObj> extends React.PureComponent<props<T>, states<T>
         return null;
       }
       // 判断是否禁止点击
-      if (clickForbid(newNode, comField)) {
+      if (clickForbid(newNode, comField, selected)) {
         return null;
       }
 
@@ -415,7 +415,7 @@ class DropTree<T extends AnyObj> extends React.PureComponent<props<T>, states<T>
     this.setState((pre) => {
       const data = pre.immutableData;
       const _data = data.updateIn(
-        indexArr,
+        indexStrArr,
         (node: IImmutalbeMap<Inode>) => {
 
           if (!node) {

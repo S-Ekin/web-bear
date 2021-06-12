@@ -38,6 +38,9 @@ declare global {
   }
   type IImmutalbeList<DataType extends AllowedValue> = Immutable.List<DataType>
 
+  type immuTreeNode<T extends AnyObj, K extends string = "children">= Omit<T, K> & {[f in K]: IImmutalbeList<IImmutalbeMap<immuTreeNode<T, K>>>};
+
+  type immuObjArr<T extends AnyObj, K extends string>= Omit<T, K> & {[f in K]: IImmutalbeList<IImmutalbeMap<T[K][0]>>};
 }
 
 const createImmutableMap = <DataType extends MapTypeAllowedData<DataType>>(

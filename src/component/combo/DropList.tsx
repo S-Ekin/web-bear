@@ -87,7 +87,7 @@ const clickFn = <T extends AnyObj>(index: string, props: Iprops<T>, state: state
     return undefined;
   }
   // 判断是否禁止编辑
-  if (clickForbid(newNode, comField)) {
+  if (clickForbid(newNode, comField, selected)) {
     return undefined;
   }
 

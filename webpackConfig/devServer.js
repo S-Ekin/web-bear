@@ -34,7 +34,7 @@ module.exports = function () {
       // },
      // clientLogLevel: 'none', // cancel console client log
      /// clientLogLevel: 'warning', 
-      port: '8035', // 设置端口号			
+      port: '8099', // 设置端口号			
       // proxy: {
       //   '/Disease': {
       //     target: "http://localhost:8098",
