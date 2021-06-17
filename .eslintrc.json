@@ -1,5 +1,8 @@
 {
   "parser": "@typescript-eslint/parser",
+  "overrides": [{
+    "files":["*.tsx", "*.ts"]
+  }],
   "env": {
     "browser": true,
     "es6": true

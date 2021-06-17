@@ -4,8 +4,10 @@
         "stylelint-scss"
     ],
     "rules": {
-        "at-rule-no-unknown": null,
-        "scss/at-rule-no-unknown": null
+        "at-rule-no-unknown": [ true, {
+        "ignoreAtRules": ["use"]
+      }],
+      "no-invalid-position-at-import-rule": true 
     },
     "ignoreFiles": "**/font.**"
 }

@@ -58,7 +58,7 @@ export default class Modal extends React.PureComponent<ModalProps, ModalState> i
     pointX: 0,
     pointY: -30,
     preShow: this.props.show,
-    init: false
+    init: this.props.show
   };
 
   constructor (props:ModalProps) {

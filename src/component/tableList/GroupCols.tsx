@@ -4,22 +4,23 @@
  * @time 2020-03-10
  */
 import * as React from "react";
-import {ICommon, IColumnItem} from "./mytablist";
-type Props<T>=ICommon<T>['groupCol'];
-type States={
-
+import { ICommon, IColumnItem } from "./mytablist";
+type Props<T> = ICommon<T>["groupCol"];
+type States = {
 };
 
-
-class GroupCols<T extends AnyObj> extends React.PureComponent<Props<T>, States> {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  static colItem = <K extends AnyObj>(_prop:React.PropsWithChildren<IColumnItem<K> & {children:string}>) => <></>
-  state:States={
-  };
+class GroupCols<T extends AnyObj> extends React.PureComponent<
+Props<T>,
+States
+> {
+  static colItem = <K extends AnyObj>(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _prop: React.PropsWithChildren<IColumnItem<K> & { children: string }>
+  ) => <></>;
+  state: States = {};
   render () {
-    return '';
+    return "";
   }
 }
 
-
-export  {GroupCols};
+export { GroupCols };

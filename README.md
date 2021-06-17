@@ -24,7 +24,10 @@
    - 在其他项目里，使用 yalc add @s-ekin/web 来使用这个库。（效果和从npm 里 install 一样）
    - 当修改组件库时，使用yalc push 可以同步所有使用这个组件库的项目。
    - 避免使用npm link 来软链 ，导致组件库和项目库同时保存两份 react实例，导致react-router 和 react hook 报错。，同时ts类型也报错。 
-#### 切换代理
+#### 切换代理 安装 nrm
    - **nrm ls** 查看代理列表
    - **nrm use npm | cnpm | yarn | taobao** 使用npm作为代理
    - 发布到npm时，要使用npm作为代理，也就是npm本身，否则不能发布上去
+#### 更新所有包的版本到最新，注意只是更新了package.json 里的版本号到最新，并没有更新node_modules 目录里的模块文件，所以需要重新install，全局安装 npm-check-updates
+   - **ncu** 查看可以更新到最新的包
+   - **ncu -u** 更新所有的包

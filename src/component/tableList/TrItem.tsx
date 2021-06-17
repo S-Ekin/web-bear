@@ -4,55 +4,45 @@
  * @time 2020-03-19
  */
 import * as React from "react";
-import {SvgIcon} from '../my-icon/index';
-import {ICommon} from "./mytablist";
+import { SvgIcon } from "../my-icon/index";
+import { ICommon } from "./mytablist";
 
-type Props<T>={
-  cols:ICommon<T>['col'][];
-  node:IImmutalbeMap<ICommon<T>['node']>;
-  fixObj:ICommon<T>['fixObj'];
-  index:string; // 节点的索引
-  isMainView?:boolean;
-  changeState:ICommon<T>['changeState'];
+type Props<T> = {
+  cols: ICommon<T>["col"][];
+  node: IImmutalbeMap<ICommon<T>["node"]>;
+  fixObj: ICommon<T>["fixObj"];
+  index: string; // 节点的索引
+  isMainView?: boolean;
+  changeState: ICommon<T>["changeState"];
 };
-type States={
-
+type States = {
 };
 interface ITrItem {
-
-  getCheck():JSX.Element | undefined;
-
+  getCheck(): JSX.Element | undefined;
 }
-class TrItem<T extends AnyObj> extends React.PureComponent<Props<T>, States> implements ITrItem {
-
-
-  state:States={
-
-  };
+class TrItem<T extends AnyObj>
+  extends React.PureComponent<Props<T>, States>
+  implements ITrItem {
+  state: States = {};
   getCheck () {
-
-    const {node, index} = this.props;
-    const active = node.get('checked')
-      ? 'checkbox-marked' : 'checkbox-blank';
+    const { node, index } = this.props;
+    const active = node.get("checked") ? "checkbox-marked" : "checkbox-blank";
     return (
       <span onClick={this.checkFn} className="tree-check" data-index={index}>
-        <SvgIcon className={active}/>
+        <SvgIcon className={active} />
       </span>
     );
-
-
   }
 
-  checkFn=(e:React.MouseEvent<HTMLSpanElement>) => {
+  checkFn = (e: React.MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
     const dom = e.currentTarget;
     const index = dom.dataset.index;
-    const {changeState} = this.props;
-    changeState(index!, 'active');
-  }
-  getFirstText (text:React.ReactChild, field:string) {
-    const {index} = this.props;
-
+    const { changeState } = this.props;
+    changeState(index!, "active");
+  };
+  getFirstText (text: React.ReactChild, field: string) {
+    const { index } = this.props;
 
     if (field === "order") {
       return index;
@@ -61,18 +51,23 @@ class TrItem<T extends AnyObj> extends React.PureComponent<Props<T>, States> imp
     } else {
       return text;
     }
-
-
   }
 
   render () {
-    const {cols, node, fixObj: {tabField}, isMainView} = this.props;
+    const {
+      cols,
+      node,
+      fixObj: { tabField },
+      isMainView,
+    } = this.props;
     const tds = cols.map((td, index) => {
-      const {field, formatter, align} = td;
-      const text = formatter ? formatter(node, index, tabField) : node.get(field);
+      const { field, formatter, align } = td;
+      const text = formatter
+        ? formatter(node, index, tabField)
+        : node.get(field);
       const str = isMainView ? this.getFirstText(text, field) : text;
 
-      let alignName = align ? `td-${align}` : '';
+      let alignName = align ? `td-${align}` : "";
 
       return (
         <td key={field} className={`td-border ${alignName}`}>
@@ -81,13 +76,8 @@ class TrItem<T extends AnyObj> extends React.PureComponent<Props<T>, States> imp
       );
     });
 
-    return (
-      <tr >
-        {tds}
-      </tr>
-    );
+    return <tr>{tds}</tr>;
   }
 }
-
 
 export default TrItem;

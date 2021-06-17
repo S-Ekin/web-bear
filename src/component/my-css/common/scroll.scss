@@ -1,4 +1,6 @@
-@import "../scss/variate";
+@use "../scss/variate";
+@use "sass:math";
+
 $barW:10px;
 $barInnerW: 6px;
 
@@ -22,7 +24,7 @@ $barInnerW: 6px;
     top: 0;
     right: 0;
     width: $barW;
-    padding: 6px ($barW - $barInnerW ) / 2;
+    padding: 6px math.div($barW - $barInnerW, 2);
     z-index: 2;
     background: none;
     cursor: pointer;

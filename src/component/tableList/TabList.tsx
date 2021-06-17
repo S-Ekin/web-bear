@@ -5,52 +5,61 @@
  */
 import * as React from "react";
 import * as Immutable from "immutable";
-import TabView from './TabView';
-import {GroupCols} from './GroupCols';
-import {Empty} from "../my-icon/index";
-import PageSize from './PageSize';
-import {ICommon, Inode} from "./mytablist";
+import TabView from "./TabView";
+import { GroupCols } from "./GroupCols";
+import { Empty } from "../my-icon/index";
+import PageSize from "./PageSize";
+import { ICommon, Inode } from "./mytablist";
 
-type childType<T> =React.ComponentElement<ICommon<T>['groupCol'], React.ComponentState> ;
-type Props<T>={
+type childType<T> = React.ComponentElement<
+ICommon<T>["groupCol"],
+React.ComponentState
+>;
+type Props<T> = {
   data: T[];
   children: childType<T>[] | childType<T>;
-  height?:number;
-  noOrder?:boolean;
-  noPageNums?: boolean;// 页码
-  idField: string;// 表格的节点标识
-  multiply?: boolean;// 多选
-  defaultSel?: string;// 默认选中的
-  tabField?: string;// 表格标识
-  emptyTxt?: string;// 空数据时显示文字
-  initSelectVal?:{id:string};// 通过外界改变表格的选中
-  bindGetSelectedFn?:(getSelected:()=>IImmutalbeList<IImmutalbeMap<Inode & T>>)=>void;// 把获取选中的项的函数传递给外部
+  height?: number;
+  noOrder?: boolean;
+  noPageNums?: boolean; // 页码
+  idField: string; // 表格的节点标识
+  multiply?: boolean; // 多选
+  defaultSel?: string; // 默认选中的
+  tabField?: string; // 表格标识
+  emptyTxt?: string; // 空数据时显示文字
+  initSelectVal?: { id: string }; // 通过外界改变表格的选中
+  bindGetSelectedFn?: (
+    getSelected: () => IImmutalbeList<IImmutalbeMap<Inode & T>>
+  ) => void; // 把获取选中的项的函数传递给外部
 };
-type States<T>={
-  immutabData:IImmutalbeList<IImmutalbeMap<Inode & T>>;
-  selectArr:IImmutalbeList<string>;
+type States<T> = {
+  immutabData: IImmutalbeList<IImmutalbeMap<Inode & T>>;
+  selectArr: IImmutalbeList<string>;
   perNums: number; // 每页条数
   curPage: number; // 当前页数
   tableData: IImmutalbeList<IImmutalbeMap<Inode & T>>;
-  preData:T[];
-  preInitSelect?:{id:string}
+  preData: T[];
+  preInitSelect?: { id: string };
 };
-type config<T> =ICommon<T>['config'];
+type config<T> = ICommon<T>["config"];
 type fixObj = {
-  tabField:string;
-  emptyTxt:string;
-  idField:string;
-  multiply?:boolean;
-  defaultSel:string;
+  tabField: string;
+  emptyTxt: string;
+  idField: string;
+  multiply?: boolean;
+  defaultSel: string;
 };
 interface ITabList<T> {
-  fieldArr:config<T>[];
-  fixObj:fixObj;
+  fieldArr: config<T>[];
+  fixObj: fixObj;
 }
-const compareFn = (a:number, b:number) => a - b;
-const tableInitData = <T extends AnyObj>(data:Props<T>["data"], defaulSel:string, idField:string) => {
+const compareFn = (a: number, b: number) => a - b;
+const tableInitData = <T extends AnyObj>(
+  data: Props<T>["data"],
+  defaulSel: string,
+  idField: string
+) => {
   const defaulSelArr = `${defaulSel}`.split(",");
-  return  Immutable.fromJS(data, (_key, val) => {
+  return Immutable.fromJS(data, (_key, val) => {
     if (Immutable.isKeyed(val)) {
       // 对象
       let obj = val.toOrderedMap();
@@ -64,15 +73,25 @@ const tableInitData = <T extends AnyObj>(data:Props<T>["data"], defaulSel:string
     }
   });
 };
-class TabList<T extends AnyObj> extends React.PureComponent<Props<T>, States<T>> implements ITabList<T> {
+class TabList<T extends AnyObj>
+  extends React.PureComponent<Props<T>, States<T>>
+  implements ITabList<T> {
   static defaultProps = {
-    height: 300
+    height: 300,
   };
-  static  getDerivedStateFromProps (nextProps:Props<AnyObj>, preState:States<AnyObj>):Partial<States<AnyObj>> | null {
-    if (nextProps.data !== preState.preData || nextProps.initSelectVal !== preState.preInitSelect) {
+  static getDerivedStateFromProps (
+    nextProps: Props<AnyObj>,
+    preState: States<AnyObj>
+  ): Partial<States<AnyObj>> | null {
+    if (
+      nextProps.data !== preState.preData ||
+      nextProps.initSelectVal !== preState.preInitSelect
+    ) {
       const newData = nextProps.data;
-      const {idField} = nextProps;
-      const defaultSel = nextProps.initSelectVal ? nextProps.initSelectVal.id : nextProps.defaultSel!;
+      const { idField } = nextProps;
+      const defaultSel = nextProps.initSelectVal
+        ? nextProps.initSelectVal.id
+        : nextProps.defaultSel!;
       const data = tableInitData(newData, defaultSel, idField);
       return {
         preData: newData,
@@ -80,18 +99,18 @@ class TabList<T extends AnyObj> extends React.PureComponent<Props<T>, States<T>>
         selectArr: Immutable.List([]),
         curPage: 1,
       };
-
     } else {
       return null;
     }
   }
 
-  fieldArr:ITabList<T>['fieldArr']
-  fixObj:ITabList<T>['fixObj'];
-  tabMainTabBodyDomArr:HTMLDivElement[] = [];
-  constructor (props:Props<T>) {
+  fieldArr: ITabList<T>["fieldArr"];
+  fixObj: ITabList<T>["fixObj"];
+  tabMainTabBodyDomArr: HTMLDivElement[] = [];
+  constructor (props: Props<T>) {
     super(props);
-    const {children, data, idField, defaultSel, initSelectVal, noPageNums} = this.props;
+    const { children, data, idField, defaultSel, initSelectVal, noPageNums } =
+      this.props;
     this.fieldArr = this.getFieldArr(children);
 
     const immutabData = tableInitData(data, defaultSel!, idField);
@@ -103,46 +122,57 @@ class TabList<T extends AnyObj> extends React.PureComponent<Props<T>, States<T>>
       preInitSelect: initSelectVal,
       perNums: 20,
       curPage: 1,
-      tableData: noPageNums ? immutabData : this.getDataByPageAndPerNum(1, 20, immutabData)
+      tableData: noPageNums
+        ? immutabData
+        : this.getDataByPageAndPerNum(1, 20, immutabData),
     };
   }
-  getDataByPageAndPerNum (curPage:number, perNums:number, immutabData:States<T>['immutabData']) {
+  getDataByPageAndPerNum (
+    curPage: number,
+    perNums: number,
+    immutabData: States<T>["immutabData"]
+  ) {
     const startIndex = (curPage - 1) * perNums;
     return immutabData.slice(startIndex, perNums + startIndex);
   }
-  getFieldArr (arr:Props<T>['children']) {
-    const {noOrder, multiply} = this.props;
+  getFieldArr (arr: Props<T>["children"]) {
+    const { noOrder, multiply } = this.props;
     return React.Children.map(arr, function (val, index) {
-
-      const {children: eleArr, forzen, } = val.props;
+      const { children: eleArr, forzen } = val.props;
       let widTotal = 0;
-      const child:ICommon<T>["col"][] = React.Children.map(eleArr, function (node) {
-        const {children, width, field, formatter, align} = node.props;
-        widTotal += width;
-        return {
-          width, field, formatter, text: children, align
-        };
-      });
-
+      const child: ICommon<T>["col"][] = React.Children.map(
+        eleArr,
+        function (node) {
+          const { children, width, field, formatter, align } = node.props;
+          widTotal += width;
+          return {
+            width,
+            field,
+            formatter,
+            text: children,
+            align,
+          };
+        }
+      );
 
       if (!noOrder && index === 0) {
-        const orderCol:ICommon<T>["col"] = {
+        const orderCol: ICommon<T>["col"] = {
           width: 60,
           field: "order",
-          text: '序号',
+          text: "序号",
           formatter: undefined,
-          align: 'center'
+          align: "center",
         };
         child.unshift(orderCol);
         widTotal += 60;
       }
       if (multiply && index === 0) {
-        const checkCol:ICommon<T>["col"] = {
+        const checkCol: ICommon<T>["col"] = {
           width: 60,
           field: "check",
-          text: '全选',
+          text: "全选",
           formatter: undefined,
-          align: 'center'
+          align: "center",
         };
         child.unshift(checkCol);
         widTotal += 60;
@@ -151,13 +181,13 @@ class TabList<T extends AnyObj> extends React.PureComponent<Props<T>, States<T>>
       return {
         child,
         width: widTotal,
-        forzen
+        forzen,
       };
-
     });
   }
   initFixObj () {
-    const {tabField, idField, multiply, defaultSel, emptyTxt, noOrder} = this.props;
+    const { tabField, idField, multiply, defaultSel, emptyTxt, noOrder } =
+      this.props;
     return {
       tabField: tabField!,
       emptyTxt: emptyTxt!,
@@ -167,44 +197,42 @@ class TabList<T extends AnyObj> extends React.PureComponent<Props<T>, States<T>>
       defaultSel: defaultSel!,
     };
   }
-  setTabBodyDom=(dom:HTMLDivElement, index:number) => {
-
+  setTabBodyDom = (dom: HTMLDivElement, index: number) => {
     this.tabMainTabBodyDomArr[index] = dom;
-
-  }
-  changeScrollTop=(top:number, index:number) => {
-
+  };
+  changeScrollTop = (top: number, index: number) => {
     this.tabMainTabBodyDomArr.map((val, oindex) => {
       if (oindex !== index) {
         val.scrollTop = top;
       }
     });
-  }
-  changeState:ICommon<T>['changeState']=(path, key) => {
-
+  };
+  changeState: ICommon<T>["changeState"] = (path, key) => {
     const index = ~~path - 1;
-    if (key === 'active') {
+    if (key === "active") {
       this.setState((pre) => {
         const data = pre.immutabData.updateIn([index], (node) => {
+          const status = node.get("checked");
 
-          const status = node.get('checked');
-
-          return node.set('checked', !status);
+          return node.set("checked", !status);
         });
 
-        const pageData = this.getDataByPageAndPerNum(pre.curPage, pre.perNums, data);
+        const pageData = this.getDataByPageAndPerNum(
+          pre.curPage,
+          pre.perNums,
+          data
+        );
 
         return {
           immutabData: data,
-          tableData: pageData
+          tableData: pageData,
         };
       });
     } else if (key === "checkPar") {
-
-      const {noPageNums} = this.props;
+      const { noPageNums } = this.props;
       this.setState((pre) => {
-        const {curPage, perNums, immutabData} = pre;
-        let num:number;
+        const { curPage, perNums, immutabData } = pre;
+        let num: number;
         if (!noPageNums) {
           // 看最后一页是不是满的
           const rest = curPage * perNums - immutabData.size;
@@ -223,11 +251,11 @@ class TabList<T extends AnyObj> extends React.PureComponent<Props<T>, States<T>>
 
         return {
           immutabData: newData,
-          tableData: this.getDataByPageAndPerNum(curPage, perNums, newData)
+          tableData: this.getDataByPageAndPerNum(curPage, perNums, newData),
         };
       });
     }
-  }
+  };
   // 比对所有区域的高度，设置为一样高
   setSameH () {
     let domArr = this.tabMainTabBodyDomArr;
@@ -240,14 +268,14 @@ class TabList<T extends AnyObj> extends React.PureComponent<Props<T>, States<T>>
     if (tabHArr[0] !== tabHMax) {
       const trDomArr = tabDom.map((val) => val.lastElementChild!.children);
       [...trDomArr[0]].forEach((_val, index) => {
-
         const trCompareDom = trDomArr.map((val) => val[index]);
-        const trHArr = trCompareDom.map((val) => val.clientHeight).sort(compareFn);
+        const trHArr = trCompareDom
+          .map((val) => val.clientHeight)
+          .sort(compareFn);
         const trHMax = trHArr[trHArr.length - 1];
         if (trHMax !== trHArr[0]) {
           trCompareDom.forEach((element) => {
             [...(element as HTMLTableRowElement).children]!.forEach((td) => {
-
               (td as HTMLTableCellElement).style.height = `${trHMax}px`;
             });
           });
@@ -260,7 +288,7 @@ class TabList<T extends AnyObj> extends React.PureComponent<Props<T>, States<T>>
     this.setTabViewBottomFixHeight();
   }
   viewMap () {
-    const {tableData, perNums, curPage} = this.state;
+    const { tableData, perNums, curPage } = this.state;
     const startIndex = (curPage - 1) * perNums;
     return this.fieldArr.map((group, index) => (
       <TabView
@@ -283,8 +311,9 @@ class TabList<T extends AnyObj> extends React.PureComponent<Props<T>, States<T>>
     const arr = this.fieldArr;
     const res = this.tabMainTabBodyDomArr.findIndex((val, index) => {
       let status = false;
-      if (!arr[index].forzen) { // 有横的滚动条
-        status =   val.scrollWidth > val.clientWidth;
+      if (!arr[index].forzen) {
+        // 有横的滚动条
+        status = val.scrollWidth > val.clientWidth;
       }
       return status;
     });
@@ -292,72 +321,74 @@ class TabList<T extends AnyObj> extends React.PureComponent<Props<T>, States<T>>
     if (res !== -1) {
       this.tabMainTabBodyDomArr.forEach((val, index) => {
         if (arr[index].forzen) {
-          val.classList.add('tab-over-wid');
+          val.classList.add("tab-over-wid");
         } else if (res !== index) {
           if (val.scrollWidth <= val.clientWidth) {
-            val.classList.add('tab-over-wid');
+            val.classList.add("tab-over-wid");
           }
         }
       });
     } else {
       this.tabMainTabBodyDomArr.forEach((val) => {
-        val.classList.remove('tab-over-wid');
+        val.classList.remove("tab-over-wid");
       });
     }
   }
 
-  changePageHandle=(key:'curPage' | "perNums", val:number) => {
-
+  changePageHandle = (key: "curPage" | "perNums", val: number) => {
     if (key === "curPage") {
-      this.setState((pre) => {
-        const perNums = pre.perNums;
-        return {
-          curPage: val,
-          tableData: this.getDataByPageAndPerNum(val, perNums, pre.immutabData)
-        };
-      }, () => {
-        this.setDom();
-      });
+      this.setState(
+        (pre) => {
+          const perNums = pre.perNums;
+          return {
+            curPage: val,
+            tableData: this.getDataByPageAndPerNum(
+              val,
+              perNums,
+              pre.immutabData
+            ),
+          };
+        },
+        () => {
+          this.setDom();
+        }
+      );
     } else if (key === "perNums") {
-      this.setState((pre) => ({
-        perNums: val,
-        curPage: 1,
-        tableData: this.getDataByPageAndPerNum(1, val, pre.immutabData)
-      }), () => {
-        this.setDom();
-      });
+      this.setState(
+        (pre) => ({
+          perNums: val,
+          curPage: 1,
+          tableData: this.getDataByPageAndPerNum(1, val, pre.immutabData),
+        }),
+        () => {
+          this.setDom();
+        }
+      );
     }
-
-
-  }
+  };
   render () {
-    const {height, emptyTxt, noPageNums} = this.props;
-    const {immutabData, curPage, perNums} = this.state;
+    const { height, emptyTxt, noPageNums } = this.props;
+    const { immutabData, curPage, perNums } = this.state;
     const hasData = !!immutabData.size;
-    const body =  hasData ? this.viewMap() : <Empty txt={emptyTxt} />;
+    const body = hasData ? this.viewMap() : <Empty txt={emptyTxt} />;
     const totalPages = Math.ceil(immutabData.size / perNums);
-    const page =  !noPageNums ? (
+    const page = !noPageNums ? (
       <PageSize
         curPage={curPage}
         perNums={perNums}
         totalNums={immutabData.size}
         totalPages={totalPages}
         changeHandle={this.changePageHandle}
-
       />
     ) : undefined;
-    const styleObj = height ? {height: height, } : undefined;
+    const styleObj = height ? { height: height } : undefined;
     return (
       <div className="treeTap-wrap" style={styleObj}>
-        <div className="treeTab">
-          {body}
-        </div>
+        <div className="treeTab">{body}</div>
         {page}
       </div>
-
     );
   }
 }
 
-
-export  {TabList, GroupCols};
+export { TabList, GroupCols };

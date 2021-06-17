@@ -33,7 +33,8 @@
 			"@container/*": ["./src/containers/*"]
 		},
 		"lib": ["es2015", "dom", "dom.iterable"],
-		"types": ["node"],
+		"types": ["node"],    
+		// "typeRoots": [] // 指的是在npm包里查找 类型文件的路径，默认为【/node_modules/@types】，可以设置为其他的路径，不是用来放自定义的类型文件
 	}, 
    "include": ["src"],
    "exclude": ["**/node_modules", "**/.*/"],

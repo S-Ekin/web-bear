@@ -4,22 +4,24 @@
  * @time 2020-03-10
  */
 import * as React from "react";
-import {ICommon, IColumnItem} from "./mytreeTable";
+import { ICommon, IColumnItem } from "./mytreeTable";
 
-type Props<T>=ICommon<T>['groupCol'];
-type States={
-
+type Props<T> = ICommon<T>["groupCol"];
+type States = {
 };
 
-class GroupCols<K extends AnyObj> extends React.PureComponent<Props<K>, States> {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  static colItem= <T extends AnyObj>(_props:React.PropsWithChildren<IColumnItem<T> & {children:string}>) => <></>
-  state:States={
-  };
+class GroupCols<K extends AnyObj> extends React.PureComponent<
+Props<K>,
+States
+> {
+  static colItem = <T extends AnyObj>(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _props: React.PropsWithChildren<IColumnItem<T> & { children: string }>
+  ) => <></>;
+  state: States = {};
   render () {
-    return '';
+    return "";
   }
 }
 
-
-export  {GroupCols};
+export { GroupCols };
