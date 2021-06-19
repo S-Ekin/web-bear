@@ -11,6 +11,7 @@ import InputDemo from '@componentDemo/input/DemoInput';
 import CheckBoxDemo from '@componentDemo/input/CheckboxDemo';
 import SearchDemo from '@componentDemo/input/SearchDemo';
 import TextareaDemo from '@componentDemo/input/TextareaDemo';
+import FileInpDemo from '@componentDemo/input/FileDemo';
 
 type Props={
 
@@ -35,6 +36,7 @@ class ButtonRoute extends React.PureComponent<Props, States> {
         <Route component={TextareaDemo} path="/inp/textarea" />
         <Route component={CheckBoxDemo} path="/inp/checkbox" />
         <Route component={SearchDemo} path="/inp/search" />
+        <Route component={FileInpDemo} path="/inp/fileInp" />
       </Switch>
     );
   }

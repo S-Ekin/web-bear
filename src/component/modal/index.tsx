@@ -56,7 +56,7 @@ export default class Modal extends React.PureComponent<ModalProps, ModalState> i
   modalDom:React.RefObject<HTMLDivElement> = React.createRef();
   state={
     pointX: 0,
-    pointY: -30,
+    pointY: 0,
     preShow: this.props.show,
     init: this.props.show
   };
