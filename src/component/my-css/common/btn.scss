@@ -1,12 +1,11 @@
-
-@import "../scss/variate";
+@use "../scss/variate";
 
 /**
 * normal-btn:有背景的按钮 ，line-btn:线框按钮，dashed-btn：虚线按钮
 * danger:颜色为红,primary：主题颜色，grey：灰色
 */
 
-$primary:$theme-color;
+$primary:variate.$theme-color;
 $grey:#d9d9d9;
 $yellow:#e4d619;
 
@@ -22,7 +21,7 @@ $yellow:#e4d619;
   height: 2.25em;
 
   &:disabled {
-    background: darken($btn-disabled, 40%) !important;
+    background: darken(variate.$btn-disabled, 40%) !important;
     opacity: 0.6;
     cursor: not-allowed;
     border: none;
@@ -46,7 +45,7 @@ $yellow:#e4d619;
     bottom: $leg;
     opacity: 0.4;
     border-radius: inherit;
-    border: 0 solid $text-theme-color;
+    border: 0 solid variate.$text-theme-color;
     animation: buttonEffect 0.4s;
   }
 }
@@ -54,15 +53,15 @@ $yellow:#e4d619;
 //有背景的按钮
 .normal-btn {
   border: none;
-  color: $text-bg-color;
+  color: variate.$text-bg-color;
 
   &:hover {
-    color: $text-bg-color;
+    color: variate.$text-bg-color;
   }
 
   $colorMap:(
     primary:$primary,
-    danger:$error ,
+    danger:variate.$error ,
     normal: $grey ,
     warn:$yellow
   );
@@ -87,7 +86,7 @@ $yellow:#e4d619;
   $colorMap:(
     primary:$grey,
     normal:$primary,
-    danger:$error ,
+    danger:variate.$error ,
     warn:$yellow
   );
 
@@ -96,7 +95,7 @@ $yellow:#e4d619;
       border-color: $val;
 
       &:hover {
-        border-color: $theme-color;
+        border-color: variate.$theme-color;
       }
     }
   }
@@ -109,7 +108,7 @@ $yellow:#e4d619;
 
   $colorMap:(
     primary:$primary,
-    danger:$error ,
+    danger:variate.$error ,
     normal:$grey,
     warn:$yellow
   );
@@ -185,14 +184,14 @@ $yellow:#e4d619;
 
   .drop-group {
     border-radius: 4px;
-    background: $page-bg;
-    box-shadow: $shadow;
+    background: variate.$page-bg;
+    box-shadow: variate.$shadow;
     padding: 8px;
   }
 
   .drop-item {
     padding: 5px;
-    border-bottom: 2px solid $normal;
+    border-bottom: 2px solid variate.$normal;
     text-align: center;
 
     .icon {
@@ -206,7 +205,7 @@ $yellow:#e4d619;
     cursor: pointer;
 
     &:hover {
-      color: $theme-color;
+      color: variate.$theme-color;
     }
   }
 

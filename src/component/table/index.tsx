@@ -11,6 +11,7 @@ import { ScrollBox } from "../scroll/index";
 import PageSize from "./PageSize";
 import TabBody from "./TBody";
 import { IColumnItem, ITableStates, fieldObj, Inode } from "./mytable";
+import { IScrollMethods } from "../scroll/scroll";
 
 type Props<T> = {
   data: T[];
@@ -128,8 +129,7 @@ class Table<T extends AnyObj>
 
   fieldObj = this.initFixObj();
   tableContainer: React.RefObject<HTMLDivElement> = React.createRef();
-  scrollRef: React.RefObject<ScrollBox> = React.createRef();
-
+  scrollMethod:IScrollMethods | null = null;
   constructor (props: Props<T>) {
     super(props);
     const { data, defaultSel, idField, initSelectVal, bindGetSelectedFn } =
@@ -146,6 +146,9 @@ class Table<T extends AnyObj>
     if (bindGetSelectedFn) {
       bindGetSelectedFn(this.getSelected);
     }
+  }
+  bindScrollMethods=(methods:IScrollMethods) => {
+    this.scrollMethod = methods;
   }
   getSelected = () => {
     const { tableData } = this.state;
@@ -218,7 +221,7 @@ class Table<T extends AnyObj>
     // 滚动到指定位置
     const top = item.offsetTop - 12;
     window.setTimeout(() => {
-      this.scrollRef.current!.scrollToTop(Math.max(0, top));
+      this.scrollMethod!.scrollToTop(Math.max(0, top));
     }, 10);
   }
   getColGroupCom () {
@@ -337,7 +340,7 @@ class Table<T extends AnyObj>
     const { curPage, tableData, perNums } = this.state;
     return (
       <ScrollBox
-        ref={this.scrollRef}
+        bindIntiScroll={this.bindScrollMethods}
         noStopPageScroll={noStopPageScroll}
         className="m-fixTabBody"
       >

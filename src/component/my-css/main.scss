@@ -1,8 +1,9 @@
-@import "./common/normalize.css" ,"./common/common.scss" ;
-@import "./scss/variate";
+@use "./common/normalize.css" ;
+@use "./common/common.scss" ;
+@use "./scss/variate";
 
 $Head-h:60px;//头部的高度
-$HeadColor: $theme-color;
+$HeadColor: variate.$theme-color;
 
 .m-sysOpt {
   & > li {
@@ -36,7 +37,7 @@ $HeadColor: $theme-color;
 
   .j-slideBar {
     cursor: pointer;
-    color: $text-bg-color;
+    color: variate.$text-bg-color;
   }
 }
 
@@ -58,9 +59,9 @@ $HeadColor: $theme-color;
     display: flex;
     align-items: center;
     height: $Head-h;
-    box-shadow: $shadow;
+    box-shadow: variate.$shadow;
     background: $HeadColor;
-    color: $text-bg-color;
+    color: variate.$text-bg-color;
 
     .m-theme {
       padding-left: 30px;
@@ -84,7 +85,7 @@ $HeadColor: $theme-color;
     //overflow: hidden;
     height: calc(100% - #{$Head-h});
     position: relative;
-    background: $page-bg;
+    background: variate.$page-bg;
   }
 
   .g-sys_set {
@@ -108,7 +109,7 @@ $HeadColor: $theme-color;
       box-shadow: 0 0 12px 0 rgba(51, 51, 51, 0.3);
 
       & > li:hover {
-        color: $theme-color;
+        color: variate.$theme-color;
       }
     }
 
@@ -154,7 +155,7 @@ $HeadColor: $theme-color;
       }
 
       li.active {
-        color: $theme-color;
+        color: variate.$theme-color;
       }
     }
   }
@@ -164,8 +165,8 @@ $HeadColor: $theme-color;
   .g-slideMenu {
     position: relative;
     z-index: 10;
-    background-color: $page-bg;
-    box-shadow: $shadow;
+    background-color: variate.$page-bg;
+    box-shadow: variate.$shadow;
     display: flex;
     flex-direction: column;
     height: 100%;

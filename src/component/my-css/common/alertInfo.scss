@@ -1,16 +1,17 @@
-@import "../scss/unit","../scss/variate";
+@use "../scss/unit";
+@use "../scss/variate";
 
 .g-alertInfo {
   &.warn {
-    border-left: 2px solid $warn;
+    border-left: 2px solid variate.$warn;
   }
 
   &.success {
-    border-left: 2px solid $success;
+    border-left: 2px solid variate.$success;
   }
 
   &.error {
-    border-left: 2px solid $error;
+    border-left: 2px solid variate.$error;
   }
 
   .txt {
@@ -28,7 +29,7 @@
     color: #959faf;
 
     &:hover {
-      color: $theme-color;
+      color: variate.$theme-color;
     }
   }
 }
@@ -53,7 +54,7 @@
   }
 
   .g-alertInfo {
-    @extend %shadow;
+    @include unit.shadow;
 
     background: white;
     display: inline-flex;

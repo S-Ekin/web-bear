@@ -21,6 +21,7 @@ type config = {
   className: string;
   noStopPageScroll:boolean;
   keepBarShow:boolean,
+  time:string;
 };
 
 type States = {
@@ -37,6 +38,7 @@ interface IDemo {
 const config:config = {
   height: "300",
   className: "",
+  time: "300",
   noStopPageScroll: false,
   keepBarShow: false,
 };
@@ -121,7 +123,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       height,
       className,
       noStopPageScroll,
-      keepBarShow
+      keepBarShow,
+      time
     } = immuConfig.toJS();
     return (
       <Layout tit="滚动条" className="scroll-page">
@@ -161,6 +164,17 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 value={height}
               >
                   高度 height:
+              </Input>
+            </div>
+            <div className="inp-item">
+              <Input
+                type="number"
+                norequire
+                changeFn={this.changeConfig}
+                name="time"
+                value={time}
+              >
+                  延迟更新滚动条的时间（比如在菜单收缩完成后开始更新） time:
               </Input>
             </div>
             <div className="inp-item">

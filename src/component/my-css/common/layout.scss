@@ -8,7 +8,7 @@
 }
 
 .g-padding {
-  padding: $page-padding;
+  padding: variate.$page-padding;
 }
 
 /* 子菜单容器样式  */
@@ -20,8 +20,8 @@
 
   .g-layout-article {
     flex: 1;
-    margin: $page-padding - 4px 0;
-    padding: 4px $page-padding;
+    margin: variate.$page-padding - 4px 0;
+    padding: 4px variate.$page-padding;
     overflow: auto;
   }
 
@@ -29,8 +29,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: math.div($page-padding, 2)  $page-padding;
-    box-shadow: $shadow;
+    padding: math.div(variate.$page-padding, 2)  variate.$page-padding;
+    box-shadow: variate.$shadow;
 
     .layout-head-item {
       display: flex;
@@ -44,10 +44,10 @@
   }
 
   .g-item-show {
-    box-shadow: $shadow;
+    box-shadow: variate.$shadow;
     margin: 20px 0;
     overflow: visible;
-    padding: math.div($page-padding, 2);
+    padding: math.div(variate.$page-padding, 2);
 
     &:first-child {
       margin-top: 0;

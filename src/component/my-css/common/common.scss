@@ -1,5 +1,5 @@
-@import "./btn.scss" ,"./modal.scss","./alertInfo.scss","./table.scss","./Calendar.scss","./menu.scss","./layout.scss","./inp.scss",'./combo.scss','./treeTab.scss', "./scroll.scss";
-@import "../scss/variate";
+@use "./allComponent";
+@use "../scss/variate";
 
 //svg图标
 .icon {
@@ -21,7 +21,7 @@
 
 // 阴影
 .shadow {
-  box-shadow: $shadow;
+  box-shadow: variate.$shadow;
 }
 
 /* loading */
@@ -51,7 +51,7 @@
   }
 
   .loading-text {
-    color: $text-color;
+    color: variate.$text-color;
     letter-spacing: 0.1em;
   }
 

@@ -1,8 +1,8 @@
-@import "../scss/unit","../scss/variate";
+@use "../scss/variate";
 
 $h:48px;
-$theme-color:$theme-color;
-$bg:rgba(23, 57, 147, 0.04);
+$theme-color:variate.$theme-color;
+$-bg:rgba(23, 57, 147, 0.04);
 
 .g-table {
   height: calc(100% - 4px);
@@ -37,7 +37,7 @@ $bg:rgba(23, 57, 147, 0.04);
   }
 
   .m-fixTabHead {
-    background: $bg;
+    background: $-bg;
     border-radius: 6px;
     color: #252836;
     font-size: 14px;
@@ -49,7 +49,7 @@ $bg:rgba(23, 57, 147, 0.04);
     font-size: 13px;
 
     tr:hover {
-      background: darken($color: $bg, $amount: 20);
+      background: darken($color: $-bg, $amount: 20);
     }
   }
 
@@ -58,7 +58,7 @@ $bg:rgba(23, 57, 147, 0.04);
   }
 
   tr.selected {
-    background: $bg;
+    background: $-bg;
     //	border-bottom: 1px solid #e5e6fe;
   }
 
@@ -82,14 +82,14 @@ $bg:rgba(23, 57, 147, 0.04);
         margin: 0 8px;
         width: 60px;
         background: none;
-        border-color: $normal;
+        border-color: variate.$normal;
 
         &:hover {
-          border-color: $theme-color;
+          border-color: variate.$theme-color;
         }
 
         &:focus {
-          border-color: $theme-color;
+          border-color: variate.$theme-color;
         }
       }
 
@@ -104,14 +104,14 @@ $bg:rgba(23, 57, 147, 0.04);
         border-radius: 4px;
 
         &:hover {
-          color: $theme-color;
-          border-color: $theme-color;
+          color: variate.$theme-color;
+          border-color: variate.$theme-color;
         }
       }
 
       .m-page-num.active {
         color: white;
-        background: $theme-color;
+        background: variate.$theme-color;
       }
 
       .g-pageRight,
@@ -128,16 +128,16 @@ $bg:rgba(23, 57, 147, 0.04);
 
   &.g-tab-border {
     td {
-      border-right: 1px solid $normal;
-      border-bottom: 1px solid $normal;
+      border-right: 1px solid variate.$normal;
+      border-bottom: 1px solid variate.$normal;
 
       &:first-child {
-        border-left: 1px solid $normal;
+        border-left: 1px solid variate.$normal;
       }
     }
 
     .m-fixTabBody {
-      border-bottom: 1px solid $normal;
+      border-bottom: 1px solid variate.$normal;
     }
   }
 }

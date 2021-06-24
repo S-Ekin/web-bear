@@ -81,13 +81,13 @@ class DropTree<T extends AnyObj> extends React.PureComponent<props<T>, states<T>
   }
 
   clear () {
-    const {data, oldSelectedIndex} = formatterTreeData(this.props, "", this.props.data);
+    const {data, oldSelectedIndex} = formatterTreeData(this.props, "", this.props.data, true);
 
     this.setState({
       immutableData: data,
       oldSelectedIndex
     });
-
+    this.props.changeSelect(Immutable.List([]));
   }
   clickItem=(id?:string) => {
     if (!id) {

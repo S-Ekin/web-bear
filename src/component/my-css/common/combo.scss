@@ -1,8 +1,7 @@
-
-@import "../scss/variate";
-$combo-bg:$page-bg;
+@use "../scss/variate";
+$combo-bg:variate.$page-bg;
 $bg:rgba(23, 57, 147, 0.04);
-$combo-text-color:$text-color;
+$combo-text-color:variate.$text-color;
 $combo-h:2.2em;
 $combo-drop-padding:5px 8px;
 
@@ -48,7 +47,7 @@ $combo-drop-padding:5px 8px;
   }
 
   &.no-fill {
-    border-color: $error;
+    border-color: variate.$error;
   }
 }
 
@@ -103,7 +102,7 @@ $combo-drop-padding:5px 8px;
   .m-combo-inp {
     position: relative;
     display: flex;
-    border: 1px solid $normal;
+    border: 1px solid variate.$normal;
     border-radius: 4px;
     align-items: center;
     background-color: $combo-bg;
@@ -112,14 +111,14 @@ $combo-drop-padding:5px 8px;
 
   &:hover {
     .m-combo-inp {
-      border-color: $theme-color;
+      border-color: variate.$theme-color;
     }
   }
 
   .m-drop {
     color: $combo-text-color;
     margin-top: 6px;
-    box-shadow: $shadow;
+    box-shadow: variate.$shadow;
     position: absolute;
     box-sizing: border-box;
     width: 100%;
@@ -130,7 +129,7 @@ $combo-drop-padding:5px 8px;
 
   .no-fill {
     &.m-combo-inp {
-      border-color: $error;
+      border-color: variate.$error;
     }
   }
 
@@ -139,6 +138,6 @@ $combo-drop-padding:5px 8px;
   }
 
   .fa {
-    color: $theme-color;
+    color: variate.$theme-color;
   }
 }

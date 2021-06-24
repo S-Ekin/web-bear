@@ -1,9 +1,7 @@
-
-@import "../scss/variate";
+@use "../scss/variate";
 $M_width:400px;
 $Tit_H:40px;
-$bg: $page-bg;
-$normal:$normal;
+$-bg: variate.$page-bg;
 
 .g-modal {
   position: absolute;
@@ -34,9 +32,9 @@ $normal:$normal;
   min-width: $M_width;
   $pading:24px;
 
-  box-shadow: $shadow;
+  box-shadow: variate.$shadow;
   border-radius: 6px;
-  background-color: $bg;
+  background-color: $-bg;
 
   .m-Mtit {
     height: $Tit_H + 10;
@@ -44,7 +42,7 @@ $normal:$normal;
     position: relative;
     align-items: center;
     cursor: move;
-    border-bottom: 1px solid $normal;
+    border-bottom: 1px solid variate.$normal;
   }
 
   .tit-name {
@@ -54,14 +52,14 @@ $normal:$normal;
   }
 
   .m-Mclose {
-    color: $normal;
+    color: variate.$normal;
     position: absolute;
     right: 20px;
     top: 14px;
     cursor: pointer;
 
     &:hover {
-      color: $error;
+      color: variate.$error;
     }
   }
 

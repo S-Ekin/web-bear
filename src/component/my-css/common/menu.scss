@@ -1,5 +1,5 @@
-@import "../scss/variate";
-$active:lighten($theme-color, 10%);
+@use "../scss/variate";
+$active:lighten(variate.$theme-color, 10%);
 $item-h:50px;
 
 .g-menu {
@@ -19,10 +19,10 @@ $item-h:50px;
     display: flex;
     justify-content: space-between;
     padding-right: 16px;
-    color: $text-color;
+    color: variate.$text-color;
 
     a {
-      color: $text-color;
+      color: variate.$text-color;
     }
 
     .par-icon {
@@ -42,7 +42,7 @@ $item-h:50px;
     }
 
     a {
-      color: $text-color;
+      color: variate.$text-color;
       display: inline-block;
       width: 100%;
     }

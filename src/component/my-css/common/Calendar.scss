@@ -1,17 +1,16 @@
-@import "../scss/variate";
+@use "../scss/variate";
 
-$sel: $theme-color;
-$inp-h:2em;
+$sel: variate.$theme-color;
 
 .m-clalendar-inpBox {
   display: flex;
   align-items: center;
-  border: 1px solid $normal;
+  border: 1px solid variate.$normal;
   border-radius: 4px;
   cursor: pointer;
 
   &.no-fill {
-    border-color: $error;
+    border-color: variate.$error;
   }
 
   .calendar-inpTxt {
@@ -39,7 +38,7 @@ $inp-h:2em;
 
     &:hover {
       span {
-        background: $theme-color;
+        background: variate.$theme-color;
         color: white;
       }
     }
@@ -152,7 +151,7 @@ $inp-h:2em;
 
   .calendar-today {
     span {
-      border: 1px solid $theme-color;
+      border: 1px solid variate.$theme-color;
       border-radius: 2px;
     }
   }
@@ -164,7 +163,7 @@ $inp-h:2em;
 
     &:hover {
       span {
-        background: $theme-color;
+        background: variate.$theme-color;
         color: white;
       }
     }
@@ -179,18 +178,18 @@ $inp-h:2em;
   .wacth-time {
     width: 64px;
     height: 24px;
-    border: 1px solid $normal;
+    border: 1px solid variate.$normal;
     border-radius: 4px;
     text-align: center;
 
     &:focus {
-      border-color: $theme-color;
+      border-color: variate.$theme-color;
     }
   }
 }
 
 .g-calendar-box {
-  box-shadow: $shadow;
+  box-shadow: variate.$shadow;
 
   .g-calendar-view {
     position: relative;
@@ -203,14 +202,14 @@ $inp-h:2em;
     padding: 8px;
     position: absolute;
     background: white;
-    box-shadow: $shadow;
+    box-shadow: variate.$shadow;
     z-index: 6;
     left: -6px;
     cursor: pointer;
 
     .active {
       color: white;
-      background: $theme-color;
+      background: variate.$theme-color;
     }
 
     & > li {
@@ -233,7 +232,7 @@ $inp-h:2em;
     padding: 4px 0;
     padding-left: 12px;
     border-bottom: 1px solid;
-    color: $theme-color;
+    color: variate.$theme-color;
 
     .hideMoveBtn {
       visibility: hidden;
@@ -252,14 +251,14 @@ $inp-h:2em;
 
       span {
         &:hover {
-          color: $theme-color;
+          color: variate.$theme-color;
         }
       }
     }
 
     .m-moveBtns {
       .s-btn {
-        color: $theme-color;
+        color: variate.$theme-color;
         background: none;
         border: none;
       }
@@ -283,13 +282,13 @@ $inp-h:2em;
 
   .m-clalendar-inpBox {
     width: 100%;
-    color: $theme-color;
+    color: variate.$theme-color;
     position: relative;
   }
 
   &:hover {
     .m-clalendar-inpBox {
-      border-color: $theme-color;
+      border-color: variate.$theme-color;
     }
   }
 }

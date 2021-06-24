@@ -9,7 +9,7 @@ import { IScrollMethods } from "./scroll";
 import { tween } from "../animate/tween";
 type Props = {
   height?: number;
-  time?: number; // 有的scroll主体的高度变化是有动画的，需要过一段动画时间才能获取到最终的高度，这里传入动画时间。
+  time?: number; // 有的scroll主体的高度变化是有动画的，需要过一段动画时间才能获取到最终的高度，这里传入动画时间。看菜单组件的应用
   bindIntiScroll?: (scrollMethods: IScrollMethods) => void;
   className?: string;
   keepBarShow?: boolean;
@@ -18,7 +18,6 @@ type Props = {
 type States = {
   showBar: boolean;
   moveBarH: number;
-  preH?: number;
 };
 
 interface IScrollBox {
@@ -35,8 +34,8 @@ class ScrollBox
     showBar: !!this.props.keepBarShow,
     moveBarH: 0,
   };
-  scrollBoxH = 0; // 高度随传递的参数变化
-  scrollMainH = 0; // 高度随内容变化
+  scrollBoxH = 0; // 整个容器的高度 高度随传递的参数变化
+  scrollMainH = 0; // 滚动的主体的高度，被scrollBox 包住 高度随内容变化
   scrollMethods: IScrollMethods;
   timer = 0;
   upTimer = 0;
@@ -179,7 +178,8 @@ class ScrollBox
     if (prevProps.height !== this.props.height) {
       this.upDateInit(this.props.height);
     } else if (this.state.showBar === prevState.showBar) {
-      // 利用相等的情况，是因为当调用更新的生命周清泉时，证明这个 Scrooll组件所包裹的【滚动主体】肯定有更新，即高度发生变化
+      // 利用相等的情况，是因为当调用更新的生命周期时，证明这个 Scrooll组件所包裹的【滚动主体】肯定有更新，即高度发生变化。也就是子组件更新带动父组件Scroll更新。这里并不是因为传给Scroll组件的props变化或者Scroll自身的state变化而引起的
+      // 这种情况案例是 菜单的收缩
       const { time } = this.props;
       const scrollMain = this.moveBar.current!.parentElement!
         .previousElementSibling! as HTMLDivElement;
@@ -188,7 +188,8 @@ class ScrollBox
         this.upTimer = 0;
       }
       // 注意有两级定时器, 当滚动主体是在动画过程中改变高度时，要在动画完成后再来获取滚动主体的高度，否则获取的高度不准确，
-      // 但是当动画主体不停改变高度时，所以得让动画主体在不停的点击改变时，应该立马完成上一次的动画。不然在滚动主体还在不停动画时，下面的time时间已经到了，于是获取的高度不准确。
+      // 但是当动画主体不停地改变高度时——动画主体在不停的点击改变(不停地收缩展开)，应该立马完成上一次的动画。不然在滚动主体还在不停动画时，下面的time时间已经到了，于是获取的高度不准确。
+      // 这种情况主要是应用在菜单组件中，当菜单有滚动条，并且收缩二级菜单时
       this.upTimer = window.setTimeout(() => {
         const curScrollMainH = scrollMain.clientHeight;
         if (curScrollMainH !== this.scrollMainH) {
@@ -294,7 +295,7 @@ class ScrollBox
           <div
             ref={this.moveBar}
             className="m-moveBar"
-            style={{ height: `${moveBarH}px`, top: "0px", }}
+            style={{ height: `${moveBarH}px`, top: "0", }}
             onClick={this.stopProp}
             onMouseDown={this.barClick}
           />
