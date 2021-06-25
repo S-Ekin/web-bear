@@ -13,7 +13,6 @@ type Props = {
   bindIntiScroll?: (scrollMethods: IScrollMethods) => void;
   className?: string;
   keepBarShow?: boolean;
-  noStopPageScroll?: boolean;
 };
 type States = {
   showBar: boolean;
@@ -39,6 +38,7 @@ class ScrollBox
   scrollMethods: IScrollMethods;
   timer = 0;
   upTimer = 0;
+  moveStartTop: number | null = null; // 在开始滚动时，moveBar的位置-距离顶部的距离
   constructor (props: Props) {
     super(props);
     this.scrollMethods = {
@@ -83,29 +83,20 @@ class ScrollBox
 
   componentDidMount (): void {
     this.upDateInit(this.props.height);
-    if (!this.props.noStopPageScroll) {
-      this.moveBar.current!.parentElement!.parentElement!.addEventListener(
-        "wheel",
-        this.stopWhell,
-        { passive: false }
-      );
-    }
   }
 
   componentWillUnmount () {
     window.cancelAnimationFrame(this.timer);
     window.cancelAnimationFrame(this.upTimer);
-    if (!this.props.noStopPageScroll) {
-      this.moveBar.current!.parentElement!.parentElement!.removeEventListener(
-        "wheel",
-        this.stopWhell
-      );
-    }
+    this.moveBar.current!.parentElement!.parentElement!.onwheel = null;
   }
 
   upDateInit = (defaultH?: number): void => {
     // 在 scrollMain 更新时和 鼠标划入整个div时， 会调用
-    const barInner = this.moveBar.current!;
+    if (!this.moveBar.current) {
+      return;
+    }
+    const barInner = this.moveBar.current;
     const scrollMain = barInner.parentElement!
       .previousElementSibling! as HTMLDivElement;
     const curScrollMainH = scrollMain.clientHeight;
@@ -175,6 +166,7 @@ class ScrollBox
 
   componentDidUpdate (prevProps: Props, prevState: States) {
     // todo:这里其实不应该在这在使用 setState，会导致某一次变动，更新两次。在  【getDerivedStateFromProps】里可以让变动更新一次，但是在它里面没法使用 refs来引用dom。
+    // 但是又得在组件更新到真实的dom上后在操作实际的dom
     if (prevProps.height !== this.props.height) {
       this.upDateInit(this.props.height);
     } else if (this.state.showBar === prevState.showBar) {
@@ -200,7 +192,6 @@ class ScrollBox
     }
   }
 
-
   barClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     e.currentTarget!.dataset.y = `${e.clientY}`;
     const top = parseInt(e.currentTarget!.style.top || "0", 0);
@@ -222,9 +213,14 @@ class ScrollBox
       return;
     }
     if (this.scrollMainH > this.scrollBoxH) {
+      dom.onwheel = this.stopWhell;
       this.setState({
         showBar: true,
       });
+
+      this.moveStartTop = parseInt(this.moveBar.current!.style.top || "0", 0);
+    } else {
+      dom.onwheel = null;
     }
   }
   mouseLeave = (): void => {
@@ -246,7 +242,30 @@ class ScrollBox
     const dom = e.currentTarget as HTMLDivElement;
     const scrollMain = dom.firstElementChild! as HTMLDivElement;
     const startH = parseInt(scrollMain.style.top || "0", 0);
-    let step = Math.sqrt(this.scrollMainH / this.scrollBoxH) * 14;
+    // 判断是否阻止主页面的滚动 模拟真实的滚动条情况
+    if (this.moveStartTop === null) {
+      dom.onwheel = this.stopWhell;
+    } else {
+      if (e.deltaY < 0) { // 向上滚动
+        if (this.moveStartTop < 5) {
+          dom.onwheel = null;
+        } else {
+        // 不让带动主体页面滚动， 只让自己的组件滚动条滚动
+          dom.onwheel = this.stopWhell;
+          this.moveStartTop = null;
+        }
+      } else {
+        if (this.moveStartTop > this.scrollBoxH - moveBarH - 5) {
+          dom.onwheel = null;
+        } else {
+        // 不让带动主体页面滚动， 只让自己的组件滚动条滚动
+          dom.onwheel = this.stopWhell;
+          this.moveStartTop = null;
+        }
+      }
+    }
+
+    let step = Math.sqrt(this.scrollMainH / this.scrollBoxH) * 15;
     step = e.deltaY < 0 ? step : -step;
     let h = -(startH + step);
     const maxH = this.scrollMainH - this.scrollBoxH;
@@ -274,14 +293,14 @@ class ScrollBox
     e.preventDefault();
   }
   render () {
-    const { className, height, children, keepBarShow } = this.props;
+    const { className, height, children } = this.props;
     const { showBar, moveBarH } = this.state;
     const style = height ? { height: `${height}px` } : undefined;
     return (
       <div
         className={`g-scrollBox ${className!}`}
         style={style}
-        onMouseEnter={keepBarShow ? undefined : this.mouseOver}
+        onMouseEnter={this.mouseOver}
         onMouseLeave={this.mouseLeave}
         onWheel={this.mainMousewheel}
         onMouseUp={this.cancelBarMove}

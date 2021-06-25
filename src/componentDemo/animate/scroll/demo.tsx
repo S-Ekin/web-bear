@@ -19,7 +19,6 @@ type Props = {
 type config = {
   height: string;
   className: string;
-  noStopPageScroll:boolean;
   keepBarShow:boolean,
   time:string;
 };
@@ -39,7 +38,6 @@ const config:config = {
   height: "300",
   className: "",
   time: "300",
-  noStopPageScroll: false,
   keepBarShow: false,
 };
 
@@ -58,7 +56,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   changeConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
     const name = dom.name as keyof config;
-    let value = name === "noStopPageScroll" || name === "keepBarShow" ? dom.value === "1" : dom.value;
+    let value =  name === "keepBarShow" ? dom.value === "1" : dom.value;
 
     this.setState((pre) => ({
       immuConfig: pre.immuConfig.set(name, value),
@@ -122,7 +120,6 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     const {
       height,
       className,
-      noStopPageScroll,
       keepBarShow,
       time
     } = immuConfig.toJS();
@@ -198,27 +195,6 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                       否
               </CheckBox>
             </div>
-            <div className="inp-item">
-              <span>scrollbox滚动时不阻止页面的滚动 noStopPageScroll：</span>
-              <CheckBox
-                name="noStopPageScroll"
-                value="1"
-                type="radio"
-                checked={noStopPageScroll}
-                changeHandle={this.changeConfig}
-              >
-                      是
-              </CheckBox>
-              <CheckBox
-                name="noStopPageScroll"
-                value="2"
-                type="radio"
-                checked={!noStopPageScroll}
-                changeHandle={this.changeConfig}
-              >
-                      否
-              </CheckBox>
-            </div>
           </div>
         </div>
         <div className="g-item-show">
@@ -228,7 +204,6 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
           <ScrollBox
             key={key}
             className={preConfig.get("className")}
-            noStopPageScroll={preConfig.get("noStopPageScroll")}
             keepBarShow={preConfig.get("keepBarShow")}
             height={+preConfig.get("height")}
             bindIntiScroll={this.bindScrollMethods}
@@ -237,6 +212,9 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               {this.getList()}
             </div>
           </ScrollBox>
+        </div>
+        <div style={{height: 500, padding: 20, border: "1px solid", overflow: "auto"}}>
+          <div  style={{height: 1500, background: "red"}}></div>
         </div>
       </Layout>
     );
