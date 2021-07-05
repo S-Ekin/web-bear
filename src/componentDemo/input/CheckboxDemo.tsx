@@ -9,6 +9,7 @@ import {createImmutableMap} from "@component/util/createImmutaleMap";
 import {Input, CheckBox} from "@component/input/index";
 import {str2} from "./CodeStr";
 import CodeBlock from "@container/codeBlock/CodeBlock";
+import {IImmutalbeMap} from "@component/util/immutableUtil";
 
 type config = {
   checked: boolean;

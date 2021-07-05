@@ -6,6 +6,7 @@
 import {fieldObj, ITableFn, Inode} from "./mytable";
 import * as React from "react";
 import { CheckBox } from "../input/index";
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 
 type Props<T> = {
   curPage:number;// 当前页码

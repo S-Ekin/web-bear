@@ -8,6 +8,7 @@ import { GroupCols } from "./GroupCols";
 import TabView from "./TabView";
 import { formatterTreeData, activeStatus, cascade } from "./formatterTreeData";
 import { ICommon, Inode } from "./mytreeTable";
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 type childType<T> = React.ComponentElement<
 ICommon<T>["groupCol"],
 React.ComponentState

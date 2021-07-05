@@ -13,6 +13,7 @@ import CodeBlock from "@container/codeBlock/CodeBlock";
 import * as  ComboSpace from "@component/combo/combo";
 import {data, str1, str2, str3, str4} from "./CodeStr";
 import  loadFn from "@component/loading/loadMethod";
+import {IImmutalbeMap, IImmutalbeList} from "@component/util/immutableUtil";
 type item = {
   idField: string;
   textField: string;

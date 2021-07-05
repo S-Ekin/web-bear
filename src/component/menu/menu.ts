@@ -1,3 +1,4 @@
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 export interface IMenuData {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;

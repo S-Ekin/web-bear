@@ -8,6 +8,7 @@ import * as Immutable from "immutable";
 import { SlideBox } from "../animate/index";
 import {ISelected, IDropObj, Idrop, filedObj, Inode} from "./combo";
 import {slideOther, event} from "../util/autoSlideUp";
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 type props<T> = {
   data: T[];
   idField?: string;

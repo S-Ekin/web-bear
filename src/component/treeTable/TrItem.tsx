@@ -7,6 +7,7 @@ import * as React from "react";
 import { SvgIcon } from "../my-icon/index";
 import { activeStatus } from "./formatterTreeData";
 import { ICommon } from "./mytreeTable";
+import {IImmutalbeMap} from "../util/immutableUtil";
 type Props<T> = {
   cols: ICommon<T>["col"][];
   node: IImmutalbeMap<ICommon<T>["node"]>;

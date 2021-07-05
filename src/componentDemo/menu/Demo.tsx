@@ -14,6 +14,7 @@ import {createImmutableMap} from "@component/util/createImmutaleMap";
 import { CheckBox, Input } from "@component/input/index";
 import {Button} from "@component/button/index";
 import { IMenuData } from "@component/menu/menu";
+import {IImmutalbeMap} from "@component/util/immutableUtil";
 type Iconfig = {
   expand: boolean; // 是否收缩
   textField: string;

@@ -12,6 +12,7 @@ import { CheckBox, Input } from "@component/input/index";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import {str1 } from "./CodeStr";
 import { SlideBox } from "@component/animate/index";
+import {IImmutalbeMap} from "@component/util/immutableUtil";
 type Props = {
 
 };

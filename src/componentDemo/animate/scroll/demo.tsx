@@ -14,6 +14,7 @@ import {str1 } from "./CodeStr";
 import data from "../../table/data";
 import { ScrollBox } from "@component/scroll";
 import { IScrollMethods } from "@component/scroll/scroll";
+import {IImmutalbeMap} from "@component/util/immutableUtil";
 type Props = {
 };
 type config = {

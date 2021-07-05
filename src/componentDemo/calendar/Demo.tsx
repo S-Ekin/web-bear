@@ -14,6 +14,7 @@ import { createImmutableMap } from "@component/util/createImmutaleMap";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import * as  CalendarSpace from "@component/calendar/calendar";
 import {str1, str2, str3} from './CodeStr';
+import {IImmutalbeMap} from "@component/util/immutableUtil";
 type IcalendarObj = {
   field: string;
   rotate: number; // 日历类型

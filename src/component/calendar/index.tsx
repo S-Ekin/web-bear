@@ -3,6 +3,7 @@ import { SlideBox } from "../animate/index";
 import * as Immutable from "immutable";
 import CalendarView from "./CalendarView";
 import CalendarInp from "./CalendarInp";
+import {IImmutalbeList} from "../util/immutableUtil";
 import {
   timeStrValToTimeObjArr,
   calendarType,

@@ -12,6 +12,7 @@ import PageSize from "./PageSize";
 import TabBody from "./TBody";
 import { IColumnItem, ITableStates, fieldObj, Inode } from "./mytable";
 import { IScrollMethods } from "../scroll/scroll";
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 
 type Props<T> = {
   data: T[];

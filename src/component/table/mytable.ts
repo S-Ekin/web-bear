@@ -1,3 +1,4 @@
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 export interface Inode {
   checked:boolean;
   selected:boolean;

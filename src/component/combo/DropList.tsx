@@ -9,6 +9,7 @@ import * as Immutable from "immutable";
 import { DropItem, activeStatus } from "./DropItem";
 import { Idrop, ISelected, Inode } from "./combo";
 import { Search } from "../input/index";
+import {IImmutalbeMap} from "../util/immutableUtil";
 
 type Iprops<T> = Idrop<"list", T>;
 type states<T> = {

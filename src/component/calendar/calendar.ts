@@ -1,3 +1,4 @@
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 export interface ICommonInterface {
   rotate: 1 | 2 |3 |4 ; // 日历类型
   valFormatt:"number" | "string";  // number:clickBack 传数字值:20200821， string: 2020-08-21;

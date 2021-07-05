@@ -5,6 +5,7 @@
  */
 import * as React from "react";
 import {Input, CheckBox} from "@component/input/index";
+import {IImmutalbeMap} from "@component/util/immutableUtil";
 
 type obj = {
   field: string;

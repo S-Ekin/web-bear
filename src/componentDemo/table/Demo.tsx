@@ -16,6 +16,7 @@ import {CheckBox, Input, Search} from "@component/input/index";
 import  loadFn  from "@component/loading/loadMethod";
 import "./index.scss";
 import { Inode } from "@component/table/mytable";
+import {IImmutalbeMap, IImmutalbeList} from "@component/util/immutableUtil";
 type Props={
 
 };

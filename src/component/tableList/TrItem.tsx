@@ -6,6 +6,7 @@
 import * as React from "react";
 import { SvgIcon } from "../my-icon/index";
 import { ICommon } from "./mytablist";
+import {IImmutalbeMap} from "../util/immutableUtil";
 
 type Props<T> = {
   cols: ICommon<T>["col"][];

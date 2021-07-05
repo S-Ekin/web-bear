@@ -14,6 +14,7 @@ import { str1 } from "./CodeStr";
 import { Animate } from "@component/animate/index";
 import { AnimateType, domAnimateProp } from "@component/animate/animateType";
 import notice from "@component/toast/index";
+import {IImmutalbeMap} from "@component/util/immutableUtil";
 type Props = {
 };
 type config = {

@@ -1,5 +1,6 @@
 import * as Immutable from "immutable";
 import {ICommon} from "./mytreeTable";
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 // eslint-disable-next-line no-shadow
 enum activeStatus {
   select = "selected",

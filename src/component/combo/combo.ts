@@ -1,3 +1,4 @@
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 export interface Inode {
   active: string;
   expand: boolean;

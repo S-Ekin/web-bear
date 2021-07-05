@@ -9,6 +9,7 @@ import notice from "@component/toast/index";
 import { CheckBox, Input } from "@component/input/index";
 import { createImmutableMap } from "@component/util/createImmutaleMap";
 import CodeBlock from "@container/codeBlock/CodeBlock";
+import {IImmutalbeMap} from "@component/util/immutableUtil";
 type config = {
   text: string;
   type: "error" | "success" | "warn";

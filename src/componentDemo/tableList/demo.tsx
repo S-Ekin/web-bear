@@ -12,6 +12,7 @@ import { Input, CheckBox } from "@component/input/index";
 import { str1 } from "./CodeStr";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import { Inode } from "@component/tableList/mytablist";
+import {IImmutalbeMap} from "@component/util/immutableUtil";
 
 type Iconfig = {
   noPageNums?: boolean; // 页码

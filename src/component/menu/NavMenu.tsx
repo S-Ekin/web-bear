@@ -10,6 +10,7 @@ import ParMenu from "./ParMenu";
 import {createImmutableMap} from "../util/createImmutaleMap";
 import {IMenuData, IfieldObj, Inode} from "./menu";
 import { ScrollBox } from "../scroll/index";
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 
 type props={
   data:IMenuData[];

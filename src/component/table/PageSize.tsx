@@ -7,6 +7,7 @@ import {ITableFn, Inode} from "./mytable";
 import * as React from "react";
 import { Combobox } from "../combo/index";
 import { SvgIcon } from "../my-icon/index";
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 
 type Props<T> = {
   perNums: number; // 每页条数

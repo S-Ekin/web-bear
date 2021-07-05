@@ -9,6 +9,7 @@ import CodeBlock from "@container/codeBlock/CodeBlock";
 import {createImmutableMap} from "@component/util/createImmutaleMap";
 import { Input} from "@component/input/index";
 import {str1, str2, str3} from "./CodeStr";
+import {IImmutalbeMap} from "@component/util/immutableUtil";
 type Props={
 };
 type States={

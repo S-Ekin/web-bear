@@ -8,6 +8,7 @@ import * as Immutable from "immutable";
 import * as ReactDom from "react-dom";
 import { Animate } from "../animate/index";
 import { SvgIcon} from "../my-icon/index";
+import {IImmutalbeList} from "../util/immutableUtil";
 type props = {
 };
 

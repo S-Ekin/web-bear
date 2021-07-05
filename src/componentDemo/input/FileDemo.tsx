@@ -9,6 +9,7 @@ import Layout from "@component/layout/Layout";
 import {createImmutableMap} from "@component/util/createImmutaleMap";
 import {Input, CheckBox, FileInp} from "@component/input/index";
 import { Button } from "@component/button";
+import {IImmutalbeMap, IImmutalbeList} from "@component/util/immutableUtil";
 type inputConfig = {
   dataSet:string;
   disabled:boolean;

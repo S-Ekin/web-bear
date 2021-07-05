@@ -9,6 +9,7 @@ import {createImmutableMap} from "@component/util/createImmutaleMap";
 import {Input, Search} from "@component/input/index";
 import {str3} from "./CodeStr";
 import CodeBlock from "@container/codeBlock/CodeBlock";
+import {IImmutalbeMap} from "@component/util/immutableUtil";
 
 type config = {
   // searchHandle: (keyword: string,field:string) => void;

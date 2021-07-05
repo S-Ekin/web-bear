@@ -8,6 +8,7 @@ import * as immutable from "immutable";
 import * as React from "react";
 import {Button} from "../button/index";
 import {SvgIcon} from "../my-icon/index";
+import {IImmutalbeList} from "../util/immutableUtil";
 let createId = 0;
 type props<T>={
   dataSet?:string;

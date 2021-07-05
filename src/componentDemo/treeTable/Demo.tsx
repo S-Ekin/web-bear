@@ -12,6 +12,7 @@ import { Input, CheckBox } from "@component/input/index";
 import {str1, str4, str2, str3, str5, str6} from './CodeStr';
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import { Inode } from "@component/treeTable/mytreeTable";
+import {IImmutalbeMap} from "@component/util/immutableUtil";
 type Iconfig = {
   multiply?: boolean;
   itemIcon?: string;

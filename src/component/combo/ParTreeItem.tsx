@@ -10,6 +10,7 @@ import {activeStatus, DropItem} from "./DropItem";
 import { SlideBox } from "../animate/index";
 import {CheckBox} from "../input/index";
 import {Idrop, Inode} from "./combo";
+import {IImmutalbeMap} from "../util/immutableUtil";
 
 type immutableData<T> = Immutable.List<IImmutalbeMap<Inode & T>>;
 

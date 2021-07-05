@@ -7,6 +7,7 @@ import * as React from "react";
 import TrItem from "./TrItem";
 import { SlideBox } from "../animate/index";
 import { ICommon } from "./mytreeTable";
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 type Props<T> = {
   cols: ICommon<T>["col"][];
   node: IImmutalbeMap<ICommon<T>["node"]>;

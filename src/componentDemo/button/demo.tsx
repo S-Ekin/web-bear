@@ -10,6 +10,7 @@ import {createImmutableMap} from "@component/util/createImmutaleMap";
 import { Input, CheckBox } from "@component/input/index";
 import CodeBlock from "@container/codeBlock/CodeBlock";
 import {str1, str2, str3, list, str4} from "./CodeStr";
+import {IImmutalbeMap} from "@component/util/immutableUtil";
 type Props = {
 
 };

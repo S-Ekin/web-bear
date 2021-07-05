@@ -6,6 +6,7 @@
 import * as React from "react";
 import { SvgIcon } from "../my-icon/index";
 import {IDropObj, Idrop, ICheckboxCom, Inode} from "./combo";
+import {IImmutalbeMap} from "../util/immutableUtil";
 // eslint-disable-next-line no-shadow
 enum activeStatus {
   select = "selected",

@@ -10,6 +10,7 @@ import { GroupCols } from "./GroupCols";
 import { Empty } from "../my-icon/index";
 import PageSize from "./PageSize";
 import { ICommon, Inode } from "./mytablist";
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 
 type childType<T> = React.ComponentElement<
 ICommon<T>["groupCol"],

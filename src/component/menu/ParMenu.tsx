@@ -9,6 +9,7 @@ import * as Immutable from "immutable";
 import {NavLink} from "react-router-dom";
 import {IMenuData, IfieldObj, Inode} from "./menu";
 import { SlideBox } from "../animate/index";
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 
 type props = {
   node:IImmutalbeMap<Inode>;

@@ -11,6 +11,7 @@ import wrapComboHQC from "./ComboBasic";
 import { CheckBox, Search } from "../input/index";
 import {formatterTreeData, cascade} from './formatterTreeData';
 import {Idrop, ISelected, Inode} from "./combo";
+import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 type props<T> = Idrop<"tree", T>;
 type states<T> = {
   immutableData: Immutable.List<IImmutalbeMap<Inode & T>>;
