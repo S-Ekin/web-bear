@@ -27,7 +27,7 @@ class TabView<T extends AnyObj>
   colHeadRef: React.RefObject<HTMLDivElement> = React.createRef();
   tabBodyRef: React.RefObject<HTMLDivElement> = React.createRef();
   state: States = {};
-
+  overBoxTimer = 0;
   scrollFn = (e: React.UIEvent<HTMLDivElement>) => {
     if (!e.currentTarget.classList.contains("action-body")) {
       return;
@@ -86,16 +86,33 @@ class TabView<T extends AnyObj>
       current!.addEventListener("wheel", this.wheelFn);
     }
   }
+  componentDidUpdate (preProps:Props<T>) {
+    if (preProps.data !== this.props.data) {
+      clearTimeout(this.overBoxTimer);
+      const tbodyDom = this.tabBodyRef.current!;
+      const child = this.colHeadRef.current!
+        .firstElementChild as HTMLDivElement;
+      this.overBoxTimer = window.setTimeout(() => {
+        if (tbodyDom.scrollHeight > tbodyDom.clientHeight) {
+          // 给自己的头部隐藏的滚动条占位
+          child!.style.paddingRight = "18px";
+        } else {
+          child!.style.paddingRight = "";
+        }
+      }, 300);
+    }
+  }
   componentWillUnmount () {
     const { config } = this.props;
     if (config.forzen) {
       this.tabBodyRef.current!.removeEventListener("wheel", this.wheelFn);
     }
+    clearTimeout(this.overBoxTimer);
   }
   // 有滚动条的时候
   overBox () {
     const tbodyDom = this.tabBodyRef.current!;
-    if (tbodyDom.scrollWidth > tbodyDom.clientWidth) {
+    if (tbodyDom.scrollWidth > tbodyDom.clientWidth || tbodyDom.scrollHeight > tbodyDom.clientHeight) {
       // 给自己的头部隐藏的滚动条占位
       const child = this.colHeadRef.current!
         .firstElementChild as HTMLDivElement;

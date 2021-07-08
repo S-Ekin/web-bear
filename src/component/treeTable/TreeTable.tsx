@@ -402,7 +402,7 @@ class TreeTable<T extends AnyObj>
   componentDidMount () {
     this.setDom();
   }
-  // 比对所有区域的高度，设置为一样高
+  // 比对所有区域的高度，设置为一样高,这个方法不用了，使用whileDomH代替
   setSameH () {
     let domArr = this.tabMainTabBodyDomArr;
 
@@ -450,6 +450,7 @@ class TreeTable<T extends AnyObj>
     }
   }
   // 用while代替递归
+  // 比对所有区域的高度，设置为一样高
   whileDomH () {
     const rootRoot = this.tabMainTabBodyDomArr;
     let domArr = [rootRoot];
@@ -481,7 +482,7 @@ class TreeTable<T extends AnyObj>
             const trHMax = trHArr[trHArr.length - 1];
             if (tr.classList.contains("tree-td")) {
               const childDomArr = trDomArr.map(
-                (val) => val.firstChild!.firstChild!
+                (val) => val.firstChild!.firstChild!.firstChild
               ) as HTMLDivElement[];
               contains.push(childDomArr);
             } else {

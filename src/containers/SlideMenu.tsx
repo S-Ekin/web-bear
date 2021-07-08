@@ -51,7 +51,7 @@ class SlideMenu extends React.PureComponent<SlideMenuProp, SlideMenuState> {
   render () {
     const { data, expand } = this.state;
     return (
-      <NavMenu data={data} expand={expand} clickBack={this.clickCallBack}>
+      <NavMenu data={data} expand={expand} clickBack={this.clickCallBack} onlyOpenFirst>
         <div className="g-logo shadow">
           <span className="m-logo" />
           {this.slideMenu()}

@@ -13,7 +13,8 @@ import {IImmutalbeMap} from "@component/util/immutableUtil";
 
 type config = {
   // searchHandle: (keyword: string,field:string) => void;
-  // closeHandle?: (field?:string) => void;
+  // closeHandle?: (field?:string) => void;\
+  defaultVal:string;
   tip: string;
   width:number;
   field:string;
@@ -24,6 +25,7 @@ const config:config = {
   width: 0,
   field: "",
   tit: "",
+  defaultVal: "默认值",
 };
 
 type Props={
@@ -62,7 +64,7 @@ class SearchDemo extends React.PureComponent<Props, States>
   }
   render () {
     const {immuConfig} = this.state;
-    const {tip, field, width, tit} = immuConfig.toJS();
+    const {tip, field, width, tit, defaultVal} = immuConfig.toJS();
 
     return (
       <Layout tit="搜索框">
@@ -73,6 +75,7 @@ class SearchDemo extends React.PureComponent<Props, States>
               tip={tip}
               field={field}
               width={width}
+              defaultVal={defaultVal}
               searchHandle={this.searchHandle}
               closeHandle={this.closeHandle}
             >
@@ -97,6 +100,13 @@ class SearchDemo extends React.PureComponent<Props, States>
                 norequire
               >
                 宽度  width：
+              </Input>
+            </div>
+            <div className="inp-item">
+              <Input value={`${defaultVal}`} disabled name="defaultVal" changeFn={this.changeConfig}
+                norequire
+              >
+                默认值 defaultVal：
               </Input>
             </div>
             <div className="inp-item">

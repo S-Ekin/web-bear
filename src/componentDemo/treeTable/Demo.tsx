@@ -132,7 +132,7 @@ class Demo extends React.PureComponent<Props, States> {
                 <GroupCols.colItem width={140} field="id">
                   id
                 </GroupCols.colItem>
-                <GroupCols.colItem field="persons" width={240}>
+                {/* <GroupCols.colItem field="persons" width={240}>
                   列3
                 </GroupCols.colItem>
                 <GroupCols.colItem width={240} field="begin">
@@ -140,7 +140,7 @@ class Demo extends React.PureComponent<Props, States> {
                 </GroupCols.colItem>
                 <GroupCols.colItem width={140} field="end">
                   列5
-                </GroupCols.colItem>
+                </GroupCols.colItem> */}
                 <GroupCols.colItem width={140} field="progress">
                   列6
                 </GroupCols.colItem>

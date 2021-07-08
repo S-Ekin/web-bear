@@ -34,6 +34,7 @@ type Iconfig = {
   className:string;
   field:string;// 标识字段
   width:string;
+  btnTxt: string;
 };
 const innerModalWrap = document.getElementById("inner-modal-wrap");
 const outModalWrap = document.getElementById("out-modal-wrap");
@@ -45,6 +46,7 @@ const initConfig:Iconfig = {
   className: "modalPage",
   field: "myModal", // 标识字段
   width: "0",
+  btnTxt: "确定"
 };
 class Demo extends React.PureComponent<Props, States> implements IDemo {
 
@@ -168,7 +170,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   render () {
     const {config, show, immuConfig, refreshId, hasSureFn, textUpdate, hasCustomFoot} = this.state;
     const {wrapName: wrap, width: wid, ...obj} = config;
-    const {width, field, tit, className, noshade, wrapName} = immuConfig.toJS();
+    const {width, field, tit, className, noshade, wrapName, btnTxt} = immuConfig.toJS();
     return (
       <Layout tit="模态框">
         <Modal
@@ -253,6 +255,16 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               </CheckBox>
             </div>
 
+            <div className="inp-item">
+              <Input
+                changeFn={this.changeConfig}
+                name="btnTxt"
+                norequire
+                value={btnTxt}
+              >
+               模态框容器类名 btnTxt:
+              </Input>
+            </div>
             <div className="inp-item">
               <Input
                 changeFn={this.changeConfig}

@@ -14,6 +14,7 @@ import {IImmutalbeMap, IImmutalbeList} from "../util/immutableUtil";
 
 type props={
   data:IMenuData[];
+  onlyOpenFirst?:boolean;
   width?:number;
   expand: boolean; // 是否收缩
   textField?: string;
@@ -34,6 +35,7 @@ type states={
 type formatterData = {
   defaultMenuId:string;
   idField:string;
+  onlyOpenFirst?:boolean;
 };
 interface INavMenu{
   initState(prop:props):states;
@@ -48,10 +50,10 @@ interface INavMenu{
 
 // 格式化数据，添加属性selecte:Boolean代表选中
 const formatter  = function (data:IMenuData[], obj:formatterData) {
-  const {defaultMenuId, idField} = obj;
-  return data.map((par) => {
+  const {defaultMenuId, idField, onlyOpenFirst} = obj;
+  return data.map((par, index) => {
     par.selected = false;
-    par.drop = true;
+    par.drop = onlyOpenFirst ? index == 0 : true;
     // 子节点也添加selected;
     par.children.forEach((sub) => {
       const status = defaultMenuId === `${sub[idField] as string}`;
@@ -105,8 +107,8 @@ class NavMenu extends React.PureComponent<props, states> implements INavMenu {
   }
   initState (prop:props) {
 
-    const {defaultMenuId, data, idField, textField, urlField, iconField, init} = prop;
-    const newData = formatter(data, {idField: idField!, defaultMenuId: defaultMenuId!});
+    const {defaultMenuId, data, idField, textField, urlField, iconField, init, onlyOpenFirst} = prop;
+    const newData = formatter(data, {idField: idField!, defaultMenuId: defaultMenuId!, onlyOpenFirst});
 
     return {
       selected: defaultMenuId || "",

@@ -40,7 +40,6 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
   };
   slideDom: React.RefObject<HTMLDivElement> = React.createRef();
   timer = 0;
-  firstSlide = this.props.slide;
   arr: boolean[] = [];
   state: States = {};
   slideFn: (slideDown: boolean) => void;
@@ -55,6 +54,13 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
       // 启动函数
       const slide = this.arr.shift()!;
       this.queueFn(slide);
+    }
+  }
+
+  componentDidMount () {
+    // 第一次加载时，根据是否下拉，来展示首次的状态。
+    if (!this.props.slide) {
+      this.slideDom.current!.style.display = "none";
     }
   }
 
@@ -181,12 +187,11 @@ class SlideBox extends React.PureComponent<Props, States> implements ISlideBox {
 
   render () {
     const { children, className, styleObj } = this.props;
-    const style = Object.assign({ display: this.firstSlide ? "block" : "none", }, styleObj);
     return (
       <div
         ref={this.slideDom}
         className={`g-slideBox ${className || ""}`}
-        style={style}
+        style={styleObj}
       >
         {children}
       </div>

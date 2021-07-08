@@ -22,6 +22,7 @@ type Iconfig = {
   urlField: string;
   iconField: string;
   defaultMenuId: string;
+  onlyOpenFirst: boolean;
   width:number;
 };
 
@@ -32,6 +33,7 @@ const initConfig:Iconfig = {
   urlField: "url",
   iconField: "icon",
   defaultMenuId: "",
+  onlyOpenFirst: false,
   width: 0
 };
 
@@ -66,7 +68,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     const dom = e.currentTarget;
     const name = dom.name as keyof Iconfig;
     let value: string | number | boolean = dom.value;
-    if (name === "expand") {
+    if (name === "expand" || name === "onlyOpenFirst") {
       value = value === "1";
     } else if (name === "width") {
 
@@ -107,6 +109,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       expand,
       iconField,
       width,
+      onlyOpenFirst
     } = immuConfig.toJS();
 
     return (
@@ -187,6 +190,27 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                       </Input>
                     </div>
 
+                    <div className="inp-item">
+                      <span>初始只展开第一个 onlyOpenFirst：</span>
+                      <CheckBox
+                        name="onlyOpenFirst"
+                        value="1"
+                        type="radio"
+                        checked={onlyOpenFirst}
+                        changeHandle={this.changeConfig}
+                      >
+                        是
+                      </CheckBox>
+                      <CheckBox
+                        name="onlyOpenFirst"
+                        value="2"
+                        type="radio"
+                        checked={!onlyOpenFirst}
+                        changeHandle={this.changeConfig}
+                      >
+                        否
+                      </CheckBox>
+                    </div>
                     <div className="inp-item">
                       <span>展开 expand：</span>
                       <CheckBox
