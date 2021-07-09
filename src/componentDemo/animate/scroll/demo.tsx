@@ -22,6 +22,7 @@ type config = {
   className: string;
   keepBarShow:boolean,
   time:string;
+  scrollWidthAuto:boolean;
 };
 
 type States = {
@@ -30,6 +31,7 @@ type States = {
   listStartIndex: number;
   top:string;
   key:number;
+  width: number | undefined;
 };
 interface IDemo {
   changeConfig(e: React.ChangeEvent<HTMLInputElement>):void;
@@ -37,6 +39,7 @@ interface IDemo {
 
 const config:config = {
   height: "300",
+  scrollWidthAuto: false,
   className: "",
   time: "300",
   keepBarShow: false,
@@ -48,7 +51,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     preConfig: createImmutableMap(config),
     listStartIndex: 0,
     top: "",
-    key: 1
+    key: 1,
+    width: 1500
   };
   scrollMethods:undefined | IScrollMethods ;
   bindScrollMethods = (scrollMethods:IScrollMethods) => {
@@ -57,7 +61,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   changeConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dom = e.currentTarget;
     const name = dom.name as keyof config;
-    let value =  name === "keepBarShow" ? dom.value === "1" : dom.value;
+    let value =  name === "keepBarShow" || name === "scrollWidthAuto" ? dom.value === "1" : dom.value;
 
     this.setState((pre) => ({
       immuConfig: pre.immuConfig.set(name, value),
@@ -76,6 +80,10 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       this.setState({
         listStartIndex: Math.round(data.length * (Math.random()))
       });
+    } else if (type === "btn3") {
+      this.setState((pre) => ({
+        width: pre.width ? undefined : 1500
+      }));
     }
 
   }
@@ -117,12 +125,13 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     );
   }
   render () {
-    const { preConfig, immuConfig, listStartIndex, key } = this.state;
+    const { preConfig, immuConfig, listStartIndex, key, width } = this.state;
     const {
       height,
       className,
       keepBarShow,
-      time
+      time,
+      scrollWidthAuto
     } = immuConfig.toJS();
     return (
       <Layout tit="滚动条" className="scroll-page">
@@ -139,6 +148,12 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               name="btn2"
             >
               改变数据量: {data.length - listStartIndex}
+            </Button>
+            <Button
+              handle={this.btnHandle}
+              name="btn3"
+            >
+              改变宽度
             </Button>
           </div>
           <div>
@@ -196,6 +211,27 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                       否
               </CheckBox>
             </div>
+            <div className="inp-item">
+              <span>滚动主体是否自动宽度 scrollWidthAuto：</span>
+              <CheckBox
+                name="scrollWidthAuto"
+                value="1"
+                type="radio"
+                checked={scrollWidthAuto}
+                changeHandle={this.changeConfig}
+              >
+                      是
+              </CheckBox>
+              <CheckBox
+                name="scrollWidthAuto"
+                value="2"
+                type="radio"
+                checked={!scrollWidthAuto}
+                changeHandle={this.changeConfig}
+              >
+                      否
+              </CheckBox>
+            </div>
           </div>
         </div>
         <div className="g-item-show">
@@ -206,16 +242,18 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
             key={key}
             className={preConfig.get("className")}
             keepBarShow={preConfig.get("keepBarShow")}
+            scrollWidthAuto={preConfig.get("scrollWidthAuto")}
             height={+preConfig.get("height")}
             bindIntiScroll={this.bindScrollMethods}
           >
-            <div className="main-demo" >
+            <div className="main-demo" style={{width}}>
               {this.getList()}
             </div>
           </ScrollBox>
         </div>
+        <p>原生滚动条</p>
         <div style={{height: 500, padding: 20, border: "1px solid", overflow: "auto"}}>
-          <div  style={{height: 1500, background: "red"}}></div>
+          <div  style={{height: 1500, background: "red", width: 1500}}></div>
         </div>
       </Layout>
     );

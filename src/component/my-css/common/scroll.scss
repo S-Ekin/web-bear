@@ -11,22 +11,41 @@ $barInnerW: 6px;
   flex: 1;
 
   .m-moveBar {
-    width: $barInnerW;
-    background: #d9d9d9;
     border-radius: $barInnerW;
     position: absolute;
+    background: #d9d9d9;
+
+    &.m-moveHBar {
+      width: $barInnerW;
+    }
+
+    &.m-moveWBar {
+      height: $barInnerW + 4px;
+    }
   }
 
   .m-scrollBar {
     position: absolute;
-    height: 100%;
-    top: 0;
-    right: 0;
-    width: $barW;
-    padding: 6px math.div($barW - $barInnerW, 2);
-    z-index: 2;
     background: none;
     cursor: pointer;
+
+    &.m-scrollHBar {
+      height: calc(100% - 16px);
+      z-index: 3;
+      top: 0;
+      right: 0;
+      width: $barW;
+      padding: 6px math.div($barW - $barInnerW, 2);
+    }
+
+    &.m-scrollWBar {
+      width: calc(100% - 16px);
+      z-index: 2;
+      bottom: 0;
+      left: 0;
+      height: $barW + 4px;
+      padding: math.div($barW - $barInnerW, 2) 6px;
+    }
 
     &:hover {
       background: #d9d9d9;
@@ -39,7 +58,10 @@ $barInnerW: 6px;
 
   .m-scrollMain {
     position: absolute;
-    width: 100%;
     top: 0;
+
+    &.no-selected {
+      user-select: none;
+    }
   }
 }
