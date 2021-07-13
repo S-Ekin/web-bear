@@ -139,7 +139,7 @@ class TabList<T extends AnyObj>
   getFieldArr (arr: Props<T>["children"]) {
     const { noOrder, multiply } = this.props;
     return React.Children.map(arr, function (val, index) {
-      const { children: eleArr, forzen } = val.props;
+      const { children: eleArr, forzen, width: groupWidth } = val.props;
       let widTotal = 0;
       const child: ICommon<T>["col"][] = React.Children.map(
         eleArr,
@@ -181,7 +181,7 @@ class TabList<T extends AnyObj>
 
       return {
         child,
-        width: widTotal,
+        width: forzen ? widTotal : groupWidth!,
         forzen,
       };
     });

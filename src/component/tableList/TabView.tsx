@@ -212,7 +212,7 @@ class TabView<T extends AnyObj>
       config: { width, forzen },
       config,
     } = this.props;
-    const styleObj = width && forzen ? { width } : undefined;
+    const styleObj = width ? forzen ? { width } : {width, flex: "none"} : undefined;
 
     const className = config.forzen ? "tab-view-fix" : "tab-view-scroll";
     return (

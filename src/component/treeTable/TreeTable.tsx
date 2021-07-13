@@ -123,7 +123,7 @@ class TreeTable<T extends AnyObj>
     const { noOrder } = this.props;
 
     return React.Children.map(arr, function (val, index) {
-      const { children: childArr, forzen } = val.props;
+      const { children: childArr, forzen, width: groupWidth } = val.props;
       let widTotal = 0;
 
       const child: ICommon<T>["col"][] = React.Children.map(
@@ -154,7 +154,7 @@ class TreeTable<T extends AnyObj>
 
       return {
         child,
-        width: widTotal,
+        width: forzen ? widTotal : groupWidth!,
         forzen,
       };
     });

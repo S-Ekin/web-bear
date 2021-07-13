@@ -138,6 +138,12 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 <GroupCols.colItem field="a_SHANGBAOSHIJIAN" width={220}>
                   上报日期
                 </GroupCols.colItem>
+                <GroupCols.colItem field="a_SHANGBAOSHIJIAN" width={220}>
+                  上报日期
+                </GroupCols.colItem>
+                <GroupCols.colItem field="a_SHANGBAOSHIJIAN" width={220}>
+                  上报日期
+                </GroupCols.colItem>
                 <GroupCols.colItem field="status_name" width={120}>
                   处理状态
                 </GroupCols.colItem>
@@ -151,15 +157,12 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                   上报人
                 </GroupCols.colItem>
               </GroupCols>
-              <GroupCols>
+              <GroupCols width={270}>
                 <GroupCols.colItem field="eventNo" width={120}>
                   事件编号
                 </GroupCols.colItem>
                 <GroupCols.colItem field="category_name" width={120}>
                   事件类型
-                </GroupCols.colItem>
-                <GroupCols.colItem field="status_name" width={120} formatter={this.formatterFn}>
-                  处理状态
                 </GroupCols.colItem>
               </GroupCols>
             </TabList>

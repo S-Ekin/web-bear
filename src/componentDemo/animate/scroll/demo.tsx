@@ -21,7 +21,7 @@ type config = {
   height: string;
   className: string;
   keepBarShow:boolean,
-  time:string;
+  callbackTime:string;
   scrollWidthAuto:boolean;
 };
 
@@ -31,6 +31,7 @@ type States = {
   listStartIndex: number;
   top:string;
   key:number;
+  left: string;
   width: number | undefined;
 };
 interface IDemo {
@@ -41,7 +42,7 @@ const config:config = {
   height: "300",
   scrollWidthAuto: false,
   className: "",
-  time: "300",
+  callbackTime: "300",
   keepBarShow: false,
 };
 
@@ -52,7 +53,8 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
     listStartIndex: 0,
     top: "",
     key: 1,
-    width: 1500
+    left: "",
+    width: undefined
   };
   scrollMethods:undefined | IScrollMethods ;
   bindScrollMethods = (scrollMethods:IScrollMethods) => {
@@ -82,13 +84,19 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       });
     } else if (type === "btn3") {
       this.setState((pre) => ({
-        width: pre.width ? undefined : 1500
+        width: pre.width ? undefined : 1500,
+        immuConfig: pre.immuConfig.set("scrollWidthAuto", !pre.width),
       }));
     }
 
   }
-  scrollTo=() => {
-    this.scrollMethods!.scrollToTop(+this.state.top);
+  scrollTo=(e:React.MouseEvent<HTMLButtonElement>) => {
+    const type = e.currentTarget.value;
+    if (type === "top") {
+      this.scrollMethods!.scrollToTop(+this.state.top);
+    } else if (type === "left") {
+      this.scrollMethods!.scrollToLeft(+this.state.left);
+    }
   }
   getList () {
     return data.slice(this.state.listStartIndex).map((val, index) => (
@@ -103,24 +111,43 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
   }
   changeInp = (e:React.ChangeEvent<HTMLInputElement>) => {
     const val = e.currentTarget.value;
+    const field = e.currentTarget.name;
     this.setState({
-      top: val
+      [field as "top"]: val
     });
   }
   getCodeBlockTit1 () {
+    const {width} = this.state;
     return (
       <>
         <div>
           <Input
             value={this.state.top}
             norequire
+            name="top"
             changeFn={this.changeInp}
             type="number"
           >
             <span>外部控制向下滚动</span></Input>
           <span style={{padding: "0 16px", }}/>
-          <Button handle={this.scrollTo}>滚动</Button>
+          <Button handle={this.scrollTo} val="top">滚动</Button>
         </div>
+        {
+          width ? (
+            <div>
+              <Input
+                value={this.state.left}
+                norequire
+                name="left"
+                changeFn={this.changeInp}
+                type="number"
+              >
+                <span>外部控制向右滚动</span></Input>
+              <span style={{padding: "0 16px", }}/>
+              <Button handle={this.scrollTo} val="left">滚动</Button>
+            </div>
+          ) : null
+        }
       </>
     );
   }
@@ -130,7 +157,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
       height,
       className,
       keepBarShow,
-      time,
+      callbackTime,
       scrollWidthAuto
     } = immuConfig.toJS();
     return (
@@ -153,7 +180,7 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
               handle={this.btnHandle}
               name="btn3"
             >
-              改变宽度
+              改变宽度 width: {width ? `${width}px` : "100%"}
             </Button>
           </div>
           <div>
@@ -184,10 +211,10 @@ class Demo extends React.PureComponent<Props, States> implements IDemo {
                 type="number"
                 norequire
                 changeFn={this.changeConfig}
-                name="time"
-                value={time}
+                name="callbackTime"
+                value={callbackTime}
               >
-                  延迟更新滚动条的时间（比如在菜单收缩完成后开始更新） time:
+                  延迟更新滚动条的时间（比如在菜单收缩完成后开始更新） callbackTime:
               </Input>
             </div>
             <div className="inp-item">

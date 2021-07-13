@@ -190,7 +190,7 @@ class NavMenu extends React.PureComponent<props, states> implements INavMenu {
     const {width, children, expand} = this.props;
     const menuCom = expand ? (
       <ScrollBox
-        time={300}
+        callbackTime={300}
       >
         <ul className="g-menu">
           {parItem}

@@ -26,6 +26,7 @@ export interface ICommon<T> {
   groupCol :{
     children:group<T>[] | group<T>;
     forzen?:boolean;
+    width?:number;
   };
   config:{
     child:ICommon<T>['col'][];

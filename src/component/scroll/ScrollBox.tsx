@@ -9,7 +9,7 @@ import { IScrollMethods } from "./scroll";
 import { tween } from "../animate/tween";
 type Props = {
   height?: number;
-  time?: number; // 有的scroll主体的高度变化是有动画的，需要过一段动画时间才能获取到最终的高度，这里传入动画时间。看菜单组件的应用
+  callbackTime?: number; // 有的scroll主体的高度变化是有动画的，需要过一段动画时间才能获取到最终的高度，这里传入动画时间。看菜单组件的应用
   bindIntiScroll?: (scrollMethods: IScrollMethods) => void;
   className?: string;
   scrollWidthAuto?:boolean;
@@ -54,6 +54,7 @@ class ScrollBox
     this.scrollMethods = {
       initScroll: this.upDateInit,
       scrollToTop: this.scrollToTop,
+      scrollToLeft: this.scrollToLeft,
     };
     if (props.bindIntiScroll) {
       props.bindIntiScroll(this.scrollMethods);
@@ -71,6 +72,19 @@ class ScrollBox
     const factor = (this.scrollBoxH - moveBarH) / maxH;
     scrollMain.style.top = `${-h}px`;
     this.moveHBar.current!.style.top = `${h * factor}px`;
+  }
+  scrollToLeft = (left: number) => {
+    const { moveBarW } = this.state;
+    const scrollMain = this.scrollMain.current!;
+    let w = left;
+    const maxW = this.scrollMainW - this.scrollBoxW;
+    if (maxW <= 0) {
+      return;
+    }
+    w = w < 0 ? 0 : w > maxW ? maxW : w;
+    const factor = (this.scrollBoxW - moveBarW) / maxW;
+    scrollMain.style.left = `${-w}px`;
+    this.moveWBar.current!.style.left = `${w * factor}px`;
   }
   barHMove = (e: MouseEvent): void => {
     // 从静止开始启动
@@ -106,9 +120,11 @@ class ScrollBox
 
   componentDidMount (): void {
     this.upDateInit(this.props.height);
+    document.body.addEventListener("mouseup", this.cancelBarMove);
   }
 
   componentWillUnmount () {
+    document.body.removeEventListener("mouseup", this.cancelBarMove);
     window.cancelAnimationFrame(this.timerH);
     window.cancelAnimationFrame(this.timerW);
     window.cancelAnimationFrame(this.upTimer);
@@ -120,7 +136,7 @@ class ScrollBox
     this.updatehorizontal();
   }
 
-  updateVertical (defaultH?:number) {
+  updateVertical (setH?:number) {
     // 在 scrollMain 更新时和 鼠标划入整个div时， 会调用
     if (!this.moveHBar.current) {
       return;
@@ -128,14 +144,15 @@ class ScrollBox
     const barInner = this.moveHBar.current;
     const scrollMain = this.scrollMain.current!;
     const curScrollMainH = scrollMain.clientHeight;
-    if (!defaultH && curScrollMainH === this.scrollMainH) {
+    const curScrollBoxH = scrollMain.parentElement!.clientHeight;
+    if (!setH && curScrollMainH === this.scrollMainH && curScrollBoxH === this.scrollMainH) {
       return;
     }
-    this.scrollBoxH = defaultH
-      ? defaultH
+    this.scrollBoxH = setH
+      ? setH
       : scrollMain.parentElement!.clientHeight;
     this.scrollMainH = curScrollMainH;
-    if (curScrollMainH < this.scrollBoxH) {
+    if (curScrollMainH <= this.scrollBoxH) {
       // 没有超出容器
       scrollMain.style.top = "0";
       this.setState({
@@ -173,7 +190,7 @@ class ScrollBox
 
   }
 
-  updatehorizontal (defaultW?:number) {
+  updatehorizontal (setW?:number) {
     // 在 scrollMain 更新时和 鼠标划入整个div时， 会调用
     if (!this.moveWBar.current) {
       return;
@@ -181,14 +198,15 @@ class ScrollBox
     const barInner = this.moveWBar.current;
     const scrollMain = this.scrollMain.current!;
     const curScrollMainW = scrollMain.clientWidth;
-    if (!defaultW && curScrollMainW === this.scrollMainW) {
+    const curScrollBoxW = scrollMain.parentElement!.clientWidth;
+    if (!setW && curScrollMainW === this.scrollMainW && curScrollBoxW === this.scrollBoxW) {
       return;
     }
-    this.scrollBoxW = defaultW
-      ? defaultW
+    this.scrollBoxW = setW
+      ? setW
       : scrollMain.parentElement!.clientWidth;
     this.scrollMainW = curScrollMainW;
-    if (curScrollMainW < this.scrollBoxW) {
+    if (curScrollMainW <= this.scrollBoxW) {
       // 没有超出容器
       scrollMain.style.left = "0";
       this.setState({
@@ -277,7 +295,7 @@ class ScrollBox
     } else if (this.state.showHBar === prevState.showHBar) {
       // 利用相等的情况，是因为当调用更新的生命周期时，证明这个 Scrooll组件所包裹的【滚动主体】肯定有更新，即高度发生变化。也就是子组件更新带动父组件Scroll更新。这里并不是因为传给Scroll组件的props变化或者Scroll自身的state变化而引起的
       // 这种情况案例是 菜单的收缩
-      const { time } = this.props;
+      const {callbackTime} = this.props;
       const scrollMain = this.scrollMain.current!;
       if (this.upTimer) {
         window.cancelAnimationFrame(this.upTimer);
@@ -292,7 +310,7 @@ class ScrollBox
           this.upDateInit(this.props.height);
           this.upTimer = 0;
         }
-      }, time);
+      }, callbackTime);
     }
   }
 
@@ -332,6 +350,12 @@ class ScrollBox
     if (!dom.firstElementChild) {
       return;
     }
+    if (this.state.showWBar) {
+      const curScrollBoxW = this.scrollMain.current!.parentElement!.clientWidth;
+      if (curScrollBoxW !== this.scrollBoxW) {
+        this.updatehorizontal();
+      }
+    }
     if (this.scrollMainH > this.scrollBoxH) {
       dom.onwheel = this.stopWhell;
       this.setState({
@@ -342,15 +366,6 @@ class ScrollBox
     } else {
       dom.onwheel = null;
     }
-  }
-  mouseLeave = (): void => {
-    this.cancelBarMove();
-    if (this.props.bindIntiScroll) {
-      return;
-    }
-    this.setState({
-      showHBar: false,
-    });
   }
   mainMousewheel = (e: React.WheelEvent): void => {
     this.cancelBarMove();
@@ -431,9 +446,7 @@ class ScrollBox
         className={`g-scrollBox ${className!}`}
         style={style}
         onMouseEnter={this.mouseOver}
-        onMouseLeave={this.mouseLeave}
         onWheel={this.mainMousewheel}
-        onMouseUp={this.cancelBarMove}
       >
         <div
           style={{ display: showHBar ? "block" : "none", }}
@@ -448,7 +461,7 @@ class ScrollBox
             onMouseDown={this.barHClick}
           />
         </div>
-        <div style={{height: "calc(100% - 16px)", width: "calc(100% - 16px)", overflow: "hidden", position: "relative"}}>
+        <div className="wrap-main">
           <div className="m-scrollMain" style={{width: scrollWidthAuto ? undefined : "100%"}} ref={this.scrollMain}>{children}</div>
         </div>
         <div
